@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MAIN"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondotres"
+    tools:context="com.example.pc.bandsnarts.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/tituloVLogin"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_above="@+id/edtUsuarioVLogin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="casual"
+            android:gravity="center"
+            android:text="BANDS 'N' ARTS"
+            android:textColor="@color/md_white_1000"
+            android:textSize="46dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtUsuarioVLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/borde"
+            android:drawableLeft="@drawable/ic_person_white_24dp"
+            android:ems="10"
+            android:fontFamily="casual"
+            android:hint="Usuario"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/md_white_1000"
+            android:textColorHint="@color/md_white_1000" />
+
+        <EditText
+            android:id="@+id/edtPassVLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/borde"
+            android:drawableLeft="@drawable/ic_lock_white_24dp"
+            android:ems="10"
+            android:fontFamily="casual"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/md_white_1000"
+            android:textColorHint="@color/md_white_1000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRecuperarVLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#00000000"
+                android:fontFamily="casual"
+                android:padding="10dp"
+                android:text="¿Olvisaste la contraseña?"
+                android:textStyle="bold"
+                android:textColor="@color/md_white_1000"
+                android:textSize="12dp" />
+
+            <CheckBox
+                android:id="@+id/chkRecordarVLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:buttonTint="@color/md_white_1000"
+                android:fontFamily="casual"
+                android:text="Recordar"
+                android:textColor="@color/md_white_1000" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnIngresarVLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/borde"
+            android:fontFamily="casual"
+            android:text="INGRESAR"
+            android:textColor="@color/md_white_1000"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="20dp"
+            android:background="@color/md_white_1000" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btnFacebookVLogin"
+                android:layout_width="72dp"
+                android:layout_height="73dp"
+                android:background="@mipmap/ic_launcherfacebook"
+                android:layout_marginLeft="60dp"/>
+
+
+            <Button
+                android:id="@+id/btnGoogleVLogin"
+                android:layout_width="72dp"
+                android:layout_height="73dp"
+                android:background="@mipmap/ic_launchergoogle"
+                android:layout_marginLeft="100dp"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
