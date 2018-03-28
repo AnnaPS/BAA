@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
         //asignar nueva fuente
         fuenteTitulo=Typeface.createFromAsset(getAssets(),"fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-       
+
     }
 
 

@@ -5,7 +5,7 @@
     android:id="@+id/MAIN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondotres"
+    android:background="@drawable/fondonegro"
     tools:context="com.example.pc.bandsnarts.LoginActivity">
 
     <LinearLayout
@@ -88,13 +88,14 @@
                 android:id="@+id/chkRecordarVLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
                 android:buttonTint="@color/md_white_1000"
                 android:fontFamily="casual"
                 android:text="Recordar"
-                android:textColor="@color/md_white_1000" />
+                android:textColor="@color/md_white_1000"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -104,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/borde"
+            android:background="@drawable/bordefondonaranja"
             android:fontFamily="casual"
             android:text="INGRESAR"
             android:textColor="@color/md_white_1000"
