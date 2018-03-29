@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onClickEntrar(View view) {
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-    }
-
     public void onClickRegistrar(View view) {
         //sacar alert dialog para grupo o musico
+    }
+
+    public void onClickIniciarVMain(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+
     }
 }

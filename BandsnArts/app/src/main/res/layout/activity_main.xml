@@ -15,7 +15,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
-        android:text="BANDS 'N' ARTS"
+        android:text="BANDS N' ARTS"
         android:textAlignment="center"
         android:textColor="@color/md_white_1000"
         android:textSize="40dp"
@@ -51,47 +51,32 @@
         app:layout_constraintTop_toBottomOf="@+id/tituloVMain"
         app:srcCompat="@drawable/siluetas" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
-        android:background="@drawable/bordefondonaranja"
-        android:fontFamily="casual"
-        android:onClick="onClickEntrar"
-        android:text="ENTRAR"
-        android:textColor="@color/md_white_1000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgImagenVMain" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="casual"
         android:text="¿AÚN NO TIENES CUENTA? "
         android:textColor="@color/md_white_1000"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.422"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/txtRegistrarVMain"
+        app:layout_constraintHorizontal_bias="0.377"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtRegistrarVMain"
         android:layout_width="143dp"
         android:layout_height="19dp"
-        android:layout_marginBottom="68dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="112dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:fontFamily="casual"
         android:onClick="onClickRegistrar"
@@ -101,5 +86,47 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtIniciarVMain" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="191dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="76dp"
+        android:text="¿YA TIENES CUENTA?"
+        android:textColor="@color/md_white_1000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/txtIniciarVMain"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgImagenVMain" />
+
+    <TextView
+        android:id="@+id/txtIniciarVMain"
+        android:layout_width="144dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="76dp"
+        android:clickable="true"
+        android:fontFamily="casual"
+        android:onClick="onClickIniciarVMain"
+        android:text="INICIA SESIÓN"
+        android:textColor="@color/md_orange_800"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtRegistrarVMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/imgImagenVMain"
+        app:layout_constraintVertical_bias="0.508"
+        tools:text="INICIA SESIÓN" />
+
 </android.support.constraint.ConstraintLayout>
