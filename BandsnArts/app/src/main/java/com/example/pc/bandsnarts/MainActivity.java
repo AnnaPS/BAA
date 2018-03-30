@@ -72,12 +72,14 @@ public class MainActivity extends AppCompatActivity {
         txtRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //muestra el alert
                 alerta.show();
             }
         });
         btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //cierra el alert
                 alerta.cancel();
             }
         });

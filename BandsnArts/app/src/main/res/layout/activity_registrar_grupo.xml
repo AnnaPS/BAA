@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     tools:context="com.example.pc.bandsnarts.RegistrarGrupo">
 
+
 </android.support.constraint.ConstraintLayout>

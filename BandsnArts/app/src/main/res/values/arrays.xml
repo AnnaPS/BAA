@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="instrumentos">
+        <item>Cantante </item>
+        <item>Batería </item>
+        <item>Bajo</item>
+        <item>Guitarra</item>
+        <item>Teclados</item>
+        <item>Acordeón</item>
+        <item>Armónica</item>
+        <item>Arpa</item>
+        <item>Bandoneón</item>
+        <item>Banjo</item>
+        <item>Cavaquinho</item>
+        <item>Charango</item>
+        <item>Clarinete</item>
+        <item>Contrabajo</item>
+        <item> Coros</item>
+        <item>Cuatro</item>
+        <item>DJ/Platos</item>
+        <item>Dulzaina</item>
+        <item>Fagot</item>
+        <item>Flauta</item>
+        <item> Gaita</item>
+        <item> Laúd</item>
+        <item> Mandolina</item>
+        <item>Oboe</item>
+        <item>Órgano</item>
+        <item>Percusión</item>
+        <item>Piano</item>
+        <item>Saxofón</item>
+        <item> Sintetiz./Prog.</item>
+        <item>Theremín</item>
+        <item> Timple</item>
+        <item> Tradicionales</item>
+        <item> Trombón</item>
+        <item>Trompa</item>
+        <item>Trompeta</item>
+        <item>Tuba</item>
+        <item> Vibráfono</item>
+        <item> Viola</item>
+        <item> Violín</item>
+        <item>Violonchelo</item>
+        <item>Xilofón</item>
+        <item>Zanfona</item>
+    </string-array>
+<string-array name="estiloMusical">
+    <item>Metal</item>
+    <item> Rock</item>
+    <item>Pop/Rock</item>
+    <item>Alternativo</item>
+    <item>Hard Rock</item>
+    <item>Bachata</item>
+    <item>Blues</item>
+    <item>Bolero</item>
+    <item>Bossa Nova</item>
+    <item>Cantautor</item>
+    <item>Clásica</item>
+    <item>Country</item>
+    <item>Cumbia</item>
+    <item>Dance</item>
+    <item>Electrónica</item>
+    <item>Experimental</item>
+    <item>Flamenco</item>
+    <item>Folk</item>
+    <item>Funk</item>
+    <item>Garage</item>
+    <item>Gospel-Espiritual</item>
+    <item>Grunge</item>
+    <item>Hip-Hop</item>
+    <item>Indie</item>
+    <item>Jazz</item>
+    <item>Latino</item>
+    <item>Merengue</item>
+    <item>New Age</item>
+    <item>New Wave</item>
+    <item>Pop</item>
+    <item>Psicodelia</item>
+    <item>Punk</item>
+    <item>RnB</item>
+    <item>Ranchera</item>
+    <item>Rap</item>
+    <item>Reggae</item>
+    <item>Reggaeton</item>
+    <item>RocknRoll</item>
+    <item>Rockabilly</item>
+    <item>Salsa</item>
+    <item>Samba</item>
+    <item>Ska</item>
+    <item>Son</item>
+    <item>Soul</item>
+    <item>Swing</item>
+    <item>Tango</item>
+    <item>Thrash</item>
+    <item>Vallenato</item>
+</string-array>
+
+</resources>
