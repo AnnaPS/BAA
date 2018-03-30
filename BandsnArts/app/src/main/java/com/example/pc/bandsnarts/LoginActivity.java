@@ -15,7 +15,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         titulo=findViewById(R.id.tituloVLogin);
-        //asignar nueva fuente mm
+        //asignar nueva fuente
         fuenteTitulo=Typeface.createFromAsset(getAssets(),"fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
 
