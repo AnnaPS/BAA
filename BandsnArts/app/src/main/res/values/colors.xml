@@ -83,7 +83,7 @@
     <color name="md_indigo_A100">#8C9EFF</color>
     <color name="md_indigo_A200">#536DFE</color>
     <color name="md_indigo_A400">#3D5AFE</color>
-    <color name="md_indigo_A700">#304FFE</color>
+    <color name="md_indigo_A700">#304ffe</color>
 
     <!--blue-->
     <color name="md_blue_50">#E3F2FD</color>
@@ -179,7 +179,7 @@
     <color name="md_light_green_A100">#CCFF90</color>
     <color name="md_light_green_A200">#B2FF59</color>
     <color name="md_light_green_A400">#76FF03</color>
-    <color name="md_light_green_A700">#64DD17</color>
+    <color name="md_light_green_A700">#64dd17</color>
 
     <!-- lime-->
     <color name="md_lime_50">#F9FBE7</color>
