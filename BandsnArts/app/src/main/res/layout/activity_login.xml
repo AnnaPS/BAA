@@ -16,7 +16,6 @@
         android:orientation="vertical">
 
 
-
         <TextView
             android:id="@+id/tituloVLogin"
             android:layout_width="match_parent"
@@ -27,7 +26,7 @@
             android:layout_marginLeft="10dp"
             android:fontFamily="casual"
             android:gravity="center"
-            android:text="BANDS 'N' ARTS"
+            android:text="BANDS N' ARTS"
             android:textColor="@color/md_white_1000"
             android:textSize="46dp"
             android:textStyle="bold" />
@@ -105,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/bordefondonaranja"
+            android:background="@drawable/bordefondoverde"
             android:fontFamily="casual"
             android:text="INGRESAR"
             android:textColor="@color/md_white_1000"
