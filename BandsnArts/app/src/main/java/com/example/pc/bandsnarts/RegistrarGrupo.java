@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +54,8 @@ public class RegistrarGrupo extends AppCompatActivity {
 
                 // Mensaje de control
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                //se lanza la info inicial
+                startActivity(new Intent(this, VentanaSliderParteDos.class));
             }
         }
     }
