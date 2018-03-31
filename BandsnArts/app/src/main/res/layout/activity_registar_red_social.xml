@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.pc.bandsnarts.RegistarMusico"
-    tools:layout_editor_absoluteY="81dp">
-
+    tools:context=".RegistarRedSocial">
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       >
+        >
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
@@ -24,10 +22,10 @@
                 android:layout_marginStart="55dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="casual"
-                android:text="BIENVENIDO MÚSICO"
+                android:text="BIENVENIDO A BANDS N' ARTS"
                 android:textAlignment="center"
                 android:textColor="@color/md_green_800"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.518"
@@ -47,7 +45,7 @@
                 tools:ignore="MissingConstraints">
 
                 <EditText
-                    android:id="@+id/edtNombreVRegMusico"
+                    android:id="@+id/edtNombreVRegSocial"
                     android:layout_width="227dp"
                     android:layout_height="52dp"
                     android:layout_marginEnd="72dp"
@@ -132,7 +130,7 @@
                 tools:ignore="MissingConstraints">
 
                 <EditText
-                    android:id="@+id/edtDescripcionVRegMusico"
+                    android:id="@+id/edtDescripcionVRegSocial"
                     android:layout_width="227dp"
                     android:layout_height="170dp"
                     android:layout_marginBottom="252dp"
@@ -148,114 +146,24 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/impEmailVRegMusico"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/impDescripcionVRegSocial"
-                tools:ignore="MissingConstraints">
-
-                <EditText
-                    android:id="@+id/edtEmailVRegMusico"
-                    android:layout_width="227dp"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="204dp"
-                    android:layout_marginEnd="72dp"
-                    android:layout_marginStart="73dp"
-                    android:layout_marginTop="20dp"
-                    android:ems="10"
-                    android:fontFamily="casual"
-                    android:hint="EMAIL"
-                    android:inputType="textEmailAddress"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtDescripcionVRegMusico"
-                    app:layout_constraintVertical_bias="0.0" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/impPassVRegMusico"
-                android:layout_width="match_parent"
-                android:layout_height="81dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/impEmailVRegMusico"
-                tools:ignore="MissingConstraints">
-
-                <EditText
-                    android:id="@+id/edtPassVRegMusico"
-                    android:layout_width="227dp"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="152dp"
-                    android:layout_marginEnd="72dp"
-                    android:layout_marginStart="73dp"
-                    android:layout_marginTop="18dp"
-                    android:ems="10"
-                    android:fontFamily="casual"
-                    android:hint="CONTRASEÑA"
-                    android:inputType="textPassword"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtEmailVRegMusico"
-                    app:layout_constraintVertical_bias="1.0" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/impRepetirPassVRegMusico"
-                android:layout_width="match_parent"
-                android:layout_height="79dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/impPassVRegMusico"
-                tools:ignore="MissingConstraints">
-
-                <EditText
-                    android:id="@+id/edtRepetirPassVRegMusico"
-                    android:layout_width="227dp"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="64dp"
-                    android:layout_marginEnd="72dp"
-                    android:layout_marginStart="73dp"
-                    android:layout_marginTop="20dp"
-                    android:ems="10"
-                    android:hint="REPITE LA CONTRASEÑA"
-                    android:inputType="textPassword"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtPassVRegMusico"
-                    app:layout_constraintVertical_bias="0.0" />
+                   />
             </android.support.design.widget.TextInputLayout>
 
 
             <Button
-                android:id="@+id/btnRegistrarVRegMusico"
+                android:id="@+id/btnRegistrarVRegSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bordefondoverde"
                 android:fontFamily="casual"
-                android:onClick="onClickVRegMusico"
                 android:text="REGISTRAR"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/impRepetirPassVRegMusico"
+                app:layout_constraintTop_toBottomOf="@+id/impDescripcionVRegSocial"
                 tools:ignore="NotSibling" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
