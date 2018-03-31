@@ -87,12 +87,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (grupo.isChecked()){
+
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
                 }else if(musico.isChecked()){
+
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
                 }else{
                     Toast.makeText(MainActivity.this, "TIENES QUE ELEGIR ALGUNA OPCIÓN", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        musico.setChecked(true);
+        musico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                grupo.setChecked(false);
+            }
+        });
+        grupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                musico.setChecked(false);
             }
         });
     }

@@ -248,6 +248,7 @@
                 android:layout_marginTop="48dp"
                 android:background="@drawable/bordefondoverde"
                 android:fontFamily="casual"
+                android:onClick="onClickVRegMusico"
                 android:text="REGISTRAR"
                 android:textSize="18sp"
                 android:textStyle="bold"

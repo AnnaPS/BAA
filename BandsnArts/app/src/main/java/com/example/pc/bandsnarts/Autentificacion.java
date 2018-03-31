@@ -15,9 +15,8 @@ public class Autentificacion extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private boolean login;
 
-
     public boolean registroMailPass(String user, String password) {
-        login = false;
+        cambiaBoolean(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(user, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -27,24 +26,20 @@ public class Autentificacion extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-
-                            login = true;
+                            cambiaBoolean(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
-
                         }
-
-                        // ...
                     }
                 });
-
         return login;
     }
 
 
-    public boolean loginMailPass(String user, String password) {
-        login = false;
+    public boolean
+    loginMailPass(String user, String password) {
+        cambiaBoolean(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(user, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -52,28 +47,25 @@ public class Autentificacion extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "loginUserWithEmail:success");
+                            cambiaBoolean(true);
+                            Log.d("TAG", "loginUserWithEmail:success "+ login);
 
                           //  FirebaseUser user = mAuth.getCurrentUser();
-
-
-                            // NO FUNCIONA !??
-                            login = false;
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "loginUserWithEmail:failure", task.getException());
                         }
-
-                        // ...
                     }
                 });
-
         return login;
+    }
+
+    private void cambiaBoolean(boolean valor){
+        login = valor;
     }
 
     public void deslogueo() {
         mAuth = FirebaseAuth.getInstance();
-
         // PARA CONTROL DEL DESLOGUEO 
         try {
             // COMPROBACION INTERNA DE DESLOGUEO
@@ -81,10 +73,7 @@ public class Autentificacion extends AppCompatActivity {
         } catch (NullPointerException e) {
             Log.w("TAG", "USUARIO YA DESLOGUEADO");
         }
-
-
         mAuth.signOut();
-
         // Toast.makeText(this, ""+mAuth.getCurrentUser().getProviderId(), Toast.LENGTH_SHORT).show();
     }
 
@@ -93,12 +82,9 @@ public class Autentificacion extends AppCompatActivity {
         if(mAuth!=null){
             deslogueo();
             return true;
-
         }else{
-
             return false;
         }
-
     }
 
 }
