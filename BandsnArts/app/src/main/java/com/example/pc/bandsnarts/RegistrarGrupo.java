@@ -20,7 +20,6 @@ public class RegistrarGrupo extends AppCompatActivity {
         setContentView(R.layout.activity_registrar_grupo);
 
         spinnerEstilos=findViewById(R.id.spEstiloVRegGrupo);
-
         spinnerEstilos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.estiloMusical)));
 
 

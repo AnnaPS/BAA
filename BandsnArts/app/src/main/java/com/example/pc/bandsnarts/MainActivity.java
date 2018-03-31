@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         final ImageView imagenCentro = findViewById(R.id.imgImagenVMain);
         titulo = findViewById(R.id.tituloVMain);
         txtRegistro = findViewById(R.id.txtRegistrarVMain);
-
         //////////////////
 
         //asignar nueva fuente//////////
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 alerta.cancel();
             }
         });
+        //al pulsar aceptar se abrira una u otra ventana
         btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
                     alerta.cancel();
                 }else{
-                    Toast.makeText(MainActivity.this, "TIENES QUE ELEGIR ALGUNA OPCIÓN", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
                 }
             }
         });
