@@ -35,7 +35,6 @@ public class RegistrarGrupo extends AppCompatActivity {
         if(edtMailGrupo.getText().toString().isEmpty()||edtPassGrupo.getText().toString().isEmpty()||edtRepitePassGrupo.getText().toString().isEmpty()||edtNombreGrupo.getText().toString().isEmpty()){
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         }else{
-            // DEFINIR MAXIMO DE CARACTERES EN CADA CAMPO EN LA PARTE DE DISEÑO!!!!!!!!!!
 
             // Comprobamos que el patron de correo y de contraseña son correctos
             if(!new Autentificacion().validarEmail(edtMailGrupo.getText().toString())){
