@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //control de los checkbox
-        musico.setChecked(true);
         musico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 grupo.setChecked(false);
             }
         });
+
         grupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

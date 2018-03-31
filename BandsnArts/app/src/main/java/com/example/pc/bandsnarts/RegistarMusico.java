@@ -35,13 +35,14 @@ public class RegistarMusico extends AppCompatActivity {
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         }else{
 
-            // AL MENOS UNA MAYUSCULA Y UN NUMERO
+            // DEFINIR MAXIMO DE CARACTERES EN CADA CAMPO EN LA PARTE DE DISEÑO!!!!!!!!!!
 
             // Comprobamos que el patron de correo y de contraseña son correctos
             if(!new Autentificacion().validarEmail(edtMailMusico.getText().toString())){
                 edtMailMusico.setError("e-mail no válido");
-            }else if(edtPassMusico.getText().toString().length()<6){
-                edtPassMusico.setError("Al menos 6 carácteres");
+            }else if(!new Autentificacion().comprobarPass(edtPassMusico.getText().toString())){
+                edtPassMusico.setError("Error al introducir contraseña");
+                Toast.makeText(this, "Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número", Toast.LENGTH_LONG).show();
             }else if(!edtPassMusico.getText().toString().equals(edtRepitePassMusico.getText().toString())){
                 edtRepitePassMusico.setError("Las contraseñas no coinciden");
             }else{
