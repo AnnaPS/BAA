@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ public class RegistarMusico extends AppCompatActivity {
     Spinner spinnerInstrumentos,spinnerEstilos;
 
     EditText edtMailMusico,edtPassMusico,edtRepitePassMusico;
+
+    boolean cor=false,pas=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class RegistarMusico extends AppCompatActivity {
         }else{
             // COMPROBAR PATRONES DE CORREO Y CONTRASEÑA!!
             // ...
+
+
+
             new Autentificacion().registroMailPass(edtMailMusico.getText().toString(),edtPassMusico.getText().toString());
             // LANZAR ACTIVIDAD DE BIENVENIDA
             // ...
