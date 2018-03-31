@@ -89,14 +89,17 @@ public class MainActivity extends AppCompatActivity {
                 if (grupo.isChecked()){
 
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
+                    alerta.cancel();
                 }else if(musico.isChecked()){
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
+                    alerta.cancel();
                 }else{
                     Toast.makeText(MainActivity.this, "TIENES QUE ELEGIR ALGUNA OPCIÓN", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        //control de los checkbox
         musico.setChecked(true);
         musico.setOnClickListener(new View.OnClickListener() {
             @Override
