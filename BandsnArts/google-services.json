@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "60264917127",
+    "firebase_url": "https://bandsnarts-ad1cd.firebaseio.com",
+    "project_id": "bandsnarts-ad1cd",
+    "storage_bucket": "bandsnarts-ad1cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60264917127:android:0cdf8210c061c2a6",
+        "android_client_info": {
+          "package_name": "com.example.pc.bandsnarts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60264917127-d86spsro6n4sjiec628b1viiersmm211.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pc.bandsnarts",
+            "certificate_hash": "40a7f8adf37f9b58b6c4599e5f553584c6d4baad"
+          }
+        },
+        {
+          "client_id": "60264917127-79d1bnh8ufgfjk9mvmkf8s9ng24g8klq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCvnmHXw7C-mx2kcngttbUZtbk5v6HHn8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60264917127-79d1bnh8ufgfjk9mvmkf8s9ng24g8klq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
