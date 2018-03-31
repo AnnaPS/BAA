@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
                     alerta.cancel();
                 }else if(musico.isChecked()){
-
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
                     alerta.cancel();
                 }else{
@@ -101,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //control de los checkbox
-        musico.setChecked(true);
         musico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 grupo.setChecked(false);
             }
         });
+
         grupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

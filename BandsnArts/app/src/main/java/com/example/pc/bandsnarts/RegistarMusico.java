@@ -8,12 +8,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.regex.Pattern;
+
 public class RegistarMusico extends AppCompatActivity {
     Spinner spinnerInstrumentos,spinnerEstilos;
 
     EditText edtMailMusico,edtPassMusico,edtRepitePassMusico;
-
-    boolean cor=false,pas=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +33,26 @@ public class RegistarMusico extends AppCompatActivity {
         if(edtRepitePassMusico.getText().toString().isEmpty()||edtPassMusico.getText().toString().isEmpty()||edtMailMusico.getText().toString().isEmpty()){
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         }else{
-            // COMPROBAR PATRONES DE CORREO Y CONTRASEÑA!!
-            // ...
 
+            // DEFINIR MAXIMO DE CARACTERES EN CADA CAMPO EN LA PARTE DE DISEÑO!!!!!!!!!!
 
+            // Comprobamos que el patron de correo y de contraseña son correctos
+            if(!new Autentificacion().validarEmail(edtMailMusico.getText().toString())){
+                edtMailMusico.setError("e-mail no válido");
+            }else if(!new Autentificacion().comprobarPass(edtPassMusico.getText().toString())){
+                edtPassMusico.setError("Error al introducir contraseña");
+                Toast.makeText(this, "Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número", Toast.LENGTH_LONG).show();
+            }else if(!edtPassMusico.getText().toString().equals(edtRepitePassMusico.getText().toString())){
+                edtRepitePassMusico.setError("Las contraseñas no coinciden");
+            }else{
+                // Correo y password correctas
+                new Autentificacion().registroMailPass(edtMailMusico.getText().toString(),edtPassMusico.getText().toString());
+                // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
 
-            new Autentificacion().registroMailPass(edtMailMusico.getText().toString(),edtPassMusico.getText().toString());
-            // LANZAR ACTIVIDAD DE BIENVENIDA
-            // ...
-            Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                // Mensaje de control
+                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 }

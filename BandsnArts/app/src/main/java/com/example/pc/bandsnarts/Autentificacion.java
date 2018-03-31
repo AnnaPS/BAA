@@ -3,12 +3,15 @@ package com.example.pc.bandsnarts;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
 
 public class Autentificacion extends AppCompatActivity {
 
@@ -37,8 +40,7 @@ public class Autentificacion extends AppCompatActivity {
     }
 
 
-    public boolean
-    loginMailPass(String user, String password) {
+    public boolean loginMailPass(String user, String password) {
         cambiaBoolean(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(user, password)
@@ -48,9 +50,9 @@ public class Autentificacion extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             cambiaBoolean(true);
-                            Log.d("TAG", "loginUserWithEmail:success "+ login);
+                            Log.d("TAG", "loginUserWithEmail:success " + login);
 
-                          //  FirebaseUser user = mAuth.getCurrentUser();
+                            //  FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "loginUserWithEmail:failure", task.getException());
@@ -60,7 +62,7 @@ public class Autentificacion extends AppCompatActivity {
         return login;
     }
 
-    private void cambiaBoolean(boolean valor){
+    private void cambiaBoolean(boolean valor) {
         login = valor;
     }
 
@@ -77,14 +79,34 @@ public class Autentificacion extends AppCompatActivity {
         // Toast.makeText(this, ""+mAuth.getCurrentUser().getProviderId(), Toast.LENGTH_SHORT).show();
     }
 
-    public boolean compruebaLogueado(){
+    public boolean compruebaLogueado() {
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth!=null){
+        if (mAuth != null) {
             deslogueo();
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+
+    public boolean validarEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
+
+    public boolean numeroEnMail(String email) {
+        if (email.contains("0") || email.contains("1") || email.contains("2") || email.contains("3") || email.contains("4")
+                || email.contains("5") || email.contains("6") || email.contains("7") || email.contains("8") || email.contains("9")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean comprobarPass(String pass) {
+        Pattern p = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}");
+        return p.matcher(pass).matches();
     }
 
 }
