@@ -14,7 +14,7 @@ public class RegistarMusico extends AppCompatActivity {
     Spinner spinnerInstrumentos, spinnerEstilos;
 
     EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
-
+    private Autentificacion auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,9 @@ public class RegistarMusico extends AppCompatActivity {
         edtPassMusico = findViewById(R.id.edtPassVRegMusico);
         edtRepitePassMusico = findViewById(R.id.edtRepetirPassVRegMusico);
         edtNombreMusico = findViewById(R.id.edtNombreVRegMusico);
+
+        //Guardamos el objeto para no tener que hacer nuevas instancias.
+        auth=new Autentificacion(this);
     }
 
     public void onClickVRegMusico(View view) {
@@ -35,16 +38,16 @@ public class RegistarMusico extends AppCompatActivity {
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         } else {
             // Comprobamos que el patron de correo y de contraseña son correctos
-            if (!new Autentificacion().validarEmail(edtMailMusico.getText().toString())) {
+            if (!auth.validarEmail(edtMailMusico.getText().toString())) {
                 edtMailMusico.setError("e-mail no válido");
-            } else if (!new Autentificacion().comprobarPass(edtPassMusico.getText().toString())) {
+            } else if (!auth.comprobarPass(edtPassMusico.getText().toString())) {
                 edtPassMusico.setError("Error al introducir contraseña");
                 Toast.makeText(this, "Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número", Toast.LENGTH_LONG).show();
             } else if (!edtPassMusico.getText().toString().equals(edtRepitePassMusico.getText().toString())) {
                 edtRepitePassMusico.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
-                new Autentificacion().registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
+                auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
                 // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
 
                 // Mensaje de control
