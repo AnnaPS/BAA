@@ -9,12 +9,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.regex.Pattern;
+
 public class RegistarMusico extends AppCompatActivity {
     Spinner spinnerInstrumentos,spinnerEstilos;
 
     EditText edtMailMusico,edtPassMusico,edtRepitePassMusico;
-
-    boolean cor=false,pas=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +34,25 @@ public class RegistarMusico extends AppCompatActivity {
         if(edtRepitePassMusico.getText().toString().isEmpty()||edtPassMusico.getText().toString().isEmpty()||edtMailMusico.getText().toString().isEmpty()){
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         }else{
-            // COMPROBAR PATRONES DE CORREO Y CONTRASEÑA!!
-            // ...
 
+            // AL MENOS UNA MAYUSCULA Y UN NUMERO
 
+            // Comprobamos que el patron de correo y de contraseña son correctos
+            if(!new Autentificacion().validarEmail(edtMailMusico.getText().toString())){
+                edtMailMusico.setError("e-mail no válido");
+            }else if(edtPassMusico.getText().toString().length()<6){
+                edtPassMusico.setError("Al menos 6 carácteres");
+            }else if(!edtPassMusico.getText().toString().equals(edtRepitePassMusico.getText().toString())){
+                edtRepitePassMusico.setError("Las contraseñas no coinciden");
+            }else{
+                // Correo y password correctas
+                new Autentificacion().registroMailPass(edtMailMusico.getText().toString(),edtPassMusico.getText().toString());
+                // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
 
-            new Autentificacion().registroMailPass(edtMailMusico.getText().toString(),edtPassMusico.getText().toString());
-            // LANZAR ACTIVIDAD DE BIENVENIDA
-            // ...
-            Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                // Mensaje de control
+                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 }

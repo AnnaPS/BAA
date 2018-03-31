@@ -3,12 +3,15 @@ package com.example.pc.bandsnarts;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
 
 public class Autentificacion extends AppCompatActivity {
 
@@ -37,8 +40,7 @@ public class Autentificacion extends AppCompatActivity {
     }
 
 
-    public boolean
-    loginMailPass(String user, String password) {
+    public boolean loginMailPass(String user, String password) {
         cambiaBoolean(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(user, password)
@@ -85,6 +87,13 @@ public class Autentificacion extends AppCompatActivity {
         }else{
             return false;
         }
+    }
+
+
+
+    public boolean validarEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
     }
 
 }

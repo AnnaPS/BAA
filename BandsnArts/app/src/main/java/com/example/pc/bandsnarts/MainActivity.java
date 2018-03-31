@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
                 }else if(musico.isChecked()){
-
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
                 }else{
                     Toast.makeText(MainActivity.this, "TIENES QUE ELEGIR ALGUNA OPCIÓN", Toast.LENGTH_SHORT).show();
