@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistrarGrupo" />
-        <activity android:name=".RegistarMusico"></activity>
+        <activity android:name=".RegistarMusico" />
+        <activity android:name=".RegistarRedSocial"></activity>
     </application>
 
 </manifest>
