@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText edtUser,edtPass;
 
-    private Autentificacion auth;
+     private Autentificacion auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         if(edtPass.getText().toString().isEmpty()||edtUser.getText().toString().isEmpty()){
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         }else{
-
-            boolean a = new Autentificacion().loginMailPass(edtUser.getText().toString(),edtPass.getText().toString());
-            Toast.makeText(this, ""+a, Toast.LENGTH_SHORT).show();
-
             auth.loginMailPass(edtUser.getText().toString(),edtPass.getText().toString());
-
         }
     }
 }
