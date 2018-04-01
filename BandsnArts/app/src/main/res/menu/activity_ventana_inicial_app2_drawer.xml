@@ -5,12 +5,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/perfilMenuDrawer"
+            android:id="@+id/perfilMenuDrawer2"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Mi Perfil" />
 
         <item
-            android:id="@+id/configuracionMenuDrawer"
+            android:id="@+id/configuracionMenuDrawer2"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuración" />
     </group>
@@ -18,11 +18,11 @@
     <item android:title="¿Tiene alguna duda?">
         <menu>
             <item
-                android:id="@+id/ayudaMenuDrawer"
+                android:id="@+id/ayudaMenuDrawer2"
                 android:icon="@drawable/ic_help_outline_black_24dp"
                 android:title="Ayuda" />
             <item
-                android:id="@+id/cerrarMenuDrawer"
+                android:id="@+id/cerrarMenuDrawer2"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Cerrar sesión" />
         </menu>
