@@ -18,6 +18,13 @@ public class Autentificacion extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private boolean login;
 
+    public Autentificacion(LoginActivity loginActivity) {
+    }
+
+    public Autentificacion() {
+
+    }
+
     public boolean registroMailPass(String user, String password) {
         cambiaBoolean(false);
         mAuth = FirebaseAuth.getInstance();
