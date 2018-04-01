@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".VentanaInicialApp"
-    tools:showIn="@layout/app_bar_ventana_inicial_app2">
+    tools:showIn="@layout/app_bar_ventana_inicial_app2"
+    android:id="@+id/content_ventana_inicial">
 
 </android.support.constraint.ConstraintLayout>
