@@ -76,9 +76,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
                 // Verificamos si estamos autentocados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
+
                 if(usuario!=null){
                     Toast.makeText(LoginActivity.this, "Usuario verificado", Toast.LENGTH_SHORT).show();
-                    //siguienteActivity();
+                   siguienteActivity();
                 }
             }
         };
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if(result.isSuccess()){
             // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
             autenticarEnFirebase(result.getSignInAccount());
-            siguienteActivity();
+            //siguienteActivity();
 
         }else{
             Toast.makeText(this, "ERROR AL LOGAR", Toast.LENGTH_SHORT).show();
@@ -140,8 +141,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void autenticarEnFirebase(GoogleSignInAccount signInAccount) {
-        // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta
+        // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
+        // parametro es es access Token que no es necesario, le pasamos null
         AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(),null);
+
         // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override

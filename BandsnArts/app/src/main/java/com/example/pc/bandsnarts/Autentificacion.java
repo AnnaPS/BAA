@@ -127,4 +127,7 @@ public class Autentificacion extends AppCompatActivity {
         return p.matcher(pass).matches();
     }
 
+    public FirebaseAuth getmAuth() {
+        return mAuth;
+    }
 }
