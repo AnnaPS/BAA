@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,8 +18,10 @@ public class Autentificacion extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private boolean login;
+    private Activity vLog;
 
     public Autentificacion(LoginActivity loginActivity) {
+        vLog = loginActivity;
     }
 
     public Autentificacion() {
