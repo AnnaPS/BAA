@@ -24,7 +24,11 @@
         </activity>
         <activity android:name=".RegistrarGrupo" />
         <activity android:name=".RegistarMusico" />
-        <activity android:name=".RegistarRedSocial"></activity>
+        <activity android:name=".RegistarRedSocial" />
+        <activity android:name=".VentanaInicialApp"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".VentanaSliderParteDos"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
