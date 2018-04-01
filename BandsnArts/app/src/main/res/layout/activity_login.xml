@@ -140,8 +140,9 @@
                 android:id="@+id/btnGoogleVLogin"
                 android:layout_width="72dp"
                 android:layout_height="73dp"
+                android:layout_marginLeft="100dp"
                 android:background="@mipmap/ic_launchergoogle"
-                android:layout_marginLeft="100dp"/>
+                android:onClick="onClickIngresoGoogle" />
 
 
         </LinearLayout>
