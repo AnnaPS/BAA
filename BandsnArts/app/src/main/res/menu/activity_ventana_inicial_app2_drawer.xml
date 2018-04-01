@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/perfilMenuDrawer"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="Mi Perfil" />
+
+        <item
+            android:id="@+id/configuracionMenuDrawer"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configuración" />
+    </group>
+
+    <item android:title="¿Tiene alguna duda?">
+        <menu>
+            <item
+                android:id="@+id/ayudaMenuDrawer"
+                android:icon="@drawable/ic_help_outline_black_24dp"
+                android:title="Ayuda" />
+            <item
+                android:id="@+id/cerrarMenuDrawer"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
+
+</menu>
