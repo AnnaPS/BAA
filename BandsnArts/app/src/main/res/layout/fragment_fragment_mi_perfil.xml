@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentMiPerfil">
+    tools:context=".FragmentMiPerfil"
+    android:id="@+id/miperfilfragment"
+    xmlns:design="http://schemas.android.com/apk/res-auto">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="FRAGMENT MI PERFIL" />
 
-</FrameLayout>
+
+
+
+        <FrameLayout
+            android:id="@+id/contenedormiperfil"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
+            android:background="@color/md_green_500"
+            >
+
+
+        </FrameLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomnav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            design:menu="@menu/menu_navigation"
+            android:background="@color/md_green_50"/>
+
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -22,4 +22,5 @@
         app:headerLayout="@layout/nav_header_ventana_inicial_app2"
         app:menu="@menu/activity_ventana_inicial_app2_drawer" />
 
+
 </android.support.v4.widget.DrawerLayout>
