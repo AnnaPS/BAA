@@ -124,8 +124,6 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
-
-
     }
 
     public void onClickRevocar(View view) {

@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
                 if(usuario!=null){
-                    Toast.makeText(LoginActivity.this, "Usuario verificado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Usuario VVerificado", Toast.LENGTH_SHORT).show();
                    siguienteActivity();
                 }
             }
@@ -231,8 +231,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void siguienteActivity() {
         Intent i = new Intent(this,InicioGoogle.class);
-        // Esto es lo mismo que hacer un finish a esta actividad
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
 }
