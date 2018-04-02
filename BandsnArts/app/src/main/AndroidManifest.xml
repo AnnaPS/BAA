@@ -29,7 +29,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".VentanaSliderParteDos"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".RegistarRedSocial" />
         <activity android:name=".InicioGoogle"></activity>
     </application>
 
