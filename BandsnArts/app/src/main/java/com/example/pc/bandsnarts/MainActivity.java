@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+
 public class MainActivity extends AppCompatActivity {
     TextView titulo, txtRegistro;
     Typeface fuenteTitulo;
     Activity ventanaPrincipal;
-    Button btnCancelarAlerta,btnAceptarAlerta;
-    CheckBox grupo,musico;
+    Button btnCancelarAlerta, btnAceptarAlerta;
+    CheckBox grupo, musico;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-            ventanaPrincipal=this;
+        ventanaPrincipal = this;
         //finds//////////
         final ImageView imagenCentro = findViewById(R.id.imgImagenVMain);
         titulo = findViewById(R.id.tituloVMain);
@@ -49,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
         imagenCentro.startAnimation(animacionZoom);
         /////////////////////////
 
+
+        // Comprobación de sesion iniciada en FaceBook
+        if (AccessToken.getCurrentAccessToken() != null) {
+            // Lanzamos la actividad de Inicio y finalizamos esta
+            Intent i = new Intent(this, InicioGoogle.class);
+            startActivity(i);
+        }
+
     }
 
 
@@ -56,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
         //sacar alert dialog para grupo o musico
         alertaBuilder = new AlertDialog.Builder(this);
         //si no, da error
-        inflador=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        inflador = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View vista = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
         //hago aqui el find porque necesita la vista///////
-        btnCancelarAlerta=vista.findViewById(R.id.btnCancelarVAlert);
-        btnAceptarAlerta=vista.findViewById(R.id.btnAceptarVAlert);
-        grupo=vista.findViewById(R.id.chkGrupoVAlert);
-        musico=vista.findViewById(R.id.chkMusicoVAlert);
+        btnCancelarAlerta = vista.findViewById(R.id.btnCancelarVAlert);
+        btnAceptarAlerta = vista.findViewById(R.id.btnAceptarVAlert);
+        grupo = vista.findViewById(R.id.chkGrupoVAlert);
+        musico = vista.findViewById(R.id.chkMusicoVAlert);
         ////////////////////////////////////////////////
         alerta = alertaBuilder.create();
         alerta.setView(vista);
@@ -86,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
         btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (grupo.isChecked()){
+                if (grupo.isChecked()) {
 
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
                     alerta.cancel();
-                }else if(musico.isChecked()){
+                } else if (musico.isChecked()) {
                     startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
                     alerta.cancel();
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
                 }
             }

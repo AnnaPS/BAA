@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -71,9 +72,8 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                 if (usuario != null) {
                     // Si hay usuario, pintamos sus datos
                     datosUsuario(usuario);
-                } else
-                    // si no hay usuario, volvemos a la actividad anterios
-                    volverActivityLogin();
+                }
+
             }
 
         };
@@ -100,12 +100,17 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     private void volverActivityLogin() {
         Intent i = new Intent(this,LoginActivity.class);
+        // Esta linea a continuacion es lo mismo que hacer un ficish de esta actividad
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
 
     public void onClickLogOut(View view) {
+
+        //Deslogueo en Google
         firebaseAuth.signOut();
+        // deslogueo en Facebook
+        LoginManager.getInstance().logOut();
 
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -118,6 +123,9 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         });
+
+
+
     }
 
     public void onClickRevocar(View view) {
