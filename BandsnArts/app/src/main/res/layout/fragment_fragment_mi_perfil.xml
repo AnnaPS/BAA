@@ -6,23 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".FragmentMiPerfil"
     android:id="@+id/miperfilfragment"
+
     xmlns:design="http://schemas.android.com/apk/res-auto">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <FrameLayout
+        android:id="@+id/contenedormiperfil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="56dp"
+        >
 
 
-
-        <FrameLayout
-            android:id="@+id/contenedormiperfil"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="56dp"
-            android:background="@color/md_green_500"
-            >
-
-
-        </FrameLayout>
+    </FrameLayout>
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottomnav"
             android:layout_width="match_parent"

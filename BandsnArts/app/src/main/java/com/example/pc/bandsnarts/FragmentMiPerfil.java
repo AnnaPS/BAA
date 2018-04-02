@@ -31,7 +31,9 @@ public class FragmentMiPerfil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_fragment_mi_perfil, container, false);
-
+//Se establece como principal el fragment de inicio
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();
         return vista;
     }
 
