@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -20,6 +21,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -29,6 +32,11 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     // Variable para el usuario de Google
     private GoogleApiClient clienteGoogle;
+
+
+    // Objeto FirebaseAuth y su escuchador
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener escuchador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,61 +59,58 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+
+        // Inicializamos el FireBaseAuth y su escuchador
+        firebaseAuth = FirebaseAuth.getInstance();
+        escuchador = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                // Obtenemos al usuario actual
+                FirebaseUser usuario = firebaseAuth.getCurrentUser();
+                if (usuario != null) {
+                    // Si hay usuario, pintamos sus datos
+                    datosUsuario(usuario);
+                }
+
+            }
+
+        };
+    }
+
+    private void datosUsuario(FirebaseUser usuario) {
+        // Pintamos los datos del usuario
+        nombreGoogle.setText(usuario.getDisplayName());
+        emailGoogle.setText(usuario.getEmail());
+        identUsuGoogle.setText(usuario.getUid());
+
+        // Mostramos por consola la URL de la imagen
+        // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
+
+        Glide.with(this).load(usuario.getPhotoUrl()).into(fotoGoogle);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Para realizar el login silencioso, recibiendolo el un objeto de tipo OptionalPendingResult
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(clienteGoogle);
-
-        if (opr.isDone()) {
-            //si la sesion esta iniciada, podremos acceder al objeto resultado de la actividad anterior,
-            // para acceder a la informacion del usuario
-            GoogleSignInResult result = opr.get();
-            // Mandamos el resultado al metodo de gestion de resultados
-            compruebaResultado(result);
-        } else {
-            // O no hemos iniciado sesion, o la sesion expiro o algun problema con la conexion momentaneo
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
-                    // Mandamos el resultado al metodo de gestion de resultados
-                    compruebaResultado(googleSignInResult);
-                }
-            });
-        }
+        firebaseAuth.addAuthStateListener(escuchador);
     }
 
-    private void compruebaResultado(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            // Si el resultado es exitoso, podemos acceder a la informacion del usuario
-            GoogleSignInAccount cuentaUsuario = result.getSignInAccount();
-
-            // Pintamos los datos del usuario
-            nombreGoogle.setText(cuentaUsuario.getDisplayName());
-            emailGoogle.setText(cuentaUsuario.getEmail());
-            identUsuGoogle.setText(cuentaUsuario.getId());
-
-            // Mostramos por consola la URL de la imagen
-            // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
-
-            Glide.with(this).load(cuentaUsuario.getPhotoUrl()).into(fotoGoogle);
-
-
-        } else {
-            // No se ha iniciado sesion
-            volverActivityLogin();
-        }
-    }
 
     private void volverActivityLogin() {
         Intent i = new Intent(this,LoginActivity.class);
+        // Esta linea a continuacion es lo mismo que hacer un ficish de esta actividad
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
 
     public void onClickLogOut(View view) {
+
+        //Deslogueo en Google
+        firebaseAuth.signOut();
+        // deslogueo en Facebook
+        LoginManager.getInstance().logOut();
+
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -117,9 +122,12 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         });
+
     }
 
     public void onClickRevocar(View view) {
+        firebaseAuth.signOut();
+
         Auth.GoogleSignInApi.revokeAccess(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -136,5 +144,14 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // En este metodo paramos el escuchador
+        if(escuchador!=null){
+            firebaseAuth.removeAuthStateListener(escuchador);
+        }
     }
 }
