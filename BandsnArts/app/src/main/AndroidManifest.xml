@@ -48,11 +48,14 @@
         <activity android:name=".RegistrarGrupo" />
         <activity android:name=".RegistarMusico" />
         <activity android:name=".RegistarRedSocial" />
-        <activity android:name=".VentanaInicialApp"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".VentanaSliderParteDos"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".InicioGoogle"></activity>
+        <activity
+            android:name=".VentanaSliderParteDos"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".VentanaInicialApp"
+            android:label="@string/title_activity_ventana_inicial_app"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+         <activity android:name=".InicioGoogle"></activity>
     </application>
 
 </manifest>
