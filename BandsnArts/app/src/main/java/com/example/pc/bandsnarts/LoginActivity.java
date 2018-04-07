@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         titulo.setTypeface(fuenteTitulo);
         ventanaPrincipal=this;
 
-        
+
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
         //Guardamos el objeto para no tener que hacer nuevas instancias.
