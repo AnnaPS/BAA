@@ -24,7 +24,11 @@ public class Autentificacion extends AppCompatActivity {
     public Autentificacion(Activity loginActivity) {
         vLog = loginActivity;
     }
-    public void registroMailPass(String user, String password) {
+
+
+
+    // Paso de void a Firebase user para devolver el usuario
+    public FirebaseUser registroMailPass(String user, String password) {
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(user, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -34,6 +38,28 @@ public class Autentificacion extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
                             // FirebaseUser user = mAuth.getCurrentUser();
+
+
+
+                            // pruebas..
+                            FirebaseUser usuario = mAuth.getInstance().getCurrentUser();
+
+                                // Name, email address, and profile photo Url
+                                String name = usuario.getDisplayName();
+                                String email = usuario.getEmail();
+                                Uri photoUrl = usuario.getPhotoUrl();
+
+                                // Check if user's email is verified
+                                boolean emailVerified = usuario.isEmailVerified();
+
+                                // The user's ID, unique to the Firebase project. Do NOT use this value to
+                                // authenticate with your backend server, if you have one. Use
+                                // FirebaseUser.getToken() instead.
+                                String uid = usuario.getUid();
+
+                            Toast.makeText(vLog, "nombre: "+name+"\ncorreo: "+email+"\nURL de la foto: "+photoUrl+"\nemail verificado: "+emailVerified, Toast.LENGTH_SHORT).show();
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -55,6 +81,11 @@ public class Autentificacion extends AppCompatActivity {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getToken() instead.
             String uid = usuario.getUid();
+
+            return usuario;
+        }else{
+            Toast.makeText(vLog, "usuario vale null", Toast.LENGTH_SHORT).show();
+            return null;
         }
 
     }
@@ -113,21 +144,11 @@ public class Autentificacion extends AppCompatActivity {
         return pattern.matcher(email).matches();
     }
 
-    public boolean numeroEnMail(String email) {
-        if (email.contains("0") || email.contains("1") || email.contains("2") || email.contains("3") || email.contains("4")
-                || email.contains("5") || email.contains("6") || email.contains("7") || email.contains("8") || email.contains("9")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public boolean comprobarPass(String pass) {
         Pattern p = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}");
         return p.matcher(pass).matches();
     }
 
-    public FirebaseAuth getmAuth() {
-        return mAuth;
-    }
+
 }
