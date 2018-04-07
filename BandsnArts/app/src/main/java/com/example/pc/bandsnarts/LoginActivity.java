@@ -54,8 +54,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private LayoutInflater inflador;
 
 
-
-    public static final int CODIGO_DE_INICIO =777;
+    public static final int CODIGO_DE_INICIO = 777;
 
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
@@ -76,18 +75,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        botonFaceBook = findViewById(R.id.btnFacebookVLogin);
         titulo = findViewById(R.id.tituloVLogin);
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-        ventanaPrincipal=this;
+        ventanaPrincipal = this;
 
 
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
         //Guardamos el objeto para no tener que hacer nuevas instancias.
-        auth=new Autentificacion(this);
+        auth = new Autentificacion(this);
 
         //Opciones de inicio con google, obtenemos un token de usuario
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -97,8 +96,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         //Configuramos el cliente google, pasandole las opciones de inicio
         clienteGoogle = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         // Inicializamos el FireBaseAuth y su escuchador
@@ -110,16 +109,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Verificamos si estamos autentocados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
-                if(usuario!=null){
+                if (usuario != null) {
                     Toast.makeText(LoginActivity.this, "Usuario VVerificado", Toast.LENGTH_SHORT).show();
-                   siguienteActivity();
+                    siguienteActivity();
                 }
             }
         };
 
 
-            // Comprobación de sesion iniciada en FaceBook
-        if (AccessToken.getCurrentAccessToken()!=null){
+        // Comprobación de sesion iniciada en FaceBook
+        if (AccessToken.getCurrentAccessToken() != null) {
             // Lanzamos la siguiente actividad
             siguienteActivity();
         }
@@ -158,9 +157,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                     if(!task.isSuccessful()){
-                         Toast.makeText(auth, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
-                     }
+                if (!task.isSuccessful()) {
+                    Toast.makeText(auth, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -177,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onStop() {
         super.onStop();
         // En este metodo paramos el escuchador
-        if(escuchador!=null){
+        if (escuchador != null) {
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }
@@ -185,8 +184,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onClickIngresarVLogin(View view) {
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
-        }else{
-            auth.loginMailPass(edtUser.getText().toString(),edtPass.getText().toString());
+        } else {
+            auth.loginMailPass(edtUser.getText().toString(), edtPass.getText().toString());
 
         }
     }
@@ -262,33 +261,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void onClickIngresoGoogle(View view) {
         Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
-        startActivityForResult(g,CODIGO_DE_INICIO);
+        startActivityForResult(g, CODIGO_DE_INICIO);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CODIGO_DE_INICIO){
+        if (requestCode == CODIGO_DE_INICIO) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             compruebaResultado(result);
         }
 
         // Para reconocer las acciones del boton de Inicio de FaceBook
-        try{
+        try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
-        if(result.isSuccess()){
+        if (result.isSuccess()) {
             // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
             autenticarEnFirebase(result.getSignInAccount());
             //siguienteActivity();
 
-        }else{
+        } else {
             Toast.makeText(this, "ERROR AL LOGAR", Toast.LENGTH_SHORT).show();
         }
     }
@@ -296,13 +295,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void autenticarEnFirebase(GoogleSignInAccount signInAccount) {
         // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
         // parametro es es access Token que no es necesario, le pasamos null
-        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(),null);
+        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
 
         // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -310,7 +309,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void siguienteActivity() {
-        Intent i = new Intent(this,InicioGoogle.class);
+        Intent i = new Intent(this, InicioGoogle.class);
         startActivity(i);
     }
 }

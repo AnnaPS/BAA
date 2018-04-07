@@ -130,13 +130,12 @@
             android:orientation="horizontal">
 
 
-            <Button
+            <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
-                android:layout_width="72dp"
-                android:layout_height="73dp"
+                android:layout_width="65dp"
+                android:layout_height="58dp"
                 android:layout_marginLeft="60dp"
-                android:background="@mipmap/ic_launcherfacebook"
-                android:onClick="onClickRegistrarVLogin" />
+                android:background="@mipmap/ic_launcherfacebook" />
 
 
             <Button
