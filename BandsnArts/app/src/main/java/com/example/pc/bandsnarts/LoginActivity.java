@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private LayoutInflater inflador;
 
 
-    EditText edtUser,edtPass;
 
     public static final int CODIGO_DE_INICIO =777;
 
@@ -82,8 +81,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-            ventanaPrincipal=this;
-        btnReg = findViewById(R.id.btnRegistrarVLogin);
+        ventanaPrincipal=this;
+
+        
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
         //Guardamos el objeto para no tener que hacer nuevas instancias.
@@ -126,8 +126,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Inicializamos CallbackManager
         callbackManager = CallbackManager.Factory.create();
-        // Recogemos el Boton
-        botonFaceBook = findViewById(R.id.btnFacebookVLogin);
+
         // Establecemos permisos para leer el correo electronico del usuario
         botonFaceBook.setReadPermissions(Arrays.asList("email"));
         botonFaceBook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -254,7 +253,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
     }
-}
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
