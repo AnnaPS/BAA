@@ -10,6 +10,15 @@ public class Musico {
     private String provincia;
     private String localidad;
     private Anuncio anuncio;
+    private String buscando;
+
+    public String getBuscando() {
+        return buscando;
+    }
+
+    public void setBuscando(String buscando) {
+        this.buscando = buscando;
+    }
 
     public Musico(String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion, String provincia, String localidad, Anuncio anuncio) {
         this.imagen = imagen;

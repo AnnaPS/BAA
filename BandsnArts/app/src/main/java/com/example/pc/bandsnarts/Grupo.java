@@ -7,7 +7,16 @@ public class Grupo {
     private String descripcion;
     private String provincia;
     private String localidad;
+    private String buscando;
     private Anuncio anuncio;
+
+    public String getBuscando() {
+        return buscando;
+    }
+
+    public void setBuscando(String buscando) {
+        this.buscando = buscando;
+    }
 
     public Grupo(String imagen, String nombre, String estilo, String descripcion, String provincia, String localidad, Anuncio anuncio) {
         this.imagen = imagen;
