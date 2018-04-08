@@ -14,7 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 public class BDBAA extends AppCompatActivity {
     DatabaseReference bd;
 
-    public void agregarMusico(final Context context, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion, final String provincia, final String localidad) {
+    public void agregarMusico(final Context context, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
         bd = FirebaseDatabase.getInstance().getReference("musico");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -27,7 +27,7 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if(!encontrado){
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
-                    Musico mus = new Musico(imagen, nombre, sexo, estilo, instrumento, descripcion, provincia, localidad);
+                    Musico mus = new Musico(imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }
@@ -40,7 +40,7 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
-    public void agregarGrupo(final Context context, final String imagen, final String nombre,  final String estilo,  final String descripcion, final String provincia, final String localidad) {
+    public void agregarGrupo(final Context context, final String imagen, final String nombre,  final String estilo,  final String descripcion) {
         bd = FirebaseDatabase.getInstance().getReference("grupo");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -53,7 +53,7 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if(!encontrado){
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
-                    Grupo gru= new Grupo(imagen, nombre, estilo, descripcion, provincia, localidad);
+                    Grupo gru= new Grupo(imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }

@@ -20,13 +20,11 @@ public class Grupo {
         this.buscando = buscando;
     }
 
-    public Grupo(String imagen, String nombre, String estilo, String descripcion, String provincia, String localidad) {
+    public Grupo(String imagen, String nombre, String estilo, String descripcion) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.estilo = estilo;
         this.descripcion = descripcion;
-        this.provincia = provincia;
-        this.localidad = localidad;
     }
 
     public String getImagen() {

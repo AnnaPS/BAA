@@ -5,6 +5,7 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -12,33 +13,57 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class RegistarMusico extends AppCompatActivity {
 
-    Spinner spinnerInstrumentos,spinnerEstilos,spinnerSexo;
+    Spinner spinnerInstrumentos, spinnerEstilos, spinnerSexo;
 
-    private EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
+    private EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico, edtDescripcion;
     private Autentificacion auth;
-
+    private int posSexo = 0, posEstilo = 0, posInstrumento = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar_musico);
 
-        spinnerInstrumentos=findViewById(R.id.spInstrumentoVRegSocial);
-        spinnerEstilos=findViewById(R.id.spEstiloVRegSocial);
-        spinnerInstrumentos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.instrumentos)));
-        spinnerEstilos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.estiloMusical)));
-        spinnerSexo=findViewById(R.id.spinnerSexoVLogin);
-        spinnerSexo.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.sexo)));
-        edtMailMusico=findViewById(R.id.edtEmailVRegMusico);
-        edtPassMusico=findViewById(R.id.edtPassVRegMusico);
-        edtRepitePassMusico=findViewById(R.id.edtRepetirPassVRegMusico);
-
+        edtNombreMusico = findViewById(R.id.edtNombreVRegMusico);
+        spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
+        spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
+        spinnerInstrumentos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.instrumentos)));
+        spinnerEstilos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.estiloMusical)));
+        spinnerSexo = findViewById(R.id.spinnerSexoVLogin);
+        spinnerSexo.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sexo)));
+        edtMailMusico = findViewById(R.id.edtEmailVRegMusico);
+        edtPassMusico = findViewById(R.id.edtPassVRegMusico);
+        edtRepitePassMusico = findViewById(R.id.edtRepetirPassVRegMusico);
+        edtDescripcion = findViewById(R.id.edtDescripcionVRegMusico);
+        escuchadoresSpinner();
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
+    }
+
+    public void escuchadoresSpinner() {
+        spinnerSexo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                posSexo = position;
+            }
+        });
+        spinnerEstilos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                posEstilo = position;
+            }
+        });
+        spinnerInstrumentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                posInstrumento = position;
+            }
+        });
     }
 
     public void onClickVRegMusico(View view) {
@@ -61,6 +86,7 @@ public class RegistarMusico extends AppCompatActivity {
                 FirebaseUser usuario = auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
 
                 // Mensaje de control
+                new BDBAA().agregarMusico(this, "default_musico", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
 
                 if (usuario != null) {
@@ -68,7 +94,7 @@ public class RegistarMusico extends AppCompatActivity {
                         // ENVIO CORREO VERIFICACION
                         Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                         usuario.sendEmailVerification();
-                    }else{
+                    } else {
                         // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
                         // Name, email address, and profile photo Url
                         String name = usuario.getDisplayName();

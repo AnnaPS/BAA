@@ -22,15 +22,13 @@ public class Musico {
         this.buscando = buscando;
     }
 
-    public Musico(String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion, String provincia, String localidad) {
+    public Musico(String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.sexo = sexo;
         this.estilo = estilo;
         this.instrumento = instrumento;
         this.descripcion = descripcion;
-        this.provincia = provincia;
-        this.localidad = localidad;
     }
 
     public String getImagen() {
