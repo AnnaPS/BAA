@@ -176,4 +176,9 @@ public class MainActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }
+
+
+    public void click(View view) {
+        startActivity(new Intent(this, VentanaInicialApp.class));
+    }
 }

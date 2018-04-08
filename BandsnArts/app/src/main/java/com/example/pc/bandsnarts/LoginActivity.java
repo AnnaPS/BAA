@@ -3,10 +3,15 @@ package com.example.pc.bandsnarts;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -37,16 +43,20 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    private TextView titulo;
-    private Typeface fuenteTitulo;
-
-    private EditText edtUser, edtPass;
+    TextView titulo;
+    Typeface fuenteTitulo;
+    Activity ventanaPrincipal;
+    EditText edtUser, edtPass;
+    Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
+    CheckBox grupo, musico;
+    private AlertDialog.Builder alertaBuilder;
+    private AlertDialog alerta;
+    private LayoutInflater inflador;
 
     public static final int CODIGO_DE_INICIO = 777;
 
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
-
 
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
@@ -70,7 +80,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-
+            ventanaPrincipal=this;
+        btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
 
@@ -239,5 +250,68 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void siguienteActivity() {
         Intent i = new Intent(this, InicioGoogle.class);
         startActivity(i);
+    }
+
+    public void onClickRegistrarVLogin(View view) {
+        //sacar alert dialog para grupo o musico
+        alertaBuilder = new AlertDialog.Builder(this);
+        //si no, da error
+        inflador = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View vista = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
+        //hago aqui el find porque necesita la vista///////
+        btnCancelarAlerta = vista.findViewById(R.id.btnCancelarVAlert);
+        btnAceptarAlerta = vista.findViewById(R.id.btnAceptarVAlert);
+        grupo = vista.findViewById(R.id.chkGrupoVAlert);
+        musico = vista.findViewById(R.id.chkMusicoVAlert);
+        ////////////////////////////////////////////////
+        alerta = alertaBuilder.create();
+        alerta.setView(vista);
+        //para no poder usar el onbackpressed
+        alerta.setCancelable(false);
+        btnReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //muestra el alert
+                alerta.show();
+            }
+        });
+        btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //cierra el alert
+                alerta.cancel();
+            }
+        });
+        //al pulsar aceptar se abrira una u otra ventana
+        btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (grupo.isChecked()) {
+
+                    startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
+                    alerta.cancel();
+                } else if (musico.isChecked()) {
+                    startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
+                    alerta.cancel();
+                } else {
+                    Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //control de los checkbox
+        musico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                grupo.setChecked(false);
+            }
+        });
+
+        grupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                musico.setChecked(false);
+            }
+        });
     }
 }

@@ -117,7 +117,7 @@
                     android:layout_marginTop="7dp"
                     android:ems="10"
                     android:fontFamily="casual"
-                    android:hint="DESCRICIÓN"
+                    android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
                     android:maxLength="200"
                     android:textSize="14sp"
