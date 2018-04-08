@@ -1,19 +1,18 @@
 package com.example.pc.bandsnarts;
 
-import android.content.Intent;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -53,12 +53,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private AlertDialog alerta;
     private LayoutInflater inflador;
 
-
     public static final int CODIGO_DE_INICIO = 777;
 
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
-
 
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
@@ -70,6 +68,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     LoginButton botonFaceBook;
     // Objeto de clase CallbackManager para detectar acciones en el boton FaceBook
     private CallbackManager callbackManager;
+
+    private Activity estaVentana;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +87,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
+
+
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
+
+        estaVentana = this;
 
         //Opciones de inicio con google, obtenemos un token de usuario
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -134,18 +140,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
+                Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel() {
                 // Cuando se cancele el inicio de sesion.
-                Toast.makeText(auth, "Inicio Cancelado.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(estaVentana, "Inicio Cancelado.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
                 // Algun error como conexion u otros.
-                Toast.makeText(auth, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -158,10 +165,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(auth, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 
 
@@ -184,10 +192,68 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onClickIngresarVLogin(View view) {
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
+
         } else {
             auth.loginMailPass(edtUser.getText().toString(), edtPass.getText().toString());
+    }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // SI ALGO SALE MAL EN LA CONEXION...INFORMAR AL USUARIO
+    }
+
+    public void onClickIngresoGoogle(View view) {
+        Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
+        startActivityForResult(g, CODIGO_DE_INICIO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODIGO_DE_INICIO) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            compruebaResultado(result);
         }
+
+        // Para reconocer las acciones del boton de Inicio de FaceBook
+        try {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        } catch (NullPointerException e) {
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
+
+    private void compruebaResultado(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
+            autenticarEnFirebase(result.getSignInAccount());
+            //siguienteActivity();
+
+        } else {
+            Toast.makeText(this, "ERROR AL LOGAR", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void autenticarEnFirebase(GoogleSignInAccount signInAccount) {
+        // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
+        // parametro es es access Token que no es necesario, le pasamos null
+        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
+
+        // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
+        firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void siguienteActivity() {
+        Intent i = new Intent(this, InicioGoogle.class);
+        startActivity(i);
     }
 
     public void onClickRegistrarVLogin(View view) {
@@ -253,63 +319,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // SI ALGO SALE MAL EN LA CONEXION...INFORMAR AL USUARIO
-    }
-
-    public void onClickIngresoGoogle(View view) {
-        Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
-        startActivityForResult(g, CODIGO_DE_INICIO);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODIGO_DE_INICIO) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            compruebaResultado(result);
-        }
-
-        // Para reconocer las acciones del boton de Inicio de FaceBook
-        try {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-
-        } catch (NullPointerException e) {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        }
-    }
-
-    private void compruebaResultado(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-            autenticarEnFirebase(result.getSignInAccount());
-            //siguienteActivity();
-
-        } else {
-            Toast.makeText(this, "ERROR AL LOGAR", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void autenticarEnFirebase(GoogleSignInAccount signInAccount) {
-        // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
-        // parametro es es access Token que no es necesario, le pasamos null
-        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
-
-        // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
-        firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void siguienteActivity() {
-        Intent i = new Intent(this, InicioGoogle.class);
-        startActivity(i);
+    public void onclick(View view) {
+        startActivity(new Intent(this, VentanaInicialApp.class));
     }
 }

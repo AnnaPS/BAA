@@ -24,15 +24,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    TextView titulo, txtRegistro;
-    Typeface fuenteTitulo;
-    Activity ventanaPrincipal;
-    Button btnCancelarAlerta, btnAceptarAlerta;
-    CheckBox grupo, musico;
+    private TextView titulo, txtRegistro;
+    private Typeface fuenteTitulo;
+    private Activity ventanaPrincipal;
+    private Button btnCancelarAlerta, btnAceptarAlerta;
+    private CheckBox grupo, musico;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
-
 
 
     // Objeto FirebaseAuth y su escuchador para comprobacion de inicio de sesion
@@ -72,22 +71,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Inicializamos el FireBaseAuth y su escuchador para comprobacion de inicio de sesion
-         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         escuchador = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
-                // Verificamos si estamos autentocados en Firebase
+                // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
-                if(usuario!=null){
-                    Log.d("prueba","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                if (usuario != null) {
+                    Log.d("prueba", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     Intent i = new Intent(ventanaPrincipal, InicioGoogle.class);
                     startActivity(i);
                     finish();
 
                 } else {
-                   Log.d("prueba","ESTOY PASAAAAAAANDPOOOOO PORQUE SOY NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+                    Log.d("prueba", "ESTOY PASAAAAAAANDOOOOO PORQUE SOY NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
                 }
             }
         };
@@ -100,15 +99,15 @@ public class MainActivity extends AppCompatActivity {
         alertaBuilder = new AlertDialog.Builder(this);
         //si no, da error
         inflador = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View vista = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
+        view = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
         //hago aqui el find porque necesita la vista///////
-        btnCancelarAlerta = vista.findViewById(R.id.btnCancelarVAlert);
-        btnAceptarAlerta = vista.findViewById(R.id.btnAceptarVAlert);
-        grupo = vista.findViewById(R.id.chkGrupoVAlert);
-        musico = vista.findViewById(R.id.chkMusicoVAlert);
+        btnCancelarAlerta = view.findViewById(R.id.btnCancelarVAlert);
+        btnAceptarAlerta = view.findViewById(R.id.btnAceptarVAlert);
+        grupo = view.findViewById(R.id.chkGrupoVAlert);
+        musico = view.findViewById(R.id.chkMusicoVAlert);
         ////////////////////////////////////////////////
         alerta = alertaBuilder.create();
-        alerta.setView(vista);
+        alerta.setView(view);
         //para no poder usar el onbackpressed
         alerta.setCancelable(false);
         txtRegistro.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (grupo.isChecked()) {
-
                     startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
                     alerta.cancel();
                 } else if (musico.isChecked()) {
@@ -174,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         // En este metodo paramos el escuchador
-        if(escuchador!=null){
+        if (escuchador != null) {
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }

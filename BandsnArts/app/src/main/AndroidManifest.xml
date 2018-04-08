@@ -63,7 +63,8 @@
             android:label="@string/title_activity_ventana_inicial_app"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"></activity>
-         <activity android:name=".InicioGoogle"></activity>
+
+        <activity android:name=".InicioGoogle"></activity>
     </application>
 
 </manifest>

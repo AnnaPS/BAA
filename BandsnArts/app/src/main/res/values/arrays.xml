@@ -94,5 +94,10 @@
     <item>Thrash</item>
     <item>Vallenato</item>
 </string-array>
+    <string-array name="sexo">
+        <item>Mujer</item>
+        <item>Hombre</item>
+        <item>Sin especificar</item>
+    </string-array>
 
 </resources>
