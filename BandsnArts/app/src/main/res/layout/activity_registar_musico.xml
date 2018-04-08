@@ -9,8 +9,7 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       >
+        android:layout_height="wrap_content">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
@@ -23,8 +22,8 @@
                 android:layout_marginEnd="54dp"
                 android:layout_marginStart="55dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="casual"
-                android:text="BIENVENIDO MÚSICO"
+                android:fontFamily="sans-serif"
+                android:text="BIENVENIDO A BANDS N' ARTS"
                 android:textAlignment="center"
                 android:textColor="@color/md_green_800"
                 android:textSize="24sp"
@@ -37,7 +36,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/impNombreVregSocial"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
+                android:layout_height="76dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,11 +53,12 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="20dp"
                     android:ems="10"
-                    android:fontFamily="casual"
+                    android:fontFamily="sans-serif"
                     android:hint="NOMBRE"
                     android:inputType="textPersonName"
-                    android:maxLength="20"
-                    android:textSize="16sp"
+
+                    android:textSize="14sp"
+
                     android:textStyle="bold" />
             </android.support.design.widget.TextInputLayout>
 
@@ -69,10 +69,10 @@
                 android:layout_marginEnd="246dp"
                 android:layout_marginStart="72dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:text="ESTILO"
                 android:textColor="@color/md_green_800"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -88,6 +88,7 @@
                 android:layout_marginStart="73dp"
                 android:background="@drawable/bordeverde"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -98,10 +99,10 @@
                 android:layout_marginEnd="134dp"
                 android:layout_marginStart="72dp"
                 android:layout_marginTop="17dp"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:text="INSTRUMENTO PRINCIPAL"
                 android:textColor="@color/md_green_800"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -121,15 +122,43 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/impDescripcionVRegSocial"
-                android:layout_width="match_parent"
-                android:layout_height="202dp"
-                android:layout_marginTop="9dp"
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="223dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:layout_marginTop="17dp"
+                android:fontFamily="sans-serif"
+                android:text="SEXO"
+                android:textColor="@color/md_green_800"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.374"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial" />
+
+            <Spinner
+                android:id="@+id/spinnerSexoVLogin"
+                android:layout_width="227dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:background="@drawable/bordeverde"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/impDescripcionVRegSocial"
+                android:layout_width="match_parent"
+                android:layout_height="198dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerSexoVLogin"
                 tools:ignore="MissingConstraints">
 
                 <EditText
@@ -141,7 +170,7 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="20dp"
                     android:ems="10"
-                    android:fontFamily="casual"
+                    android:fontFamily="sans-serif"
                     android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
                     android:maxLength="200"
@@ -172,10 +201,11 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="20dp"
                     android:ems="10"
-                    android:fontFamily="casual"
+                    android:fontFamily="sans-serif"
                     android:hint="EMAIL"
+                    android:textStyle="bold"
                     android:inputType="textEmailAddress"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -189,7 +219,9 @@
                 android:id="@+id/impPassVRegMusico"
                 android:layout_width="match_parent"
                 android:layout_height="81dp"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impEmailVRegMusico"
                 tools:ignore="MissingConstraints">
@@ -203,10 +235,11 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="18dp"
                     android:ems="10"
-                    android:fontFamily="casual"
+                    android:fontFamily="sans-serif"
                     android:hint="CONTRASEÑA"
+                    android:textStyle="bold"
                     android:inputType="textPassword"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -217,8 +250,10 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/impRepetirPassVRegMusico"
                 android:layout_width="match_parent"
-                android:layout_height="79dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impPassVRegMusico"
                 tools:ignore="MissingConstraints">
@@ -234,7 +269,8 @@
                     android:ems="10"
                     android:hint="REPITE LA CONTRASEÑA"
                     android:inputType="textPassword"
-                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -249,16 +285,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:background="@drawable/bordefondoverde"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:onClick="onClickVRegMusico"
                 android:text="REGISTRAR"
-                android:textSize="18sp"
+                android:textSize="1sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impRepetirPassVRegMusico"
                 tools:ignore="NotSibling" />
+
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

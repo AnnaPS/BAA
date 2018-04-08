@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MiPageAdapter extends PagerAdapter {
+    //CLASE PARA IMPLEMENTAR LOS SLIDER
     private LayoutInflater inflador;
     private int[]layouts;
     private Context contexto;
