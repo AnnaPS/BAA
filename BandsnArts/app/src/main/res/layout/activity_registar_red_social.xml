@@ -159,6 +159,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bordefondoverde"
                 android:fontFamily="sans-serif"
+                android:onClick="onClickLogueo"
                 android:text="REGISTRAR"
                 android:textSize="18sp"
                 android:textStyle="bold"

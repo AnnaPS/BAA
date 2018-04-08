@@ -1,9 +1,13 @@
 package com.example.pc.bandsnarts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,10 +26,12 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean encontrado = false;
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d("insert", "No pudo insertar");
                     Toast.makeText(context, "Ya existe un usuario con con el nombre "+nombre, Toast.LENGTH_SHORT).show();
                     encontrado= true;
                 }
                 if(!encontrado){
+                    Log.d("insert", "Insertado con exito");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
@@ -48,10 +54,13 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean encontrado = false;
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d("INSERt", "No insertado ");
                     Toast.makeText(context, "Ya existe un grupo con con el nombre "+nombre, Toast.LENGTH_SHORT).show();
                     encontrado= true;
                 }
                 if(!encontrado){
+                    Log.d("INSERt", "Insertado ");
+
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
                     Grupo gru= new Grupo(imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);

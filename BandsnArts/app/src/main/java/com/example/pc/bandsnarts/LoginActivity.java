@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private CallbackManager callbackManager;
 
     private Activity estaVentana;
+    private GoogleSignInResult result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-        ventanaPrincipal=this;
+        ventanaPrincipal = this;
         btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
@@ -111,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
                 if (usuario != null) {
+
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     siguienteActivity();
                 }
@@ -137,6 +139,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
                 Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, RegistarRedSocial.class));
+
             }
 
             @Override
@@ -209,7 +213,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             compruebaResultado(result);
         }
-
+        //Este if es para saber que ha rellenado todo lo necesario en el logueo
+        if (resultCode == 000) {
+            // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
+            autenticarEnFirebase(result.getSignInAccount());
+        }
         // Para reconocer las acciones del boton de Inicio de FaceBook
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -220,9 +228,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
+        this.result = result;
         if (result.isSuccess()) {
-            // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-            autenticarEnFirebase(result.getSignInAccount());
+
+            startActivityForResult(new Intent(this, RegistarRedSocial.class),000);
             //siguienteActivity();
 
         } else {

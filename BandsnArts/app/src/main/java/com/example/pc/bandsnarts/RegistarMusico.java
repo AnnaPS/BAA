@@ -46,23 +46,41 @@ public class RegistarMusico extends AppCompatActivity {
     }
 
     public void escuchadoresSpinner() {
-        spinnerSexo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                posSexo = position;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        posSexo=position;
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+    });
+        spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posEstilo=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
         });
-        spinnerEstilos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinnerInstrumentos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                posEstilo = position;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInstrumento=position;
             }
-        });
-        spinnerInstrumentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                posInstrumento = position;
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
+
         });
     }
 
@@ -86,10 +104,10 @@ public class RegistarMusico extends AppCompatActivity {
                 FirebaseUser usuario = auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
 
                 // Mensaje de control
-                new BDBAA().agregarMusico(this, "default_musico", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
 
                 if (usuario != null) {
+                    new BDBAA().agregarMusico(this, "default_musico", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                     if (!usuario.isEmailVerified()) {
                         // ENVIO CORREO VERIFICACION
                         Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
