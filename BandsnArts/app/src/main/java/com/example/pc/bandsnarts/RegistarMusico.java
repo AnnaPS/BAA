@@ -22,8 +22,6 @@ public class RegistarMusico extends AppCompatActivity {
     private Autentificacion auth;
 
 
-    EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
-    private Autentificacion auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

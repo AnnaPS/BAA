@@ -24,13 +24,11 @@ public class Autentificacion extends AppCompatActivity {
     public Autentificacion(Activity loginActivity) {
         vLog = loginActivity;
     }
-<<<<<<< login_facebook
 
 
 
     // Paso de void a Firebase user para devolver el usuario
     public FirebaseUser registroMailPass(String user, String password) {
-
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(user, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -43,24 +41,47 @@ public class Autentificacion extends AppCompatActivity {
 
 
 
-
                             // pruebas..
                             FirebaseUser usuario = mAuth.getInstance().getCurrentUser();
 
-                                // Name, email address, and profile photo Url
-                                String name = usuario.getDisplayName();
-                                String email = usuario.getEmail();
-                                Uri photoUrl = usuario.getPhotoUrl();
+                            // Name, email address, and profile photo Url
+                            String name = usuario.getDisplayName();
+                            String email = usuario.getEmail();
+                            Uri photoUrl = usuario.getPhotoUrl();
 
-                                // Check if user's email is verified
-                                boolean emailVerified = usuario.isEmailVerified();
+                            // Check if user's email is verified
+                            boolean emailVerified = usuario.isEmailVerified();
 
-                                // The user's ID, unique to the Firebase project. Do NOT use this value to
-                                // authenticate with your backend server, if you have one. Use
-                                // FirebaseUser.getToken() instead.
-                                String uid = usuario.getUid();
+                            // The user's ID, unique to the Firebase project. Do NOT use this value to
+                            // authenticate with your backend server, if you have one. Use
+                            // FirebaseUser.getToken() instead.
+                            String uid = usuario.getUid();
 
                             Toast.makeText(vLog, "nombre: "+name+"\ncorreo: "+email+"\nURL de la foto: "+photoUrl+"\nemail verificado: "+emailVerified, Toast.LENGTH_SHORT).show();
+
+
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                        }
+                    }
+                });
+        FirebaseUser usuario = mAuth.getInstance().getCurrentUser();
+        if (usuario != null) {
+            // Name, email address, and profile photo Url
+            String name = usuario.getDisplayName();
+            String email = usuario.getEmail();
+            Uri photoUrl = usuario.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = usuario.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getToken() instead.
+            String uid = usuario.getUid();
+
             return usuario;
         }else{
             Toast.makeText(vLog, "usuario vale null", Toast.LENGTH_SHORT).show();
@@ -79,7 +100,6 @@ public class Autentificacion extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             Log.d("TAG", "loginUserWithEmail:success ");
                             Toast.makeText(vLog, "Todo bien.", Toast.LENGTH_SHORT).show();
                             //  FirebaseUser user = mAuth.getCurrentUser();
@@ -96,7 +116,7 @@ public class Autentificacion extends AppCompatActivity {
 
     public void deslogueo() {
         mAuth = FirebaseAuth.getInstance();
-        // PARA CONTROL DEL DESLOGUEO 
+        // PARA CONTROL DEL DESLOGUEO
         try {
             // COMPROBACION INTERNA DE DESLOGUEO
             Log.w("TAG", "" + mAuth.getCurrentUser().getUid());

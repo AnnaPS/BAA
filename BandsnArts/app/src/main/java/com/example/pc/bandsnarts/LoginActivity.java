@@ -43,12 +43,12 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    TextView titulo;
-    Typeface fuenteTitulo;
-    Activity ventanaPrincipal;
-    EditText edtUser, edtPass;
-    Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
-    CheckBox grupo, musico;
+    private TextView titulo;
+    private Typeface fuenteTitulo;
+    private Activity ventanaPrincipal;
+    private EditText edtUser, edtPass;
+    private Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
+    private CheckBox grupo, musico;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
@@ -64,30 +64,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private Autentificacion auth;
 
-
-    LoginButton botonFaceBook;
+    private LoginButton botonFaceBook;
     // Objeto de clase CallbackManager para detectar acciones en el boton FaceBook
     private CallbackManager callbackManager;
 
     private Activity estaVentana;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        botonFaceBook = findViewById(R.id.btnFacebookVLogin);
+
         titulo = findViewById(R.id.tituloVLogin);
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
-        ventanaPrincipal = this;
-
-
+        ventanaPrincipal=this;
+        btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
-
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -116,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
                 if (usuario != null) {
-                    Toast.makeText(LoginActivity.this, "Usuario VVerificado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     siguienteActivity();
                 }
             }
@@ -131,7 +126,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Inicializamos CallbackManager
         callbackManager = CallbackManager.Factory.create();
-
+        // Recogemos el Boton
+        botonFaceBook = findViewById(R.id.btnFacebookVLogin);
         // Establecemos permisos para leer el correo electronico del usuario
         botonFaceBook.setReadPermissions(Arrays.asList("email"));
         botonFaceBook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -169,7 +165,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         });
-
     }
 
 
@@ -192,9 +187,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onClickIngresarVLogin(View view) {
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
-
         } else {
             auth.loginMailPass(edtUser.getText().toString(), edtPass.getText().toString());
+        }
     }
 
     @Override
