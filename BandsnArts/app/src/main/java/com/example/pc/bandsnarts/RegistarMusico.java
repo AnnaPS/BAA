@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.regex.Pattern;
 
 public class RegistarMusico extends AppCompatActivity {
-    Spinner spinnerInstrumentos,spinnerEstilos;
+    Spinner spinnerInstrumentos,spinnerEstilos,spinnerSexo;
 
     EditText edtMailMusico,edtPassMusico,edtRepitePassMusico;
 
@@ -23,7 +23,8 @@ public class RegistarMusico extends AppCompatActivity {
         spinnerEstilos=findViewById(R.id.spEstiloVRegSocial);
         spinnerInstrumentos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.instrumentos)));
         spinnerEstilos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.estiloMusical)));
-
+        spinnerSexo=findViewById(R.id.spinnerSexoVLogin);
+        spinnerSexo.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.sexo)));
         edtMailMusico=findViewById(R.id.edtEmailVRegMusico);
         edtPassMusico=findViewById(R.id.edtPassVRegMusico);
         edtRepitePassMusico=findViewById(R.id.edtRepetirPassVRegMusico);

@@ -16,10 +16,10 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="15dp"
         android:buttonTint="@color/md_white_1000"
-        android:fontFamily="casual"
+        android:fontFamily="sans-serif"
         android:text="¿CÓMO TE QUIERES REGISTRAR?"
         android:textColor="@color/md_white_1000"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <CheckBox
@@ -29,7 +29,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="15dp"
         android:buttonTint="@color/md_white_1000"
-        android:fontFamily="casual"
+        android:fontFamily="sans-serif"
         android:text="GRUPO "
         android:textColor="@color/md_green_A700"
         android:textStyle="bold"
@@ -45,7 +45,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="15dp"
         android:buttonTint="@color/md_white_1000"
-        android:fontFamily="casual"
+        android:fontFamily="sans-serif"
         android:text="MÚSICO"
         android:textColor="@color/md_green_A700"
         android:textStyle="bold" />
@@ -62,7 +62,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/bordefondoverde"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:text="CANCELAR"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/bordefondoverde"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:text="ACEPTAR"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -117,4 +117,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onclick(View view) {
+        startActivity(new Intent(this, VentanaInicialApp.class));
+    }
 }

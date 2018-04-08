@@ -10,10 +10,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="454dp"
+        android:layout_height="match_parent"
 
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="63dp"
         android:orientation="vertical">
 
@@ -129,6 +130,14 @@
                 android:layout_height="73dp"
                 android:layout_marginLeft="60dp"
                 android:background="@mipmap/ic_launcherfacebook" />
+            <Button
+                android:id="@+id/sacarmenu"
+                android:layout_width="50dp"
+                android:layout_height="41dp"
+                android:layout_weight="1"
+                android:text="Button"
+                tools:text="menu"
+                android:onClick="onclick"/>
 
 
             <Button
@@ -154,14 +163,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="horizontal">
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿NECESITAS UNA CUENTA?"
-            android:textColor="@color/md_white_1000"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="520dp"
-            android:layout_marginLeft="10dp"/>
+            android:text="¿NECESITAS UNA CUENTA?"
+            android:textColor="@color/md_white_1000" />
 
         <Button
             android:id="@+id/btnRegistrarVLogin"
