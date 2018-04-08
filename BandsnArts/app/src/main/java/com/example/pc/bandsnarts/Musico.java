@@ -1,5 +1,7 @@
 package com.example.pc.bandsnarts;
 
+import java.util.ArrayList;
+
 public class Musico {
     private String imagen;
     private String nombre;
@@ -9,7 +11,7 @@ public class Musico {
     private String descripcion;
     private String provincia;
     private String localidad;
-    private Anuncio anuncio;
+    private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando;
 
     public String getBuscando() {
@@ -20,7 +22,7 @@ public class Musico {
         this.buscando = buscando;
     }
 
-    public Musico(String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion, String provincia, String localidad, Anuncio anuncio) {
+    public Musico(String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion, String provincia, String localidad) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.sexo = sexo;
@@ -29,7 +31,6 @@ public class Musico {
         this.descripcion = descripcion;
         this.provincia = provincia;
         this.localidad = localidad;
-        this.anuncio = anuncio;
     }
 
     public String getImagen() {
@@ -96,11 +97,11 @@ public class Musico {
         this.localidad = localidad;
     }
 
-    public Anuncio getAnuncio() {
+    public ArrayList<Anuncio> getAnuncio() {
         return anuncio;
     }
 
     public void setAnuncio(Anuncio anuncio) {
-        this.anuncio = anuncio;
+        this.anuncio.add(anuncio);
     }
 }
