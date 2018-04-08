@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Pattern;
 
 public class RegistarMusico extends AppCompatActivity {
-    private Spinner spinnerInstrumentos, spinnerEstilos;
+    Spinner spinnerInstrumentos,spinnerEstilos,spinnerSexo;
 
     private EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
     private Autentificacion auth;
@@ -24,15 +24,15 @@ public class RegistarMusico extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar_musico);
-        spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
-        spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
-        spinnerInstrumentos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.instrumentos)));
-        spinnerEstilos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.estiloMusical)));
-
-        edtMailMusico = findViewById(R.id.edtEmailVRegMusico);
-        edtPassMusico = findViewById(R.id.edtPassVRegMusico);
-        edtRepitePassMusico = findViewById(R.id.edtRepetirPassVRegMusico);
-        edtNombreMusico = findViewById(R.id.edtNombreVRegMusico);
+        spinnerInstrumentos=findViewById(R.id.spInstrumentoVRegSocial);
+        spinnerEstilos=findViewById(R.id.spEstiloVRegSocial);
+        spinnerInstrumentos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.instrumentos)));
+        spinnerEstilos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.estiloMusical)));
+        spinnerSexo=findViewById(R.id.spinnerSexoVLogin);
+        spinnerSexo.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.sexo)));
+        edtMailMusico=findViewById(R.id.edtEmailVRegMusico);
+        edtPassMusico=findViewById(R.id.edtPassVRegMusico);
+        edtRepitePassMusico=findViewById(R.id.edtRepetirPassVRegMusico);
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
