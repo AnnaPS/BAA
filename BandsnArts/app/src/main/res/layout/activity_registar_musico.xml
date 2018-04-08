@@ -56,7 +56,9 @@
                     android:fontFamily="sans-serif"
                     android:hint="NOMBRE"
                     android:inputType="textPersonName"
+
                     android:textSize="14sp"
+
                     android:textStyle="bold" />
             </android.support.design.widget.TextInputLayout>
 
@@ -171,6 +173,7 @@
                     android:fontFamily="sans-serif"
                     android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
+                    android:maxLength="200"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

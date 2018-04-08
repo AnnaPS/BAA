@@ -15,15 +15,20 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Pattern;
 
 public class RegistarMusico extends AppCompatActivity {
+
     Spinner spinnerInstrumentos,spinnerEstilos,spinnerSexo;
 
     private EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
     private Autentificacion auth;
 
+
+    EditText edtMailMusico, edtPassMusico, edtRepitePassMusico, edtNombreMusico;
+    private Autentificacion auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar_musico);
+
         spinnerInstrumentos=findViewById(R.id.spInstrumentoVRegSocial);
         spinnerEstilos=findViewById(R.id.spEstiloVRegSocial);
         spinnerInstrumentos.setAdapter(new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.instrumentos)));
@@ -41,6 +46,7 @@ public class RegistarMusico extends AppCompatActivity {
     public void onClickVRegMusico(View view) {
         if (edtRepitePassMusico.getText().toString().isEmpty() || edtPassMusico.getText().toString().isEmpty()
                 || edtMailMusico.getText().toString().isEmpty() || edtNombreMusico.getText().toString().isEmpty()) {
+
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         } else {
             // Comprobamos que el patron de correo y de contraseña son correctos
@@ -53,7 +59,9 @@ public class RegistarMusico extends AppCompatActivity {
                 edtRepitePassMusico.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
+
                 FirebaseUser usuario = auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
+
                 // Mensaje de control
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
 

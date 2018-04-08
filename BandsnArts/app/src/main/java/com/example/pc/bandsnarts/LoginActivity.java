@@ -71,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private Activity estaVentana;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
+
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -166,6 +169,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         });
+
     }
 
 
@@ -188,9 +192,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onClickIngresarVLogin(View view) {
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
+
         } else {
             auth.loginMailPass(edtUser.getText().toString(), edtPass.getText().toString());
-        }
     }
 
     @Override
