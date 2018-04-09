@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +48,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Typeface fuenteTitulo;
     private Activity ventanaPrincipal;
     private EditText edtUser, edtPass;
-    private Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
+    private Button btnCancelarAlerta, btnAceptarAlerta;//, btnReg;
     private CheckBox grupo, musico;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
+    //Objeto para conectar con la api de facebook
+    public static LoginResult loginResult;
 
     public static final int CODIGO_DE_INICIO = 777;
 
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
         titulo.setTypeface(fuenteTitulo);
         ventanaPrincipal = this;
-        btnReg = findViewById(R.id.btnRegistrarVLogin);
+        //btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
 
@@ -133,13 +136,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Establecemos permisos para leer el correo electronico del usuario
         botonFaceBook.setReadPermissions(Arrays.asList("email"));
         botonFaceBook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
+                LoginActivity.loginResult = loginResult;
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
-                manejadorTokenFacebook(loginResult.getAccessToken());
+                startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
+                //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
+                // manejadorTokenFacebook(loginResult.getAccessToken());
                 Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, RegistarRedSocial.class));
 
             }
 
@@ -157,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    private void manejadorTokenFacebook(AccessToken accessToken) {
+    private void manejadorTokenFacebook(AccessToken accessToken, final Intent data) {
         //Creamos una credencial en base al Token recibido por parametro
         AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
         // Autenticamos al usuario el Firebase con esa credencial obtenida
@@ -166,6 +172,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                }else{
+                    Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
+                    guardarBD(data);
                 }
             }
         });
@@ -206,6 +215,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(g, CODIGO_DE_INICIO);
     }
 
+    //!!!!!!!!!!!!!!!!!!!!!!!!!ON ACTIVITY FOR RESULT!!!!!!!!!!!!!!!!!
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Aqui !!!!!!!!!!!!!!!!
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -214,9 +227,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             compruebaResultado(result);
         }
         //Este if es para saber que ha rellenado todo lo necesario en el logueo
-        if (resultCode == 000) {
+        if (requestCode == 000) {
             // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-            autenticarEnFirebase(result.getSignInAccount());
+            autenticarEnFirebase(result.getSignInAccount(),data);
+        }
+
+        if (requestCode == 111) {
+            Log.d("PRUEBA CON FACEBOOK", "onActivityResult: "+loginResult);
+            manejadorTokenFacebook(loginResult.getAccessToken(),data);
         }
         // Para reconocer las acciones del boton de Inicio de FaceBook
         try {
@@ -226,12 +244,36 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
+private void guardarBD(Intent data){
+    int tipo=data.getExtras().getInt("tipo");
+    switch (tipo) {
+        //Es un grupo
+        case 1:
+            new BDBAA().agregarGrupo(this
+                    ,data.getStringExtra("img")
+                    ,data.getStringExtra("nom")
+                    ,data.getStringExtra("est")
+                    ,data.getStringExtra("des"));
+            break;
+        //Es un musico
+        case 0:
+            //pendiente de implementacion de sexo
+            new BDBAA().agregarMusico(this
+                    ,data.getStringExtra("img")
+                    ,data.getStringExtra("nom")
+                    ,data.getStringExtra("sex")
+                    ,data.getStringExtra("est")
+                    ,data.getStringExtra("ins")
+                    ,data.getStringExtra("des"));
+            break;
+    }
 
+}
     private void compruebaResultado(GoogleSignInResult result) {
         this.result = result;
         if (result.isSuccess()) {
 
-            startActivityForResult(new Intent(this, RegistarRedSocial.class),000);
+            startActivityForResult(new Intent(this, RegistarRedSocial.class), 222);
             //siguienteActivity();
 
         } else {
@@ -239,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void autenticarEnFirebase(GoogleSignInAccount signInAccount) {
+    private void autenticarEnFirebase(GoogleSignInAccount signInAccount , final Intent data) {
         // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
         // parametro es es access Token que no es necesario, le pasamos null
         AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
@@ -249,6 +291,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
+                    guardarBD(data);
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -276,13 +319,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         alerta.setView(vista);
         //para no poder usar el onbackpressed
         alerta.setCancelable(false);
-        btnReg.setOnClickListener(new View.OnClickListener() {
+        /*btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //muestra el alert
+                //muestra el alert*/
                 alerta.show();
-            }
-        });
+         /*   }
+        });*/
         btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

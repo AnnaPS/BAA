@@ -107,7 +107,7 @@ public class RegistarMusico extends AppCompatActivity {
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
 
                 if (usuario != null) {
-                    new BDBAA().agregarMusico(this, "default_musico", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+                    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                     if (!usuario.isEmailVerified()) {
                         // ENVIO CORREO VERIFICACION
                         Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();

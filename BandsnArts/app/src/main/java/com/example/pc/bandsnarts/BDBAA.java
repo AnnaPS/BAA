@@ -70,6 +70,7 @@ public class BDBAA extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.d("ERROR BD", "\n\nonCancelled: "+databaseError.getMessage()+"\n\n");
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
             }
         });

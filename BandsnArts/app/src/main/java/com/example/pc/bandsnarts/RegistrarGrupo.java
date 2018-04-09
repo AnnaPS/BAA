@@ -81,7 +81,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                 if (usuario != null) {
                     if (!usuario.isEmailVerified()) {
                         // ENVIO CORREO VERIFICACION
-                        new BDBAA().agregarGrupo(this, "default_grupo", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
+                        new BDBAA().agregarGrupo(this, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
                         Toast.makeText(this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                         usuario.sendEmailVerification();
                     } else {
