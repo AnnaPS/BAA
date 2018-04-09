@@ -273,7 +273,7 @@ private void guardarBD(Intent data){
         this.result = result;
         if (result.isSuccess()) {
 
-            startActivityForResult(new Intent(this, RegistarRedSocial.class), 222);
+            startActivityForResult(new Intent(this, RegistarRedSocial.class), 000);
             //siguienteActivity();
 
         } else {
@@ -291,8 +291,9 @@ private void guardarBD(Intent data){
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    guardarBD(data);
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
+                }else{
+                    guardarBD(data);
                 }
             }
         });
