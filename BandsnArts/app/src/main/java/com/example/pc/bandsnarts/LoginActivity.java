@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                 }else{
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
+                    //siempre debemos guardar en la bd despues de autenticar pls
                     guardarBD(data);
                 }
             }
@@ -293,6 +294,7 @@ private void guardarBD(Intent data){
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 }else{
+                    //siempre debemos guardar en la bd despues de autenticar pls
                     guardarBD(data);
                 }
             }

@@ -3,6 +3,8 @@ package com.example.pc.bandsnarts;
 import java.util.ArrayList;
 
 public class Grupo {
+
+    private String uid;
     private String imagen;
     private String nombre;
     private String estilo;
@@ -10,7 +12,11 @@ public class Grupo {
     private String provincia;
     private String localidad;
     private String buscando;
+    private ArrayList<String> mensaje=new ArrayList<String>();
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
+
+    public Grupo(){
+    }
 
     public String getBuscando() {
         return buscando;
@@ -20,7 +26,25 @@ public class Grupo {
         this.buscando = buscando;
     }
 
-    public Grupo(String imagen, String nombre, String estilo, String descripcion) {
+    public ArrayList<String> getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(ArrayList<String> mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+
+    public Grupo(String uid, String imagen, String nombre, String estilo, String descripcion) {
+        this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;
         this.estilo = estilo;
