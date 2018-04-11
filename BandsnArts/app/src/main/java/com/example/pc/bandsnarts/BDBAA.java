@@ -41,7 +41,8 @@ public class BDBAA extends AppCompatActivity {
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
-                    FirebaseDatabase.getInstance().getReference("uid").child(bd.push().getKey());
+
+                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -73,7 +74,7 @@ public class BDBAA extends AppCompatActivity {
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
                     Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);
-                    FirebaseDatabase.getInstance().getReference("uid").child(bd.push().getKey());
+                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -89,7 +90,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public void comprobarUID(final Context cont, String uid) {
-        bd = FirebaseDatabase.getInstance().getReference("uid");
+        bd = FirebaseDatabase.getInstance().getReference("uids");
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
 
@@ -115,28 +116,4 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
-
-    public void verificarUID(Query q,final Context cont) {
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean encontrado = false;
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    encontrado = true;
-                }
-                if (!encontrado) {
-                    Log.d("Encontrado", "onDataChange: " + encontrado);
-                    ((Activity) cont).startActivity(new Intent(cont, RegistarRedSocial.class));
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 }
