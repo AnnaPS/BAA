@@ -56,7 +56,9 @@
                     android:fontFamily="sans-serif"
                     android:hint="NOMBRE"
                     android:inputType="textPersonName"
+
                     android:textSize="14sp"
+
                     android:textStyle="bold" />
             </android.support.design.widget.TextInputLayout>
 
@@ -91,7 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvInstrumentoVRegSocial"
                 android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="134dp"
@@ -117,7 +119,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/tvInstrumentoVRegSocial" />
 
 
             <TextView
@@ -171,6 +173,7 @@
                     android:fontFamily="sans-serif"
                     android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
+                    android:maxLength="200"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
