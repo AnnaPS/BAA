@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -115,14 +120,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
                 // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
-
                 if (usuario != null) {
-
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         siguienteActivity();
                     }
-
                 }
             }
         };
@@ -147,7 +149,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 LoginActivity.loginResult = loginResult;
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
-                startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
+               manejadorTokenFacebook(loginResult.getAccessToken());
+               //startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
+
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
                 Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
@@ -168,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    private void manejadorTokenFacebook(AccessToken accessToken, final Intent data) {
+    private void manejadorTokenFacebook(AccessToken accessToken) {
         //Creamos una credencial en base al Token recibido por parametro
         AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
         // Autenticamos al usuario el Firebase con esa credencial obtenida
@@ -178,9 +182,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (!task.isSuccessful()) {
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                    new BDBAA().comprobarUID(estaVentana,FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                    siguienteActivity();
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
                     //siempre debemos guardar en la bd despues de autenticar pls
-                    //  guardarBD(data);
+                    //guardarBD(data);
                 }
             }
         });
@@ -245,15 +253,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         if (requestCode == 111) {
             Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
-            manejadorTokenFacebook(loginResult.getAccessToken(), data);
+            manejadorTokenFacebook(loginResult.getAccessToken());
 
             // Para reconocer las acciones del boton de Inicio de FaceBook
-            try {
-                callbackManager.onActivityResult(requestCode, resultCode, data);
 
-            } catch (NullPointerException e) {
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
+        }
+        try {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        } catch (NullPointerException e) {
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 

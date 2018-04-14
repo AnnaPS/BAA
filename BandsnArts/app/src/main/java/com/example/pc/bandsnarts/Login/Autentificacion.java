@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

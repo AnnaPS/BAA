@@ -1,10 +1,12 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.pc.bandsnarts.R;
 
 
 public class FragmentAnuncios extends Fragment {

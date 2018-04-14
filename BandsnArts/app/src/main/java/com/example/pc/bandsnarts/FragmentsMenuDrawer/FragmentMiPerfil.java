@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.FragmentsMenuDrawer;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
+import com.example.pc.bandsnarts.R;
 
 
 public class FragmentMiPerfil extends Fragment {

@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+
+import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistarRedSocial extends AppCompatActivity {
@@ -153,7 +156,7 @@ public class RegistarRedSocial extends AppCompatActivity {
     public void onClickLogueo(View view) {
 
         if (!edtNombre.getText().toString().isEmpty()) {
-            if (!edtDescripcion.getText().toString().isEmpty()) {
+
                 Intent i;
                 Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
                 switch (tipo) {
@@ -165,6 +168,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                                 .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
                                 .putExtra("des", edtDescripcion.getText().toString());
                         guardarBD(this, i);
+                        startActivity(new Intent(this,VentanaSliderParteDos.class));
                         break;
                     //Es un musico
                     case 0:
@@ -173,11 +177,12 @@ public class RegistarRedSocial extends AppCompatActivity {
                         //    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombre.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                         break;
                 }
+                finish();
             }
         }
 
-        finish();
-    }
+
+
 
     private void guardarBD(Context cont, Intent data) {
         int tipo = data.getExtras().getInt("tipo");

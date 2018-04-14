@@ -33,7 +33,7 @@
 
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
@@ -44,27 +44,27 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
-        <activity android:name=".RegistrarGrupo"
+        <activity android:name=".Activities.RegistrarGrupo"
             android:screenOrientation="portrait"/>
-        <activity android:name=".RegistarMusico"
+        <activity android:name=".Activities.RegistarMusico"
             android:screenOrientation="portrait"/>
-        <activity android:name=".RegistarRedSocial"
+        <activity android:name=".Activities.RegistarRedSocial"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".VentanaSliderParteDos"
+            android:name=".Activities.VentanaSliderParteDos"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".VentanaInicialApp"
+            android:name=".Activities.VentanaInicialApp"
             android:label="@string/title_activity_ventana_inicial_app"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".InicioGoogle"></activity>
+        <activity android:name=".Login.InicioGoogle"></activity>
     </application>
 
 </manifest>

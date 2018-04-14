@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.BBDD;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Objetos.Grupo;
-import com.example.pc.bandsnarts.Objetos.Musico;
+
+import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +40,7 @@ public class BDBAA extends AppCompatActivity {
                 if (!encontrado) {
                     Log.d("insert", "Insertado con exito");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
-                    Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
+                    com.example.pc.bandsnarts.Musico mus = new com.example.pc.bandsnarts.Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
 
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -71,7 +72,7 @@ public class BDBAA extends AppCompatActivity {
                 if (!encontrado) {
                     Log.d("INSERt", "Insertado ");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
-                    Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
+                    com.example.pc.bandsnarts.Grupo gru = new com.example.pc.bandsnarts.Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
@@ -160,7 +161,8 @@ public class BDBAA extends AppCompatActivity {
                 if (!encontrado) {
                     Log.d("Encontrado", "onDataChange: " + encontrado);
                     ((Activity) cont).startActivity(new Intent(cont, RegistarRedSocial.class));
-
+                }else{
+                    ((Activity) cont).startActivity(new Intent(cont, VentanaInicialApp.class));
                 }
             }
 
