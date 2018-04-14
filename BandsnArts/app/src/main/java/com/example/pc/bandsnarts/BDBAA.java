@@ -23,6 +23,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public void agregarMusico(final Context context, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
+        // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference("musico");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
