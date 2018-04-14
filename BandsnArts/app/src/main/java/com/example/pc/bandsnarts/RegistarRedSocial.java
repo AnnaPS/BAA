@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RegistarRedSocial extends AppCompatActivity {
     Spinner spinnerInstrumentos, spinnerEstilos;
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
-private Activity a;
+    private Activity a;
     //recogemos en una variable entera si es 0 es un musico y si es 1 es un grupo
     private int tipo;
     private Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
@@ -37,7 +40,7 @@ private Activity a;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alertaTipoRegistro();
-this.a=this;
+        this.a = this;
         //finds///
         setContentView(R.layout.activity_registar_red_social);
         spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
@@ -146,37 +149,60 @@ this.a=this;
         });
     }
 
+
     public void onClickLogueo(View view) {
 
         if (!edtNombre.getText().toString().isEmpty()) {
             if (!edtDescripcion.getText().toString().isEmpty()) {
+                Intent i;
                 Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
                 switch (tipo) {
                     //Es un grupo
                     case 1:
-                       setResult(69 ,new Intent ()
-                               .putExtra("tipo",1)
-                               .putExtra("img","default_grupo.jpg")
-                               .putExtra("nom", edtNombre.getText().toString())
-                               .putExtra("est",getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                               .putExtra("des", edtDescripcion.getText().toString()));
+                        i = new Intent()
+                                .putExtra("tipo", tipo)
+                                .putExtra("nom", edtNombre.getText().toString())
+                                .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                                .putExtra("des", edtDescripcion.getText().toString());
+                        guardarBD(this, i);
                         break;
                     //Es un musico
                     case 0:
+                        //  Intent i=new Intent();
                         //pendiente de implementacion de sexo
-                        setResult(69 ,new Intent ()
-                                .putExtra("tipo",0)
-                                .putExtra("img","default_musico.jpg")
-                                .putExtra("nom", edtNombre.getText().toString())
-                                //.getExtras("sex",getResources().getStringArray(R.array.sexo)[posSexo])
-                                .putExtra("est",getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                                .putExtra("ins", getResources().getStringArray(R.array.instrumentos)[posInstrumento])
-                                .putExtra("des", edtDescripcion.getText().toString()));
-                        //   new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombre.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+                        //    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombre.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                         break;
                 }
             }
         }
+
         finish();
     }
+
+    private void guardarBD(Context cont, Intent data) {
+        int tipo = data.getExtras().getInt("tipo");
+        switch (tipo) {
+            //Es un grupo
+            case 1:
+                new BDBAA().agregarGrupo(cont
+                        , data.getStringExtra("img")
+                        , data.getStringExtra("nom")
+                        , data.getStringExtra("est")
+                        , data.getStringExtra("des"));
+                break;
+            //Es un musico
+            case 0:
+                //pendiente de implementacion de sexo
+                new BDBAA().agregarMusico(cont
+                        , data.getStringExtra("img")
+                        , data.getStringExtra("nom")
+                        , data.getStringExtra("sex")
+                        , data.getStringExtra("est")
+                        , data.getStringExtra("ins")
+                        , data.getStringExtra("des"));
+                break;
+        }
+
+    }
+
 }

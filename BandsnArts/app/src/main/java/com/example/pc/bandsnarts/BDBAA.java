@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -36,15 +37,20 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
                     Log.d("insert", "Insertado con exito");
+
+
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
+
+                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                FirebaseAuth.getInstance().getCurrentUser().delete();
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
             }
         });
@@ -66,10 +72,10 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
                     Log.d("INSERt", "Insertado ");
-
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
                     Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);
+                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -77,10 +83,38 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
+                FirebaseAuth.getInstance().getCurrentUser().delete();
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    public void comprobarUID(final Context cont, String uid) {
+        bd = FirebaseDatabase.getInstance().getReference("uids");
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        Log.d("UID", "onDataChange: " + uid);
+
+        /* Query q = FirebaseDatabase.getInstance().getReference("uid").equalTo(uid);*/
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean encontrado = false;
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    encontrado = true;
+                }
+                if (!encontrado) {
+                    Log.d("Encontrado", "onDataChange: " + encontrado);
+                    ((Activity) cont).startActivity(new Intent(cont, RegistarRedSocial.class));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

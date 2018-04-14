@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
@@ -175,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }else{
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
                     //siempre debemos guardar en la bd despues de autenticar pls
-                    guardarBD(data);
+                  //  guardarBD(data);
                 }
             }
         });
@@ -229,8 +230,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
         //Este if es para saber que ha rellenado todo lo necesario en el logueo
         if (requestCode == 000) {
+
+            Toast.makeText(this, "He vuelto 000", Toast.LENGTH_SHORT).show();
             // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-            autenticarEnFirebase(result.getSignInAccount(),data);
+           // autenticarEnFirebase(result.getSignInAccount(),data);
         }
 
         if (requestCode == 111) {
@@ -245,35 +248,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
-private void guardarBD(Intent data){
-    int tipo=data.getExtras().getInt("tipo");
-    switch (tipo) {
-        //Es un grupo
-        case 1:
-            new BDBAA().agregarGrupo(this
-                    ,data.getStringExtra("img")
-                    ,data.getStringExtra("nom")
-                    ,data.getStringExtra("est")
-                    ,data.getStringExtra("des"));
-            break;
-        //Es un musico
-        case 0:
-            //pendiente de implementacion de sexo
-            new BDBAA().agregarMusico(this
-                    ,data.getStringExtra("img")
-                    ,data.getStringExtra("nom")
-                    ,data.getStringExtra("sex")
-                    ,data.getStringExtra("est")
-                    ,data.getStringExtra("ins")
-                    ,data.getStringExtra("des"));
-            break;
-    }
 
-}
     private void compruebaResultado(GoogleSignInResult result) {
         this.result = result;
         if (result.isSuccess()) {
-            startActivityForResult(new Intent(this, RegistarRedSocial.class), 000);
+            autenticarEnFirebase(result.getSignInAccount(),this);
             //siguienteActivity();
 
         } else {
@@ -281,7 +260,7 @@ private void guardarBD(Intent data){
         }
     }
 
-    private void autenticarEnFirebase(GoogleSignInAccount signInAccount , final Intent data) {
+    private void autenticarEnFirebase(GoogleSignInAccount signInAccount, final Context context) {
         // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
         // parametro es es access Token que no es necesario, le pasamos null
         AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
@@ -293,8 +272,10 @@ private void guardarBD(Intent data){
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 }else{
+                    new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    //startActivityForResult(new Intent(context, RegistarRedSocial.class), 000);
                     //siempre debemos guardar en la bd despues de autenticar pls
-                    guardarBD(data);
+                  //  guardarBD(data);
                 }
             }
         });

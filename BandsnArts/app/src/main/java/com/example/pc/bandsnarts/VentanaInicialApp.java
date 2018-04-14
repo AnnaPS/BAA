@@ -42,6 +42,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     // Variable para el usuario de Google
     private GoogleApiClient clienteGoogle;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +81,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //////////////////////////////////////////
 
 
-        fotoPerfil = findViewById(R.id.ivFotoPerfilNav);
+        View vista = navigationView.getHeaderView(0);
+        fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
 
         // Inicializamos el FireBaseAuth y su escuchador
         firebaseAuth = FirebaseAuth.getInstance();
@@ -196,11 +199,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
 
-        Glide.with(this).load(usuario.getPhotoUrl()).into(fotoPerfil);
+      Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).into(fotoPerfil);
     }
 
     public void cerrarSesion() {
-
         //Deslogueo en Google
         firebaseAuth.signOut();
         // deslogueo en Facebook
