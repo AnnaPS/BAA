@@ -14,10 +14,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class RegistarMusico extends AppCompatActivity {
 
@@ -76,7 +74,7 @@ public class RegistarMusico extends AppCompatActivity {
         spinnerInstrumentos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInstrumento = position;
+                posInstrumento=position;
             }
 
             @Override

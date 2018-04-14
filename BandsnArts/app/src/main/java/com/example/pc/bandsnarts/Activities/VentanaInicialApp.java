@@ -3,11 +3,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 
 import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;

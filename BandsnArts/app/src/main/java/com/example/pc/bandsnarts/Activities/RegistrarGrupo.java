@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrarGrupo extends AppCompatActivity {
