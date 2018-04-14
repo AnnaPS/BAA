@@ -1,7 +1,10 @@
 package com.example.pc.bandsnarts;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,11 +27,9 @@ public class Autentificacion extends AppCompatActivity {
     public Autentificacion(Activity loginActivity) {
         vLog = loginActivity;
     }
-
-
-
     // Paso de void a Firebase user para devolver el usuario
-    public FirebaseUser registroMailPass(String user, String password) {
+    public void registroMailPass(String user, String password) {
+
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(user, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -38,60 +39,30 @@ public class Autentificacion extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
                             // FirebaseUser user = mAuth.getCurrentUser();
-
-
-
                             // pruebas..
-                            FirebaseUser usuario = mAuth.getInstance().getCurrentUser();
-
+                            FirebaseUser usuario   = mAuth.getInstance().getCurrentUser();
                             // Name, email address, and profile photo Url
                             String name = usuario.getDisplayName();
                             String email = usuario.getEmail();
                             Uri photoUrl = usuario.getPhotoUrl();
-
                             // Check if user's email is verified
                             boolean emailVerified = usuario.isEmailVerified();
-
                             // The user's ID, unique to the Firebase project. Do NOT use this value to
                             // authenticate with your backend server, if you have one. Use
                             // FirebaseUser.getToken() instead.
                             String uid = usuario.getUid();
-
                             Toast.makeText(vLog, "nombre: "+name+"\ncorreo: "+email+"\nURL de la foto: "+photoUrl+"\nemail verificado: "+emailVerified, Toast.LENGTH_SHORT).show();
-
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
                         }
                     }
                 });
-        FirebaseUser usuario = mAuth.getInstance().getCurrentUser();
-        if (usuario != null) {
-            // Name, email address, and profile photo Url
-            String name = usuario.getDisplayName();
-            String email = usuario.getEmail();
-            Uri photoUrl = usuario.getPhotoUrl();
-
-            // Check if user's email is verified
-            boolean emailVerified = usuario.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = usuario.getUid();
-
-            return usuario;
-        }else{
-            Toast.makeText(vLog, "usuario vale null", Toast.LENGTH_SHORT).show();
-            return null;
-        }
 
     }
 
 
-    public void loginMailPass(String user, String password) {
+    public void loginMailPass(final Context cont, String user, String password) {
 
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(user, password)
@@ -101,8 +72,30 @@ public class Autentificacion extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "loginUserWithEmail:success ");
-                            Toast.makeText(vLog, "Todo bien.", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(vLog, "Todo bien.", Toast.LENGTH_SHORT).show();
                             //  FirebaseUser user = mAuth.getCurrentUser();
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                                    Intent i = new Intent(cont, VentanaInicialApp.class);
+                                    ((Activity)cont).startActivity(i);
+                                } else {
+                                    if (PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) != 3) {
+                                        Toast.makeText(cont, "Debe verificar su correo antes de usar la app " + PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 0), Toast.LENGTH_SHORT).show();
+                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                                        int pos = PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) + 1;
+                                        PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", pos).commit();
+                                        FirebaseAuth.getInstance().signOut();
+                                    } else {
+                                        PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", 1);
+                                        new BDBAA().borrarPerfil(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        new BDBAA().eliminarNodo("musico",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        new BDBAA().eliminarNodo("grupo",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        Toast.makeText(cont, "Eliminado", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(cont, "Debe crear antes una cuenta", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             deslogueo();

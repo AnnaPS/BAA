@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -118,7 +119,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (usuario != null) {
 
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
-                    siguienteActivity();
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                        siguienteActivity();
+                    }
+
                 }
             }
         };
@@ -173,10 +177,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
                     //siempre debemos guardar en la bd despues de autenticar pls
-                  //  guardarBD(data);
+                    //  guardarBD(data);
                 }
             }
         });
@@ -203,9 +207,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         } else {
-            auth.loginMailPass(edtUser.getText().toString(), edtPass.getText().toString());
+            auth.loginMailPass(this,edtUser.getText().toString(), edtPass.getText().toString());
+
         }
+
     }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -230,29 +237,30 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
         //Este if es para saber que ha rellenado todo lo necesario en el logueo
         if (requestCode == 000) {
-
+            FirebaseAuth.getInstance().signOut();
             Toast.makeText(this, "He vuelto 000", Toast.LENGTH_SHORT).show();
             // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-           // autenticarEnFirebase(result.getSignInAccount(),data);
+            // autenticarEnFirebase(result.getSignInAccount(),data);
         }
 
         if (requestCode == 111) {
-            Log.d("PRUEBA CON FACEBOOK", "onActivityResult: "+loginResult);
-            manejadorTokenFacebook(loginResult.getAccessToken(),data);
-        }
-        // Para reconocer las acciones del boton de Inicio de FaceBook
-        try {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+            Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
+            manejadorTokenFacebook(loginResult.getAccessToken(), data);
 
-        } catch (NullPointerException e) {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // Para reconocer las acciones del boton de Inicio de FaceBook
+            try {
+                callbackManager.onActivityResult(requestCode, resultCode, data);
+
+            } catch (NullPointerException e) {
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
         }
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
         this.result = result;
         if (result.isSuccess()) {
-            autenticarEnFirebase(result.getSignInAccount(),this);
+            autenticarEnFirebase(result.getSignInAccount(), this);
             //siguienteActivity();
 
         } else {
@@ -271,11 +279,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     //startActivityForResult(new Intent(context, RegistarRedSocial.class), 000);
                     //siempre debemos guardar en la bd despues de autenticar pls
-                  //  guardarBD(data);
+                    //  guardarBD(data);
                 }
             }
         });
@@ -306,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 //muestra el alert*/
-                alerta.show();
+        alerta.show();
          /*   }
         });*/
         btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
@@ -320,12 +328,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
                 if (grupo.isChecked()) {
-
-                    startActivity(new Intent(ventanaPrincipal, RegistrarGrupo.class));
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class),000);
                     alerta.cancel();
                 } else if (musico.isChecked()) {
-                    startActivity(new Intent(ventanaPrincipal, RegistarMusico.class));
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class),000);
                     alerta.cancel();
                 } else {
                     Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();

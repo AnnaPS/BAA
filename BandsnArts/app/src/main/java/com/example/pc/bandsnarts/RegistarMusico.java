@@ -1,7 +1,9 @@
 package com.example.pc.bandsnarts;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -49,7 +52,7 @@ public class RegistarMusico extends AppCompatActivity {
         spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        posSexo=position;
+                posSexo = position;
             }
 
             @Override
@@ -57,11 +60,11 @@ public class RegistarMusico extends AppCompatActivity {
 
             }
 
-    });
+        });
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posEstilo=position;
+                posEstilo = position;
             }
 
             @Override
@@ -73,7 +76,7 @@ public class RegistarMusico extends AppCompatActivity {
         spinnerInstrumentos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInstrumento=position;
+                posInstrumento = position;
             }
 
             @Override
@@ -100,38 +103,27 @@ public class RegistarMusico extends AppCompatActivity {
                 edtRepitePassMusico.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
-
-                FirebaseUser usuario = auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
-
+                auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
                 // Mensaje de control
-                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                final FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
+                Toast.makeText(this, "\n\nREGISTRADO CON EXITO" + FirebaseAuth.getInstance().getCurrentUser(), Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if (firebaseAuth.getCurrentUser() != null) {
+                            new BDBAA().agregarMusico(RegistarMusico.this, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+                            startActivity(new Intent(RegistarMusico.this, VentanaSliderParteDos.class));
+                            // ENVIO CORREO VERIFICACION
+                            Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
+                            firebaseAuth.getCurrentUser().sendEmailVerification();
+                            FirebaseAuth.getInstance().removeAuthStateListener(this);
+                            RegistarMusico.this.finish();
 
-                if (usuario != null) {
-                    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
-                    if (!usuario.isEmailVerified()) {
-                        // ENVIO CORREO VERIFICACION
-                        Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
-                        usuario.sendEmailVerification();
-                    } else {
-                        // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
-                        // Name, email address, and profile photo Url
-                        String name = usuario.getDisplayName();
-                        String email = usuario.getEmail();
-                        Uri photoUrl = usuario.getPhotoUrl();
-
-                        // Check if user's email is verified
-                        boolean emailVerified = usuario.isEmailVerified();
-
-                        // The user's ID, unique to the Firebase project. Do NOT use this value to
-                        // authenticate with your backend server, if you have one. Use
-                        // FirebaseUser.getToken() instead.
-                        String uid = usuario.getUid();
-
-                        Toast.makeText(auth, "nombre: " + name + "\ncorreo: " + email +
-                                "\nURL de la foto: " + photoUrl + "\nemail verificado: "
-                                + emailVerified, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
+                });
+
             }
         }
     }

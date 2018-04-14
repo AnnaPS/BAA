@@ -36,8 +36,6 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
                     Log.d("insert", "Insertado con exito");
-
-
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
@@ -49,7 +47,6 @@ public class BDBAA extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                FirebaseAuth.getInstance().getCurrentUser().delete();
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
             }
         });
@@ -87,6 +84,61 @@ public class BDBAA extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void borrarPerfil(final String uid) {
+        bd = FirebaseDatabase.getInstance().getReference("uids");
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        Log.d("UID", "onDataChange: " + uid);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean encontrado = false;
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    bd.child(data.getKey()).removeValue();
+                    encontrado = true;
+                }
+                if (!encontrado) {
+                    Log.d("Encontrado", "onDataChange: " + encontrado);
+
+                } else {
+                    Log.d("Encontrado", "onDataChange: " + encontrado);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void eliminarNodo(String type,String uid) {
+        bd = FirebaseDatabase.getInstance().getReference(type);
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        Log.d("UID", "onDataChange: " + uid);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean encontrado=false;
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    bd.child(data.getKey()).removeValue();
+                    encontrado=true;
+                }
+                if (!encontrado) {
+                    Log.d("Encontrado2", "onDataChange: " + encontrado);
+                } else {
+                    Log.d("Encontrado2", "onDataChange: " + encontrado);
+                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void comprobarUID(final Context cont, String uid) {

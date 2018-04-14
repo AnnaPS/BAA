@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrarGrupo extends AppCompatActivity {
@@ -72,38 +74,28 @@ public class RegistrarGrupo extends AppCompatActivity {
                 edtRepitePassGrupo.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
-                FirebaseUser usuario =  auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
+                  auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
                 // RECOGER DATOS DEL GRUPO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
                 // Mensaje de control
+                FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
                 Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
                 //se lanza la info inicial
-                startActivity(new Intent(this, VentanaSliderParteDos.class));
-                if (usuario != null) {
-                    if (!usuario.isEmailVerified()) {
-                        // ENVIO CORREO VERIFICACION
-                        new BDBAA().agregarGrupo(this, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
-                        Toast.makeText(this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
-                        usuario.sendEmailVerification();
-                    } else {
-                        // RECOGER DATOS DEL USUARIO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
-                        // Name, email address, and profile photo Url
-                        String name = usuario.getDisplayName();
-                        String email = usuario.getEmail();
-                        Uri photoUrl = usuario.getPhotoUrl();
+                FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if (firebaseAuth.getCurrentUser() != null) {
+                            new BDBAA().agregarGrupo(RegistrarGrupo.this, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
+                            startActivity(new Intent(RegistrarGrupo.this, VentanaSliderParteDos.class));
+                            // ENVIO CORREO VERIFICACION
+                            Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
+                            firebaseAuth.getCurrentUser().sendEmailVerification();
+                            FirebaseAuth.getInstance().removeAuthStateListener(this);
+                            RegistrarGrupo.this.finish();
 
-                        // Check if user's email is verified
-                        boolean emailVerified = usuario.isEmailVerified();
-
-                        // The user's ID, unique to the Firebase project. Do NOT use this value to
-                        // authenticate with your backend server, if you have one. Use
-                        // FirebaseUser.getToken() instead.
-                        String uid = usuario.getUid();
-
-                        Toast.makeText(auth, "nombre: " + name + "\ncorreo: " + email +
-                                "\nURL de la foto: " + photoUrl + "\nemail verificado: "
-                                + emailVerified, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
+                });
             }
         }
     }
