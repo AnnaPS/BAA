@@ -90,11 +90,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         Glide.with(this).load(usuario.getPhotoUrl()).into(fotoGoogle);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(escuchador);
-    }
+
 
 
     private void volverActivityLogin() {
@@ -144,6 +140,12 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(escuchador);
     }
 
     @Override

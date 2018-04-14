@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
-                // Verificamos si estamos autentocados en Firebase
+                // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
                 if (usuario != null) {
@@ -273,7 +273,6 @@ private void guardarBD(Intent data){
     private void compruebaResultado(GoogleSignInResult result) {
         this.result = result;
         if (result.isSuccess()) {
-
             startActivityForResult(new Intent(this, RegistarRedSocial.class), 000);
             //siguienteActivity();
 
@@ -302,7 +301,7 @@ private void guardarBD(Intent data){
     }
 
     private void siguienteActivity() {
-        Intent i = new Intent(this, InicioGoogle.class);
+        Intent i = new Intent(this, VentanaInicialApp.class);
         startActivity(i);
     }
 
