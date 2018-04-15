@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
 import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
@@ -137,8 +138,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
                 if (usuario != null) {
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                        siguienteActivity();
+
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
+                        new BDBAA().comprobarUID(estaVentana, usuario.getUid());
                     }
                 }
             }
@@ -148,7 +150,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Comprobación de sesion iniciada en FaceBook
         if (AccessToken.getCurrentAccessToken() != null) {
             // Lanzamos la siguiente actividad
-            siguienteActivity();
+            //siguienteActivity();
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                new BDBAA().comprobarUID(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
         }
 
         // Inicializamos CallbackManager
@@ -164,13 +169,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 LoginActivity.loginResult = loginResult;
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
-               manejadorTokenFacebook(loginResult.getAccessToken());
-               //startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
-
+                manejadorTokenFacebook(loginResult.getAccessToken());
+                //startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
                 Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -198,9 +201,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
-                    new BDBAA().comprobarUID(estaVentana,FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                    siguienteActivity();
+                    //  siguienteActivity();
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
                     //siempre debemos guardar en la bd despues de autenticar pls
                     //guardarBD(data);
@@ -230,7 +233,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         } else {
-            auth.loginMailPass(this,edtUser.getText().toString(), edtPass.getText().toString());
+            auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
 
         }
 
@@ -353,10 +356,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View view) {
                 PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
                 if (grupo.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class),000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), 000);
                     alerta.cancel();
                 } else if (musico.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class),000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), 000);
                     alerta.cancel();
                 } else {
                     Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();

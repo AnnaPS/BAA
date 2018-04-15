@@ -82,6 +82,7 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
+                FirebaseAuth.getInstance().signOut();
                 a.finish();
             }
         });
@@ -90,7 +91,6 @@ public class RegistarRedSocial extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (grupo.isChecked()) {
-
                     tipo = 1;
                     alerta.cancel();
                 } else if (musico.isChecked()) {
@@ -168,7 +168,6 @@ public class RegistarRedSocial extends AppCompatActivity {
                                 .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
                                 .putExtra("des", edtDescripcion.getText().toString());
                         guardarBD(this, i);
-                        startActivity(new Intent(this,VentanaSliderParteDos.class));
                         break;
                     //Es un musico
                     case 0:
@@ -177,7 +176,6 @@ public class RegistarRedSocial extends AppCompatActivity {
                         //    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombre.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                         break;
                 }
-                finish();
             }
         }
 
@@ -190,6 +188,7 @@ public class RegistarRedSocial extends AppCompatActivity {
             //Es un grupo
             case 1:
                 new BDBAA().agregarGrupo(cont
+                        ,edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("est")
@@ -199,6 +198,7 @@ public class RegistarRedSocial extends AppCompatActivity {
             case 0:
                 //pendiente de implementacion de sexo
                 new BDBAA().agregarMusico(cont
+                        ,edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("sex")
@@ -210,4 +210,7 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 }

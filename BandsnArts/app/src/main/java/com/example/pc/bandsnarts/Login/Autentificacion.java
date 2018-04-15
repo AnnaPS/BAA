@@ -33,7 +33,7 @@ public class Autentificacion extends AppCompatActivity {
     public void registroMailPass(String user, String password) {
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(user, password)
+        mAuth.createUserWithEmailAndPassword(user.trim(), password.trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -67,7 +67,7 @@ public class Autentificacion extends AppCompatActivity {
     public void loginMailPass(final Context cont, String user, String password) {
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(user, password)
+        mAuth.signInWithEmailAndPassword(user.trim(), password.trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -78,8 +78,7 @@ public class Autentificacion extends AppCompatActivity {
                             //  FirebaseUser user = mAuth.getCurrentUser();
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                                    Intent i = new Intent(cont, VentanaInicialApp.class);
-                                    ((Activity)cont).startActivity(i);
+                                   new BDBAA().comprobarUID(cont,FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 } else {
                                     if (PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) != 3) {
                                         Toast.makeText(cont, "Debe verificar su correo antes de usar la app " + PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 0), Toast.LENGTH_SHORT).show();

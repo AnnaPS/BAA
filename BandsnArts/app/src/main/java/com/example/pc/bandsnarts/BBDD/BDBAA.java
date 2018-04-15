@@ -3,13 +3,18 @@ package com.example.pc.bandsnarts.BBDD;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +29,7 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    public void agregarMusico(final Context context, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
+    public void agregarMusico(final Context context,final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
         // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference("musico");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
@@ -35,6 +40,7 @@ public class BDBAA extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.d("insert", "No pudo insertar");
                     Toast.makeText(context, "Ya existe un usuario con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
+                    edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                     encontrado = true;
                 }
                 if (!encontrado) {
@@ -42,9 +48,10 @@ public class BDBAA extends AppCompatActivity {
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     com.example.pc.bandsnarts.Musico mus = new com.example.pc.bandsnarts.Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
                     bd.child(bd.push().getKey()).setValue(mus);
-
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
+                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    ((Activity)context).finish();
                 }
             }
 
@@ -56,7 +63,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void agregarGrupo(final Context context, final String imagen, final String nombre, final String estilo, final String descripcion) {
+    public void agregarGrupo(final Context context, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
 
         bd = FirebaseDatabase.getInstance().getReference("grupo");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
@@ -67,6 +74,7 @@ public class BDBAA extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.d("INSERt", "No insertado ");
                     Toast.makeText(context, "Ya existe un grupo con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
+                    edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                     encontrado = true;
                 }
                 if (!encontrado) {
@@ -76,13 +84,14 @@ public class BDBAA extends AppCompatActivity {
                     bd.child(bd.push().getKey()).setValue(gru);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
+                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    ((Activity)context).finish();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
-                FirebaseAuth.getInstance().getCurrentUser().delete();
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
             }
         });

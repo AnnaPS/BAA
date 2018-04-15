@@ -114,14 +114,11 @@ public class RegistarMusico extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarMusico(RegistarMusico.this, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
-                            startActivity(new Intent(RegistarMusico.this, VentanaSliderParteDos.class));
+                            new BDBAA().agregarMusico(RegistarMusico.this,edtNombreMusico, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();
                             FirebaseAuth.getInstance().removeAuthStateListener(this);
-                            RegistarMusico.this.finish();
-
                         }
                     }
                 });
