@@ -7,23 +7,21 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="44dp"
                 android:background="@drawable/fondperfil"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,12 +58,17 @@
                 android:layout_width="61dp"
                 android:layout_height="49dp"
                 android:layout_gravity="right"
-                android:layout_marginStart="276dp"
+                android:layout_marginBottom="8dp"
 
-                android:layout_marginTop="200dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="276dp"
                 android:src="@drawable/ic_border_color_black_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/appBarLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.661"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
+                app:layout_constraintVertical_bias="1.0" />
 
 
             <android.support.design.widget.AppBarLayout
@@ -85,7 +88,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif"
-                    android:text="INFORMACIÓN"
+                    android:text=" INFORMACIÓN"
+                    android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:textColor="@color/md_green_A700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -257,9 +261,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_description_black_24dp"
                     android:fontFamily="sans-serif"
-                    android:text="DESCRIPCIÓN"
-
+                    android:text=" DESCRIPCIÓN"
                     android:textColor="@color/md_green_A700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -299,14 +303,15 @@ apasionados de la música."
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif"
-                    android:text="TUS INSTRUMENTOS"
+                    android:text=" TUS INSTRUMENTOS"
+                    android:drawableLeft="@drawable/ic_music_note_black_24dp"
                     android:textColor="@color/md_green_A700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="20dp"
                     android:orientation="vertical">
 
@@ -314,7 +319,6 @@ apasionados de la música."
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"

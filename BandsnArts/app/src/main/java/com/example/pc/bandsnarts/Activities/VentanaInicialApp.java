@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -16,6 +16,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
+import com.example.pc.bandsnarts.R;
 
 //IMPORTATE IMPLEMENTAR EL LISTENER DE CADA FRAGMENT
 public class VentanaInicialApp extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{

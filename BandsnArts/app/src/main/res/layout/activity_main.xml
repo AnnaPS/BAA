@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_black_1000"
-    tools:context="com.example.pc.bandsnarts.MainActivity">
+    tools:context="com.example.pc.bandsnarts.Activities.MainActivity">
 
     <TextView
         android:id="@+id/tituloVMain"

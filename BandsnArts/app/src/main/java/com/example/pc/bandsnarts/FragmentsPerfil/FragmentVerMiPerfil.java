@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.R;
+
 
 public class FragmentVerMiPerfil extends Fragment {
 
@@ -20,6 +22,7 @@ public class FragmentVerMiPerfil extends Fragment {
                              Bundle savedInstanceState) {
 
         View vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
+        //BOTON FLOTANTE PARA EDITAR EL PERFIL
         FloatingActionButton miFAB=(FloatingActionButton)vista.findViewById(R.id.floatingBPerfil);
         miFAB.setOnClickListener(new View.OnClickListener() {
             @Override

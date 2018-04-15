@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.FragmentsMenuDrawer;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
+import com.example.pc.bandsnarts.R;
 
 
 public class FragmentMiPerfil extends Fragment {
@@ -31,7 +36,7 @@ public class FragmentMiPerfil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_fragment_mi_perfil, container, false);
-//Se establece como principal el fragment de inicio
+        //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();
         return vista;
@@ -43,12 +48,12 @@ public class FragmentMiPerfil extends Fragment {
         ///parte de los botones de navegacion
         bottomNavigationView = (BottomNavigationView)vista.findViewById(R.id.bottomnav);
         //info = vista.findViewById(R.id.info);
-        Toast.makeText(getActivity(), "holiiiiiiiiiii", Toast.LENGTH_SHORT).show();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Toast.makeText(getActivity(), "adiooooooooooooooos", Toast.LENGTH_SHORT).show();
+
                 FragmentManager fragment = getFragmentManager();
                 int id = item.getItemId();
                 if (id == R.id.menuPerfil) {

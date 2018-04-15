@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Login.Autentificacion;
+import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrarGrupo extends AppCompatActivity {

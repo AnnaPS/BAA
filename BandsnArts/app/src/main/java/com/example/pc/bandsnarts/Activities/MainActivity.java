@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Login.InicioGoogle;
 import com.example.pc.bandsnarts.Login.LoginActivity;
+import com.example.pc.bandsnarts.R;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

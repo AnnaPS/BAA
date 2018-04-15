@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.pc.bandsnarts.Adaptadores.MiPageAdapter;
+import com.example.pc.bandsnarts.R;
 
 public class VentanaSliderParteDos extends AppCompatActivity {
 

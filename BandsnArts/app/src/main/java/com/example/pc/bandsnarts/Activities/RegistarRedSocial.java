@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,10 +19,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.R;
 
 public class RegistarRedSocial extends AppCompatActivity {
-    Spinner spinnerInstrumentos, spinnerEstilos;
+    Spinner spinnerInstrumentos, spinnerEstilos,spinnerSexo;
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
@@ -44,11 +45,13 @@ public class RegistarRedSocial extends AppCompatActivity {
         //finds///
         setContentView(R.layout.activity_registar_red_social);
         spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
+        spinnerSexo=findViewById(R.id.spinnerSexoVRegSocial);
         textViewInstrumentos = findViewById(R.id.tvInstrumentoVRegSocial);
         //spinners para estilo musical e instrumentos
         spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
         spinnerEstilos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.estiloMusical)));
         spinnerInstrumentos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.instrumentos)));
+        spinnerSexo.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sexo)));
         //Edit Text
         edtNombre = findViewById(R.id.edtNombreVRegSocial);
         edtDescripcion = findViewById(R.id.edtDescripcionVRegSocial);
@@ -155,7 +158,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         if (!edtNombre.getText().toString().isEmpty()) {
             if (!edtDescripcion.getText().toString().isEmpty()) {
                 Intent i;
-                Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
+                Log.d("TIPO DE LOGUEO", "onClickLogueo: " + tipo);
                 switch (tipo) {
                     //Es un grupo
                     case 1:

@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
 import android.net.Uri;

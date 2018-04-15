@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,11 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.R;
+import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,7 +41,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;

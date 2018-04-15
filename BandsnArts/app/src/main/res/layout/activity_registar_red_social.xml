@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistarRedSocial">
+    tools:context=".Activities.RegistarRedSocial">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -121,15 +121,43 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvInstrumentoVRegSocial" />
 
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/impDescripcionVRegSocial"
-                android:layout_width="match_parent"
-                android:layout_height="202dp"
-                android:layout_marginTop="9dp"
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="223dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="SEXO"
+                android:textColor="@color/md_green_800"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial"
+                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial" />
+
+            <Spinner
+                android:id="@+id/spinnerSexoVRegSocial"
+                android:layout_width="227dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:background="@drawable/bordeverde"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/impDescripcionVRegSocial"
+                android:layout_width="match_parent"
+                android:layout_height="195dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerSexoVRegSocial"
                 tools:ignore="MissingConstraints">
 
                 <EditText

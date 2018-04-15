@@ -1,4 +1,6 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Objetos;
+
+import com.example.pc.bandsnarts.Objetos.Anuncio;
 
 import java.util.ArrayList;
 

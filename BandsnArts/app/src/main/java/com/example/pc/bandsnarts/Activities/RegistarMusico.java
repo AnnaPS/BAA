@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Activities;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Login.Autentificacion;
+import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RegistarMusico extends AppCompatActivity {
@@ -40,6 +43,8 @@ public class RegistarMusico extends AppCompatActivity {
         escuchadoresSpinner();
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
+
+
     }
 
     public void escuchadoresSpinner() {

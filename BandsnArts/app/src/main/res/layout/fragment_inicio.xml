@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentsMenuDrawer.FragmentInicio"
     android:id="@+id/fragmentInicio"
-    android:background="@drawable/bordeverde">
+    android:background="@drawable/bordeverde"
+
+  >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayoutInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:layout_marginTop="55dp"
+        app:tabTextColor="@color/md_teal_800"
+        app:tabIndicatorColor="@color/md_green_900"
+        android:background="@color/md_light_green_600"/>
+
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:gravity="center"
-        android:textSize="50dp"/>
-
-</FrameLayout>
+        android:id="@+id/viewPagerInicio"
+        ></android.support.v4.view.ViewPager>
+</android.support.design.widget.AppBarLayout>
