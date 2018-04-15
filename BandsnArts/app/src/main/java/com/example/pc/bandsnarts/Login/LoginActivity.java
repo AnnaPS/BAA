@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     //Objeto para conectar con la api de facebook
     public static LoginResult loginResult;
 
+
+
     public static final int CODIGO_DE_INICIO = 777;
 
     // Objeto para conectar con la API del Cliente Google
@@ -80,6 +82,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private Activity estaVentana;
     private GoogleSignInResult result;
+
+    // Boton Login con Google
+    com.google.android.gms.common.SignInButton botonGoogle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         auth = new Autentificacion(this);
 
         estaVentana = this;
+
+        // ACCION BOTON GOOGLE
+        botonGoogle = findViewById(R.id.btnGoogleVLogin);
+        botonGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickIngresoGoogle(null);
+            }
+        });
 
         //Opciones de inicio con google, obtenemos un token de usuario
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -256,7 +271,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             manejadorTokenFacebook(loginResult.getAccessToken());
 
             // Para reconocer las acciones del boton de Inicio de FaceBook
-
         }
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);

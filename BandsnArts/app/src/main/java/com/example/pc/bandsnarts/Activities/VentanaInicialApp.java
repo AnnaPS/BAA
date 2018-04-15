@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,18 +44,16 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
-    ImageView fotoPerfil;
+    private ImageView fotoPerfil;
+    private TextView txtNombre,txtCorreo;
 
-    // Variable para el usuario de Google
+    // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventana_inicial_app2);
-
 
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,9 +85,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
         //////////////////////////////////////////
 
-
+        // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
         View vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
+        txtNombre =vista.findViewById(R.id.txtNombreNavH);
+        txtCorreo = vista.findViewById(R.id.txtCorreoNavH);
 
         // Inicializamos el FireBaseAuth y su escuchador
         firebaseAuth = FirebaseAuth.getInstance();
@@ -100,9 +101,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 if (usuario != null) {
                     // Si hay usuario, pintamos sus datos
                     datosUsuario(usuario);
-                }
-
-            }
+                }            }
 
         };
 
@@ -198,14 +197,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        // nombreGoogle.setText(usuario.getDisplayName());
-        // emailGoogle.setText(usuario.getEmail());
+        txtNombre.setText(usuario.getDisplayName());
+        txtCorreo.setText(usuario.getEmail());
+        Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).into(fotoPerfil);
         // identUsuGoogle.setText(usuario.getUid());
-
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
-
-      Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).into(fotoPerfil);
     }
 
     public void cerrarSesion() {

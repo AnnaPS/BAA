@@ -131,30 +131,35 @@
             android:orientation="horizontal">
 
 
-
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
-                android:layout_width="65dp"
-                android:layout_height="58dp"
-                android:layout_marginLeft="60dp"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
                 android:background="@mipmap/ic_launcherfacebook" />
-            <Button
+        <!--    <Button
                 android:id="@+id/sacarmenu"
                 android:layout_width="50dp"
                 android:layout_height="41dp"
                 android:layout_weight="1"
                 android:text="Button"
                 tools:text="menu"
-                android:onClick="onclick"/>
+                android:onClick="onclick"/>-->
 
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btnGoogleVLogin"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:onClick="onClickIngresoGoogle">
 
-            <Button
+            </com.google.android.gms.common.SignInButton>
+
+          <!--  <Button
                 android:id="@+id/btnGoogleVLogin"
                 android:layout_width="72dp"
                 android:layout_height="73dp"
                 android:layout_marginLeft="100dp"
                 android:background="@mipmap/ic_launchergoogle"
-                android:onClick="onClickIngresoGoogle" />
+                android:onClick="onClickIngresoGoogle" />-->
 
 
         </LinearLayout>
