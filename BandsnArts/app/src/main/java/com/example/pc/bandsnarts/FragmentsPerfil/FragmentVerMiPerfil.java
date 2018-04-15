@@ -36,7 +36,7 @@ public class FragmentVerMiPerfil extends Fragment {
 
         new BDBAA().cargarDatosPerfil(vista,"musico",this);
         new BDBAA().cargarDatosPerfil(vista,"grupo",this);
-
+        //BOTON FLOTANTE PARA EDITAR EL PERFIL
         FloatingActionButton miFAB=(FloatingActionButton)vista.findViewById(R.id.floatingBPerfil);
         miFAB.setOnClickListener(new View.OnClickListener() {
             @Override

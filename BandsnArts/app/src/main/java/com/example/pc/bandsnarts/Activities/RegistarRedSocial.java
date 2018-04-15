@@ -25,7 +25,7 @@ import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistarRedSocial extends AppCompatActivity {
-    Spinner spinnerInstrumentos, spinnerEstilos;
+    Spinner spinnerInstrumentos, spinnerEstilos,spinnerSexo;
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
@@ -47,11 +47,13 @@ public class RegistarRedSocial extends AppCompatActivity {
         //finds///
         setContentView(R.layout.activity_registar_red_social);
         spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
+        spinnerSexo=findViewById(R.id.spinnerSexoVRegSocial);
         textViewInstrumentos = findViewById(R.id.tvInstrumentoVRegSocial);
         //spinners para estilo musical e instrumentos
         spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
         spinnerEstilos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.estiloMusical)));
         spinnerInstrumentos.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.instrumentos)));
+        spinnerSexo.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sexo)));
         //Edit Text
         edtNombre = findViewById(R.id.edtNombreVRegSocial);
         edtDescripcion = findViewById(R.id.edtDescripcionVRegSocial);
