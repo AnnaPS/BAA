@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Adaptadores;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
