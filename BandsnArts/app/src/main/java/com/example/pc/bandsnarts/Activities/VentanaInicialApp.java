@@ -199,7 +199,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         // Pintamos los datos del usuario
         txtNombre.setText(usuario.getDisplayName());
         txtCorreo.setText(usuario.getEmail());
-        //tamaño estatico con override para la fotografia 
         Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).override(200,200).into(fotoPerfil);
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
