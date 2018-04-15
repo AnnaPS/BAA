@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts;
+package com.example.pc.bandsnarts.Objetos;
 
 public class Local {
     private String nombre;

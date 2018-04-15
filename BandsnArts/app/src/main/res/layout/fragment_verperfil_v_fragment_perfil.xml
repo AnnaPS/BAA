@@ -42,7 +42,7 @@
                     app:civ_border_width="2dp" />
 
                 <TextView
-                    android:id="@+id/txtNombUsuarioVPerfil"
+                    android:id="@+id/txtNombUsuarioVVerMiPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -107,6 +107,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtEstiloVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -143,7 +144,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="Madrid"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -173,7 +173,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="Getafe"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -181,6 +180,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llSexoVVerMiPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -203,7 +203,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="Mujer"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -232,7 +231,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="bands@gmail.com"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -266,14 +264,13 @@
 
 
                 <TextView
+                    android:id="@+id/txtDescripcionVVerPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif"
 
-                    android:text="Grupo de Rock, Bands n' Arts. Fundado en 2018. Dispone de 5 componentes
-apasionados de la música."
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp"
                     android:textStyle="bold" />
