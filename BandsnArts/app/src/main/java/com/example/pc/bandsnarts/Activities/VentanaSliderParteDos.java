@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.MiPageAdapter;
 import com.example.pc.bandsnarts.R;
 
 public class VentanaSliderParteDos extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
     private TextView[] textView;
     private LinearLayout layaoutLinear;
     private Button btnSiguiente, btnSaltar;
-    private com.example.pc.bandsnarts.MiPageAdapter pageAdapter;
+    private MiPageAdapter pageAdapter;
     private int[] layouts;
 
 
@@ -50,7 +51,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
         layaoutLinear = findViewById(R.id.linearSlider);
         setStatusBarTransparent();
         layouts = new int[]{R.layout.slider_1, R.layout.slider_2, R.layout.slider_3};
-        pageAdapter = new com.example.pc.bandsnarts.MiPageAdapter(layouts, getApplicationContext());
+        pageAdapter = new MiPageAdapter(layouts, getApplicationContext());
         viewPager.setAdapter(pageAdapter);
         setDotStatus(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

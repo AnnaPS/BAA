@@ -9,19 +9,34 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 
 public class FragmentVerMiPerfil extends Fragment {
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
+
+        new BDBAA().cargarDatosPerfil(vista,"musico",this);
+        new BDBAA().cargarDatosPerfil(vista,"grupo",this);
+        //BOTON FLOTANTE PARA EDITAR EL PERFIL
         FloatingActionButton miFAB=(FloatingActionButton)vista.findViewById(R.id.floatingBPerfil);
         miFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +47,8 @@ public class FragmentVerMiPerfil extends Fragment {
         });
         return vista;
     }
+
+
 
 
 }

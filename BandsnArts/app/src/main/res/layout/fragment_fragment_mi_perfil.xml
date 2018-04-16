@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             design:menu="@menu/menu_navigation"
-            android:background="@color/md_green_50"/>
+            android:background="@color/md_light_green_600"/>
 
 
 

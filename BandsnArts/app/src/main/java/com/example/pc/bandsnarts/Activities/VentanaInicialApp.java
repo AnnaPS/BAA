@@ -199,7 +199,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         // Pintamos los datos del usuario
         txtNombre.setText(usuario.getDisplayName());
         txtCorreo.setText(usuario.getEmail());
-        Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).into(fotoPerfil);
+        Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).override(200,200).into(fotoPerfil);
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());

@@ -19,9 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Activities.RegistarMusico;
-import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
-import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+
 import com.example.pc.bandsnarts.Login.InicioGoogle;
 import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;

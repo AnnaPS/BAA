@@ -14,8 +14,8 @@
 
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="63dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
 
@@ -27,7 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="10dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="BANDS N' ARTS"
             android:textColor="@color/md_white_1000"
@@ -42,7 +42,7 @@
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_person_white_24dp"
             android:ems="10"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:hint="e-mail"
             android:inputType="textPersonName"
             android:padding="10dp"
@@ -58,7 +58,7 @@
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_lock_white_24dp"
             android:ems="10"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:hint="Contraseña"
             android:inputType="textPassword"
             android:padding="10dp"
@@ -79,7 +79,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:background="#00000000"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:padding="10dp"
                 android:text="¿Olvisaste la contraseña?"
                 android:textColor="@color/md_white_1000"
@@ -94,7 +94,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
                 android:buttonTint="@color/md_white_1000"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:text="Recordar"
                 android:textColor="@color/md_white_1000"
                 android:textSize="12sp" />
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/bordefondoverde"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:onClick="onClickIngresarVLogin"
             android:text="INGRESAR"
             android:textColor="@color/md_white_1000"
@@ -116,34 +116,22 @@
             android:textStyle="bold" />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="20dp"
-            android:background="@color/md_white_1000" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
+            android:orientation="vertical">
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:background="@mipmap/ic_launcherfacebook" />
-        <!--    <Button
-                android:id="@+id/sacarmenu"
-                android:layout_width="50dp"
-                android:layout_height="41dp"
-                android:layout_weight="1"
-                android:text="Button"
-                tools:text="menu"
-                android:onClick="onclick"/>-->
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_marginLeft="120dp"
+
+                />
+
+
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btnGoogleVLogin"
@@ -153,13 +141,7 @@
 
             </com.google.android.gms.common.SignInButton>
 
-          <!--  <Button
-                android:id="@+id/btnGoogleVLogin"
-                android:layout_width="72dp"
-                android:layout_height="73dp"
-                android:layout_marginLeft="100dp"
-                android:background="@mipmap/ic_launchergoogle"
-                android:onClick="onClickIngresoGoogle" />-->
+
 
 
         </LinearLayout>
@@ -169,14 +151,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="510dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="510dp"
         android:background="@color/md_white_1000" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
@@ -188,14 +170,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="520dp"
             android:text="¿NECESITAS UNA CUENTA?"
-            android:textColor="@color/md_white_1000" />
+            android:textStyle="bold"
+            android:textColor="@color/md_white_1000"
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/btnRegistrarVLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="520dp"
             android:background="@drawable/bordefondoverde"
             android:onClick="onClickRegistrarVLogin"
