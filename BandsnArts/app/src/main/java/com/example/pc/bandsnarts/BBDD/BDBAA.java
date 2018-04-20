@@ -195,7 +195,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void cargarDatosPerfil(final View vista, final String tipo, final FragmentVerMiPerfil context) {
+    public void cargarDatosPerfil(final View vista, final String tipo, final Context context) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
