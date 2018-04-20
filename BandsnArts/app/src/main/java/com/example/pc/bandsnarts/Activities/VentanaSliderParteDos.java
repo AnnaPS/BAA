@@ -45,7 +45,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
             //si ya no es la primera vez se lanza la ventana de inicio !!! PONGO ESTA PORQUE LA DE INICIO NO ESTA HECHA AUN
             //AQUI SE LANZARIA LA POR DEFECTO AL ABRIR LA APP YA LOGUEADO
             establecerPrimeraVezInicio(true);
-            startActivity(new Intent(this, VentanaInicialApp.class));
+            startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
             finish();
         }
         layaoutLinear = findViewById(R.id.linearSlider);
@@ -96,7 +96,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
             //nos movemos a la siguiente
             viewPager.setCurrentItem(paginaActual);
         }else{
-            startActivity(new Intent(this, VentanaInicialApp.class));
+            startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
             finish();
         }
     }
@@ -104,7 +104,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
     //si pulsa saltar se lanza la actividad de bienvenida
     public void onClickSaltarVSlider(View view) {
         establecerPrimeraVezInicio(true);
-        startActivity(new Intent(this, VentanaInicialApp.class));
+        startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
         finish();
     }
     private void setDotStatus(int page){
@@ -133,4 +133,5 @@ public class VentanaSliderParteDos extends AppCompatActivity {
         editor.commit();
 
     }
+
 }

@@ -161,6 +161,15 @@
         android:layout_marginTop="510dp"
         android:background="@color/md_white_1000" />
 
+    <ProgressBar
+        android:id="@+id/progressBarVLogin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="155dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

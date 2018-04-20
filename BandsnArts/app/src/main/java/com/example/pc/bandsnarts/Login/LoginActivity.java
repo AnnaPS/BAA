@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,8 +74,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     // Objeto de clase CallbackManager para detectar acciones en el boton FaceBook
     private CallbackManager callbackManager;
     private Activity estaVentana;
-
-
+    private ProgressBar progressBar;
     // Boton Login con Google
     com.google.android.gms.common.SignInButton botonGoogle;
 
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
-
+        progressBar=findViewById(R.id.progressBarVLogin);
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
 
@@ -129,24 +129,27 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
                 if (usuario != null) {
+                    visualizarBotones(View.INVISIBLE);
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
                         new BDBAA().comprobarUID(estaVentana, usuario.getUid());
                     }
+                }else{
+                    visualizarBotones(View.VISIBLE);
                 }
             }
         };
 
 
-        // Comprobación de sesion iniciada en FaceBook
+       /* // Comprobación de sesion iniciada en FaceBook
         if (AccessToken.getCurrentAccessToken() != null) {
             // Lanzamos la siguiente actividad
             //siguienteActivity();
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                new BDBAA().comprobarUID(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
+              //  new BDBAA().comprobarUID(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         }
-
+*/
         // Inicializamos CallbackManager
         callbackManager = CallbackManager.Factory.create();
         // Recogemos el Boton
@@ -178,10 +181,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         });
+        visualizarBotones(View.INVISIBLE);
+    }
+    public void visualizarBotones(int vis){
+        botonFaceBook.setVisibility(vis);
+        botonGoogle.setVisibility(vis);
+        if(vis==View.INVISIBLE){
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void manejadorTokenFacebook(AccessToken accessToken) {
         //Creamos una credencial en base al Token recibido por parametro
+
         AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
         // Autenticamos al usuario el Firebase con esa credencial obtenida
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -190,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (!task.isSuccessful()) {
                     Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                 } else {
+                    visualizarBotones(View.INVISIBLE);
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                     new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
@@ -259,8 +274,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         finish();
                         break;
                     case (BandsnArts.CODIGO_DE_DESLOGUEO):
+                        visualizarBotones(View.VISIBLE);
                         System.out.println("Ha sido deslogueado");
                         Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        finish();
                         break;
                 }
           /*  case (BandsnArts.CODIGO_DE_FACEBOOK):
@@ -288,8 +307,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void autenticarEnFirebase(GoogleSignInAccount signInAccount, final Context context) {
         // Creamos una credencial y guardamos en ella el Token obtenido del objeto cuenta, el segundo
         // parametro es es access Token que no es necesario, le pasamos null
-        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
 
+        AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -297,6 +316,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 } else {
+                    visualizarBotones(View.INVISIBLE);
                     new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
                 }
             }
@@ -363,7 +383,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    public void onclick(View view) {
+    /* public void onclick(View view) {
         startActivity(new Intent(this, VentanaInicialApp.class));
-    }
+    }*/
 }
