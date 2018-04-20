@@ -179,9 +179,9 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
                     Log.d("Encontrado", "onDataChange: " + encontrado);
-                    ((Activity) cont).startActivity(new Intent(cont, RegistarRedSocial.class));
+                    ((Activity) cont).startActivityForResult(new Intent(cont, RegistarRedSocial.class),111);
                 } else {
-                    ((Activity) cont).startActivity(new Intent(cont, VentanaInicialApp.class));
+                    ((Activity) cont).startActivityForResult(new Intent(cont, VentanaInicialApp.class),222);
                 }
             }
 

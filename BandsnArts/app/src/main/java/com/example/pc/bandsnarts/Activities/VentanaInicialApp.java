@@ -26,6 +26,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
+import com.example.pc.bandsnarts.Login.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -120,11 +121,14 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     @Override
     public void onBackPressed() {
+        //En caso de que este desplegado el menu drawer al accionar este evento solo lo ocultara y
+        // sino pues cerrara la app en segundo plano
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            setResult(BandsnArts.CODIGO_DE_CIERRE);
+            finish();
         }
     }
 
@@ -216,7 +220,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             public void onResult(@NonNull Status status) {
                 if(status.isSuccess()){
                     Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
-                    finish();
+                    //El primer digito indica la ventana y el segundo la vez que
+                    setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
+                    VentanaInicialApp.this.finish();
                     // volverActivityLogin();
                 }else{
                     Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
@@ -245,4 +251,5 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }
+
 }

@@ -63,26 +63,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private LayoutInflater inflador;
     //Objeto para conectar con la api de facebook
     public static LoginResult loginResult;
-
-
-
-    public static final int CODIGO_DE_INICIO = 777;
-
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
-
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
-
     private Autentificacion auth;
-
     private LoginButton botonFaceBook;
     // Objeto de clase CallbackManager para detectar acciones en el boton FaceBook
     private CallbackManager callbackManager;
-
     private Activity estaVentana;
-    private GoogleSignInResult result;
+
 
     // Boton Login con Google
     com.google.android.gms.common.SignInButton botonGoogle;
@@ -170,7 +161,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
-                //startActivityForResult(new Intent(LoginActivity.this, RegistarRedSocial.class), 111);
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
                 Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
@@ -202,11 +192,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                     new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-                    //  siguienteActivity();
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
-                    //siempre debemos guardar en la bd despues de autenticar pls
-                    //guardarBD(data);
                 }
             }
         });
@@ -234,7 +220,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         } else {
             auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
-
         }
 
     }
@@ -243,11 +228,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // SI ALGO SALE MAL EN LA CONEXION...INFORMAR AL USUARIO
+        Toast.makeText(ventanaPrincipal, "Por favor compruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickIngresoGoogle(View view) {
         Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
-        startActivityForResult(g, CODIGO_DE_INICIO);
+        startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!ON ACTIVITY FOR RESULT!!!!!!!!!!!!!!!!!
@@ -257,38 +243,43 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODIGO_DE_INICIO) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            compruebaResultado(result);
-        }
-        //Este if es para saber que ha rellenado todo lo necesario en el logueo
-        if (requestCode == 000) {
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "He vuelto 000", Toast.LENGTH_SHORT).show();
-            // Llamada al metodo para autenticar al usuario en Firebase y le mandamos la cuenta
-            // autenticarEnFirebase(result.getSignInAccount(),data);
-        }
+        switch (requestCode) {
 
-        if (requestCode == 111) {
-            Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
-            manejadorTokenFacebook(loginResult.getAccessToken());
-
-            // Para reconocer las acciones del boton de Inicio de FaceBook
+            case (BandsnArts.CODIGO_DE_INICIO):
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                compruebaResultado(result);
+                break;
+            //Este if es para saber que ha rellenado todo lo necesario en el logueo
+            case (BandsnArts.CODIGO_DE_REGISTRO):
+                FirebaseAuth.getInstance().signOut();
+                break;
+            case 222:
+                switch (resultCode) {
+                    case (BandsnArts.CODIGO_DE_CIERRE):
+                        finish();
+                        break;
+                    case (BandsnArts.CODIGO_DE_DESLOGUEO):
+                        System.out.println("Ha sido deslogueado");
+                        Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+          /*  case (BandsnArts.CODIGO_DE_FACEBOOK):
+                Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
+                manejadorTokenFacebook(loginResult.getAccessToken());
+                // Para reconocer las acciones del boton de Inicio de FaceBook
+                break;*/
         }
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
-
         } catch (NullPointerException e) {
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
-        this.result = result;
+
         if (result.isSuccess()) {
             autenticarEnFirebase(result.getSignInAccount(), this);
-            //siguienteActivity();
-
         } else {
             Toast.makeText(this, "ERROR AL LOGAR", Toast.LENGTH_SHORT).show();
         }
@@ -307,9 +298,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 } else {
                     new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    //startActivityForResult(new Intent(context, RegistarRedSocial.class), 000);
-                    //siempre debemos guardar en la bd despues de autenticar pls
-                    //  guardarBD(data);
                 }
             }
         });
@@ -336,13 +324,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         alerta.setView(vista);
         //para no poder usar el onbackpressed
         alerta.setCancelable(false);
-        /*btnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //muestra el alert*/
         alerta.show();
-         /*   }
-        });*/
         btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -366,7 +348,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         });
-
         //control de los checkbox
         musico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,7 +355,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 grupo.setChecked(false);
             }
         });
-
         grupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
