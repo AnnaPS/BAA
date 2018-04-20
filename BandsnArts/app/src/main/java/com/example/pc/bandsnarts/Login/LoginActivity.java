@@ -323,11 +323,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    private void siguienteActivity() {
+  /*  private void siguienteActivity() {
         Intent i = new Intent(this, VentanaInicialApp.class);
         startActivity(i);
     }
-
+*/
     public void onClickRegistrarVLogin(View view) {
         //sacar alert dialog para grupo o musico
         alertaBuilder = new AlertDialog.Builder(this);

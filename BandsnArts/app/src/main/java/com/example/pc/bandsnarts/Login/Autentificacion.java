@@ -77,9 +77,7 @@ public class Autentificacion extends AppCompatActivity {
                         //    Toast.makeText(vLog, "Todo bien.", Toast.LENGTH_SHORT).show();
                             //  FirebaseUser user = mAuth.getCurrentUser();
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                                   new BDBAA().comprobarUID(cont,FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                } else {
+                                if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                                     if (PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) != 3) {
                                         Toast.makeText(cont, "Debe verificar su correo antes de usar la app " + PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 0), Toast.LENGTH_SHORT).show();
                                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
