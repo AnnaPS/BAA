@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_lime_800"
+    android:background="@color/md_amber_600"
     android:id="@+id/slider3"
     android:orientation="vertical"
     android:gravity="center"

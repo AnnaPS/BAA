@@ -8,6 +8,8 @@ public class Musico {
 
     private String uid;
     private String imagen;
+    int cantidadAnuncios, img,buscandoInt;
+
     private String nombre;
     private String sexo;
     private String estilo;
@@ -78,6 +80,7 @@ public class Musico {
         this.sexo = sexo;
     }
 
+
     public String getEstilo() {
         return estilo;
     }
@@ -120,6 +123,30 @@ public class Musico {
 
     public ArrayList<Anuncio> getAnuncio() {
         return anuncio;
+    }
+    public int getBuscandoInt() {
+        return buscandoInt;
+    }
+
+    public void setBuscandoInt(int buscandoInt) {
+        this.buscandoInt = buscandoInt;
+    }
+
+    public int getCantidadAnuncios() {
+        return cantidadAnuncios;
+
+    }
+
+    public void setCantidadAnuncios(int cantidadAnuncios) {
+        this.cantidadAnuncios = cantidadAnuncios;
+    }
+
+    public int getImg() {
+        return img;
+    }
+
+    public void setImg(int img) {
+        this.img = img;
     }
 
     public void setAnuncio(Anuncio anuncio) {
