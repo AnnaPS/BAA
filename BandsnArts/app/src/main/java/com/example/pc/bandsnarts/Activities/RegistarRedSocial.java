@@ -29,10 +29,11 @@ public class RegistarRedSocial extends AppCompatActivity {
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
+    private int posSexo;
     private Activity a;
     //recogemos en una variable entera si es 0 es un musico y si es 1 es un grupo
     private int tipo;
-    private Button btnCancelarAlerta, btnAceptarAlerta, btnReg;
+    private Button btnCancelarAlerta, btnAceptarAlerta;
     private CheckBox grupo, musico;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
@@ -152,6 +153,18 @@ public class RegistarRedSocial extends AppCompatActivity {
             }
 
         });
+        spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posSexo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
     }
 
 
@@ -165,6 +178,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                     //Es un grupo
                     case 1:
                         i = new Intent()
+                                .putExtra("img","default_grupo.jpg")
                                 .putExtra("tipo", tipo)
                                 .putExtra("nom", edtNombre.getText().toString())
                                 .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
@@ -173,9 +187,15 @@ public class RegistarRedSocial extends AppCompatActivity {
                         break;
                     //Es un musico
                     case 0:
-                        //  Intent i=new Intent();
-                        //pendiente de implementacion de sexo
-                        //    new BDBAA().agregarMusico(this, "default_musico.jpg", edtNombre.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+                           i=new Intent()
+                                   .putExtra("img","default_musico.jpg")
+                                   .putExtra("tipo", tipo)
+                                   .putExtra("nom", edtNombre.getText().toString())
+                                   .putExtra("sex",getResources().getStringArray(R.array.sexo)[posSexo])
+                                   .putExtra("est",getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                                   .putExtra("ins",getResources().getStringArray(R.array.instrumentos)[posInstrumento])
+                                   .putExtra("des", edtDescripcion.getText().toString());
+                        guardarBD(this, i);
                         break;
                 }
             }
