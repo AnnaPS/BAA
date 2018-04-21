@@ -16,6 +16,7 @@ public class Musico {
     private ArrayList<String> mensaje=new ArrayList<String>();
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando;
+    private ArrayList<String> redsocial=new ArrayList<String>();
 
     public String getBuscando() {
         return buscando;
@@ -122,5 +123,13 @@ public class Musico {
 
     public void setAnuncio(Anuncio anuncio) {
         this.anuncio.add(anuncio);
+    }
+
+    public void setRedsocial(String redsocial) {
+        this.redsocial.add(redsocial);
+    }
+
+    public ArrayList<String> getRedsocial() {
+        return redsocial;
     }
 }
