@@ -210,9 +210,23 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView)vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            Glide.with(getApplicationContext()).load(FirebaseAuth.getInstance().getCurrentUser()
+                            Glide.with(context).load(FirebaseAuth.getInstance().getCurrentUser()
                                     .getPhotoUrl()).override(200,200).into(((ImageView)vista.findViewById(R.id.imgPerfilVPerfil)));
+                            // Estilo
+                            ((TextView)vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
+                            // Provincia
+                            ((TextView)vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(musico.getProvincia());
+                            // Localidad
+                            ((TextView)vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
+                            // Sexo....
+                            ((TextView)vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
+                            // eMail
+                            ((TextView)vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
+                            // Descripcion
+                            ((TextView)vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
+                            //Instrumentos
+                            ((TextView)vista.findViewById(R.id.txtInstrumentoVVerMiPerfil)).setText(musico.getInstrumento());
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
@@ -234,7 +248,7 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView)vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                             // Descripcion
-                            ((TextView)vista.findViewById(R.id.txtDescripcionVVerPerfil)).setText(grupo.getDescripcion());
+                            ((TextView)vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayout4).setVisibility(View.GONE);

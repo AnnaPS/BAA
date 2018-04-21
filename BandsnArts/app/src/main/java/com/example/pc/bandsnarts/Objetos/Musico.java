@@ -43,7 +43,10 @@ public class Musico {
         this.buscando = buscando;
     }
 
-    public Musico(String uid,String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion) {
+    public Musico() {
+    }
+
+    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion) {
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;
