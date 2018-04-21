@@ -4,11 +4,34 @@ public class Sala {
     private String nombre;
     private String cp;
     private String direccion;
+    private String localidad;
+    private String provincia;
 
-    public Sala(String nombre, String cp, String direccion) {
+    public Sala() {
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public Sala(String nombre, String cp, String direccion, String localidad, String provincia) {
         this.nombre = nombre;
         this.cp = cp;
         this.direccion = direccion;
+        this.localidad = localidad;
+        this.provincia = provincia;
     }
 
     public String getNombre() {
