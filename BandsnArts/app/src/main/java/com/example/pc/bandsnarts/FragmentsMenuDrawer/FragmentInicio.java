@@ -38,14 +38,11 @@ public class FragmentInicio extends Fragment {
         viewPager = (ViewPager) vista.findViewById(R.id.viewPagerInicio);
 
         //uso del adaptador para montar los tabs
-
         LinearLayoutManager mLayoutManger = new LinearLayoutManager(getActivity());
         mLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
-
-
 
         return vista;
     }
