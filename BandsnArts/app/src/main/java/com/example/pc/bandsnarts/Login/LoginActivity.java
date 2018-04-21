@@ -184,8 +184,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         visualizarBotones(View.INVISIBLE);
     }
     public void visualizarBotones(int vis){
-        botonFaceBook.setVisibility(vis);
-        botonGoogle.setVisibility(vis);
+      findViewById(R.id.llVerticalVLogin).setVisibility(vis);
+      findViewById(R.id.llhVLogin).setVisibility(vis);
+        findViewById(R.id.vVLoging).setVisibility(vis);
         if(vis==View.INVISIBLE){
             progressBar.setVisibility(View.VISIBLE);
         }else{

@@ -9,9 +9,10 @@
     tools:context="com.example.pc.bandsnarts.Login.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/llVerticalVLogin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="63dp"
@@ -147,13 +148,12 @@
             </com.google.android.gms.common.SignInButton>
 
 
-
-
         </LinearLayout>
 
     </LinearLayout>
 
     <View
+        android:id="@+id/vVLoging"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
@@ -165,12 +165,12 @@
         android:id="@+id/progressBarVLogin"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="254dp"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="155dp" />
+        android:layout_centerVertical="true" />
 
     <LinearLayout
+        android:id="@+id/llhVLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"

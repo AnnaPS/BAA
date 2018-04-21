@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+
 import com.example.pc.bandsnarts.Adaptadores.MiPageAdapter;
 import com.example.pc.bandsnarts.R;
 
