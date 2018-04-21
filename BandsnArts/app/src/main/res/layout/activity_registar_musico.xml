@@ -288,7 +288,7 @@
                 android:fontFamily="sans-serif"
                 android:onClick="onClickVRegMusico"
                 android:text="REGISTRAR"
-                android:textSize="1sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
