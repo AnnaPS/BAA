@@ -34,8 +34,8 @@ public class FragmentVerMiPerfil extends Fragment {
 
         View vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
 
-        new BDBAA().cargarDatosPerfil(vista,"musico",this);
-        new BDBAA().cargarDatosPerfil(vista,"grupo",this);
+        new BDBAA().cargarDatosPerfil(vista,"musico",getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista,"grupo",getApplicationContext());
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         FloatingActionButton miFAB=(FloatingActionButton)vista.findViewById(R.id.floatingBPerfil);
         miFAB.setOnClickListener(new View.OnClickListener() {
