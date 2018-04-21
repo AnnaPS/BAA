@@ -212,7 +212,6 @@ public class BDBAA extends AppCompatActivity {
                             // FotoPerfil
                             Glide.with(getApplicationContext()).load(FirebaseAuth.getInstance().getCurrentUser()
                                     .getPhotoUrl()).override(200,200).into(((ImageView)vista.findViewById(R.id.imgPerfilVPerfil)));
-
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
