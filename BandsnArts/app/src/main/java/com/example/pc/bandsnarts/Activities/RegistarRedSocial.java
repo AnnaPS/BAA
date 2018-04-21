@@ -107,6 +107,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                         textViewInstrumentos.setVisibility(View.GONE);
                         spinnerInstrumentos.setVisibility(View.GONE);
                         spinnerSexo.setVisibility(View.GONE);
+                        findViewById(R.id.txtSexoVRegSocial).setVisibility(View.GONE);
                         break;
                 }
             }
