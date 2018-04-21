@@ -1,4 +1,4 @@
-package com.example.pc.bandsnarts.Activities;
+package com.example.pc.bandsnarts.Container;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -32,7 +33,7 @@ public class Notificaciones extends FirebaseMessagingService {
             Log.d(TAG,"Data: "+remoteMessage.getData());
         }
 
-        mostrarNotificacion(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+        mostrarNotificacion("!Bienvenido¡","Pulse aqui para acceder");
 
     }
 
