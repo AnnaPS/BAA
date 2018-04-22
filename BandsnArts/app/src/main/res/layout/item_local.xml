@@ -13,7 +13,7 @@
         app:cardBackgroundColor="@color/md_grey_200">
 
         <TextView
-            android:id="@+id/txtNombreItemSala"
+            android:id="@+id/txtNombreItemLocal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -24,7 +24,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtDireccionItemSala"
+            android:id="@+id/txtDireccionItemLocal"
             android:layout_width="250dp"
             android:layout_height="25dp"
             android:layout_marginLeft="50dp"
@@ -35,7 +35,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtCPItemSala"
+            android:id="@+id/txtCPItemLocal"
             android:layout_width="47dp"
             android:layout_height="28dp"
             android:layout_marginBottom="484dp"
@@ -75,7 +75,7 @@
             app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
         <TextView
-            android:id="@+id/txtLocalidadItemSalas"
+            android:id="@+id/txtLocalidadItemLocal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

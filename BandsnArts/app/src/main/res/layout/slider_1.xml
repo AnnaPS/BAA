@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_cyan_800"
+    android:background="@drawable/azul"
     android:id="@+id/slider1"
     android:gravity="center"
     android:orientation="vertical"
@@ -40,7 +40,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
         android:text="ENCUÉNTRALO FACILMENTE CON NOSOTROS"
-        android:textColor="@color/md_black_1000"
+        android:textColor="@color/md_grey_400"
         android:textSize="14sp"
         android:textStyle="bold"
          />

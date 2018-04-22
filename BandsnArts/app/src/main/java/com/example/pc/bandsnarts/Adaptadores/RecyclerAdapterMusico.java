@@ -2,7 +2,6 @@ package com.example.pc.bandsnarts.Adaptadores;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * CLASE ADAPTADOR PARA LAS LISTAS DE MUSICOS/GRUPOS
+ * CLASE ADAPTADOR PARA LAS LISTAS DE MUSICOS
  */
 public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterMusico.ViewHolder> {
 
@@ -31,11 +30,8 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        /*LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View vista = layoutInflater.inflate(R.layout.item_musicos, parent, false);
-        ViewHolder viewHolder = new ViewHolder(vista);*/
         View vista;
-        vista = LayoutInflater.from(mContext).inflate(R.layout.item_musicos, parent, false);
+        vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_musicos, parent, false);
         ViewHolder viewHolder = new ViewHolder(vista);
         return viewHolder;
     }
@@ -43,7 +39,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
     @Override
     public void onBindViewHolder(RecyclerAdapterMusico.ViewHolder holder, int position) {
 
-        Musico musicoItem = (Musico) listaM.get(position);
+        final Musico musicoItem = (Musico) listaM.get(position);
         CircleImageView imagenMusico = holder.img;
         TextView nom = holder.nombre;
         TextView ins = holder.instrumento;

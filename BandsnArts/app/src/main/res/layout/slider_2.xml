@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_green_500"
+    android:background="@drawable/verdeoscuro"
     android:id="@+id/slider2"
     android:orientation="vertical"
     android:gravity="center"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:text="CONTACTA CON LAS QUE MÁS TE INTERESEN"
-        android:textColor="@color/md_black_1000"
+        android:textColor="@color/md_grey_400"
         android:textSize="12sp"
         android:textStyle="bold"
         />

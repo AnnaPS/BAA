@@ -13,12 +13,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:buttonTint="@color/md_white_1000"
+        android:buttonTint="@color/md_black_1000"
         android:fontFamily="sans-serif"
         android:text="¿CÓMO TE QUIERES REGISTRAR?"
-        android:textColor="@color/md_white_1000"
+        android:textColor="@color/md_black_1000"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -28,10 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="15dp"
-        android:buttonTint="@color/md_white_1000"
+        android:buttonTint="@color/md_black_1000"
         android:fontFamily="sans-serif"
         android:text="GRUPO "
-        android:textColor="@color/md_green_A700"
+        android:textColor="@color/md_light_green_600"
         android:textStyle="bold"
 
         />
@@ -44,10 +44,10 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="15dp"
-        android:buttonTint="@color/md_white_1000"
+        android:buttonTint="@color/md_black_1000"
         android:fontFamily="sans-serif"
         android:text="MÚSICO"
-        android:textColor="@color/md_green_A700"
+        android:textColor="@color/md_light_green_600"
         android:textStyle="bold" />
 
     <android.support.constraint.ConstraintLayout
