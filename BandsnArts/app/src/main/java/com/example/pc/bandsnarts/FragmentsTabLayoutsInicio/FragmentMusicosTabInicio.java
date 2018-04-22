@@ -36,14 +36,10 @@ public class FragmentMusicosTabInicio extends Fragment {
         vista = inflater.inflate(R.layout.tab_musicos_fragment, container, false);
         recyclerViewMusicos = vista.findViewById(R.id.recyclerMusicos);
         if (listaMusicos.isEmpty()) {
-            new BDBAA().cargarDatosMusicos(listaMusicos, recyclerViewMusicos, getActivity());
+            new BDBAA().cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(),"musico");
 
         }
-        /*LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        RecyclerView.LayoutManager rvLayoutManager = layoutManager;
-        recyclerViewMusicos.setLayoutManager(rvLayoutManager);
 
-       RecyclerAdapterMusico adapterMusico=new RecyclerAdapterMusico(vista.getContext(), listaMusicos);*/
 
         return vista;
     }

@@ -38,7 +38,7 @@ public class FragmentGruposTabInicio extends Fragment {
         recyclerViewGrupos = vista.findViewById(R.id.recyclerGrupos);
 
         if(listaGrupos.isEmpty()){
-            new BDBAA().cargarDatosGrupos(listaGrupos, recyclerViewGrupos, getActivity());
+            new BDBAA().cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
         }
 
         return vista;
