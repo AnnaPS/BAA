@@ -43,6 +43,7 @@ public class FragmentMusicosTabInicio extends Fragment {
         listaMusicos.add(new Musico("", "", "ROSITA", "M", "POP", "PIANO", "DESCRIPCION DE PRUEBA DE ROSITA"));
 
         RecyclerAdapterMusico adapterMusico = new RecyclerAdapterMusico(getContext(), listaMusicos);
+        recyclerViewMusicos.setNestedScrollingEnabled(false);
 
         recyclerViewMusicos.setLayoutManager(new LinearLayoutManager(getActivity()));
 

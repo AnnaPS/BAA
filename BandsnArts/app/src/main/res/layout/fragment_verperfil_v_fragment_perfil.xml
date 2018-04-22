@@ -113,16 +113,18 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="40dp"
                         android:fontFamily="sans-serif"
                         android:text="Rock"
                         android:textColor="@color/md_black_1000"
+                        android:background="@android:color/transparent"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:enabled="false"/>
 
                 </LinearLayout>
 
@@ -141,9 +143,10 @@
                         android:text="Provincia"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtProvinciaVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,7 +156,9 @@
                         android:text="Madrid"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:background="@android:color/transparent"
+                        android:textStyle="bold"
+                        android:enabled="false"/>
 
                 </LinearLayout>
 
@@ -173,7 +178,7 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtLocalidadVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -183,7 +188,9 @@
                         android:text="Getafe"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
 
                 </LinearLayout>
 
@@ -203,7 +210,7 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtSexoVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -214,7 +221,9 @@
                         android:text="Mujer"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -253,19 +262,20 @@
                     android:textStyle="bold" />
 
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="sans-serif"
-
+                    android:background="@android:color/transparent"
                     android:text="Grupo de Rock, Bands n' Arts. Fundado en 2018. Dispone de 5 componentes
 apasionados de la música."
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:enabled="false"/>
 
             </android.support.v7.widget.CardView>
 
@@ -301,7 +311,7 @@ apasionados de la música."
                     android:orientation="vertical">
 
 
-                    <TextView
+                    <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -310,9 +320,11 @@ apasionados de la música."
                         android:text="Batería"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
 
-                    <TextView
+                    <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -321,9 +333,11 @@ apasionados de la música."
                         android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
 
-                    <TextView
+                    <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -332,9 +346,11 @@ apasionados de la música."
                         android:text="Acordeón"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
 
-                    <TextView
+                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -344,11 +360,11 @@ apasionados de la música."
                         android:text="Bajo"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
-
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

@@ -41,6 +41,7 @@ public class FragmentGruposTabInicio extends Fragment{
         listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         RecyclerAdapterGrupo adapterGrupo = new RecyclerAdapterGrupo(getContext(), listaGrupos);
+        recyclerViewGrupos.setNestedScrollingEnabled(false);
 
         recyclerViewGrupos.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewGrupos.setAdapter(adapterGrupo);

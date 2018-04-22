@@ -49,6 +49,7 @@ public class FragmentLocalesTabInicio extends Fragment{
         listaLocal.add(new Local("SALA UNO","29983","C/LUNA 12","MADRID",""));
         listaLocal.add(new Local("SALA UNO","29983","C/LUNA 12","MADRID",""));
         RecyclerAdapterLocales adapterLocal = new RecyclerAdapterLocales(getContext(), listaLocal);
+        recyclerViewLocal.setNestedScrollingEnabled(false);
         recyclerViewLocal.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewLocal.setAdapter(adapterLocal);
 
