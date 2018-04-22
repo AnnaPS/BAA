@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,6 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -35,7 +35,6 @@ import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -305,7 +304,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-   public void cargarDatosLocales(final ArrayList<Local> listaLocal, final RecyclerView recyclerViewLocal, final Activity activity){
+/*   public void cargarDatosLocales(final ArrayList<Local> listaLocal, final RecyclerView recyclerViewLocal, final Activity activity){
            DatabaseReference bd = FirebaseDatabase.getInstance().getReference("locales");
            Query q = bd.orderByChild("nombre");
            q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -404,8 +403,66 @@ public class BDBAA extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
+    public void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo){
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch(tipo){
+                        case "grupo":
+                            Grupo grp =data.getValue(Grupo.class);
+                            lista.add(grp);
+                            break;
+                        case "musico":
+                            Musico mus =data.getValue(Musico.class);
+                            lista.add(mus);
+                            break;
+                        case "locales":
+                            Local loc =data.getValue(Local.class);
+                            lista.add(loc);
+                            break;
+                        case "salas":
+                            Sala sal =data.getValue(Sala.class);
+                            lista.add(sal);
+                            break;
+                    }
+                }
+                switch(tipo){
+                    case "grupo":
+                        RecyclerAdapterGrupo adapterG= new RecyclerAdapterGrupo(activity.getApplicationContext(), lista);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                        recyclerView.setAdapter(adapterG);
+                        break;
+                    case "musico":
+                        RecyclerAdapterMusico adapterM= new RecyclerAdapterMusico(activity.getApplicationContext(), lista);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                        recyclerView.setAdapter(adapterM);
+                        break;
+                    case "locales":
+                        RecyclerAdapterLocales adapterL= new RecyclerAdapterLocales(activity.getApplicationContext(), lista);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                        recyclerView.setAdapter(adapterL);
+                        break;
+                    case "salas":
+                        RecyclerAdapterSalas adapterS= new RecyclerAdapterSalas(activity.getApplicationContext(), lista);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                        recyclerView.setAdapter(adapterS);
+                        break;
+                }
 
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
 

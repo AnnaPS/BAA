@@ -39,7 +39,7 @@ public class FragmentSalasTabInicio extends Fragment {
         vista = inflater.inflate(R.layout.tab_salas_fragment, container, false);
         recyclerViewSalas = vista.findViewById(R.id.recyclerSalas);
         if (listaSalas.isEmpty()) {
-            new BDBAA().cargarDatosSalas(listaSalas, recyclerViewSalas, getActivity());
+            new BDBAA().cargarDatos(listaSalas, recyclerViewSalas, getActivity(),"salas");
 
         }
         return vista;

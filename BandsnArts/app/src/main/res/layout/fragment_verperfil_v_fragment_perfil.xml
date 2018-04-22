@@ -30,8 +30,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/imgPerfilVPerfil"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
@@ -47,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="75dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="75dp"
                     android:fontFamily="sans-serif"
                     android:text="Nombre Usuario/Grupo"
                     android:textColor="@color/md_white_1000"
@@ -79,20 +78,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="30dp"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
-                tools:ignore="MissingConstraints"
-                app:cardBackgroundColor="@color/md_grey_200">
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:fontFamily="sans-serif"
                     android:text=" INFORMACIÓN"
-                    android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:textColor="@color/md_light_green_600"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -119,13 +118,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="40dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Rock"
                         android:textColor="@color/md_black_1000"
-                        android:background="@android:color/transparent"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:enabled="false"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -144,8 +143,7 @@
                         android:text="Provincia"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/txtProvinciaVVerMiPerfil"
@@ -153,13 +151,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="70dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Madrid"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:background="@android:color/transparent"
-                        android:textStyle="bold"
-                        android:enabled="false"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -185,12 +183,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="100dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:background="@android:color/transparent"
-                        android:enabled="false"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -215,22 +213,22 @@
                         android:id="@+id/txtSexoVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="130dp"
-                        android:layout_marginBottom="20dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:background="@android:color/transparent"
-                        android:enabled="false"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
 
 
                 </LinearLayout>
@@ -243,11 +241,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="26dp"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
-                tools:ignore="MissingConstraints"
-                app:cardBackgroundColor="@color/md_grey_200">
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,14 +264,14 @@
                     android:id="@+id/txtDescripcionVVerMiPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="40dp"
-                    android:layout_marginBottom="20dp"
+                    android:enabled="false"
                     android:fontFamily="sans-serif"
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:enabled="false"/>
+                    android:textStyle="bold" />
 
             </android.support.v7.widget.CardView>
 
@@ -283,21 +281,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="26dp"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
-                tools:ignore="MissingConstraints"
-                app:cardBackgroundColor="@color/md_grey_200">
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_music_note_black_24dp"
                     android:fontFamily="sans-serif"
                     android:text=" TUS INSTRUMENTOS"
-                    android:drawableLeft="@drawable/ic_music_note_black_24dp"
                     android:textColor="@color/md_light_green_600"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -312,15 +310,16 @@
                     <EditText
                         android:id="@+id/txtInstrumentoVVerMiPerfil"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
+                        android:text="_"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:background="@android:color/transparent"
-                        android:enabled="false"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </android.support.constraint.ConstraintLayout>
