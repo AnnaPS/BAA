@@ -100,7 +100,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imvFotoVGoogle"
+        android:id="@+id/main_progress"
         android:layout_width="143dp"
         android:layout_height="123dp"
         android:layout_marginBottom="8dp"
@@ -113,7 +113,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCPVGoogle"
         app:layout_constraintVertical_bias="0.311"
-        app:srcCompat="@color/colorAccent" />
+        android:visibility="visible"  />
+
+<!-- <ImageView
+        android:id="@+id/main_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible" />-->
 
     <Button
         android:id="@+id/button2"
@@ -128,7 +135,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imvFotoVGoogle" />
+        app:layout_constraintTop_toBottomOf="@+id/main_progress" />
 
     <Button
         android:id="@+id/button3"

@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Login;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -74,6 +75,9 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
             }
 
         };
+
+
+
     }
 
     private void datosUsuario(FirebaseUser usuario) {
@@ -85,7 +89,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
 
-        Glide.with(this).load(usuario.getPhotoUrl()).into(fotoGoogle);
+      //  Glide.with(this).load(usuario.getPhotoUrl()).into(fotoGoogle);
     }
 
 

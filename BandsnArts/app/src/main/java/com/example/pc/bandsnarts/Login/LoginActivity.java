@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,9 +73,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     // Objeto de clase CallbackManager para detectar acciones en el boton FaceBook
     private CallbackManager callbackManager;
     private Activity estaVentana;
-    private ProgressBar progressBar;
+    private ImageView progressBar;
     // Boton Login con Google
     com.google.android.gms.common.SignInButton botonGoogle;
+
+
+
+    AnimationDrawable animationDrawable;
 
 
     @Override
@@ -90,9 +96,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
         progressBar=findViewById(R.id.progressBarVLogin);
+
+
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
-
         estaVentana = this;
 
         // ACCION BOTON GOOGLE
@@ -185,10 +192,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
       findViewById(R.id.llhVLogin).setVisibility(vis);
         findViewById(R.id.vVLoging).setVisibility(vis);
         if(vis==View.INVISIBLE){
+            progressBar.setBackgroundResource(R.drawable.gif);
+            animationDrawable = (AnimationDrawable)progressBar.getBackground();
+            animationDrawable.start();
             progressBar.setVisibility(View.VISIBLE);
         }else{
+            animationDrawable.stop();
             progressBar.setVisibility(View.INVISIBLE);
         }
+
+
     }
 
     private void manejadorTokenFacebook(AccessToken accessToken) {

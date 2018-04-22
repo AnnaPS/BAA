@@ -161,13 +161,13 @@
         android:layout_marginTop="510dp"
         android:background="@color/md_white_1000" />
 
-    <ProgressBar
+
+    <ImageView
         android:id="@+id/progressBarVLogin"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_width="140dp"
+        android:layout_height="154dp"
+        android:layout_centerInParent="true"
+         />
 
     <LinearLayout
         android:id="@+id/llhVLogin"
