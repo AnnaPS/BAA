@@ -3,6 +3,8 @@ package com.example.pc.bandsnarts.BBDD;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +34,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class BDBAA extends AppCompatActivity {
     DatabaseReference bd;
@@ -234,8 +240,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            Glide.with(context).load(FirebaseAuth.getInstance().getCurrentUser()
-                                    .getPhotoUrl()).override(200, 200).into(((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)));
+                           accesoFotoPerfil("musico",((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)),context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -258,8 +263,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            Glide.with(context).load(FirebaseAuth.getInstance().getCurrentUser()
-                                    .getPhotoUrl()).override(200, 200).into(((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)));
+                            accesoFotoPerfil("grupo",((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)),context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -286,5 +290,51 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+    }
+
+    ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
+    public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
+
+        FirebaseDatabase
+                .getInstance()
+                .getReference(tipo)
+                .orderByChild("uid")
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String img;
+                       StorageReference ref= FirebaseStorage.getInstance().getReference("imagenes");
+                       for (DataSnapshot data:dataSnapshot.getChildren()) {
+                           switch (tipo) {
+                               case "musico":
+                                   img = data.getValue(Musico.class).getImagen();
+                                   ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Uri> task) {
+                                           Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                       }
+                                   });
+                                   break;
+                               case "grupo":
+                                   img = data.getValue(Grupo.class).getImagen();
+                                   ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Uri> task) {
+                                           Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                       }
+                                   });
+                                   break;
+                           }
+                       }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
     }
 }
