@@ -452,7 +452,7 @@ public class BDBAA extends AppCompatActivity {
                         recyclerView.setAdapter(adapterS);
                         break;
                 }
-
+                recyclerView.setNestedScrollingEnabled(false);
 
             }
 
