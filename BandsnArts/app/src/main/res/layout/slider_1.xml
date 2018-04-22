@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_cyan_800"
+    android:background="@drawable/azul"
     android:id="@+id/slider1"
     android:gravity="center"
     android:orientation="vertical"
@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="212dp"
-        android:layout_height="268dp"
+        android:layout_width="241dp"
+        android:layout_height="314dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:background="@drawable/cantante" />
@@ -26,10 +26,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:text="¿BUSCAS COMPONENTE PARA TU GRUPO?"
+        android:textAlignment="center"
         android:textColor="@color/md_white_1000"
         android:textSize="20sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView11"
@@ -40,7 +40,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
         android:text="ENCUÉNTRALO FACILMENTE CON NOSOTROS"
-        android:textColor="@color/md_black_1000"
+        android:textColor="@color/md_grey_400"
         android:textSize="14sp"
         android:textStyle="bold"
          />

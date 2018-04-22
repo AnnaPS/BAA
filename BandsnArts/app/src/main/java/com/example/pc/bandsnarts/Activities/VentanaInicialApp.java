@@ -1,7 +1,6 @@
 package com.example.pc.bandsnarts.Activities;
-import android.net.Uri;
+
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -18,15 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import com.bumptech.glide.Glide;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
-import com.example.pc.bandsnarts.Login.BandsnArts;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -46,7 +45,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
     private ImageView fotoPerfil;
-    private TextView txtNombre,txtCorreo;
+    private TextView txtNombre, txtCorreo;
 
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
@@ -70,9 +69,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         });*/
 
 
-      //Se establece como principal el fragment de inicio
+        //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor,new FragmentInicio()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
         //////////////////////////
 
         //CREADO POR DEFECTO CON LA ACTIVIDAD
@@ -89,7 +88,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
         View vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
-        txtNombre =vista.findViewById(R.id.txtNombreNavH);
+        txtNombre = vista.findViewById(R.id.txtNombreNavH);
         txtCorreo = vista.findViewById(R.id.txtCorreoNavH);
 
         // Inicializamos el FireBaseAuth y su escuchador
@@ -102,7 +101,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 if (usuario != null) {
                     // Si hay usuario, pintamos sus datos
                     datosUsuario(usuario);
-                }            }
+                }
+            }
 
         };
 
@@ -183,7 +183,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
 
-        }else if(id==R.id.inicioMenuDrawer2){
+        } else if (id == R.id.inicioMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
@@ -198,12 +198,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     ///////////////////////////////////////////////////////
 
 
-
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        txtNombre.setText(usuario.getDisplayName());
-        txtCorreo.setText(usuario.getEmail());
-        Glide.with(getApplicationContext()).load(usuario.getPhotoUrl()).override(200,200).into(fotoPerfil);
+        new BDBAA().cargarDrawerPerfil(this,"musico",fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this,"grupo",fotoPerfil,txtNombre);
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
@@ -218,13 +216,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
-                if(status.isSuccess()){
+                if (status.isSuccess()) {
                     Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
                     //El primer digito indica la ventana y el segundo la vez que
                     setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
                     VentanaInicialApp.this.finish();
                     // volverActivityLogin();
-                }else{
+                } else {
                     Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -247,7 +245,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     protected void onStop() {
         super.onStop();
         // En este metodo paramos el escuchador
-        if(escuchador!=null){
+        if (escuchador != null) {
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }

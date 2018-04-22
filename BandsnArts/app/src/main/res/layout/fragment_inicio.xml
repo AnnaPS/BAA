@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentsMenuDrawer.FragmentInicio"
     android:id="@+id/fragmentInicio"
-    android:background="@drawable/bordeverde"
+    android:orientation="vertical"
+
 
   >
 
@@ -27,5 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewPagerInicio"
-        ></android.support.v4.view.ViewPager>
-</android.support.design.widget.AppBarLayout>
+
+        />
+
+
+</LinearLayout>

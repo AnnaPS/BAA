@@ -5,11 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".Login.BandsnArts"
+        android:name=".Container.BandsnArts"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher3"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -43,6 +42,20 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
+
+        <service android:name=".Container.Notificaciones">
+            <intent-filter >
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".Container.MiFirebaseInstanceIdService">
+            <intent-filter >
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+
         <activity
             android:name=".Activities.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
