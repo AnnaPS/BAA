@@ -6,16 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondonegro"
-    tools:context="com.example.pc.bandsnarts.LoginActivity">
+    tools:context="com.example.pc.bandsnarts.Login.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/llVerticalVLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="63dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
 
@@ -27,7 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="10dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="BANDS N' ARTS"
             android:textColor="@color/md_white_1000"
@@ -42,7 +42,7 @@
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_person_white_24dp"
             android:ems="10"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:hint="e-mail"
             android:inputType="textPersonName"
             android:padding="10dp"
@@ -58,7 +58,7 @@
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_lock_white_24dp"
             android:ems="10"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:hint="Contraseña"
             android:inputType="textPassword"
             android:padding="10dp"
@@ -79,7 +79,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:background="#00000000"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:padding="10dp"
                 android:text="¿Olvisaste la contraseña?"
                 android:textColor="@color/md_white_1000"
@@ -94,7 +94,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
                 android:buttonTint="@color/md_white_1000"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:text="Recordar"
                 android:textColor="@color/md_white_1000"
                 android:textSize="12sp" />
@@ -108,46 +108,44 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/bordefondoverde"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:onClick="onClickIngresarVLogin"
             android:text="INGRESAR"
-            android:textColor="@color/md_white_1000"
-            android:textSize="18dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-
-            android:orientation="horizontal">
-
+            android:orientation="vertical">
 
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
-                android:layout_width="65dp"
-                android:layout_height="58dp"
-                android:layout_marginLeft="60dp"
-                android:background="@mipmap/ic_launcherfacebook" />
-            <Button
-                android:id="@+id/sacarmenu"
-                android:layout_width="50dp"
-                android:layout_height="41dp"
-                android:layout_weight="1"
-                android:text="Button"
-                tools:text="menu"
-                android:onClick="onclick"/>
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="10dp" />
 
 
-            <Button
+            <com.google.android.gms.common.SignInButton
                 android:id="@+id/btnGoogleVLogin"
-                android:layout_width="72dp"
-                android:layout_height="73dp"
-                android:layout_marginLeft="100dp"
-                android:background="@mipmap/ic_launchergoogle"
-                android:onClick="onClickIngresoGoogle" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="20dp"
+                android:onClick="onClickIngresoGoogle">
+
+            </com.google.android.gms.common.SignInButton>
 
 
         </LinearLayout>
@@ -155,14 +153,24 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/vVLoging"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="510dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="510dp"
         android:background="@color/md_white_1000" />
 
+
+    <ImageView
+        android:id="@+id/progressBarVLogin"
+        android:layout_width="140dp"
+        android:layout_height="154dp"
+        android:layout_centerInParent="true"
+         />
+
     <LinearLayout
+        android:id="@+id/llhVLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -176,17 +184,20 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="520dp"
             android:text="¿NECESITAS UNA CUENTA?"
-            android:textColor="@color/md_white_1000" />
+            android:textColor="@color/md_white_1000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnRegistrarVLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="520dp"
             android:background="@drawable/bordefondoverde"
             android:onClick="onClickRegistrarVLogin"
-            android:text="REGISTRATE" />
+            android:text="REGISTRÁTE"
+            android:textColor="#000000" />
     </LinearLayout>
 </RelativeLayout>

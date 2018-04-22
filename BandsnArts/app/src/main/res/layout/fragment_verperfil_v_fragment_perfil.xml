@@ -7,25 +7,24 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.AppBarLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/appBarPerfil"
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
                 android:layout_height="180dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="44dp"
-                android:background="@drawable/fondperfil"
+                app:cardBackgroundColor="@color/md_black_1000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,44 +35,50 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/female"
-                    app:civ_border_color="#FF000000"
+                    app:civ_border_color="@color/md_light_green_600"
                     app:civ_border_width="2dp" />
 
                 <TextView
-                    android:id="@+id/txtNombUsuarioVPerfil"
+                    android:id="@+id/txtNombUsuarioVVerMiPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="75dp"
                     android:fontFamily="sans-serif"
                     android:text="Nombre Usuario/Grupo"
-                    android:textColor="@color/md_black_1000"
+                    android:textColor="@color/md_white_1000"
                     android:textSize="15dp"
                     android:textStyle="bold" />
-            </android.support.design.widget.AppBarLayout>
+            </android.support.v7.widget.CardView>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingBPerfil"
-                android:layout_width="61dp"
-                android:layout_height="49dp"
-                android:layout_gravity="right"
+                android:layout_width="57dp"
+                android:layout_height="53dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="276dp"
-
-                android:layout_marginTop="200dp"
+                android:background="@color/md_light_green_600"
                 android:src="@drawable/ic_border_color_black_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/appBarLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.661"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
+                app:layout_constraintVertical_bias="1.0" />
 
 
-            <android.support.design.widget.AppBarLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/md_grey_100"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
@@ -84,9 +89,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:fontFamily="sans-serif"
-                    android:text="INFORMACIÓN"
-                    android:textColor="@color/md_green_A700"
+                    android:text=" INFORMACIÓN"
+                    android:textColor="@color/md_light_green_600"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -99,18 +105,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="40dp"
                         android:fontFamily="sans-serif"
                         android:text="Estilo Musical"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/txtEstiloVVerMiPerfil"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Rock"
                         android:textColor="@color/md_black_1000"
@@ -129,19 +138,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="70dp"
                         android:fontFamily="sans-serif"
                         android:text="Provincia"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtProvinciaVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="70dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Madrid"
                         android:textColor="@color/md_black_1000"
@@ -159,21 +170,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="100dp"
                         android:fontFamily="sans-serif"
                         android:text="Localidad"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtLocalidadVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="100dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Getafe"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -181,6 +193,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llSexoVVerMiPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -189,64 +202,46 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="130dp"
                         android:fontFamily="sans-serif"
                         android:text="Sexo"
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtSexoVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="130dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Mujer"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Email"
-                        android:textColor="@color/md_teal_800"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtEmailVVerMiPerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="bands@gmail.com"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
 
                 </LinearLayout>
 
-            </android.support.design.widget.AppBarLayout>
+            </android.support.v7.widget.CardView>
 
-            <android.support.design.widget.AppBarLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="26dp"
-                android:background="@color/md_grey_100"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
@@ -257,36 +252,36 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_description_black_24dp"
                     android:fontFamily="sans-serif"
-                    android:text="DESCRIPCIÓN"
-
-                    android:textColor="@color/md_green_A700"
+                    android:text=" DESCRIPCIÓN"
+                    android:textColor="@color/md_light_green_600"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
 
-                <TextView
+                <EditText
+                    android:id="@+id/txtDescripcionVVerMiPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="40dp"
+                    android:enabled="false"
                     android:fontFamily="sans-serif"
-
-                    android:text="Grupo de Rock, Bands n' Arts. Fundado en 2018. Dispone de 5 componentes
-apasionados de la música."
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
-            </android.support.design.widget.AppBarLayout>
+            </android.support.v7.widget.CardView>
 
-            <android.support.design.widget.AppBarLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="26dp"
-                android:background="@color/md_grey_100"
+                app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -298,67 +293,35 @@ apasionados de la música."
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_music_note_black_24dp"
                     android:fontFamily="sans-serif"
-                    android:text="TUS INSTRUMENTOS"
-                    android:textColor="@color/md_green_A700"
+                    android:text=" TUS INSTRUMENTOS"
+                    android:textColor="@color/md_light_green_600"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="213dp"
                     android:layout_marginRight="20dp"
                     android:orientation="vertical">
 
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/txtInstrumentoVVerMiPerfil"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Batería"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Guitarra"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Acordeón"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Bajo"
+                        android:text="_"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </android.support.design.widget.AppBarLayout>
-
-
+            </android.support.v7.widget.CardView>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

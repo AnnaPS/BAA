@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistarRedSocial">
+    tools:context=".Activities.RegistarRedSocial">
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
@@ -92,7 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvInstrumentoVRegSocial"
                 android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="134dp"
@@ -118,18 +119,46 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/tvInstrumentoVRegSocial" />
 
+
+            <TextView
+                android:id="@+id/txtSexoVRegSocial"
+                android:layout_width="223dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="SEXO"
+                android:textColor="@color/md_green_800"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial" />
+
+            <Spinner
+                android:id="@+id/spinnerSexoVRegSocial"
+                android:layout_width="227dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="73dp"
+                android:background="@drawable/bordeverde"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSexoVRegSocial" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/impDescripcionVRegSocial"
                 android:layout_width="match_parent"
-                android:layout_height="202dp"
-                android:layout_marginTop="9dp"
+                android:layout_height="195dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spInstrumentoVRegSocial"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerSexoVRegSocial"
                 tools:ignore="MissingConstraints">
 
                 <EditText
@@ -159,6 +188,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bordefondoverde"
                 android:fontFamily="sans-serif"
+                android:onClick="onClickLogueo"
                 android:text="REGISTRAR"
                 android:textSize="18sp"
                 android:textStyle="bold"
