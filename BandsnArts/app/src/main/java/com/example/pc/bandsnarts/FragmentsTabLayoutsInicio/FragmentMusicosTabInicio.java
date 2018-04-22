@@ -44,6 +44,7 @@ public class FragmentMusicosTabInicio extends Fragment {
 
         RecyclerAdapterMusico adapterMusico = new RecyclerAdapterMusico(getContext(), listaMusicos);
         recyclerViewMusicos.setNestedScrollingEnabled(false);
+        recyclerViewMusicos.setNestedScrollingEnabled(false);
 
         recyclerViewMusicos.setLayoutManager(new LinearLayoutManager(getActivity()));
 

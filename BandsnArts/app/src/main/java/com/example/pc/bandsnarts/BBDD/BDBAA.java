@@ -252,8 +252,6 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
                             // Sexo....
                             ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
-                            // eMail
-                            ((TextView) vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
@@ -275,8 +273,6 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
-                            // eMail
-                            ((TextView) vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());

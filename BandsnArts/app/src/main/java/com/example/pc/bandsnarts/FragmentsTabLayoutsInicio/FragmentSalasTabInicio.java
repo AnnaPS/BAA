@@ -48,6 +48,7 @@ public class FragmentSalasTabInicio extends Fragment{
         listaSalas.add(new Sala("SALA UNO","29983","C/LUNA 12","MADRID",""));
         RecyclerAdapterSalas adapterSalas = new RecyclerAdapterSalas(getContext(), listaSalas);
         recyclerViewSalas.setNestedScrollingEnabled(false);
+        recyclerViewSalas.setNestedScrollingEnabled(false);
         recyclerViewSalas.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewSalas.setAdapter(adapterSalas);
 
