@@ -179,9 +179,9 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
                     Log.d("Encontrado", "onDataChange: " + encontrado);
-                    ((Activity) cont).startActivityForResult(new Intent(cont, RegistarRedSocial.class),111);
+                    ((Activity) cont).startActivityForResult(new Intent(cont, RegistarRedSocial.class), 111);
                 } else {
-                    ((Activity) cont).startActivityForResult(new Intent(cont, VentanaInicialApp.class),222);
+                    ((Activity) cont).startActivityForResult(new Intent(cont, VentanaInicialApp.class), 222);
                 }
             }
 
@@ -194,61 +194,85 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-
-    public void cargarDatosPerfil(final View vista, final String tipo, final Context context) {
+    public void cargarDrawerPerfil(final String tipo) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     switch (tipo) {
                         case "musico":
-                            Musico musico =  data.getValue(Musico.class);
+
+                            break;
+                        case "grupo":
+
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void cargarDatosPerfil(final View vista, final String tipo, final Context context) {
+        bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            Musico musico = data.getValue(Musico.class);
                             // Recuperamos y cargamos los datos del Musico
                             // nombre
-                            ((TextView)vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
+                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
                             Glide.with(context).load(FirebaseAuth.getInstance().getCurrentUser()
-                                    .getPhotoUrl()).override(200,200).into(((ImageView)vista.findViewById(R.id.imgPerfilVPerfil)));
+                                    .getPhotoUrl()).override(200, 200).into(((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)));
                             // Estilo
-                            ((TextView)vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
+                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
-                            ((TextView)vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(musico.getProvincia());
+                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(musico.getProvincia());
                             // Localidad
-                            ((TextView)vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
+                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
                             // Sexo....
-                            ((TextView)vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
+                            ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
                             // eMail
-                            ((TextView)vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                            ((TextView) vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                             // Descripcion
-                            ((TextView)vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
+                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Instrumentos
-                            ((TextView)vista.findViewById(R.id.txtInstrumentoVVerMiPerfil)).setText(musico.getInstrumento());
+                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil)).setText(musico.getInstrumento());
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
                             // nombre
-                            ((TextView)vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
+                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
                             Glide.with(context).load(FirebaseAuth.getInstance().getCurrentUser()
-                                    .getPhotoUrl()).override(200,200).into(((ImageView)vista.findViewById(R.id.imgPerfilVPerfil)));
+                                    .getPhotoUrl()).override(200, 200).into(((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)));
                             // Estilo
-                            ((TextView)vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
+                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
-                            ((TextView)vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(grupo.getProvincia());
+                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(grupo.getProvincia());
                             // Localidad
-                            ((TextView)vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
+                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
                             // Sexo....
-                            ((LinearLayout)vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
+                            ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
                             // eMail
-                            ((TextView)vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                            ((TextView) vista.findViewById(R.id.txtEmailVVerMiPerfil)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                             // Descripcion
-                            ((TextView)vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
+                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayout4).setVisibility(View.GONE);
