@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -20,9 +22,15 @@ import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
 
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
+import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
+import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +44,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 public class BDBAA extends AppCompatActivity {
     DatabaseReference bd;
@@ -229,10 +239,12 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
+
     public void cargarDatosPerfil(final View vista, final String tipo, final Context context) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
@@ -252,6 +264,7 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
                             // Sexo....
                             ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
+
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
@@ -289,6 +302,108 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+    }
+
+
+   public void cargarDatosLocales(final ArrayList<Local> listaLocal, final RecyclerView recyclerViewLocal, final Activity activity){
+           DatabaseReference bd = FirebaseDatabase.getInstance().getReference("locales");
+           Query q = bd.orderByChild("nombre");
+           q.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+
+                   for (DataSnapshot data : dataSnapshot.getChildren()) {
+                       Log.d("\n\nPRUEBA","holaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                       Local loc =data.getValue(Local.class);
+                       listaLocal.add(loc);
+                   }
+                   RecyclerAdapterLocales adapterLocal = new RecyclerAdapterLocales(activity.getApplicationContext(), listaLocal);
+                   recyclerViewLocal.setNestedScrollingEnabled(false);
+                   recyclerViewLocal.setLayoutManager(new LinearLayoutManager(activity));
+                   recyclerViewLocal.setAdapter(adapterLocal);
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+           });
+
+       }
+
+    public void cargarDatosSalas(final ArrayList<Sala> listaSala, final RecyclerView recyclerViewSala, final Activity activity){
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("salas");
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    Sala sal =data.getValue(Sala.class);
+                    listaSala.add(sal);
+                }
+                RecyclerAdapterSalas adapterSala = new RecyclerAdapterSalas(activity.getApplicationContext(), listaSala);
+                recyclerViewSala.setNestedScrollingEnabled(false);
+                recyclerViewSala.setLayoutManager(new LinearLayoutManager(activity));
+                recyclerViewSala.setAdapter(adapterSala);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    public void cargarDatosMusicos(final ArrayList<Musico> listaMusicos, final RecyclerView recyclerViewMusico, final Activity activity){
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Musico mus =data.getValue(Musico.class);
+                    listaMusicos.add(mus);
+                }
+                RecyclerAdapterMusico adapterSala = new RecyclerAdapterMusico(activity.getApplicationContext(), listaMusicos);
+                recyclerViewMusico.setNestedScrollingEnabled(false);
+                recyclerViewMusico.setLayoutManager(new LinearLayoutManager(activity));
+                recyclerViewMusico.setAdapter(adapterSala);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void cargarDatosGrupos(final ArrayList<Grupo> listaGrupos, final RecyclerView recyclerViewGrupo, final Activity activity){
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Grupo grp =data.getValue(Grupo.class);
+                    listaGrupos.add(grp);
+                }
+                RecyclerAdapterGrupo adapterGrupo= new RecyclerAdapterGrupo(activity.getApplicationContext(), listaGrupos);
+                recyclerViewGrupo.setNestedScrollingEnabled(false);
+                recyclerViewGrupo.setLayoutManager(new LinearLayoutManager(activity));
+                recyclerViewGrupo.setAdapter(adapterGrupo);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////

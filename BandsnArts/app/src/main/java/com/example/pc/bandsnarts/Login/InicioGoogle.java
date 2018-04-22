@@ -11,16 +11,12 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,8 +42,8 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_inicio_google);
 
         nombreGoogle = findViewById(R.id.txtNombreVGoogle);
-        emailGoogle = findViewById(R.id.txtMailVGoogle);
-        identUsuGoogle = findViewById(R.id.txtUIDVGoogle);
+        emailGoogle = findViewById(R.id.txtDirecVGoogle);
+        identUsuGoogle = findViewById(R.id.txtCPVGoogle);
         fotoGoogle = findViewById(R.id.imvFotoVGoogle);
 
         // Opciones de inicio con google para login silencioso porque ya se realizo la autenticacion

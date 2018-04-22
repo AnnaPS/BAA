@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class FragmentMusicosTabInicio extends Fragment {
     RecyclerView recyclerViewMusicos;
     View vista;
-    ArrayList<Musico> listaMusicos;
+    ArrayList<Musico> listaMusicos = new ArrayList<>();
 
     public FragmentMusicosTabInicio() {
 
@@ -34,28 +35,15 @@ public class FragmentMusicosTabInicio extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_musicos_fragment, container, false);
         recyclerViewMusicos = vista.findViewById(R.id.recyclerMusicos);
-        listaMusicos = new ArrayList<>();
-        listaMusicos.add(new Musico("", "", "PAQUITO", "H", "POP/ROCK", "BAJO", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        listaMusicos.add(new Musico("", "", "ROSITA", "M", "POP", "PIANO", "DESCRIPCION DE PRUEBA DE ROSITA"));
-        listaMusicos.add(new Musico("", "", "PAQUITO", "H", "POP/ROCK", "BAJO", "DESCRIPCION DE PRUEBA"));
-        listaMusicos.add(new Musico("", "", "ROSITA", "M", "POP", "PIANO", "DESCRIPCION DE PRUEBA DE ROSITA"));
-        listaMusicos.add(new Musico("", "", "PAQUITO", "H", "POP/ROCK", "BAJO", "DESCRIPCION DE PRUEBA"));
-        listaMusicos.add(new Musico("", "", "ROSITA", "M", "POP", "PIANO", "DESCRIPCION DE PRUEBA DE ROSITA"));
+        if (listaMusicos.isEmpty()) {
+            new BDBAA().cargarDatosMusicos(listaMusicos, recyclerViewMusicos, getActivity());
 
-        RecyclerAdapterMusico adapterMusico = new RecyclerAdapterMusico(getContext(), listaMusicos);
-        recyclerViewMusicos.setNestedScrollingEnabled(false);
-        recyclerViewMusicos.setNestedScrollingEnabled(false);
-
-        recyclerViewMusicos.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
+        }
         /*LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.LayoutManager rvLayoutManager = layoutManager;
         recyclerViewMusicos.setLayoutManager(rvLayoutManager);
 
        RecyclerAdapterMusico adapterMusico=new RecyclerAdapterMusico(vista.getContext(), listaMusicos);*/
-        recyclerViewMusicos.setAdapter(adapterMusico);
-
 
         return vista;
     }

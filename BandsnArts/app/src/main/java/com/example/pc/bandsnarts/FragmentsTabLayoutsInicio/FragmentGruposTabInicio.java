@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -21,32 +22,24 @@ import java.util.ArrayList;
 /**
  * CLASE PARA INFLAR EL FRAGMENT DE LA VENTANA DE INICIO EN EL TAB DE GRUPOS
  */
-public class FragmentGruposTabInicio extends Fragment{
+public class FragmentGruposTabInicio extends Fragment {
     RecyclerView recyclerViewGrupos;
     View vista;
-    ArrayList<Grupo> listaGrupos;
+    ArrayList<Grupo> listaGrupos=new ArrayList<>();
 
-    public FragmentGruposTabInicio(){
+    public FragmentGruposTabInicio() {
 
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        vista=inflater.inflate(R.layout.tab_grupos_fragment,container,false);
+        vista = inflater.inflate(R.layout.tab_grupos_fragment, container, false);
         recyclerViewGrupos = vista.findViewById(R.id.recyclerGrupos);
-        listaGrupos = new ArrayList<>();
-        listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        listaGrupos.add(new Grupo("", "", "PAQUITO","", "DESCRIPCION DE PRUEBAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        RecyclerAdapterGrupo adapterGrupo = new RecyclerAdapterGrupo(getContext(), listaGrupos);
-        recyclerViewGrupos.setNestedScrollingEnabled(false);
-        recyclerViewGrupos.setNestedScrollingEnabled(false);
 
-        recyclerViewGrupos.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewGrupos.setAdapter(adapterGrupo);
-
+        if(listaGrupos.isEmpty()){
+            new BDBAA().cargarDatosGrupos(listaGrupos, recyclerViewGrupos, getActivity());
+        }
 
         return vista;
     }
