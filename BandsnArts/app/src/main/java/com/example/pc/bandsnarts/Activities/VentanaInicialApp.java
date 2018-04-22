@@ -200,10 +200,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        txtNombre.setText(usuario.getDisplayName());
-        txtCorreo.setText(usuario.getEmail());
-        new BDBAA().accesoFotoPerfil("musico", fotoPerfil, this);
-        new BDBAA().accesoFotoPerfil("grupo", fotoPerfil, this);
+        new BDBAA().cargarDrawerPerfil(this,"musico",fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this,"grupo",fotoPerfil,txtNombre);
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());

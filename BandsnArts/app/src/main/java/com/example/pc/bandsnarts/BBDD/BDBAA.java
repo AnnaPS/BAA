@@ -200,7 +200,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void cargarDrawerPerfil(final String tipo) {
+    public void cargarDrawerPerfil(final Context context,final String tipo, final ImageView fotoPerfil, final TextView nombre) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -209,10 +209,13 @@ public class BDBAA extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     switch (tipo) {
                         case "musico":
+                          nombre.setText(data.getValue(Musico.class).getNombre());
+                           accesoFotoPerfil("musico", fotoPerfil, context);
 
                             break;
                         case "grupo":
-
+                            nombre.setText(data.getValue(Grupo.class).getNombre());
+                            accesoFotoPerfil("grupo", fotoPerfil, context);
                             break;
                     }
 
