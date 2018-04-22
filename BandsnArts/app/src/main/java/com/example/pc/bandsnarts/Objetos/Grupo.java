@@ -12,7 +12,7 @@ public class Grupo {
     private String provincia;
     private String localidad;
     private String buscando;
-    private ArrayList<String> mensaje=new ArrayList<String>();
+
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>();
 
@@ -27,13 +27,7 @@ public class Grupo {
         this.buscando = buscando;
     }
 
-    public ArrayList<String> getMensaje() {
-        return mensaje;
-    }
 
-    public void setMensaje(ArrayList<String> mensaje) {
-        this.mensaje = mensaje;
-    }
 
     public String getUid() {
         return uid;

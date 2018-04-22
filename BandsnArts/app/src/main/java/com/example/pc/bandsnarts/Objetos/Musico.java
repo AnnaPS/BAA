@@ -15,7 +15,7 @@ public class Musico {
     private String descripcion;
     private String provincia;
     private String localidad;
-    private ArrayList<String> mensaje=new ArrayList<String>();
+
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando;
     private ArrayList<String> redsocial=new ArrayList<String>();
@@ -32,13 +32,7 @@ public class Musico {
         this.uid = uid;
     }
 
-    public ArrayList<String> getMensaje() {
-        return mensaje;
-    }
 
-    public void setMensaje(ArrayList<String> mensaje) {
-        this.mensaje = mensaje;
-    }
 
 
     public void setBuscando(String buscando) {

@@ -1,11 +1,20 @@
 package com.example.pc.bandsnarts.Objetos;
 
+import java.util.ArrayList;
+
 class Anuncio {
     private String titulo;
     private String descripcion;
     private String tipo;
     private String fecha;
+    private ArrayList<String> mensaje=new ArrayList<String>();
+    public ArrayList<String> getMensaje() {
+        return mensaje;
+    }
 
+    public void setMensaje(String mensaje) {
+        this.mensaje.add(mensaje);
+    }
     public Anuncio() {
     }
 
