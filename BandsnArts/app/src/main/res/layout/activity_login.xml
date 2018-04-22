@@ -165,7 +165,7 @@
         android:id="@+id/progressBarVLogin"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="254dp"
+        android:layout_height="130dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true" />
 
