@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class FragmentSalasTabInicio extends Fragment {
     View vista;
-
     TextView nombreSala, direcSala, cpSala, localidadSala;
 
     public FragmentSalasTabInicio() {
@@ -47,13 +46,11 @@ public class FragmentSalasTabInicio extends Fragment {
     }
 
     public void pintarDatosSala() {
-
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("salas");
         Query q = bd.orderByChild("nombre");
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Local loc = data.getValue(Local.class);
                     nombreSala.setText(loc.getNombre());
