@@ -11,7 +11,6 @@
     <LinearLayout
         android:id="@+id/llVerticalVLogin"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -124,6 +123,7 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
+
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
                 android:layout_width="match_parent"
@@ -197,7 +197,7 @@
             android:layout_marginTop="520dp"
             android:background="@drawable/bordefondoverde"
             android:onClick="onClickRegistrarVLogin"
-            android:text="REGISTRATE"
+            android:text="REGISTRÁTE"
             android:textColor="#000000" />
     </LinearLayout>
 </RelativeLayout>
