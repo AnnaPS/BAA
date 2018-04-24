@@ -52,7 +52,7 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    public void agregarMusico(final Context context, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
+    public void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
         // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference("musico");
 
@@ -66,6 +66,7 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(context, "Ya existe un usuario con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
                     edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                     // limpiar campo !!!!!
+                    view.setVisibility(View.VISIBLE);
                     encontrado = true;
                 }
                 if (!encontrado) {
@@ -88,7 +89,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void agregarGrupo(final Context context, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
+    public void agregarGrupo(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
 
         bd = FirebaseDatabase.getInstance().getReference("grupo");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
@@ -100,6 +101,7 @@ public class BDBAA extends AppCompatActivity {
                     Log.d("INSERt", "No insertado ");
                     Toast.makeText(context, "Ya existe un grupo con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
                     edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
+                    view.setVisibility(View.VISIBLE);
                     encontrado = true;
                 }
                 if (!encontrado) {

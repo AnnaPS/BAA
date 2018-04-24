@@ -56,7 +56,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         desc.setText(musicoItem.getDescripcion());
         //anun.setText(musicoItem.getCantidadAnuncios());
         busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
-        new BDBAA().accesoFotoPerfil("grupo",imagenMusico,mContext);
+        new BDBAA().accesoFotoPerfil("musico",imagenMusico,mContext);
     }
 
 

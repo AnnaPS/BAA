@@ -52,7 +52,7 @@ public class RegistrarGrupo extends AppCompatActivity {
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posEstilo=position;
+                posEstilo = position;
             }
 
             @Override
@@ -80,7 +80,8 @@ public class RegistrarGrupo extends AppCompatActivity {
                 edtRepitePassGrupo.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
-                  auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
+                view.setVisibility(View.INVISIBLE);
+                auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
                 // RECOGER DATOS DEL GRUPO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
                 // Mensaje de control
                 FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
@@ -91,7 +92,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarGrupo(RegistrarGrupo.this,edtNombreGrupo, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
+                            new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial), edtNombreGrupo, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

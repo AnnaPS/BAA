@@ -105,6 +105,7 @@ public class RegistarMusico extends AppCompatActivity {
                 edtRepitePassMusico.setError("Las contraseñas no coinciden");
             } else {
                 // Correo y password correctas
+                view.setVisibility(View.INVISIBLE);
                 auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
                 // Mensaje de control
                 final FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
@@ -114,7 +115,8 @@ public class RegistarMusico extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarMusico(RegistarMusico.this,edtNombreMusico, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+
+                            new BDBAA().agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

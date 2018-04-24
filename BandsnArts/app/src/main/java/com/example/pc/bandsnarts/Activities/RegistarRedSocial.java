@@ -22,10 +22,11 @@ import android.widget.Toast;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
 import com.example.pc.bandsnarts.R;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistarRedSocial extends AppCompatActivity {
-    Spinner spinnerInstrumentos, spinnerEstilos,spinnerSexo;
+    Spinner spinnerInstrumentos, spinnerEstilos, spinnerSexo;
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
@@ -48,7 +49,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         //finds///
         setContentView(R.layout.activity_registar_red_social);
         spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
-        spinnerSexo=findViewById(R.id.spinnerSexoVRegSocial);
+        spinnerSexo = findViewById(R.id.spinnerSexoVRegSocial);
         textViewInstrumentos = findViewById(R.id.tvInstrumentoVRegSocial);
         //spinners para estilo musical e instrumentos
         spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
@@ -85,7 +86,11 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
+                FirebaseAuth.getInstance().getCurrentUser().delete();
                 FirebaseAuth.getInstance().signOut();
+
+                // deslogueo en Facebook
+                LoginManager.getInstance().logOut();
                 a.finish();
             }
         });
@@ -173,37 +178,35 @@ public class RegistarRedSocial extends AppCompatActivity {
     public void onClickLogueo(View view) {
 
         if (!edtNombre.getText().toString().isEmpty()) {
-
-                Intent i;
-                Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
-                switch (tipo) {
-                    //Es un grupo
-                    case 1:
-                        i = new Intent()
-                                .putExtra("img","default_grupo.jpg")
-                                .putExtra("tipo", tipo)
-                                .putExtra("nom", edtNombre.getText().toString())
-                                .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                                .putExtra("des", edtDescripcion.getText().toString());
-                        guardarBD(this, i);
-                        break;
-                    //Es un musico
-                    case 0:
-                           i=new Intent()
-                                   .putExtra("img","default_musico.jpg")
-                                   .putExtra("tipo", tipo)
-                                   .putExtra("nom", edtNombre.getText().toString())
-                                   .putExtra("sex",getResources().getStringArray(R.array.sexo)[posSexo])
-                                   .putExtra("est",getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                                   .putExtra("ins",getResources().getStringArray(R.array.instrumentos)[posInstrumento])
-                                   .putExtra("des", edtDescripcion.getText().toString());
-                        guardarBD(this, i);
-                        break;
-                }
+            view.setVisibility(View.INVISIBLE);
+            Intent i;
+            Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
+            switch (tipo) {
+                //Es un grupo
+                case 1:
+                    i = new Intent()
+                            .putExtra("img", "default_grupo.jpg")
+                            .putExtra("tipo", tipo)
+                            .putExtra("nom", edtNombre.getText().toString())
+                            .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                            .putExtra("des", edtDescripcion.getText().toString());
+                    guardarBD(this, i);
+                    break;
+                //Es un musico
+                case 0:
+                    i = new Intent()
+                            .putExtra("img", "default_musico.jpg")
+                            .putExtra("tipo", tipo)
+                            .putExtra("nom", edtNombre.getText().toString())
+                            .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
+                            .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                            .putExtra("ins", getResources().getStringArray(R.array.instrumentos)[posInstrumento])
+                            .putExtra("des", edtDescripcion.getText().toString());
+                    guardarBD(this, i);
+                    break;
             }
         }
-
-
+    }
 
 
     private void guardarBD(Context cont, Intent data) {
@@ -212,7 +215,8 @@ public class RegistarRedSocial extends AppCompatActivity {
             //Es un grupo
             case 1:
                 new BDBAA().agregarGrupo(cont
-                        ,edtNombre
+                        , findViewById(R.id.btnRegistrarVRegSocial)
+                        , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("est")
@@ -222,7 +226,8 @@ public class RegistarRedSocial extends AppCompatActivity {
             case 0:
                 //pendiente de implementacion de sexo
                 new BDBAA().agregarMusico(cont
-                        ,edtNombre
+                        , findViewById(R.id.btnRegistrarVRegSocial)
+                        , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("sex")
