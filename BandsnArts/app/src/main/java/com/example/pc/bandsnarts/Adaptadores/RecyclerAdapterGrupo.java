@@ -54,7 +54,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         est.setText(grupoItem.getEstilo());
         desc.setText(grupoItem.getDescripcion());
         busc.setImageDrawable(mContext.getDrawable(R.drawable.no));
-        new BDBAA().accesoFotoPerfil("grupo",imagenMusico,mContext);
+        new BDBAA().accesoFotoPerfil("grupo",'n',imagenMusico,mContext);
 
     }
 

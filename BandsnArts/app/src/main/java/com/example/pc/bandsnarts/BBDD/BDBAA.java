@@ -211,7 +211,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void cargarDrawerPerfil(final Context context,final String tipo, final ImageView fotoPerfil, final TextView nombre) {
+    public void cargarDrawerPerfil(final Context context, final String tipo, final ImageView fotoPerfil, final TextView nombre) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -220,13 +220,13 @@ public class BDBAA extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     switch (tipo) {
                         case "musico":
-                          nombre.setText(data.getValue(Musico.class).getNombre());
-                           accesoFotoPerfil("musico", fotoPerfil, context);
+                            nombre.setText(data.getValue(Musico.class).getNombre());
+                            accesoFotoPerfil("musico",'1', fotoPerfil, context);
 
                             break;
                         case "grupo":
                             nombre.setText(data.getValue(Grupo.class).getNombre());
-                            accesoFotoPerfil("grupo", fotoPerfil, context);
+                            accesoFotoPerfil("grupo",'1', fotoPerfil, context);
                             break;
                     }
 
@@ -256,7 +256,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                           accesoFotoPerfil("musico",((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)),context);
+                            accesoFotoPerfil("musico",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -278,7 +278,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("grupo",((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)),context);
+                            accesoFotoPerfil("grupo",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -306,150 +306,150 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-/*   public void cargarDatosLocales(final ArrayList<Local> listaLocal, final RecyclerView recyclerViewLocal, final Activity activity){
-           DatabaseReference bd = FirebaseDatabase.getInstance().getReference("locales");
-           Query q = bd.orderByChild("nombre");
-           q.addListenerForSingleValueEvent(new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot) {
+    /*   public void cargarDatosLocales(final ArrayList<Local> listaLocal, final RecyclerView recyclerViewLocal, final Activity activity){
+               DatabaseReference bd = FirebaseDatabase.getInstance().getReference("locales");
+               Query q = bd.orderByChild("nombre");
+               q.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
 
-                   for (DataSnapshot data : dataSnapshot.getChildren()) {
-                       Log.d("\n\nPRUEBA","holaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                       Local loc =data.getValue(Local.class);
-                       listaLocal.add(loc);
+                       for (DataSnapshot data : dataSnapshot.getChildren()) {
+                           Log.d("\n\nPRUEBA","holaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                           Local loc =data.getValue(Local.class);
+                           listaLocal.add(loc);
+                       }
+                       RecyclerAdapterLocales adapterLocal = new RecyclerAdapterLocales(activity.getApplicationContext(), listaLocal);
+                       recyclerViewLocal.setNestedScrollingEnabled(false);
+                       recyclerViewLocal.setLayoutManager(new LinearLayoutManager(activity));
+                       recyclerViewLocal.setAdapter(adapterLocal);
                    }
-                   RecyclerAdapterLocales adapterLocal = new RecyclerAdapterLocales(activity.getApplicationContext(), listaLocal);
-                   recyclerViewLocal.setNestedScrollingEnabled(false);
-                   recyclerViewLocal.setLayoutManager(new LinearLayoutManager(activity));
-                   recyclerViewLocal.setAdapter(adapterLocal);
-               }
 
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
+                   @Override
+                   public void onCancelled(DatabaseError databaseError) {
 
-               }
-           });
+                   }
+               });
 
-       }
+           }
 
-    public void cargarDatosSalas(final ArrayList<Sala> listaSala, final RecyclerView recyclerViewSala, final Activity activity){
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("salas");
-        Query q = bd.orderByChild("nombre");
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        public void cargarDatosSalas(final ArrayList<Sala> listaSala, final RecyclerView recyclerViewSala, final Activity activity){
+            DatabaseReference bd = FirebaseDatabase.getInstance().getReference("salas");
+            Query q = bd.orderByChild("nombre");
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                    Sala sal =data.getValue(Sala.class);
-                    listaSala.add(sal);
+                        Sala sal =data.getValue(Sala.class);
+                        listaSala.add(sal);
+                    }
+                    RecyclerAdapterSalas adapterSala = new RecyclerAdapterSalas(activity.getApplicationContext(), listaSala);
+                    recyclerViewSala.setNestedScrollingEnabled(false);
+                    recyclerViewSala.setLayoutManager(new LinearLayoutManager(activity));
+                    recyclerViewSala.setAdapter(adapterSala);
                 }
-                RecyclerAdapterSalas adapterSala = new RecyclerAdapterSalas(activity.getApplicationContext(), listaSala);
-                recyclerViewSala.setNestedScrollingEnabled(false);
-                recyclerViewSala.setLayoutManager(new LinearLayoutManager(activity));
-                recyclerViewSala.setAdapter(adapterSala);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-    }
-    public void cargarDatosMusicos(final ArrayList<Musico> listaMusicos, final RecyclerView recyclerViewMusico, final Activity activity){
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
-        Query q = bd.orderByChild("nombre");
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Musico mus =data.getValue(Musico.class);
-                    listaMusicos.add(mus);
                 }
-                RecyclerAdapterMusico adapterSala = new RecyclerAdapterMusico(activity.getApplicationContext(), listaMusicos);
-                recyclerViewMusico.setNestedScrollingEnabled(false);
-                recyclerViewMusico.setLayoutManager(new LinearLayoutManager(activity));
-                recyclerViewMusico.setAdapter(adapterSala);
-            }
+            });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        }
+        public void cargarDatosMusicos(final ArrayList<Musico> listaMusicos, final RecyclerView recyclerViewMusico, final Activity activity){
+            DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
+            Query q = bd.orderByChild("nombre");
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-            }
-        });
-
-    }
-
-    public void cargarDatosGrupos(final ArrayList<Grupo> listaGrupos, final RecyclerView recyclerViewGrupo, final Activity activity){
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
-        Query q = bd.orderByChild("nombre");
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Grupo grp =data.getValue(Grupo.class);
-                    listaGrupos.add(grp);
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Musico mus =data.getValue(Musico.class);
+                        listaMusicos.add(mus);
+                    }
+                    RecyclerAdapterMusico adapterSala = new RecyclerAdapterMusico(activity.getApplicationContext(), listaMusicos);
+                    recyclerViewMusico.setNestedScrollingEnabled(false);
+                    recyclerViewMusico.setLayoutManager(new LinearLayoutManager(activity));
+                    recyclerViewMusico.setAdapter(adapterSala);
                 }
-                RecyclerAdapterGrupo adapterGrupo= new RecyclerAdapterGrupo(activity.getApplicationContext(), listaGrupos);
-                recyclerViewGrupo.setNestedScrollingEnabled(false);
-                recyclerViewGrupo.setLayoutManager(new LinearLayoutManager(activity));
-                recyclerViewGrupo.setAdapter(adapterGrupo);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-    }*/
-    public void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo){
+        }
+
+        public void cargarDatosGrupos(final ArrayList<Grupo> listaGrupos, final RecyclerView recyclerViewGrupo, final Activity activity){
+            DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
+            Query q = bd.orderByChild("nombre");
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Grupo grp =data.getValue(Grupo.class);
+                        listaGrupos.add(grp);
+                    }
+                    RecyclerAdapterGrupo adapterGrupo= new RecyclerAdapterGrupo(activity.getApplicationContext(), listaGrupos);
+                    recyclerViewGrupo.setNestedScrollingEnabled(false);
+                    recyclerViewGrupo.setLayoutManager(new LinearLayoutManager(activity));
+                    recyclerViewGrupo.setAdapter(adapterGrupo);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }*/
+    public void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("nombre");
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    switch(tipo){
+                    switch (tipo) {
                         case "grupo":
-                            Grupo grp =data.getValue(Grupo.class);
+                            Grupo grp = data.getValue(Grupo.class);
                             lista.add(grp);
                             break;
                         case "musico":
-                            Musico mus =data.getValue(Musico.class);
+                            Musico mus = data.getValue(Musico.class);
                             lista.add(mus);
                             break;
                         case "locales":
-                            Local loc =data.getValue(Local.class);
+                            Local loc = data.getValue(Local.class);
                             lista.add(loc);
                             break;
                         case "salas":
-                            Sala sal =data.getValue(Sala.class);
+                            Sala sal = data.getValue(Sala.class);
                             lista.add(sal);
                             break;
                     }
                 }
-                switch(tipo){
+                switch (tipo) {
                     case "grupo":
-                        RecyclerAdapterGrupo adapterG= new RecyclerAdapterGrupo(activity.getApplicationContext(), lista);
+                        RecyclerAdapterGrupo adapterG = new RecyclerAdapterGrupo(activity.getApplicationContext(), lista);
                         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         recyclerView.setAdapter(adapterG);
                         break;
                     case "musico":
-                        RecyclerAdapterMusico adapterM= new RecyclerAdapterMusico(activity.getApplicationContext(), lista);
+                        RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(activity.getApplicationContext(), lista);
                         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         recyclerView.setAdapter(adapterM);
                         break;
                     case "locales":
-                        RecyclerAdapterLocales adapterL= new RecyclerAdapterLocales(activity.getApplicationContext(), lista);
+                        RecyclerAdapterLocales adapterL = new RecyclerAdapterLocales(activity.getApplicationContext(), lista);
                         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         recyclerView.setAdapter(adapterL);
                         break;
                     case "salas":
-                        RecyclerAdapterSalas adapterS= new RecyclerAdapterSalas(activity.getApplicationContext(), lista);
+                        RecyclerAdapterSalas adapterS = new RecyclerAdapterSalas(activity.getApplicationContext(), lista);
                         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         recyclerView.setAdapter(adapterS);
                         break;
@@ -465,48 +465,56 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
+
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
-    public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
+    public void accesoFotoPerfil(final String tipo, char cantidad, final ImageView vista, final Context context) {
 
-        FirebaseDatabase
-                .getInstance()
-                .getReference(tipo)
-                .orderByChild("uid")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String img;
-                       StorageReference ref= FirebaseStorage.getInstance().getReference("imagenes");
-                       for (DataSnapshot data:dataSnapshot.getChildren()) {
-                           switch (tipo) {
-                               case "musico":
-                                   img = data.getValue(Musico.class).getImagen();
-                                   ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Uri> task) {
-                                           Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                       }
-                                   });
-                                   break;
-                               case "grupo":
-                                   img = data.getValue(Grupo.class).getImagen();
-                                   ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Uri> task) {
-                                           Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                       }
-                                   });
-                                   break;
-                           }
-                       }
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = null;
+        switch (cantidad) {
+            case '1':
+                 q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                break;
+            case 'n':
+                q = bd.orderByChild("nombre");
+                break;
+        }
+
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String img;
+                StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            img = data.getValue(Musico.class).getImagen();
+                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                }
+                            });
+                            break;
+                        case "grupo":
+                            img = data.getValue(Grupo.class).getImagen();
+                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                }
+                            });
+                            break;
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
 
 
     }

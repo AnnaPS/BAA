@@ -88,9 +88,6 @@ public class RegistarRedSocial extends AppCompatActivity {
                 alerta.cancel();
                 FirebaseAuth.getInstance().getCurrentUser().delete();
                 FirebaseAuth.getInstance().signOut();
-
-                // deslogueo en Facebook
-                LoginManager.getInstance().logOut();
                 a.finish();
             }
         });
@@ -241,5 +238,8 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        FirebaseAuth.getInstance().getCurrentUser().delete();
+        FirebaseAuth.getInstance().signOut();
+        a.finish();
     }
 }
