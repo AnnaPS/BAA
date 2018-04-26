@@ -1,19 +1,18 @@
 package com.example.pc.bandsnarts.Login;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.URLUtil;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -23,10 +22,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private TextView nombreGoogle, emailGoogle, identUsuGoogle;
     private ImageView fotoGoogle;
+    EditText editUrl;
 
 
     // Variable para el usuario de Google
@@ -41,7 +44,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_google);
-
+        editUrl=findViewById(R.id.edUrl);
         nombreGoogle = findViewById(R.id.txtNombreVGoogle);
         emailGoogle = findViewById(R.id.txtDirecVGoogle);
         identUsuGoogle = findViewById(R.id.txtCPVGoogle);
@@ -102,9 +105,41 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         startActivity(i);
     }
 
+    private static boolean isUrl(String s) {
+        Pattern face = Pattern.compile("https://www\\.facebook\\.com\\/(.+)");
+        Pattern twitter = Pattern.compile("https://www\\.twitter\\.com\\/(.+)");
+        Pattern youtube=Pattern.compile("https://www\\.youtube\\.com\\/(.+)");
+
+
+        Matcher f = face.matcher(s);
+        Matcher t = twitter.matcher(s);
+        Matcher y = youtube.matcher(s);
+
+        if(f.matches()||t.matches()||y.matches()){
+
+            System.out.println("FACEBOOK: "+f.matches());
+            System.out.println("TWITTER: "+t.matches());
+            System.out.println("YOUTUBE: "+y.matches());
+
+            //SI LA URL ES UNA DE LAS ANTERIORES ES VÁLIDA, RETORNMOS VERDADERO
+            return true;
+        }else{
+            //SI NO ES UNA URL VALIDA RETORNAMOS FALSO
+            return false;
+        }
+
+    }
+
     public void onClickLogOut(View view) {
 
-        //Deslogueo en Google
+
+       if(BandsnArts.isUrl(editUrl.getText().toString())){
+           Toast.makeText(this, "URL VÁLIDA", Toast.LENGTH_SHORT).show();
+       }else{
+           Toast.makeText(this, "DEBE INTRODUCIR UNA URL VÁLIDA", Toast.LENGTH_SHORT).show();
+       }
+
+        /*//Deslogueo en Google
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
@@ -119,7 +154,13 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                     Toast.makeText(InicioGoogle.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
+
+
+
+
+
+
 
     }
 
