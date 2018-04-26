@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,6 +26,8 @@ import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
 
 public class RegistarRedSocial extends AppCompatActivity {
     Spinner spinnerInstrumentos, spinnerEstilos, spinnerSexo;
@@ -133,9 +137,19 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     public void escuchadoresSpinner() {
 
+
+        spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+               ocultaTeclado(RegistarRedSocial.this);
+                return false;
+            }
+        }) ;
+
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ocultaTeclado(RegistarRedSocial.this);
                 posEstilo = position;
             }
 
@@ -153,7 +167,7 @@ public class RegistarRedSocial extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                ocultaTeclado(RegistarRedSocial.this);
             }
 
         });
@@ -165,10 +179,20 @@ public class RegistarRedSocial extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                ocultaTeclado(RegistarRedSocial.this);
             }
 
         });
+    }
+
+
+    public static void ocultaTeclado(Activity act){
+        View view = act.getCurrentFocus();
+        view.clearFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)act.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 
@@ -240,6 +264,8 @@ public class RegistarRedSocial extends AppCompatActivity {
     public void onBackPressed() {
         FirebaseAuth.getInstance().getCurrentUser().delete();
         FirebaseAuth.getInstance().signOut();
+
         a.finish();
     }
+
 }
