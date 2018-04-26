@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -52,7 +53,8 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         nom.setText(grupoItem.getNombre());
         est.setText(grupoItem.getEstilo());
         desc.setText(grupoItem.getDescripcion());
-
+        busc.setImageDrawable(mContext.getDrawable(R.drawable.no));
+        new BDBAA().accesoFotoPerfil("grupo",'n',imagenMusico,mContext);
 
     }
 

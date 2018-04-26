@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 
@@ -48,14 +49,14 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
 
-        //imagenMusico.setImageResource(musicoItem.getImg());
+
         nom.setText(musicoItem.getNombre());
         ins.setText(musicoItem.getInstrumento());
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
-//        anun.setText(musicoItem.getCantidadAnuncios());
-        busc.setImageResource(musicoItem.getBuscandoInt());
-
+        //anun.setText(musicoItem.getCantidadAnuncios());
+        busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
+        new BDBAA().accesoFotoPerfil("musico",'n',imagenMusico,mContext);
     }
 
 

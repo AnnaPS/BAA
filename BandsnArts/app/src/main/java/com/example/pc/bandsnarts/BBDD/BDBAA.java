@@ -52,7 +52,7 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    public void agregarMusico(final Context context, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
+    public void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final String instrumento, final String descripcion) {
         // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference("musico");
 
@@ -66,6 +66,7 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(context, "Ya existe un usuario con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
                     edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                     // limpiar campo !!!!!
+                    view.setVisibility(View.VISIBLE);
                     encontrado = true;
                 }
                 if (!encontrado) {
@@ -88,7 +89,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void agregarGrupo(final Context context, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
+    public void agregarGrupo(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
 
         bd = FirebaseDatabase.getInstance().getReference("grupo");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
@@ -100,6 +101,7 @@ public class BDBAA extends AppCompatActivity {
                     Log.d("INSERt", "No insertado ");
                     Toast.makeText(context, "Ya existe un grupo con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
                     edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
+                    view.setVisibility(View.VISIBLE);
                     encontrado = true;
                 }
                 if (!encontrado) {
@@ -219,12 +221,12 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case "musico":
                             nombre.setText(data.getValue(Musico.class).getNombre());
-                            accesoFotoPerfil("musico", fotoPerfil, context);
+                            accesoFotoPerfil("musico",'1', fotoPerfil, context);
 
                             break;
                         case "grupo":
                             nombre.setText(data.getValue(Grupo.class).getNombre());
-                            accesoFotoPerfil("grupo", fotoPerfil, context);
+                            accesoFotoPerfil("grupo",'1', fotoPerfil, context);
                             break;
                     }
 
@@ -254,7 +256,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("musico",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -276,7 +278,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("grupo",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -465,48 +467,54 @@ public class BDBAA extends AppCompatActivity {
     }
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
-    public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
+    public void accesoFotoPerfil(final String tipo, char cantidad, final ImageView vista, final Context context) {
 
-        FirebaseDatabase
-                .getInstance()
-                .getReference(tipo)
-                .orderByChild("uid")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String img;
-                        StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            switch (tipo) {
-                                case "musico":
-                                    img = data.getValue(Musico.class).getImagen();
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = null;
+        switch (cantidad) {
+            case '1':
+                 q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                break;
+            case 'n':
+                q = bd.orderByChild("nombre");
+                break;
+        }
 
-                                    ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Uri> task) {
-                                            Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                        }
-                                    });
-                                    break;
-                                case "grupo":
-                                    img = data.getValue(Grupo.class).getImagen();
-                                    ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Uri> task) {
-                                            Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                        }
-                                    });
-                                    break;
-                            }
-                        }
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String img;
+                StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            img = data.getValue(Musico.class).getImagen();
+                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                }
+                            });
+                            break;
+                        case "grupo":
+                            img = data.getValue(Grupo.class).getImagen();
+                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                }
+                            });
+                            break;
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
 
 
     }

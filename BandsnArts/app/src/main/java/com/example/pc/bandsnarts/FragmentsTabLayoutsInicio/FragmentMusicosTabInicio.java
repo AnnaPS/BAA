@@ -35,12 +35,7 @@ public class FragmentMusicosTabInicio extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_musicos_fragment, container, false);
         recyclerViewMusicos = vista.findViewById(R.id.recyclerMusicos);
-        if (listaMusicos.isEmpty()) {
             new BDBAA().cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(),"musico");
-
-        }
-
-
         return vista;
     }
 
