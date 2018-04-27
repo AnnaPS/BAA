@@ -5,20 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +28,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     EditText editUrl;
 
 
+
     // Variable para el usuario de Google
     private GoogleApiClient clienteGoogle;
 
@@ -42,13 +39,14 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_google);
         editUrl=findViewById(R.id.edUrl);
         nombreGoogle = findViewById(R.id.txtNombreVGoogle);
         emailGoogle = findViewById(R.id.txtDirecVGoogle);
         identUsuGoogle = findViewById(R.id.txtCPVGoogle);
-        fotoGoogle = findViewById(R.id.imvFotoVGoogle);
+       // fotoGoogle = findViewById(R.id.imvFotoVGoogle);
 
         // Opciones de inicio con google para login silencioso porque ya se realizo la autenticacion
         // y para poder acceder a los datos del usuarios
@@ -78,6 +76,8 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
             }
 
         };
+
+
 
 
 
@@ -130,14 +130,37 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
+
+
+    public Boolean isOnlineNet() {
+
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 8.8.8.8");
+
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+       e.printStackTrace();
+        }
+        return false;
+    }
+
     public void onClickLogOut(View view) {
 
+        if(isOnlineNet()){
+            Toast.makeText(this, "CONECTADO", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "NO ESTA CONECTADO", Toast.LENGTH_SHORT).show();
+        }
+        //verificaConexion(this);
 
-       if(BandsnArts.isUrl(editUrl.getText().toString())){
+      /*  if(BandsnArts.isUrl(editUrl.getText().toString())){
            Toast.makeText(this, "URL VÁLIDA", Toast.LENGTH_SHORT).show();
        }else{
            Toast.makeText(this, "DEBE INTRODUCIR UNA URL VÁLIDA", Toast.LENGTH_SHORT).show();
-       }
+       }*/
 
         /*//Deslogueo en Google
         firebaseAuth.signOut();
@@ -165,9 +188,15 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void onClickRevocar(View view) {
-        firebaseAuth.signOut();
+       // firebaseAuth.signOut();
 
-        Auth.GoogleSignInApi.revokeAccess(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
+        if(isOnlineNet()){
+            Toast.makeText(InicioGoogle.this, "CONECTADO", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(InicioGoogle.this, "NO ESTA CONECTADO", Toast.LENGTH_SHORT).show();
+        }
+
+      /*  Auth.GoogleSignInApi.revokeAccess(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
                 if(status.isSuccess()){
@@ -177,7 +206,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
                     Toast.makeText(InicioGoogle.this, "Sesion no revocada", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     @Override
