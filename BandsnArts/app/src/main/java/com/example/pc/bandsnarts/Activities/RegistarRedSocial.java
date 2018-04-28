@@ -29,6 +29,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class RegistarRedSocial extends AppCompatActivity {
     Spinner spinnerInstrumentos, spinnerEstilos, spinnerSexo;
@@ -221,13 +222,16 @@ public class RegistarRedSocial extends AppCompatActivity {
                     break;
                 //Es un musico
                 case 0:
+                    ArrayList<String> intrumentos= new ArrayList<>();
+                    intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
+
                     i = new Intent()
                             .putExtra("img", "default_musico.jpg")
                             .putExtra("tipo", tipo)
                             .putExtra("nom", edtNombre.getText().toString())
                             .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                            .putExtra("ins", getResources().getStringArray(R.array.instrumentos)[posInstrumento])
+                            .putExtra("ins",intrumentos)
                             .putExtra("des", edtDescripcion.getText().toString());
                     guardarBD(this, i);
                     break;
@@ -259,7 +263,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                         , data.getStringExtra("nom")
                         , data.getStringExtra("sex")
                         , data.getStringExtra("est")
-                        , data.getStringExtra("ins")
+                        , data.getStringArrayListExtra("ins")
                         , data.getStringExtra("des"));
                 break;
         }

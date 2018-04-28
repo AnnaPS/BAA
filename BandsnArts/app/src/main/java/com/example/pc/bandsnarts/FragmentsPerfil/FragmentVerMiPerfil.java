@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,9 +19,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
+
+import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -36,12 +41,17 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
+    View vista;
+    private int posSexo,posEstilo,posLocalidad,posProvincia,posInst1,posInst2,posInst3,posInst4;
+    private String buscando;
+
+    CharSequence[] localidades;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
+        vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
 
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
@@ -66,7 +76,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         txtProvincia = vista.findViewById(R.id.txtProvinciaVVerMiPerfil);
         txtSexo = vista.findViewById(R.id.txtSexoVVerMiPerfil);
 
-
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
         spinnerInstrumentos1.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.instrumentos)));
@@ -87,8 +96,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                 // En funcion de si el usuario es músico o grupo
                 editaPerfil("musico");
-
-
             }
         });
         miFABGuardarRechazar=(FloatingActionMenu)vista.findViewById(R.id.floatingGuardarDescartar);
@@ -107,19 +114,24 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             public void onClick(View view) {
 
                 Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+                //Actualizamos los datos del usuario
+                ArrayList<String> intrumentos= new ArrayList<>();
+                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
+                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
+                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
+                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-
-
+               new BDBAA().modificarDatosUsuario("musico",view.getContext(),"default_musico.jpg",getResources().getStringArray(R.array.sexo)[posSexo]
+                       ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],intrumentos,txtDescripcion.getText().toString()
+                       ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
+                       buscando);
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
-
-
-
+                getActivity().finish();
             }
         });
         //Poner de inicio a invisible el boton de guardar / descartar
@@ -127,7 +139,110 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         //Poner de incio a invisible el switch
         switchBuscar.setVisibility(View.INVISIBLE);
         loadSpinnerProvincias();
+
+        escuchadoresSpinner();
+
+
         return vista;
+    }
+
+    public void escuchadoresSpinner() {
+        spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posSexo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spEstilo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posEstilo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+   /*     spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posLocalidad=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posProvincia=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });*/
+        spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInst1=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spinnerInstrumentos2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInst2=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spinnerInstrumentos3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInst3=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spinnerInstrumentos4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInst4=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
     }
 
 
@@ -195,9 +310,11 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                     if (check){
                         //si esta chequeado, es si
                         Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
+                        buscando = "si";
                     }else{
                         //es no
                         Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
+                        buscando = "no";
                     }
                 }
             });
@@ -208,6 +325,9 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }
 
             //navBotPerfil.setVisibility(View.INVISIBLE);
+
+
+            new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
         }
     }
 
@@ -233,14 +353,13 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos,
                                long id) {
-
         switch (parent.getId()) {
             case R.id.spProvinVVerMiPerfil:
-
+                posProvincia=pos;
                 // Retrieves an array
                 TypedArray arrayLocalidades = getResources().obtainTypedArray(
                         R.array.array_provincia_a_localidades);
-                CharSequence[] localidades = arrayLocalidades.getTextArray(pos);
+                localidades = arrayLocalidades.getTextArray(pos);
                 arrayLocalidades.recycle();
 
                 // Create an ArrayAdapter using the string array and a default
@@ -254,11 +373,10 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                 // Apply the adapter to the spinner
                 this.spLocalidad.setAdapter(adapter);
-
                 break;
 
             case R.id.spLocaliVVerMiPerfil:
-
+                posLocalidad=pos;
                 break;
         }
     }
