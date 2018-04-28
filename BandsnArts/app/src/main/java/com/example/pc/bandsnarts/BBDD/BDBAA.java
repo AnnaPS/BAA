@@ -351,10 +351,16 @@ public class BDBAA extends AppCompatActivity {
                             // Instumento Principal
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
                             ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil1)).setSelection(posicion);
-                            /*((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento());
-                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3)).setText(musico.getInstrumento());
-                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4)).setText(musico.getInstrumento());*/
-
+                            try {
+                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(1));
+                                ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil2)).setSelection(posicion);
+                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(2));
+                                ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil3)).setSelection(posicion);
+                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(3));
+                                ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil4)).setSelection(posicion);
+                            }catch(IndexOutOfBoundsException e){
+                                // En caso de que solo tenga el instrumento principal
+                            }
 
                             break;
                         case "grupo":
@@ -413,7 +419,7 @@ public class BDBAA extends AppCompatActivity {
                             mus.setLocalidad(localidad);
                             mus.setBuscando(buscando);
 
-                            bd.child(bd.getKey()).setValue(mus);
+                            bd.child(ds.getKey()).setValue(mus);
                             Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                             break;
                         case ("grupo"):
