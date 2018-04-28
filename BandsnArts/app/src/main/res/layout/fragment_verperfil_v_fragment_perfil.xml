@@ -63,6 +63,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="276dp"
                 android:background="@color/md_light_green_600"
+                android:onClick="onClickEditaPerfil"
                 android:src="@drawable/ic_border_color_black_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/appBarLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +72,60 @@
                 app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
                 app:layout_constraintVertical_bias="1.0" />
 
+
+
+
+            <Spinner
+                android:id="@+id/spLocaliVVerMiPerfil"
+                android:layout_width="183dp"
+                android:layout_height="27dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bordeverde"
+                app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
+                app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
+                app:layout_constraintHorizontal_bias="0.733"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
+                app:layout_constraintVertical_bias="0.712" />
+
+
+
+            <Spinner
+                android:id="@+id/spEstiloVVerMiPerfil"
+                android:layout_width="183dp"
+                android:layout_height="27dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bordeverde"
+                app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
+                app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="303dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                app:layout_constraintBottom_toBottomOf="@+id/appBarLayout2"
+                app:layout_constraintEnd_toEndOf="@+id/appBarLayout2"
+                app:layout_constraintHorizontal_bias="0.366"
+                app:layout_constraintStart_toStartOf="@+id/appBarLayout2"
+                app:layout_constraintTop_toTopOf="@+id/appBarLayout2"
+                app:layout_constraintVertical_bias="0.681" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout3"
@@ -145,6 +200,16 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
+                    <Spinner
+                        android:id="@+id/spProvinVVerMiPerfil"
+                        android:layout_width="185dp"
+                        android:layout_height="27dp"
+                        android:layout_marginBottom="8dp"
+
+                        android:layout_marginTop="70dp"
+                        android:background="@drawable/bordeverde"
+                       />
+
                     <EditText
                         android:id="@+id/txtProvinciaVVerMiPerfil"
                         android:layout_width="wrap_content"
@@ -208,6 +273,22 @@
                         android:textColor="@color/md_teal_800"
                         android:textSize="20dp"
                         android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spSexoVVerMiPerfil"
+                        android:layout_width="163dp"
+                        android:layout_height="27dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bordeverde"
+                        app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
+                        app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
+                        app:layout_constraintHorizontal_bias="0.374"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
+                        app:layout_constraintVertical_bias="0.939" />
 
                     <EditText
                         android:id="@+id/txtSexoVVerMiPerfil"
