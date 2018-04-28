@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,8 +87,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
-                FirebaseAuth.getInstance().getCurrentUser().delete();
-                FirebaseAuth.getInstance().signOut();
+                /*FirebaseAuth.getInstance().getCurrentUser().delete();
+                FirebaseAuth.getInstance().signOut();*/
+                a.setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
                 a.finish();
             }
         });
@@ -238,8 +240,9 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
-        FirebaseAuth.getInstance().signOut();
+      /*  FirebaseAuth.getInstance().getCurrentUser().delete();
+        FirebaseAuth.getInstance().signOut();*/
+      setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
         a.finish();
     }
 }

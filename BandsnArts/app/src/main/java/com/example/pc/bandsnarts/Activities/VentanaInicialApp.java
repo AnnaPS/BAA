@@ -221,7 +221,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                     //El primer digito indica la ventana y el segundo la vez que
                     setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
                     VentanaInicialApp.this.finish();
-                    // volverActivityLogin();
+                    //volverActivityLogin();
                 } else {
                     Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
                 }

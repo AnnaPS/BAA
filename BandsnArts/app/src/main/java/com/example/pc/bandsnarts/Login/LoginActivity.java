@@ -31,6 +31,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -39,6 +40,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -78,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     com.google.android.gms.common.SignInButton botonGoogle;
 
 
-
     AnimationDrawable animationDrawable;
 
 
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
-        progressBar=findViewById(R.id.progressBarVLogin);
+        progressBar = findViewById(R.id.progressBarVLogin);
 
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
@@ -135,10 +137,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (usuario != null) {
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         new BDBAA().comprobarUID(estaVentana, usuario.getUid());
+                    }else{
+                        visualizarBotones(View.VISIBLE);
                     }
-                }else{
+                } else {
                     visualizarBotones(View.VISIBLE);
                 }
             }
@@ -187,16 +191,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         visualizarBotones(View.INVISIBLE);
     }
-    public void visualizarBotones(int vis){
-      findViewById(R.id.llVerticalVLogin).setVisibility(vis);
-      findViewById(R.id.llhVLogin).setVisibility(vis);
+
+    public void visualizarBotones(int vis) {
+        findViewById(R.id.llVerticalVLogin).setVisibility(vis);
+        findViewById(R.id.llhVLogin).setVisibility(vis);
         findViewById(R.id.vVLoging).setVisibility(vis);
-        if(vis==View.INVISIBLE){
+        if (vis == View.INVISIBLE) {
             progressBar.setBackgroundResource(R.drawable.gif);
-            animationDrawable = (AnimationDrawable)progressBar.getBackground();
+            animationDrawable = (AnimationDrawable) progressBar.getBackground();
             animationDrawable.start();
             progressBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             animationDrawable.stop();
             progressBar.setVisibility(View.INVISIBLE);
         }
@@ -279,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             case (BandsnArts.CODIGO_DE_REGISTRO):
                 FirebaseAuth.getInstance().signOut();
                 break;
-            case 222:
+            default:
                 switch (resultCode) {
                     case (BandsnArts.CODIGO_DE_CIERRE):
                         finish();
@@ -289,15 +294,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         System.out.println("Ha sido deslogueado");
                         Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_SHORT).show();
                         break;
-                    default:
-                        finish();
+                    case (BandsnArts.CODIGO_DE_REDSOCIAL):
+                        // Clear data
+                        LoginManager.getInstance().logOut();
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                        FirebaseAuth.getInstance().signOut();
+
                         break;
                 }
-          /*  case (BandsnArts.CODIGO_DE_FACEBOOK):
-                Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
-                manejadorTokenFacebook(loginResult.getAccessToken());
-                // Para reconocer las acciones del boton de Inicio de FaceBook
-                break;*/
+
         }
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -334,11 +339,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-  /*  private void siguienteActivity() {
-        Intent i = new Intent(this, VentanaInicialApp.class);
-        startActivity(i);
-    }
-*/
+    /*  private void siguienteActivity() {
+          Intent i = new Intent(this, VentanaInicialApp.class);
+          startActivity(i);
+      }
+  */
     public void onClickRegistrarVLogin(View view) {
         //sacar alert dialog para grupo o musico
         alertaBuilder = new AlertDialog.Builder(this);
@@ -369,10 +374,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View view) {
                 PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
                 if (grupo.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), 000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
                 } else if (musico.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), 000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
                 } else {
                     Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();

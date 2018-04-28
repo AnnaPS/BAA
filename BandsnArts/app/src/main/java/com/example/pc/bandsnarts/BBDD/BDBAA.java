@@ -33,6 +33,7 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -76,7 +78,8 @@ public class BDBAA extends AppCompatActivity {
                     bd.child(bd.push().getKey()).setValue(mus);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+                        context.startActivity(new Intent(context, VentanaSliderParteDos.class));
                     ((Activity) context).finish();
                 }
             }
@@ -111,7 +114,8 @@ public class BDBAA extends AppCompatActivity {
                     bd.child(bd.push().getKey()).setValue(gru);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+                        context.startActivity(new Intent(context, VentanaSliderParteDos.class));
                     ((Activity) context).finish();
                 }
             }
@@ -221,12 +225,12 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case "musico":
                             nombre.setText(data.getValue(Musico.class).getNombre());
-                            accesoFotoPerfil("musico",'1', fotoPerfil, context);
+                            accesoFotoPerfil("musico", '1', fotoPerfil, context);
 
                             break;
                         case "grupo":
                             nombre.setText(data.getValue(Grupo.class).getNombre());
-                            accesoFotoPerfil("grupo",'1', fotoPerfil, context);
+                            accesoFotoPerfil("grupo", '1', fotoPerfil, context);
                             break;
                     }
 
@@ -256,7 +260,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("musico",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("musico", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -278,7 +282,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("grupo",'1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("grupo", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -473,7 +477,7 @@ public class BDBAA extends AppCompatActivity {
         Query q = null;
         switch (cantidad) {
             case '1':
-                 q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 break;
             case 'n':
                 q = bd.orderByChild("nombre");
@@ -486,6 +490,7 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String img;
                 StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
+
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     switch (tipo) {
                         case "musico":
@@ -493,7 +498,11 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                    try {
+                                        Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                    } catch (RuntimeExecutionException  ex) {
+
+                                    }
                                 }
                             });
                             break;
@@ -502,7 +511,11 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                    try {
+                                        Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                    } catch (RuntimeExecutionException ex) {
+
+                                    }
                                 }
                             });
                             break;

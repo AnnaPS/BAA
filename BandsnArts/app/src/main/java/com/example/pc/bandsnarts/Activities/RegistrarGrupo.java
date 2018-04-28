@@ -97,8 +97,6 @@ public class RegistrarGrupo extends AppCompatActivity {
                             Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();
                             FirebaseAuth.getInstance().removeAuthStateListener(this);
-
-
                         }
                     }
                 });
@@ -108,8 +106,9 @@ public class RegistrarGrupo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
+
         FirebaseAuth.getInstance().signOut();
+
         finish();
     }
 }
