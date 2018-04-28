@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <android.support.v7.widget.CardView
                 android:id="@+id/appBarPerfil"
@@ -32,10 +32,11 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/imgPerfilVPerfil"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="-10dp"
                     android:src="@drawable/female"
                     app:civ_border_color="@color/md_light_green_600"
                     app:civ_border_width="2dp" />
@@ -46,68 +47,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="75dp"
                     android:fontFamily="sans-serif"
                     android:text="Nombre Usuario/Grupo"
                     android:textColor="@color/md_white_1000"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                    android:textSize="25dp"
+                    android:textStyle="bold|italic" />
             </android.support.v7.widget.CardView>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingBPerfil"
-                android:layout_width="57dp"
-                android:layout_height="53dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="276dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="270dp"
                 android:background="@color/md_light_green_600"
+                android:backgroundTint="@color/md_light_green_600"
                 android:onClick="onClickEditaPerfil"
                 android:src="@drawable/ic_border_color_black_24dp"
+                app:fabSize="normal"
                 app:layout_constraintBottom_toTopOf="@+id/appBarLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.661"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
-                app:layout_constraintVertical_bias="1.0" />
-
-
-
-
-            <Spinner
-                android:id="@+id/spLocaliVVerMiPerfil"
-                android:layout_width="183dp"
-                android:layout_height="27dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bordeverde"
-                app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
-                app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
-                app:layout_constraintHorizontal_bias="0.733"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
-                app:layout_constraintVertical_bias="0.712" />
-
-
-
-            <Spinner
-                android:id="@+id/spEstiloVVerMiPerfil"
-                android:layout_width="183dp"
-                android:layout_height="27dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bordeverde"
-                app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
-                app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
-                app:layout_constraintVertical_bias="0.25" />
+                app:layout_constraintHorizontal_bias="0.649"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/editText2"
@@ -127,12 +90,30 @@
                 app:layout_constraintTop_toTopOf="@+id/appBarLayout2"
                 app:layout_constraintVertical_bias="0.681" />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Con tu información será más facil encontar \nlo que buscas."
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/appBarLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarPerfil"
+                app:layout_constraintVertical_bias="1.0" />
+
+
             <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -167,19 +148,27 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
+                    <Spinner
+                        android:id="@+id/spEstiloVVerMiPerfil"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/bordeverde" />
+
                     <EditText
                         android:id="@+id/txtEstiloVVerMiPerfil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="-180dp"
                         android:layout_marginTop="40dp"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Rock"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -203,26 +192,24 @@
                     <Spinner
                         android:id="@+id/spProvinVVerMiPerfil"
                         android:layout_width="185dp"
-                        android:layout_height="27dp"
-                        android:layout_marginBottom="8dp"
-
-                        android:layout_marginTop="70dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="47dp"
+                        android:layout_marginTop="68dp"
                         android:background="@drawable/bordeverde"
-                       />
+                        android:paddingBottom="5dp" />
 
                     <EditText
                         android:id="@+id/txtProvinciaVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="-220dp"
                         android:layout_marginTop="70dp"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
                         android:text="Madrid"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -242,18 +229,31 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
+                    <Spinner
+                        android:id="@+id/spLocaliVVerMiPerfil"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginTop="98dp"
+                        android:background="@drawable/bordeverde"
+                        android:paddingBottom="5dp"
+
+
+                        />
+
                     <EditText
                         android:id="@+id/txtLocalidadVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="-220dp"
                         android:layout_marginTop="100dp"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
+                        android:text="Getafe"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -276,34 +276,25 @@
 
                     <Spinner
                         android:id="@+id/spSexoVVerMiPerfil"
-                        android:layout_width="163dp"
-                        android:layout_height="27dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bordeverde"
-                        app:layout_constraintBottom_toBottomOf="@+id/appBarLayout3"
-                        app:layout_constraintEnd_toEndOf="@+id/appBarLayout3"
-                        app:layout_constraintHorizontal_bias="0.374"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/appBarLayout3"
-                        app:layout_constraintVertical_bias="0.939" />
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginTop="130dp"
+                        android:background="@drawable/bordeverde" />
 
                     <EditText
                         android:id="@+id/txtSexoVVerMiPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="-265dp"
                         android:layout_marginTop="130dp"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
+                        android:text="Mujer"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
+                        android:textSize="18dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -311,17 +302,62 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="160dp"
+                        android:fontFamily="sans-serif"
+                        android:text="¿Buscando grupo/artista?"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
+                        <Switch android:id="@+id/swBuscando"
+                           android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="160dp"
+                            android:layout_marginLeft="8dp"
+
+
+                            />
+                    <ImageView
+                        android:id="@+id/imgBuscandoVerMiPerfil"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="-40dp"
+                        android:layout_marginTop="165dp"
+                        android:src="@drawable/no"
+                        />
                 </LinearLayout>
 
+
+
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="¿Qué música tocas? ¿Qué grupos/artistas te gustan?...\nEscríbelo aquí!"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/appBarLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.044"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
+                app:layout_constraintVertical_bias="1.0" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="40dp"
                 app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -348,20 +384,34 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="40dp"
+                    android:background="@android:color/transparent"
                     android:enabled="false"
                     android:fontFamily="sans-serif"
                     android:textColor="@color/md_black_1000"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textSize="18dp" />
 
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif"
+                android:text="¿Tocas más de un instrumento? Aquí puedes poner \nun máximo de 4."
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/appBarLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/appBarLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="40dp"
                 app:cardBackgroundColor="@color/md_grey_200"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -383,28 +433,206 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="213dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-
-                    <EditText
-                        android:id="@+id/txtInstrumentoVVerMiPerfil"
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="50dp"
+                        android:fontFamily="sans-serif"
+                        android:text="*"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spInstrumentoVVerMiPerfil1"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/bordeverde" />
+
+                    <TextView
+                        android:id="@+id/txtInstrumentoVVerMiPerfil1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-180dp"
+                        android:layout_marginTop="50dp"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="_"
+                        android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="18dp"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="80dp"
+                        android:fontFamily="sans-serif"
+                        android:text="*"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="20dp"
                         android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spInstrumentoVVerMiPerfil2"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/bordeverde" />
+
+                    <TextView
+                        android:id="@+id/txtInstrumentoVVerMiPerfil2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-180dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:fontFamily="sans-serif"
+                        android:text="Guitarra"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="110dp"
+                        android:fontFamily="sans-serif"
+                        android:text="*"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spInstrumentoVVerMiPerfil3"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="110dp"
+                        android:background="@drawable/bordeverde" />
+
+
+                    <TextView
+                        android:id="@+id/txtInstrumentoVVerMiPerfil3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-180dp"
+                        android:layout_marginTop="110dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:fontFamily="sans-serif"
+                        android:text="Guitarra"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="140dp"
+                        android:enabled="false"
+                        android:fontFamily="sans-serif"
+                        android:text="*"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spInstrumentoVVerMiPerfil4"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="140dp"
+                        android:background="@drawable/bordeverde" />
+
+                    <TextView
+                        android:id="@+id/txtInstrumentoVVerMiPerfil4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-180dp"
+                        android:layout_marginTop="140dp"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:fontFamily="sans-serif"
+                        android:text="Guitarra"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="18dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingGuardarDescartar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:onClick="onClickOpcionesPerfil"
+        android:src="@android:drawable/ic_input_add"
+        app:fabSize="normal"
+        app:fab_label=""
+        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_colorNormal="@color/md_light_green_600"
+        app:fab_colorPressed="@color/md_green_A700"
+        app:menu_openDirection="up"
+        app:menu_showShadow="true">
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_save"
+            app:fabSize="mini"
+            android:onClick="onClickGuardarEditadoPerfil"
+            app:fab_colorNormal="@color/md_teal_800"
+        />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabDescartar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/md_teal_800"
+             />
+    </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>

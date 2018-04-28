@@ -58,7 +58,8 @@ dependencies {
         transitive = true
     }*/
 
-
+    /*Floating action button*/
+    implementation 'com.github.clans:fab:1.6.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

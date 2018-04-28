@@ -270,7 +270,10 @@ public class BDBAA extends AppCompatActivity {
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Instrumentos
-                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil)).setText(musico.getInstrumento());
+                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1)).setText(musico.getInstrumento());
+                            /*((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento());
+                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3)).setText(musico.getInstrumento());
+                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4)).setText(musico.getInstrumento());*/
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
