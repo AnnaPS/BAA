@@ -38,6 +38,7 @@ public class FragmentLocalesTabInicio extends Fragment {
         vista = inflater.inflate(R.layout.tab_locales_fragment, container, false);
 
         recyclerViewLocal = vista.findViewById(R.id.recyclerLocal);
+        recyclerViewLocal.setNestedScrollingEnabled(false);
         if (listaLocal.isEmpty()) {
             new BDBAA().cargarDatos(listaLocal, recyclerViewLocal, getActivity(),"locales");
         }

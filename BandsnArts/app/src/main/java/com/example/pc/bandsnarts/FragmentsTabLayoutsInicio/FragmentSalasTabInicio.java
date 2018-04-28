@@ -38,6 +38,7 @@ public class FragmentSalasTabInicio extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_salas_fragment, container, false);
         recyclerViewSalas = vista.findViewById(R.id.recyclerSalas);
+        recyclerViewSalas.setNestedScrollingEnabled(false);
         if (listaSalas.isEmpty()) {
             new BDBAA().cargarDatos(listaSalas, recyclerViewSalas, getActivity(),"salas");
 
