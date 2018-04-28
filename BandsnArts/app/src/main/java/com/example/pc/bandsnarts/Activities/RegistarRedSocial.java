@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -137,11 +138,26 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     public void escuchadoresSpinner() {
 
-
+        // Para ocultar el teclado al pulsar en un spinner
         spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-               ocultaTeclado(RegistarRedSocial.this);
+              BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+              return false;
+            }
+        }) ;
+        spinnerInstrumentos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+                return false;
+            }
+        }) ;
+
+        spinnerSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
                 return false;
             }
         }) ;
@@ -149,7 +165,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ocultaTeclado(RegistarRedSocial.this);
+
                 posEstilo = position;
             }
 
@@ -167,7 +183,7 @@ public class RegistarRedSocial extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ocultaTeclado(RegistarRedSocial.this);
+
             }
 
         });
@@ -179,20 +195,10 @@ public class RegistarRedSocial extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                ocultaTeclado(RegistarRedSocial.this);
+
             }
 
         });
-    }
-
-
-    public static void ocultaTeclado(Activity act){
-        View view = act.getCurrentFocus();
-        view.clearFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
 
