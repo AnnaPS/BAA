@@ -32,6 +32,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     TextView ins1,ins2,ins3,ins4;
     ImageView imgSiNo;
     FloatingActionButton miFAB;
+    com.github.clans.fab.FloatingActionButton guardar,descartar;
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
@@ -54,6 +55,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         ins2=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2);
         ins3=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3);
         ins4=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4);
+        guardar=vista.findViewById(R.id.fabGuardar);
+        descartar=vista.findViewById(R.id.fabDescartar);
         txtDescripcion=vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
         switchBuscar=vista.findViewById(R.id.swBuscando);
         imgSiNo=vista.findViewById(R.id.imgBuscandoVerMiPerfil);
@@ -89,11 +92,31 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }
         });
         miFABGuardarRechazar=(FloatingActionMenu)vista.findViewById(R.id.floatingGuardarDescartar);
-        miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
+        /*miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // En funcion de si el usuario es músico o grupo
                 Toast.makeText(getActivity(), "HOLAAA", Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });*/
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });
+        descartar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
 
 
 
