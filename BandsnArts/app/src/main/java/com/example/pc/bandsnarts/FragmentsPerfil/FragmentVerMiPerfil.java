@@ -409,7 +409,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
 
                 //navBotPerfil.setVisibility(View.INVISIBLE);
-                new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
                 break;
 
             case ("grupo"):
@@ -422,9 +421,24 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 switchBuscar.setVisibility(View.VISIBLE);
                 contenedorInstrumentos.setVisibility(View.GONE);
                 preguntaInstrumentos.setVisibility(View.GONE);
+                switchBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
+                        if (check) {
+                            //si esta chequeado, es si
+                            Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
+                            buscando = "si";
+                        } else {
+                            //es no
+                            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
+                            buscando = "no";
+                        }
+                    }
+                });
                 break;
 
         }
+        new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
 
     }
