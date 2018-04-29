@@ -41,17 +41,12 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo,txtDescripcion;
     TextView ins1,ins2,ins3,ins4,preguntaInstrumentos;
     ImageView imgSiNo;
-    Button btnCancelarAlerta,btnAceptarAlerta;
     FloatingActionButton miFAB;
     com.github.clans.fab.FloatingActionButton guardar,descartar;
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
     View vista;
-    private AlertDialog.Builder alertaBuilder;
-    private LayoutInflater inflador;
-    private AlertDialog alerta;
-    private TextView textViewInstrumentos;
     private int posSexo,posEstilo,posLocalidad,posProvincia,posInst1,posInst2,posInst3,posInst4;
     private String buscando;
 

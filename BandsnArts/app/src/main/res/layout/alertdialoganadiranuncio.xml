@@ -43,14 +43,14 @@
 
             <EditText
                 android:id="@+id/edtTituloAnuncio"
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="45dp"
                 android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:hint="INTRODUCE EL TITULO"
                 android:inputType="textPersonName"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="italic" />
 
 
@@ -116,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_marginLeft="40dp"
                 android:text="ESTILO"
                 android:textColor="@color/md_teal_800"
                 android:textSize="16sp"
@@ -125,7 +125,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="90dp"
                 android:text="INSTRUMENTO"
                 android:textColor="@color/md_teal_800"
                 android:textSize="16sp"
@@ -153,7 +153,51 @@
                 android:background="@drawable/bordeverde" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="PROVINCIA"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:text="LOCALIDAD"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spProvinciaAnuncio"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            <Spinner
+                android:id="@+id/spLocalidadAnuncio"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/impAnuncio"
