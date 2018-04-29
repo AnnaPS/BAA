@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class BDBAA extends AppCompatActivity {
                     encontrado = true;
                 }
                 if (!encontrado) {
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo","musico").commit();
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
                     Log.d("insert", "Insertado con exito");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
@@ -108,7 +109,7 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (!encontrado) {
 
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo","grupo").commit();
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
 
                     Log.d("INSERt", "Insertado ");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
@@ -231,10 +232,10 @@ public class BDBAA extends AppCompatActivity {
                 }
                 if (encontrado) {
                     // Es musico, lo guardamos en preferencias
-                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo","musico").commit();
+                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo", "musico").commit();
                 } else {
                     // Es grupo, lo guardamos en preferencias
-                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo","grupo").commit();
+                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo", "grupo").commit();
                 }
             }
 
@@ -279,7 +280,6 @@ public class BDBAA extends AppCompatActivity {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
@@ -305,9 +305,22 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Instrumentos
                             ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1)).setText(musico.getInstrumento().get(0));
-                            /*((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento());
-                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3)).setText(musico.getInstrumento());
-                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4)).setText(musico.getInstrumento());*/
+                            //Buscando
+
+                                if (musico.getBuscando().equalsIgnoreCase("si")) {
+                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
+                                } else {
+                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
+                                }
+
+                            try {
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento().get(1));
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3)).setText(musico.getInstrumento().get(2));
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4)).setText(musico.getInstrumento().get(3));
+                            } catch (IndexOutOfBoundsException e) {
+                                // En caso de que solo tenga el instrumento principal
+                                System.out.println("Si me salgo de rango");
+                            }
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
@@ -327,6 +340,13 @@ public class BDBAA extends AppCompatActivity {
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
+                            //Buscando
+
+                                if (grupo.getBuscando().equalsIgnoreCase("si")) {
+                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.yes));
+                                } else {
+                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.no));
+                                }
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
@@ -380,10 +400,19 @@ public class BDBAA extends AppCompatActivity {
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
+                            //Buscando
+
+                                if (musico.getBuscando().equalsIgnoreCase("si")) {
+                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
+                                } else {
+                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
+                                }
+
                             //Instrumentos
                             // Instumento Principal
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
                             ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil1)).setSelection(posicion);
+
                             try {
                                 posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(1));
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil2)).setSelection(posicion);
@@ -391,7 +420,7 @@ public class BDBAA extends AppCompatActivity {
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil3)).setSelection(posicion);
                                 posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(3));
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil4)).setSelection(posicion);
-                            }catch(IndexOutOfBoundsException e){
+                            } catch (IndexOutOfBoundsException e) {
                                 // En caso de que solo tenga el instrumento principal
                             }
 
@@ -414,6 +443,13 @@ public class BDBAA extends AppCompatActivity {
 
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
+                            //Buscando
+
+                                if (grupo.getBuscando().equalsIgnoreCase("si")) {
+                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
+                                } else {
+                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
+                                }
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);

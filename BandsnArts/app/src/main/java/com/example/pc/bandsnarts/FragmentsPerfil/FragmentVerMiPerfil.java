@@ -32,17 +32,17 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    Spinner spLocalidad, spProvincia, spSexo, spEstilo,spinnerInstrumentos1,spinnerInstrumentos2,spinnerInstrumentos3,spinnerInstrumentos4;
-    EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo,txtDescripcion;
-    TextView ins1,ins2,ins3,ins4,preguntaInstrumentos;
+    Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
+    EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
+    TextView ins1, ins2, ins3, ins4, preguntaInstrumentos;
     ImageView imgSiNo;
     FloatingActionButton miFAB;
-    com.github.clans.fab.FloatingActionButton guardar,descartar;
+    com.github.clans.fab.FloatingActionButton guardar, descartar;
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
     View vista;
-    private int posSexo,posEstilo,posLocalidad,posProvincia,posInst1,posInst2,posInst3,posInst4;
+    private int posSexo, posEstilo, posLocalidad, posProvincia, posInst1, posInst2, posInst3, posInst4;
     private String buscando;
 
     CharSequence[] localidades;
@@ -60,20 +60,20 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
         spProvincia = vista.findViewById(R.id.spProvinVVerMiPerfil);
         spSexo = vista.findViewById(R.id.spSexoVVerMiPerfil);
-        spinnerInstrumentos1=vista.findViewById(R.id.spInstrumentoVVerMiPerfil1);
-        spinnerInstrumentos2=vista.findViewById(R.id.spInstrumentoVVerMiPerfil2);
-        spinnerInstrumentos3=vista.findViewById(R.id.spInstrumentoVVerMiPerfil3);
-        spinnerInstrumentos4=vista.findViewById(R.id.spInstrumentoVVerMiPerfil4);
-        ins1=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1);
-        ins2=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2);
-        ins3=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3);
-        ins4=vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4);
-        guardar=vista.findViewById(R.id.fabGuardar);
-        descartar=vista.findViewById(R.id.fabDescartar);
-        txtDescripcion=vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
-        switchBuscar=vista.findViewById(R.id.swBuscando);
-        imgSiNo=vista.findViewById(R.id.imgBuscandoVerMiPerfil);
-       // navBotPerfil=vista.findViewById(R.id.bottomnav);
+        spinnerInstrumentos1 = vista.findViewById(R.id.spInstrumentoVVerMiPerfil1);
+        spinnerInstrumentos2 = vista.findViewById(R.id.spInstrumentoVVerMiPerfil2);
+        spinnerInstrumentos3 = vista.findViewById(R.id.spInstrumentoVVerMiPerfil3);
+        spinnerInstrumentos4 = vista.findViewById(R.id.spInstrumentoVVerMiPerfil4);
+        ins1 = vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1);
+        ins2 = vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2);
+        ins3 = vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3);
+        ins4 = vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4);
+        guardar = vista.findViewById(R.id.fabGuardar);
+        descartar = vista.findViewById(R.id.fabDescartar);
+        txtDescripcion = vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
+        switchBuscar = vista.findViewById(R.id.swBuscando);
+        imgSiNo = vista.findViewById(R.id.imgBuscandoVerMiPerfil);
+        // navBotPerfil=vista.findViewById(R.id.bottomnav);
         txtEstilo = vista.findViewById(R.id.txtEstiloVVerMiPerfil);
         txtLocalidad = vista.findViewById(R.id.txtLocalidadVVerMiPerfil);
         txtProvincia = vista.findViewById(R.id.txtProvinciaVVerMiPerfil);
@@ -90,7 +90,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
         preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
 
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"), getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
@@ -101,49 +101,49 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
 
                 // En funcion de si el usuario es músico o grupo
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
             }
         });
-        miFABGuardarRechazar=(FloatingActionMenu)vista.findViewById(R.id.floatingGuardarDescartar);
-        /*miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
+        miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
                 // En funcion de si el usuario es músico o grupo
-                Toast.makeText(getActivity(), "HOLAAA", Toast.LENGTH_SHORT).show();
-
-
-
-            }
-        });*/
+           }
+        });
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo","musico")){
-                    case("musico"):
+                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "musico")) {
+                    case ("musico"):
                         //Actualizamos los datos del musico
-                        ArrayList<String> instrumentos= new ArrayList<>();
+                        ArrayList<String> instrumentos = new ArrayList<>();
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                        new BDBAA().modificarDatosUsuario("musico",view.getContext(),"default_musico.jpg",getResources().getStringArray(R.array.sexo)[posSexo]
-                                ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],instrumentos,txtDescripcion.getText().toString()
-                                ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
+                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), "default_musico.jpg", getResources().getStringArray(R.array.sexo)[posSexo]
+                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
+                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
                         break;
-                    case("grupo"):
+                    case ("grupo"):
                         //Actualizamos los datos del grupo
-                        new BDBAA().modificarDatosUsuario("grupo",view.getContext(),"default_grupo.jpg",null
-                                ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],new ArrayList<String>(),txtDescripcion.getText().toString()
-                                ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
+                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), "default_grupo.jpg", null
+                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
+                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
                         break;
                 }
-
-
+                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                mostrarComponentes();
+                botonCancelarEdicionPerfil();
+                ///////////////////////////////////////////////////
                 Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+                new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
             }
         });
@@ -151,14 +151,13 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
-
-
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                 mostrarComponentes();
+                botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
+                new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
             }
         });
@@ -226,7 +225,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInst1=position;
+                posInst1 = position;
             }
 
             @Override
@@ -238,7 +237,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spinnerInstrumentos2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInst2=position;
+                posInst2 = position;
             }
 
             @Override
@@ -250,7 +249,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spinnerInstrumentos3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInst3=position;
+                posInst3 = position;
             }
 
             @Override
@@ -262,7 +261,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spinnerInstrumentos4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInst4=position;
+                posInst4 = position;
             }
 
             @Override
@@ -287,8 +286,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
 
     private void mostrarSpinners(String tipo) {
-        switch (tipo){
-            case("musico"):
+        switch (tipo) {
+            case ("musico"):
                 spSexo.setVisibility(View.VISIBLE);
                 spProvincia.setVisibility(View.VISIBLE);
                 spLocalidad.setVisibility(View.VISIBLE);
@@ -298,7 +297,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 spinnerInstrumentos3.setVisibility(View.VISIBLE);
                 spinnerInstrumentos4.setVisibility(View.VISIBLE);
                 break;
-            case("grupo"):
+            case ("grupo"):
                 spProvincia.setVisibility(View.VISIBLE);
                 spLocalidad.setVisibility(View.VISIBLE);
                 spEstilo.setVisibility(View.VISIBLE);
@@ -308,8 +307,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     }
 
     private void ocultarSpinners(String tipo) {
-        switch (tipo){
-            case("musico"):
+        switch (tipo) {
+            case ("musico"):
                 spSexo.setVisibility(View.INVISIBLE);
                 spProvincia.setVisibility(View.INVISIBLE);
                 spLocalidad.setVisibility(View.INVISIBLE);
@@ -319,7 +318,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 spinnerInstrumentos3.setVisibility(View.INVISIBLE);
                 spinnerInstrumentos4.setVisibility(View.INVISIBLE);
                 break;
-            case("grupo"):
+            case ("grupo"):
                 spProvincia.setVisibility(View.INVISIBLE);
                 spLocalidad.setVisibility(View.INVISIBLE);
                 spEstilo.setVisibility(View.INVISIBLE);
@@ -341,21 +340,29 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     }
 
     private void mostrarComponentes() {
-        txtEstilo.setVisibility(View.VISIBLE);
-        txtLocalidad.setVisibility(View.VISIBLE);
-        txtProvincia.setVisibility(View.VISIBLE);
-        txtSexo.setVisibility(View.VISIBLE);
-        ins1.setVisibility(View.VISIBLE);
-        ins2.setVisibility(View.VISIBLE);
-        ins3.setVisibility(View.VISIBLE);
-        ins4.setVisibility(View.VISIBLE);
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+            case "musico":
+                txtEstilo.setVisibility(View.VISIBLE);
+                txtLocalidad.setVisibility(View.VISIBLE);
+                txtProvincia.setVisibility(View.VISIBLE);
+                txtSexo.setVisibility(View.VISIBLE);
+                ins1.setVisibility(View.VISIBLE);
+                ins2.setVisibility(View.VISIBLE);
+                ins3.setVisibility(View.VISIBLE);
+                ins4.setVisibility(View.VISIBLE);
+            case "grupo":
+                txtEstilo.setVisibility(View.VISIBLE);
+                txtLocalidad.setVisibility(View.VISIBLE);
+                txtProvincia.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
 
     private void editaPerfil(String tipo) {
 
-        switch (tipo){
-            case("musico"):
+        switch (tipo) {
+            case ("musico"):
                 ocultaTextviews();
                 mostrarSpinners("musico");
                 miFAB.setVisibility(View.INVISIBLE);
@@ -367,11 +374,11 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 switchBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
-                        if (check){
+                        if (check) {
                             //si esta chequeado, es si
                             Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
                             buscando = "si";
-                        }else{
+                        } else {
                             //es no
                             Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
                             buscando = "no";
@@ -390,7 +397,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
                 break;
 
-            case("grupo"):
+            case ("grupo"):
                 ocultaTextviews();
                 mostrarSpinners("grupo");
                 miFAB.setVisibility(View.INVISIBLE);
@@ -407,14 +414,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
     }
 
-    private void botonCancelarEdicionPerfil(){
-        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico")){
+    private void botonCancelarEdicionPerfil() {
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
 
-            case("grupo"):
+            case ("grupo"):
                 contenedorInstrumentos.setVisibility(View.GONE);
                 preguntaInstrumentos.setVisibility(View.GONE);
 
-            case("musico"):
+            case ("musico"):
                 mostrarComponentes();
                 ocultarSpinners();
                 miFAB.setVisibility(View.VISIBLE);
@@ -426,7 +433,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
         }
     }
-
 
 
     private void loadSpinnerProvincias() {
@@ -451,7 +457,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                                long id) {
         switch (parent.getId()) {
             case R.id.spProvinVVerMiPerfil:
-                posProvincia=pos;
+                posProvincia = pos;
                 // Retrieves an array
                 TypedArray arrayLocalidades = getResources().obtainTypedArray(
                         R.array.array_provincia_a_localidades);
@@ -472,7 +478,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 break;
 
             case R.id.spLocaliVVerMiPerfil:
-                posLocalidad=pos;
+                posLocalidad = pos;
                 break;
         }
     }

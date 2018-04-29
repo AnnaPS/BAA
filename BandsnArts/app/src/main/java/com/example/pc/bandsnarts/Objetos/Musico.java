@@ -14,7 +14,7 @@ public class Musico {
     private String provincia;
     private String localidad;
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
-    private String buscando;
+    private String buscando="no";
     private ArrayList<String> redsocial=new ArrayList<String>();
 
 

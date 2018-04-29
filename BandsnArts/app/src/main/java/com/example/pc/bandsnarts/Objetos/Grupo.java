@@ -11,12 +11,20 @@ public class Grupo {
     private String descripcion;
     private String provincia;
     private String localidad;
-    private String buscando;
+    private String buscando="no";
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>();
 
     public Grupo(){
+    }
+
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
+
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
     }
 
     public String getBuscando() {
