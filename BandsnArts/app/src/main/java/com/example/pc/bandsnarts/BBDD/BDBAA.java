@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +71,7 @@ public class BDBAA extends AppCompatActivity {
                     encontrado = true;
                 }
                 if (!encontrado) {
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo","musico").commit();
                     Log.d("insert", "Insertado con exito");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
                     Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
@@ -106,6 +107,9 @@ public class BDBAA extends AppCompatActivity {
                     encontrado = true;
                 }
                 if (!encontrado) {
+
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo","grupo").commit();
+
                     Log.d("INSERt", "Insertado ");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
                     Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
@@ -199,6 +203,7 @@ public class BDBAA extends AppCompatActivity {
                     Log.d("Encontrado", "onDataChange: " + encontrado);
                     ((Activity) cont).startActivityForResult(new Intent(cont, RegistarRedSocial.class), 111);
                 } else {
+
                     ((Activity) cont).startActivityForResult(new Intent(cont, VentanaInicialApp.class), 222);
                 }
             }
@@ -210,6 +215,34 @@ public class BDBAA extends AppCompatActivity {
         });
 
 
+    }
+
+    private void comprobarTipo(final Context cont, String uid) {
+        bd = FirebaseDatabase.getInstance().getReference("musico");
+        Query q = bd.orderByChild("uid").equalTo(uid);
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean encontrado = false;
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    encontrado = true;
+                }
+                if (encontrado) {
+                    // Es musico, lo guardamos en preferencias
+                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo","musico").commit();
+                } else {
+                    // Es grupo, lo guardamos en preferencias
+                    PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo","grupo").commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void cargarDrawerPerfil(final Context context, final String tipo, final ImageView fotoPerfil, final TextView nombre) {
@@ -296,7 +329,7 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
-                            vista.findViewById(R.id.appBarLayout4).setVisibility(View.GONE);
+                            vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
                             break;
                     }
                 }
@@ -383,7 +416,7 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
-                            vista.findViewById(R.id.appBarLayout4).setVisibility(View.GONE);
+                            vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
                             break;
                     }
                 }
@@ -408,7 +441,7 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
 
                         case ("musico"):
-                            Log.d("insert", "Insertado con exito");
+
                             Musico mus = ds.getValue(Musico.class);
                             mus.setImagen(imagen);
                             mus.setSexo(sexo);
@@ -420,9 +453,21 @@ public class BDBAA extends AppCompatActivity {
                             mus.setBuscando(buscando);
 
                             bd.child(ds.getKey()).setValue(mus);
-                            Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
+                            Log.d("insert", "Insertado con exito");
+                            Toast.makeText(context, "Actualizado músico con exito", Toast.LENGTH_SHORT).show();
                             break;
                         case ("grupo"):
+                            Grupo gr = ds.getValue(Grupo.class);
+                            gr.setImagen(imagen);
+                            gr.setEstilo(estilo);
+                            gr.setDescripcion(descripcion);
+                            gr.setProvincia(provincia);
+                            gr.setLocalidad(localidad);
+                            gr.setBuscando(buscando);
+
+                            bd.child(ds.getKey()).setValue(gr);
+                            Log.d("insert", "Actualizado grupo con exito");
+                            Toast.makeText(context, "Actualizado grupo con exito", Toast.LENGTH_SHORT).show();
                             break;
                     }
 

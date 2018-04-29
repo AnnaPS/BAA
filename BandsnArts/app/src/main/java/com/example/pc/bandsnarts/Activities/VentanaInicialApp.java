@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -200,8 +201,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this,"musico",fotoPerfil,txtNombre);
-        new BDBAA().cargarDrawerPerfil(this,"grupo",fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo","musico"),fotoPerfil,txtNombre);
+
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());

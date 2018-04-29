@@ -204,7 +204,6 @@ public class RegistarRedSocial extends AppCompatActivity {
 
 
     public void onClickLogueo(View view) {
-
         if (!edtNombre.getText().toString().isEmpty()) {
             view.setVisibility(View.INVISIBLE);
             Intent i;

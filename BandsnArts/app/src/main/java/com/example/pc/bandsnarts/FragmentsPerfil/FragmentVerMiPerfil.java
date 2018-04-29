@@ -2,11 +2,13 @@ package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,9 +21,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
-import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -34,7 +34,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo,spinnerInstrumentos1,spinnerInstrumentos2,spinnerInstrumentos3,spinnerInstrumentos4;
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo,txtDescripcion;
-    TextView ins1,ins2,ins3,ins4;
+    TextView ins1,ins2,ins3,ins4,preguntaInstrumentos;
     ImageView imgSiNo;
     FloatingActionButton miFAB;
     com.github.clans.fab.FloatingActionButton guardar,descartar;
@@ -46,6 +46,9 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     private String buscando;
 
     CharSequence[] localidades;
+
+    //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
+    CardView contenedorInstrumentos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,8 +87,11 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         spinnerInstrumentos4.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.instrumentos)));
         ocultarSpinners();
 
-        new BDBAA().cargarDatosPerfil(vista, "musico", getApplicationContext());
-        new BDBAA().cargarDatosPerfil(vista, "grupo", getApplicationContext());
+        contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
+        preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
+
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"), getApplicationContext());
+
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
         miFAB.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +101,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
 
                 // En funcion de si el usuario es músico o grupo
-                editaPerfil("musico");
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
             }
         });
         miFABGuardarRechazar=(FloatingActionMenu)vista.findViewById(R.id.floatingGuardarDescartar);
@@ -113,35 +119,56 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
-                //Actualizamos los datos del usuario
-                ArrayList<String> intrumentos= new ArrayList<>();
-                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
-                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
-                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
-                intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
+                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo","musico")){
+                    case("musico"):
+                        //Actualizamos los datos del musico
+                        ArrayList<String> instrumentos= new ArrayList<>();
+                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
+                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
+                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
+                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-               new BDBAA().modificarDatosUsuario("musico",view.getContext(),"default_musico.jpg",getResources().getStringArray(R.array.sexo)[posSexo]
-                       ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],intrumentos,txtDescripcion.getText().toString()
-                       ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
-                       buscando);
+                        new BDBAA().modificarDatosUsuario("musico",view.getContext(),"default_musico.jpg",getResources().getStringArray(R.array.sexo)[posSexo]
+                                ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],instrumentos,txtDescripcion.getText().toString()
+                                ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
+                                buscando);
+                        break;
+                    case("grupo"):
+                        //Actualizamos los datos del grupo
+                        new BDBAA().modificarDatosUsuario("grupo",view.getContext(),"default_grupo.jpg",null
+                                ,getResources().getStringArray(R.array.estiloMusical)[posEstilo],new ArrayList<String>(),txtDescripcion.getText().toString()
+                                ,getResources().getStringArray(R.array.provincias)[posProvincia],localidades[posLocalidad].toString(),
+                                buscando);
+                        break;
+                }
+
+
+                Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+
+
+                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
+                //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
             }
         });
         //Poner de inicio a invisible el boton de guardar / descartar
         miFABGuardarRechazar.setVisibility(View.INVISIBLE);
         //Poner de incio a invisible el switch
         switchBuscar.setVisibility(View.INVISIBLE);
+
         loadSpinnerProvincias();
 
         escuchadoresSpinner();
-
 
         return vista;
     }
@@ -258,15 +285,46 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     }
 
 
-    private void mostrarSpinners() {
-        spSexo.setVisibility(View.VISIBLE);
-        spProvincia.setVisibility(View.VISIBLE);
-        spLocalidad.setVisibility(View.VISIBLE);
-        spEstilo.setVisibility(View.VISIBLE);
-        spinnerInstrumentos1.setVisibility(View.VISIBLE);
-        spinnerInstrumentos2.setVisibility(View.VISIBLE);
-        spinnerInstrumentos3.setVisibility(View.VISIBLE);
-        spinnerInstrumentos4.setVisibility(View.VISIBLE);
+    private void mostrarSpinners(String tipo) {
+        switch (tipo){
+            case("musico"):
+                spSexo.setVisibility(View.VISIBLE);
+                spProvincia.setVisibility(View.VISIBLE);
+                spLocalidad.setVisibility(View.VISIBLE);
+                spEstilo.setVisibility(View.VISIBLE);
+                spinnerInstrumentos1.setVisibility(View.VISIBLE);
+                spinnerInstrumentos2.setVisibility(View.VISIBLE);
+                spinnerInstrumentos3.setVisibility(View.VISIBLE);
+                spinnerInstrumentos4.setVisibility(View.VISIBLE);
+                break;
+            case("grupo"):
+                spProvincia.setVisibility(View.VISIBLE);
+                spLocalidad.setVisibility(View.VISIBLE);
+                spEstilo.setVisibility(View.VISIBLE);
+                break;
+        }
+
+    }
+
+    private void ocultarSpinners(String tipo) {
+        switch (tipo){
+            case("musico"):
+                spSexo.setVisibility(View.INVISIBLE);
+                spProvincia.setVisibility(View.INVISIBLE);
+                spLocalidad.setVisibility(View.INVISIBLE);
+                spEstilo.setVisibility(View.INVISIBLE);
+                spinnerInstrumentos1.setVisibility(View.INVISIBLE);
+                spinnerInstrumentos2.setVisibility(View.INVISIBLE);
+                spinnerInstrumentos3.setVisibility(View.INVISIBLE);
+                spinnerInstrumentos4.setVisibility(View.INVISIBLE);
+                break;
+            case("grupo"):
+                spProvincia.setVisibility(View.INVISIBLE);
+                spLocalidad.setVisibility(View.INVISIBLE);
+                spEstilo.setVisibility(View.INVISIBLE);
+                break;
+        }
+
     }
 
     private void ocultaTextviews() {
@@ -290,44 +348,78 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         ins2.setVisibility(View.VISIBLE);
         ins3.setVisibility(View.VISIBLE);
         ins4.setVisibility(View.VISIBLE);
-
     }
 
 
     private void editaPerfil(String tipo) {
-        if (tipo.equals("musico")) {
-            ocultaTextviews();
-            mostrarSpinners();
-            miFAB.setVisibility(View.INVISIBLE);
-            imgSiNo.setVisibility(View.INVISIBLE);
-            miFABGuardarRechazar.setVisibility(View.VISIBLE);
-            txtDescripcion.setEnabled(true);
-            switchBuscar.setVisibility(View.VISIBLE);
-            //Listener para el switch
-            switchBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
-                    if (check){
-                        //si esta chequeado, es si
-                        Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
-                        buscando = "si";
-                    }else{
-                        //es no
-                        Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
-                        buscando = "no";
+
+        switch (tipo){
+            case("musico"):
+                ocultaTextviews();
+                mostrarSpinners("musico");
+                miFAB.setVisibility(View.INVISIBLE);
+                imgSiNo.setVisibility(View.INVISIBLE);
+                miFABGuardarRechazar.setVisibility(View.VISIBLE);
+                txtDescripcion.setEnabled(true);
+                switchBuscar.setVisibility(View.VISIBLE);
+                //Listener para el switch
+                switchBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
+                        if (check){
+                            //si esta chequeado, es si
+                            Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
+                            buscando = "si";
+                        }else{
+                            //es no
+                            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
+                            buscando = "no";
+                        }
                     }
-                }
-            });
-            if (switchBuscar.isChecked()){
+                });
+   /*         if (switchBuscar.isChecked()){
                 //si
             }else{
                 //no
             }
+*/                //navBotPerfil.setVisibility(View.INVISIBLE);
+                new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+                break;
 
-            //navBotPerfil.setVisibility(View.INVISIBLE);
+            case("grupo"):
+                ocultaTextviews();
+                mostrarSpinners("grupo");
+                miFAB.setVisibility(View.INVISIBLE);
+                imgSiNo.setVisibility(View.INVISIBLE);
+                miFABGuardarRechazar.setVisibility(View.VISIBLE);
+                txtDescripcion.setEnabled(true);
+                switchBuscar.setVisibility(View.VISIBLE);
+                contenedorInstrumentos.setVisibility(View.GONE);
+                preguntaInstrumentos.setVisibility(View.GONE);
+                break;
+
+        }
 
 
-            new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+    }
+
+    private void botonCancelarEdicionPerfil(){
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico")){
+
+            case("grupo"):
+                contenedorInstrumentos.setVisibility(View.GONE);
+                preguntaInstrumentos.setVisibility(View.GONE);
+
+            case("musico"):
+                mostrarComponentes();
+                ocultarSpinners();
+                miFAB.setVisibility(View.VISIBLE);
+                imgSiNo.setVisibility(View.VISIBLE);
+                miFABGuardarRechazar.setVisibility(View.INVISIBLE);
+                txtDescripcion.setEnabled(false);
+                switchBuscar.setVisibility(View.INVISIBLE);
+                break;
+
         }
     }
 
