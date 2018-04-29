@@ -19,13 +19,6 @@ public class Grupo {
     public Grupo(){
     }
 
-    public void setAnuncio(ArrayList<Anuncio> anuncio) {
-        this.anuncio = anuncio;
-    }
-
-    public void setRedsocial(ArrayList<String> redsocial) {
-        this.redsocial = redsocial;
-    }
 
     public String getBuscando() {
         return buscando;

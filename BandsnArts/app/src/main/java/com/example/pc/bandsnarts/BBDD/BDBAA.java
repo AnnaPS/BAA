@@ -299,8 +299,6 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
                             // Sexo....
                             ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
-
-
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Instrumentos
@@ -377,29 +375,23 @@ public class BDBAA extends AppCompatActivity {
                         case "musico":
                             Musico musico = data.getValue(Musico.class);
                             // Recuperamos y cargamos los datos del Musico
-
                             // FotoPerfil
                             accesoFotoPerfil("musico", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             Toast.makeText(context, "" + posicion, Toast.LENGTH_SHORT).show();
-
                             // Sexo....
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
-
-
                             // Provincia
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
                             ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
                             // Localidad
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.array_provincia_a_localidades), musico.getLocalidad());
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
-
-
                             // Descripcion
-                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
+                            ((EditText) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
 
                                 if (musico.getBuscando().equalsIgnoreCase("si")) {
@@ -428,29 +420,27 @@ public class BDBAA extends AppCompatActivity {
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
-                            // nombre
-                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
                             accesoFotoPerfil("grupo", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
-                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
+                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
+                            ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             // Provincia
-                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(grupo.getProvincia());
+                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
+                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
                             // Localidad
-                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
+                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.array_provincia_a_localidades), grupo.getLocalidad());
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
-
                             // Descripcion
-                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
+                            ((EditText) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
                             //Buscando
-
                                 if (grupo.getBuscando().equalsIgnoreCase("si")) {
                                     ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
                                 } else {
                                     ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
                                 }
-
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
                             break;
