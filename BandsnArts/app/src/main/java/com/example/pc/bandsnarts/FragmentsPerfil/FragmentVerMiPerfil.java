@@ -155,6 +155,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
+                mostrarComponentes();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
