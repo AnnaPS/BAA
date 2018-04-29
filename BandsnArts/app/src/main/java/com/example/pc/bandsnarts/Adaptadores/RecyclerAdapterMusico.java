@@ -51,7 +51,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
 
         nom.setText(musicoItem.getNombre());
-        ins.setText(musicoItem.getInstrumento());
+        ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
         //anun.setText(musicoItem.getCantidadAnuncios());

@@ -5,9 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
+       /* maven {
             url 'https://maven.fabric.io/public'
-        }
+        }*/
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'

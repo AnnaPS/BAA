@@ -166,7 +166,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Rock"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
 
@@ -207,7 +206,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Madrid"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
 
@@ -251,7 +249,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Getafe"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
 
@@ -292,7 +289,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Mujer"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -465,7 +461,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -505,7 +500,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -547,7 +541,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -591,7 +584,6 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:fontFamily="sans-serif"
-                        android:text="Guitarra"
                         android:textColor="@color/md_black_1000"
                         android:textSize="18dp" />
                 </LinearLayout>

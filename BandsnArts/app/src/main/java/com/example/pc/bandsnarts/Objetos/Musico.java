@@ -9,13 +9,26 @@ public class Musico {
     private String nombre;
     private String sexo;
     private String estilo;
-    private String instrumento;
+    private ArrayList<String> instrumento;
     private String descripcion;
     private String provincia;
     private String localidad;
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando;
     private ArrayList<String> redsocial=new ArrayList<String>();
+
+
+
+    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+        this.imagen = imagen;
+        this.sexo = sexo;
+        this.estilo = estilo;
+        this.instrumento = instrumento;
+        this.descripcion = descripcion;
+        this.provincia = provincia;
+        this.localidad = localidad;
+        this.buscando = buscando;
+    }
 
     public String getBuscando() {
         return buscando;
@@ -36,7 +49,7 @@ public class Musico {
     public Musico() {
     }
 
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion) {
+    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;
@@ -45,6 +58,7 @@ public class Musico {
         this.instrumento = instrumento;
         this.descripcion = descripcion;
     }
+
 
     public String getImagen() {
         return imagen;
@@ -79,11 +93,11 @@ public class Musico {
         this.estilo = estilo;
     }
 
-    public String getInstrumento() {
+    public ArrayList<String> getInstrumento() {
         return instrumento;
     }
 
-    public void setInstrumento(String instrumento) {
+    public void setInstrumento(ArrayList<String> instrumento) {
         this.instrumento = instrumento;
     }
 

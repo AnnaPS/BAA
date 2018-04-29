@@ -46,6 +46,7 @@
         <item>Zanfona</item>
     </string-array>
 <string-array name="estiloMusical">
+    <item>Sin especificar</item>
     <item>Metal</item>
     <item> Rock</item>
     <item>Pop/Rock</item>
@@ -101,10 +102,13 @@
         <item>Sin especificar</item>
     </string-array>
 
-
+    <string-array name="sin_especificar">
+        <item>Sin especificar</item>
+    </string-array>
 
         <!-- Each position of id refers to an string array -->
         <array name="array_provincia_a_localidades">
+            <item>@array/sin_especificar</item>
             <item>@array/localidades_albacete</item>
             <item>@array/localidades_alava</item>
             <item>@array/localidades_alicante</item>
@@ -160,6 +164,7 @@
         </array>
 
         <string-array name="provincias">
+            <item>Sin especificar</item>
             <item>Albacete</item>
             <item>Álava</item>
             <item>Alicante</item>
@@ -214,6 +219,7 @@
             <item>Zaragoza</item>
         </string-array>
         <string-array name="localidades_almeria">
+            <item>Sin especificar</item>
             <item>Abla</item>
             <item>Abrucena</item>
             <item>Adra</item>
@@ -317,6 +323,7 @@
             <item>Zurgena</item>
         </string-array>
         <string-array name="localidades_alicante">
+            <item>Sin especificar</item>
             <item>Adsubia</item>
             <item>Agost</item>
             <item>Agres</item>
@@ -460,6 +467,7 @@
             <item>Xaló</item>
         </string-array>
         <string-array name="localidades_albacete">
+            <item>Sin especificar</item>
             <item>Abengibre</item>
             <item>Alatoz</item>
             <item>Albacete</item>
@@ -549,6 +557,7 @@
             <item>Yeste</item>
         </string-array>
         <string-array name="localidades_asturias">
+            <item>Sin especificar</item>
             <item>Allande</item>
             <item>Aller</item>
             <item>Amieva</item>
@@ -629,6 +638,7 @@
             <item>Yernes y Tameza</item>
         </string-array>
         <string-array name="localidades_badajoz">
+            <item>Sin especificar</item>
             <item>Acedera</item>
             <item>Aceuchal</item>
             <item>Ahillones</item>
@@ -795,6 +805,7 @@
             <item>Zarza, La</item>
         </string-array>
         <string-array name="localidades_islasBaleares">
+            <item>Sin especificar</item>
             <item>Alaior</item>
             <item>Alaró</item>
             <item>Alcúdia</item>
@@ -864,6 +875,7 @@
             <item>Vilafranca de Bonany</item>
         </string-array>
         <string-array name="localidades_barcelona">
+            <item>Sin especificar</item>
             <item>Abrera</item>
             <item>Aguilar de Segarra</item>
             <item>Aiguafreda</item>
@@ -1177,6 +1189,7 @@
             <item>Viver i Serrateix</item>
         </string-array>
         <string-array name="localidades_burgos">
+            <item>Sin especificar</item>
             <item>Abajas</item>
             <item>Adrada de Haza</item>
             <item>Aguas Cándidas</item>
@@ -1550,6 +1563,7 @@
             <item>Zuñeda</item>
         </string-array>
         <string-array name="localidades_cantabria">
+            <item>Sin especificar</item>
             <item>Alfoz de Lloredo</item>
             <item>Ampuero</item>
             <item>Anievas</item>
@@ -1654,6 +1668,7 @@
             <item>Voto</item>
         </string-array>
         <string-array name="localidades_castellon">
+            <item>Sin especificar</item>
             <item>Aín</item>
             <item>Albocàsser</item>
             <item>Alcalà de Xivert</item>
@@ -1797,6 +1812,7 @@
             <item>Melilla</item>
         </string-array>
         <string-array name="localidades_ciudadReal">
+            <item>Sin especificar</item>
             <item>Abenójar</item>
             <item>Agudo</item>
             <item>Alamillo</item>
@@ -1901,6 +1917,7 @@
             <item>Viso del Marqués</item>
         </string-array>
         <string-array name="localidades_laCoruna">
+            <item>Sin especificar</item>
             <item>Abegondo</item>
             <item>Ames</item>
             <item>Aranga</item>
@@ -1997,6 +2014,7 @@
             <item>Zas</item>
         </string-array>
         <string-array name="localidades_cuenca">
+            <item>Sin especificar</item>
             <item>Abia de la Obispalía</item>
             <item>Acebrón, El</item>
             <item>Alarcón</item>
@@ -2237,6 +2255,7 @@
             <item>Zarzuela</item>
         </string-array>
         <string-array name="localidades_caceres">
+            <item>Sin especificar</item>
             <item>Abadía</item>
             <item>Abertura</item>
             <item>Acebo</item>
@@ -2460,6 +2479,7 @@
             <item>Zorita</item>
         </string-array>
         <string-array name="localidades_cadiz">
+            <item>Sin especificar</item>
             <item>Alcalá de los Gazules</item>
             <item>Alcalá del Valle</item>
             <item>Algar</item>
@@ -2506,6 +2526,7 @@
             <item>Zahara</item>
         </string-array>
         <string-array name="localidades_cordoba">
+            <item>Sin especificar</item>
             <item>Adamuz</item>
             <item>Aguilar de la Frontera</item>
             <item>Alcaracejos</item>
@@ -2583,6 +2604,7 @@
             <item>Zuheros</item>
         </string-array>
         <string-array name="localidades_gerona">
+            <item>Sin especificar</item>
             <item>Agullana</item>
             <item>Aiguaviva</item>
             <item>Albanyà</item>
@@ -2806,6 +2828,7 @@
             <item>Vilopriu</item>
         </string-array>
         <string-array name="localidades_granada">
+            <item>Sin especificar</item>
             <item>Agrón</item>
             <item>Alamedilla</item>
             <item>Albolote</item>
@@ -2976,6 +2999,7 @@
             <item>Zújar</item>
         </string-array>
         <string-array name="localidades_guadalajara">
+            <item>Sin especificar</item>
             <item>Abánades</item>
             <item>Ablanque</item>
             <item>Adobes</item>
@@ -3266,6 +3290,7 @@
             <item>Zorita de los Canes</item>
         </string-array>
         <string-array name="localidades_guipuzcoa">
+            <item>Sin especificar</item>
             <item>Abaltzisketa</item>
             <item>Aduna</item>
             <item>Aia</item>
@@ -3356,6 +3381,7 @@
             <item>Zumarraga</item>
         </string-array>
         <string-array name="localidades_huelva">
+            <item>Sin especificar</item>
             <item>Alájar</item>
             <item>Aljaraque</item>
             <item>Almendro, El</item>
@@ -3437,6 +3463,7 @@
             <item>Zufre</item>
         </string-array>
         <string-array name="localidades_huesca">
+            <item>Sin especificar</item>
             <item>Abiego</item>
             <item>Abizanda</item>
             <item>Adahuesca</item>
@@ -3641,6 +3668,7 @@
             <item>Zaidín</item>
         </string-array>
         <string-array name="localidades_jaen">
+            <item>Sin especificar</item>
             <item>Albanchez de Mágina</item>
             <item>Alcalá la Real</item>
             <item>Alcaudete</item>
@@ -3740,6 +3768,7 @@
             <item>Villatorres</item>
         </string-array>
         <string-array name="localidades_leon">
+            <item>Sin especificar</item>
             <item>Acebedo</item>
             <item>Algadefe</item>
             <item>Alija del Infantado</item>
@@ -3953,6 +3982,7 @@
             <item>Zotes del Páramo</item>
         </string-array>
         <string-array name="localidades_lerida">
+            <item>Sin especificar</item>
             <item>Abella de la Conca</item>
             <item>Àger</item>
             <item>Agramunt</item>
@@ -4186,6 +4216,7 @@
             <item>Vinaixa</item>
         </string-array>
         <string-array name="localidades_lugo">
+            <item>Sin especificar</item>
             <item>Abadín</item>
             <item>Alfoz</item>
             <item>Antas de Ulla</item>
@@ -4255,6 +4286,7 @@
             <item>Xove</item>
         </string-array>
         <string-array name="localidades_madrid">
+            <item>Sin especificar</item>
             <item>Acebeda, La</item>
             <item>Ajalvir</item>
             <item>Alameda del Valle</item>
@@ -4436,6 +4468,7 @@
             <item>Zarzalejo</item>
         </string-array>
         <string-array name="localidades_murcia">
+            <item>Sin especificar</item>
             <item>Abanilla</item>
             <item>Abarán</item>
             <item>Águilas</item>
@@ -4483,6 +4516,7 @@
             <item>Yecla</item>
         </string-array>
         <string-array name="localidades_malaga">
+            <item>Sin especificar</item>
             <item>Alameda</item>
             <item>Alcaucín</item>
             <item>Alfarnate</item>
@@ -4586,6 +4620,7 @@
             <item>Yunquera</item>
         </string-array>
         <string-array name="localidades_navarra">
+            <item>Sin especificar</item>
             <item>Abáigar</item>
             <item>Abárzuza</item>
             <item>Abaurrea Alta</item>
@@ -4860,6 +4895,7 @@
             <item>Zúñiga</item>
         </string-array>
         <string-array name="localidades_orense">
+            <item>Sin especificar</item>
             <item>Allariz</item>
             <item>Amoeiro</item>
             <item>Arnoia, A</item>
@@ -4954,6 +4990,7 @@
             <item>Xunqueira de Espadanedo</item>
         </string-array>
         <string-array name="localidades_palencia">
+            <item>Sin especificar</item>
             <item>Abarca de Campos</item>
             <item>Abia de las Torres</item>
             <item>Aguilar de Campoo</item>
@@ -5147,6 +5184,7 @@
             <item>Villovieco</item>
         </string-array>
         <string-array name="localidades_lasPalmas">
+            <item>Sin especificar</item>
             <item>Agaete</item>
             <item>Agüimes</item>
             <item>Aldea de San Nicolás, La</item>
@@ -5183,6 +5221,7 @@
             <item>Yaiza</item>
         </string-array>
         <string-array name="localidades_pontevedra">
+            <item>Sin especificar</item>
             <item>Agolada</item>
             <item>Arbo</item>
             <item>Baiona</item>
@@ -5247,6 +5286,7 @@
             <item>Vilanova de Arousa</item>
         </string-array>
         <string-array name="localidades_laRioja">
+            <item>Sin especificar</item>
             <item>Ábalos</item>
             <item>Agoncillo</item>
             <item>Aguilar del Río Alhama</item>
@@ -5423,6 +5463,7 @@
             <item>Zorraquín</item>
         </string-array>
         <string-array name="localidades_salamanca">
+            <item>Sin especificar</item>
             <item>Abusejo</item>
             <item>Agallas</item>
             <item>Ahigal de los Aceiteros</item>
@@ -5787,6 +5828,7 @@
             <item>Zorita de la Frontera</item>
         </string-array>
         <string-array name="localidades_santaCruzDeTenerife">
+            <item>Sin especificar</item>
             <item>Adeje</item>
             <item>Agulo</item>
             <item>Alajeró</item>
@@ -5843,6 +5885,7 @@
             <item>Villa de Mazo</item>
         </string-array>
         <string-array name="localidades_segovia">
+            <item>Sin especificar</item>
             <item>Abades</item>
             <item>Adrada de Pirón</item>
             <item>Adrados</item>
@@ -6054,6 +6097,7 @@
             <item>Zarzuela del Pinar</item>
         </string-array>
         <string-array name="localidades_sevilla">
+            <item>Sin especificar</item>
             <item>Aguadulce</item>
             <item>Alanís</item>
             <item>Albaida del Aljarafe</item>
@@ -6161,6 +6205,7 @@
             <item>Viso del Alcor, El</item>
         </string-array>
         <string-array name="localidades_soria">
+            <item>Sin especificar</item>
             <item>Abejar</item>
             <item>Adradas</item>
             <item>Ágreda</item>
@@ -6346,6 +6391,7 @@
             <item>Yelo</item>
         </string-array>
         <string-array name="localidades_tarragona">
+            <item>Sin especificar</item>
             <item>Aiguamúrcia</item>
             <item>Albinyana</item>
             <item>Albiol, L\'</item>
@@ -6532,6 +6578,7 @@
             <item>Xerta</item>
         </string-array>
         <string-array name="localidades_teruel">
+            <item>Sin especificar</item>
             <item>Ababuj</item>
             <item>Abejuela</item>
             <item>Aguatón</item>
@@ -6770,6 +6817,7 @@
             <item>Zoma, La</item>
         </string-array>
         <string-array name="localidades_toledo">
+            <item>Sin especificar</item>
             <item>Ajofrín</item>
             <item>Alameda de la Sagra</item>
             <item>Albarreal de Tajo</item>
@@ -6976,6 +7024,7 @@
             <item>Yuncos</item>
         </string-array>
         <string-array name="localidades_valencia">
+            <item>Sin especificar</item>
             <item>Ademuz</item>
             <item>Ador</item>
             <item>Agullent</item>
@@ -7244,6 +7293,7 @@
             <item>Zarra</item>
         </string-array>
         <string-array name="localidades_valladolid">
+            <item>Sin especificar</item>
             <item>Adalia</item>
             <item>Aguasal</item>
             <item>Aguilar de Campos</item>
@@ -7471,6 +7521,7 @@
             <item>Zarza, La</item>
         </string-array>
         <string-array name="localidades_vizcaya">
+            <item>Sin especificar</item>
             <item>Abadiño</item>
             <item>Abanto y Ciérvana-Abanto Zierbena</item>
             <item>Ajangiz</item>
@@ -7585,6 +7636,7 @@
             <item>Ziortza-Bolibar</item>
         </string-array>
         <string-array name="localidades_zamora">
+            <item>Sin especificar</item>
             <item>Abezames</item>
             <item>Alcañices</item>
             <item>Alcubilla de Nogales</item>
@@ -7835,6 +7887,7 @@
             <item>Zamora</item>
         </string-array>
         <string-array name="localidades_zaragoza">
+            <item>Sin especificar</item>
             <item>Abanto</item>
             <item>Acered</item>
             <item>Agón</item>
@@ -8130,6 +8183,7 @@
             <item>Zuera</item>
         </string-array>
         <string-array name="localidades_alava">
+            <item>Sin especificar</item>
             <item>Alegría-Dulantzi</item>
             <item>Amurrio</item>
             <item>Añana</item>
@@ -8183,6 +8237,7 @@
             <item>Zuia</item>
         </string-array>
         <string-array name="localidades_avila">
+            <item>Sin especificar</item>
             <item>Adanero</item>
             <item>Adrada, La</item>
             <item>Albornos</item>
@@ -8432,11 +8487,5 @@
             <item>Zapardiel de la Cañada</item>
             <item>Zapardiel de la Ribera</item>
         </string-array>
-
-
-
-
-
-
 </resources>
 
