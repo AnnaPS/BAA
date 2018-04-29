@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bordeverde"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAtrasAnuncio"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/ic_keyboard_backspace_black_24dp"
+                android:backgroundTint="@color/md_light_green_600" />
+
+            <TextView
+                android:id="@+id/txtFechaAnuncio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="180dp"
+                android:text="03/03/2018"
+                android:textColor="@color/md_light_green_600"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/impTituloAnuncio"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/edtTituloAnuncio"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:hint="INTRODUCE EL TITULO"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="¿Qué buscas?"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:text="SEXO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spTipoBusqueda"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            <Spinner
+                android:id="@+id/spSexoAnuncio"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:text="ESTILO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:text="INSTRUMENTO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spEstiloAnuncio"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            <Spinner
+                android:id="@+id/spInstrumentoAnuncio"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/impAnuncio"
+            android:layout_width="300dp"
+            android:layout_height="260dp"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="15dp">
+
+            <EditText
+                android:id="@+id/edtAnuncio"
+                android:layout_width="290dp"
+                android:layout_height="240dp"
+                android:layout_margin="5dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif"
+                android:hint="DESCRIPCIÓN ANUNCIO"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:minLines="6"
+                android:scrollbars="vertical"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGuardarAnuncio"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/md_teal_800"
+        android:src="@android:drawable/ic_menu_save"
+        app:fabSize="auto" />
+</android.support.design.widget.CoordinatorLayout>

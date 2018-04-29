@@ -600,7 +600,6 @@
         android:layout_gravity="bottom|right"
         android:onClick="onClickOpcionesPerfil"
         android:src="@android:drawable/ic_input_add"
-        app:fabSize="normal"
         app:fab_colorPressed="@color/md_green_A700"
         app:fab_label=""
         app:menu_backgroundColor="@android:color/transparent"
@@ -613,16 +612,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorPressed="@color/md_green_A700"
-            android:src="@android:drawable/ic_menu_save"
             app:fabSize="mini"
+            android:src="@android:drawable/ic_menu_save"
+            app:fab_label="Guardar"
             app:fab_colorNormal="@color/md_teal_800" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabDescartar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:fabSize="mini"
+            app:fab_label="Descartar"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:fab_colorNormal="@color/md_red_400" />
     </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>

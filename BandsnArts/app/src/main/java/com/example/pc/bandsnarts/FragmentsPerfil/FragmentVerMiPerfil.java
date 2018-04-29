@@ -7,12 +7,15 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,9 +27,11 @@ import android.widget.Toast;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -36,12 +41,17 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo,txtDescripcion;
     TextView ins1,ins2,ins3,ins4,preguntaInstrumentos;
     ImageView imgSiNo;
+    Button btnCancelarAlerta,btnAceptarAlerta;
     FloatingActionButton miFAB;
     com.github.clans.fab.FloatingActionButton guardar,descartar;
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
     View vista;
+    private AlertDialog.Builder alertaBuilder;
+    private LayoutInflater inflador;
+    private AlertDialog alerta;
+    private TextView textViewInstrumentos;
     private int posSexo,posEstilo,posLocalidad,posProvincia,posInst1,posInst2,posInst3,posInst4;
     private String buscando;
 
@@ -49,6 +59,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +84,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         txtDescripcion=vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
         switchBuscar=vista.findViewById(R.id.swBuscando);
         imgSiNo=vista.findViewById(R.id.imgBuscandoVerMiPerfil);
+
        // navBotPerfil=vista.findViewById(R.id.bottomnav);
         txtEstilo = vista.findViewById(R.id.txtEstiloVVerMiPerfil);
         txtLocalidad = vista.findViewById(R.id.txtLocalidadVVerMiPerfil);
@@ -153,6 +165,12 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
 
 
+                ////LLAMADA AL ALERT DIALOG///////
+                android.app.FragmentManager fm=getActivity().getFragmentManager();
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios();
+                alerta.show(fm,"AlertaDescartar");
+                ////////////////////////////////////////
+
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo","musico"));
                 mostrarComponentes();
@@ -172,7 +190,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         escuchadoresSpinner();
 
         return vista;
-    }
+    }//on create
+
+
+
+
+
+
+
 
     public void escuchadoresSpinner() {
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
