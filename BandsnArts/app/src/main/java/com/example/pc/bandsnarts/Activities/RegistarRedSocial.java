@@ -143,17 +143,17 @@ public class RegistarRedSocial extends AppCompatActivity {
         spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-              BandsnArts.ocultaTeclado(RegistarRedSocial.this);
-              return false;
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+                return false;
             }
-        }) ;
+        });
         spinnerInstrumentos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 BandsnArts.ocultaTeclado(RegistarRedSocial.this);
                 return false;
             }
-        }) ;
+        });
 
         spinnerSexo.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -161,7 +161,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                 BandsnArts.ocultaTeclado(RegistarRedSocial.this);
                 return false;
             }
-        }) ;
+        });
 
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -204,7 +204,14 @@ public class RegistarRedSocial extends AppCompatActivity {
 
 
     public void onClickLogueo(View view) {
-        if (!edtNombre.getText().toString().isEmpty()) {
+        if (edtNombre.getText().toString().isEmpty()) {
+            edtNombre.setError("Debe Insertar su nombre");
+            Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
+        } else if (posEstilo == 0) {
+            Toast.makeText(a, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+        } else if (posInstrumento == 0 && tipo==0) {
+            Toast.makeText(a, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
+        } else {
             view.setVisibility(View.INVISIBLE);
             Intent i;
             Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
@@ -221,7 +228,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                     break;
                 //Es un musico
                 case 0:
-                    ArrayList<String> intrumentos= new ArrayList<>();
+                    ArrayList<String> intrumentos = new ArrayList<>();
                     intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
                     i = new Intent()
@@ -230,13 +237,15 @@ public class RegistarRedSocial extends AppCompatActivity {
                             .putExtra("nom", edtNombre.getText().toString())
                             .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                            .putExtra("ins",intrumentos)
+                            .putExtra("ins", intrumentos)
                             .putExtra("des", edtDescripcion.getText().toString());
                     guardarBD(this, i);
                     break;
             }
         }
     }
+
+
 
 
     private void guardarBD(Context cont, Intent data) {

@@ -343,9 +343,9 @@ public class BDBAA extends AppCompatActivity {
                             //Buscando
 
                                 if (grupo.getBuscando().equalsIgnoreCase("si")) {
-                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.yes));
+                                    ((ImageView)vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
                                 } else {
-                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.no));
+                                    ((ImageView)vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
                                 }
 
                             // Ocultamos los Instrumentos por tratarse de un grupo

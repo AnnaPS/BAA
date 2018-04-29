@@ -390,7 +390,10 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }else{
                 //no
             }
-*/                //navBotPerfil.setVisibility(View.INVISIBLE);
+*/
+
+
+   //navBotPerfil.setVisibility(View.INVISIBLE);
                 new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
                 break;
 
