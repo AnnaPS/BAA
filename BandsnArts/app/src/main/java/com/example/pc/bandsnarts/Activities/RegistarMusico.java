@@ -167,7 +167,7 @@ public class RegistarMusico extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
+
         FirebaseAuth.getInstance().signOut();
         finish();
     }
