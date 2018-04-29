@@ -22,6 +22,7 @@ public class BandsnArts extends Application{
     public static final int CODIGO_DE_REGISTRO=000;
     public static final int CODIGO_DE_FACEBOOK=111;
     public static final int CODIGO_DE_CIERRE=22;
+
     @Override
     public void onCreate() {
         super.onCreate();
