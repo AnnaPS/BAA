@@ -602,7 +602,7 @@
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingGuardarDescartar"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:onClick="onClickOpcionesPerfil"
@@ -612,7 +612,6 @@
         app:fab_label=""
         app:menu_backgroundColor="@android:color/transparent"
         app:menu_colorNormal="@color/md_light_green_600"
-        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
         app:menu_openDirection="up"
         app:menu_showShadow="true">
 
@@ -620,6 +619,7 @@
             android:id="@+id/fabGuardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:fab_colorPressed="@color/md_green_A700"
             android:src="@android:drawable/ic_menu_save"
             app:fabSize="mini"
             app:fab_colorNormal="@color/md_teal_800" />
@@ -630,6 +630,6 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:fabSize="mini"
-            app:fab_colorNormal="@color/md_teal_800" />
+            app:fab_colorNormal="@color/md_red_400" />
     </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>
