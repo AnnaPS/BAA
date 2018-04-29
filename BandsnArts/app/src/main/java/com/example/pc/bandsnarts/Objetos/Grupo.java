@@ -19,12 +19,18 @@ public class Grupo {
     public Grupo(){
     }
 
-    public void setAnuncio(ArrayList<Anuncio> anuncio) {
-        this.anuncio = anuncio;
+
+    public void setAnuncio(Anuncio anuncio) {
+        this.anuncio.add(anuncio);
     }
 
-    public void setRedsocial(ArrayList<String> redsocial) {
-        this.redsocial = redsocial;
+
+    public void setRedsocial(String redsocial) {
+        this.redsocial.add(redsocial);
+    }
+
+    public ArrayList<String> getRedsocial() {
+        return redsocial;
     }
 
     public String getBuscando() {
@@ -106,14 +112,6 @@ public class Grupo {
         return anuncio;
     }
 
-    public void setAnuncio(Anuncio anuncio) {
-        this.anuncio.add(anuncio);
-    }
-    public void setRedsocial(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
-    public ArrayList<String> getRedsocial() {
-        return redsocial;
-    }
+
 }

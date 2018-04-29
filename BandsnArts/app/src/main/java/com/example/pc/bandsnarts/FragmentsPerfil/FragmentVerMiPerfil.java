@@ -7,6 +7,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -106,10 +109,11 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         });
         miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
         miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
+
                 // En funcion de si el usuario es músico o grupo
-           }
+            }
         });
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,8 +147,17 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 botonCancelarEdicionPerfil();
                 ///////////////////////////////////////////////////
                 Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
-                new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
+
+                /*final Fragment verperfil=new FragmentVerMiPerfil();
+                FragmentManager fragment = getFragmentManager();
+                FragmentTransaction fragmentTransaction=fragment.beginTransaction();
+                fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
+                Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
+
+
+                final FragmentManager fragment = getFragmentManager();
+                fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +170,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+                // new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
             }
         });
@@ -356,6 +369,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+
     }
 
 
@@ -393,7 +408,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 */
 
 
-   //navBotPerfil.setVisibility(View.INVISIBLE);
+                //navBotPerfil.setVisibility(View.INVISIBLE);
                 new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
                 break;
 
