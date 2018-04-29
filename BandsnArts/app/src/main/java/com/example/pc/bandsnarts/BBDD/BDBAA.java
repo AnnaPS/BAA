@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.BBDD;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +49,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BDBAA extends AppCompatActivity {
     DatabaseReference bd;
@@ -186,7 +190,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public void comprobarUID(final Context cont, String uid) {
+    public void comprobarUID(final Context cont, final String uid) {
         bd = FirebaseDatabase.getInstance().getReference("uids");
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
@@ -204,7 +208,7 @@ public class BDBAA extends AppCompatActivity {
                     Log.d("Encontrado", "onDataChange: " + encontrado);
                     ((Activity) cont).startActivityForResult(new Intent(cont, RegistarRedSocial.class), 111);
                 } else {
-
+                    comprobarTipo(cont, uid);
                     ((Activity) cont).startActivityForResult(new Intent(cont, VentanaInicialApp.class), 222);
                 }
             }
@@ -229,6 +233,7 @@ public class BDBAA extends AppCompatActivity {
                 boolean encontrado = false;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     encontrado = true;
+                    Log.d("", "onDataChange: PEPE");
                 }
                 if (encontrado) {
                     // Es musico, lo guardamos en preferencias
@@ -299,19 +304,17 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
                             // Sexo....
                             ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
-
-
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Instrumentos
                             ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1)).setText(musico.getInstrumento().get(0));
                             //Buscando
 
-                                if (musico.getBuscando().equalsIgnoreCase("si")) {
-                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
-                                } else {
-                                    ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
-                                }
+                            if (musico.getBuscando().equalsIgnoreCase("si")) {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.yes));
+                            } else {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.no));
+                            }
 
                             try {
                                 ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento().get(1));
@@ -323,6 +326,7 @@ public class BDBAA extends AppCompatActivity {
                             }
                             break;
                         case "grupo":
+
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
                             // nombre
@@ -342,11 +346,11 @@ public class BDBAA extends AppCompatActivity {
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
                             //Buscando
 
-                                if (grupo.getBuscando().equalsIgnoreCase("si")) {
-                                    ((ImageView)vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
-                                } else {
-                                    ((ImageView)vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
-                                }
+                            if (grupo.getBuscando().equalsIgnoreCase("si")) {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
+                            } else {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
+                            }
 
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
@@ -377,36 +381,45 @@ public class BDBAA extends AppCompatActivity {
                         case "musico":
                             Musico musico = data.getValue(Musico.class);
                             // Recuperamos y cargamos los datos del Musico
-
                             // FotoPerfil
                             accesoFotoPerfil("musico", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             Toast.makeText(context, "" + posicion, Toast.LENGTH_SHORT).show();
-
                             // Sexo....
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
-
-
                             // Provincia
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
                             ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
                             // Localidad
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.array_provincia_a_localidades), musico.getLocalidad());
+                            CharSequence[] localidades1;
+                            TypedArray arrayLocalidades1 = vista.getResources().obtainTypedArray(
+                                    R.array.array_provincia_a_localidades);
+                            localidades1 = arrayLocalidades1.getTextArray(posicion);
+                            arrayLocalidades1.recycle();
+                            // Create an ArrayAdapter using the string array and a default
+                            // spinner layout
+                            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                                    context, R.layout.spinner_item,
+                                    localidades1);
+                            // Specify the layout to use when the list of choices appears
+                            adapter.setDropDownViewResource(R.layout.spinner_item);
+                            // Apply the adapter to the spinner
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter);
+                            posicion = posicionSpinner(localidades1, musico.getLocalidad());
+                            System.out.println(posicion);
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
-
-
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
 
-                                if (musico.getBuscando().equalsIgnoreCase("si")) {
-                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
-                                } else {
-                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
-                                }
+                            if (musico.getBuscando().equalsIgnoreCase("si")) {
+                                ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
+                            } else {
+                                ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
+                            }
 
                             //Instrumentos
                             // Instumento Principal
@@ -426,31 +439,45 @@ public class BDBAA extends AppCompatActivity {
 
                             break;
                         case "grupo":
+                            Log.d("PENE", "onDataChange: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
-                            // nombre
-                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
                             accesoFotoPerfil("grupo", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
-                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
+                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
+                            ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             // Provincia
-                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(grupo.getProvincia());
+                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
+                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
                             // Localidad
-                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
+                            CharSequence[] localidades;
+                            TypedArray arrayLocalidades = vista.getResources().obtainTypedArray(
+                                    R.array.array_provincia_a_localidades);
+                            localidades1 = arrayLocalidades.getTextArray(posicion);
+                            arrayLocalidades.recycle();
+                            // Create an ArrayAdapter using the string array and a default
+                            // spinner layout
+                            ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(
+                                    context, R.layout.spinner_item,
+                                    localidades1);
+                            // Specify the layout to use when the list of choices appears
+                            adapter1.setDropDownViewResource(R.layout.spinner_item);
+                            // Apply the adapter to the spinner
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter1);
+                            posicion = posicionSpinner(localidades1, grupo.getLocalidad());
+                            System.out.println(posicion);
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
-
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
                             //Buscando
-
-                                if (grupo.getBuscando().equalsIgnoreCase("si")) {
-                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
-                                } else {
-                                    ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
-                                }
-
+                            if (grupo.getBuscando().equalsIgnoreCase("si")) {
+                                ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(true);
+                            } else {
+                                ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
+                            }
                             // Ocultamos los Instrumentos por tratarse de un grupo
                             vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
                             break;
@@ -591,6 +618,20 @@ public class BDBAA extends AppCompatActivity {
         return 0;
     }
 
+    public int posicionSpinner(CharSequence[] lista, String sp) {
+        try {
+            for (int i = 0; i < lista.length; i++) {
+
+                if (sp.equalsIgnoreCase(lista[i].toString())) {
+                    System.out.println(lista[i]);
+                    return i;
+                }
+            }
+        } catch (NullPointerException ex) {
+
+        }
+        return 0;
+    }
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public void accesoFotoPerfil(final String tipo, char cantidad, final ImageView vista, final Context context) {
