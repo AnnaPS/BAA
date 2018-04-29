@@ -8,12 +8,13 @@
     android:orientation="horizontal"
     android:id="@+id/anuncios">
 
-    <com.github.clans.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAñadirAnuncio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
+        app:fabSize="normal"
         android:src="@android:drawable/ic_input_add"
-        app:fab_colorNormal="@color/md_teal_800"
-        app:fab_colorPressed="@color/md_green_A700" />
+
+        />
 </LinearLayout>
