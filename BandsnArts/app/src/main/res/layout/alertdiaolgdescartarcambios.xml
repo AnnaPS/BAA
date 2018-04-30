@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:background="@drawable/bordealert"
-    android:id="@+id/alertaregistro">
+    android:id="@+id/alertadescartar">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,45 +17,27 @@
         android:layout_marginTop="15dp"
         android:buttonTint="@color/md_black_1000"
         android:fontFamily="sans-serif"
-        android:text="¿CÓMO TE QUIERES REGISTRAR?"
+        android:textAlignment="center"
+        android:text="¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?"
         android:textColor="@color/md_black_1000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
-    <CheckBox
-        android:id="@+id/chkGrupoVAlert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:buttonTint="@color/md_black_1000"
-        android:fontFamily="sans-serif"
-        android:text="GRUPO "
-        android:textColor="@color/md_light_green_600"
-        android:textStyle="bold"
-
-        />
-
-
-    <CheckBox
-        android:id="@+id/chkMusicoVAlert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:buttonTint="@color/md_black_1000"
-        android:fontFamily="sans-serif"
-        android:text="MÚSICO"
-        android:textColor="@color/md_light_green_600"
-        android:textStyle="bold" />
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:text="Los cambios se perderán"
+       android:textStyle="italic"
+       android:textAlignment="center"
+       android:textColor="@color/md_red_400"
+       android:fontFamily="sans-serif"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btnCancelarVAlert"
+            android:id="@+id/btnCancelarVDescartar"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginBottom="8dp"
@@ -73,7 +55,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btnAceptarVAlert"
+            android:id="@+id/btnAceptarVDescartar"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginBottom="8dp"
@@ -91,5 +73,4 @@
             app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
-
 </LinearLayout>
