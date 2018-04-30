@@ -499,6 +499,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 ocultaTextviews();
                 mostrarSpinners("grupo");
                 miFAB.setVisibility(View.INVISIBLE);
+                fabFoto.setVisibility(View.VISIBLE);
                 imgSiNo.setVisibility(View.INVISIBLE);
                 miFABGuardarRechazar.setVisibility(View.VISIBLE);
                 txtDescripcion.setEnabled(true);
@@ -517,6 +518,15 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                             Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
                             buscando = "no";
                         }
+                    }
+                });
+                fabFoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        showOptions();
+
+
                     }
                 });
                 break;
@@ -558,7 +568,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
     //mostrar opciones
     private void showOptions() {
-
+        Toast.makeText(vista.getContext(), "HOLIHA", Toast.LENGTH_SHORT).show();
         //contiene todas las opciones que contiene el alert dialog
         final CharSequence[] option = {"Hacer foto", "Elegir de galeria", "Cancelar"};
         //alert dialog
