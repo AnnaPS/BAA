@@ -191,14 +191,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), "default_musico.jpg", getResources().getStringArray(R.array.sexo)[posSexo]
+                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                 , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
                                 , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
                         break;
                     case ("grupo"):
                         //Actualizamos los datos del grupo
-                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), "default_grupo.jpg", null
+                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
                                 , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
                                 , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
@@ -617,9 +617,16 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         if (isDirectoryCreated) {
             //Usamos el fecha/hora/minutos/segundos/milisegundos para poner nombre a la imagen y asi conseguir que no se repita el nombre
             Long timestamp = System.currentTimeMillis() / 1000;
-            String imageName = timestamp.toString() + ".jpg";
 
-            //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
+            // MIRAR GUARDAR LA FOTO ASOCIANDO EL UID DEL USUARIO!!!!!!
+         //  String imageName = timestamp.toString() + ".jpg";
+            String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid()+ ".jpg";
+
+
+
+
+
+                    //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
             mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName;
             File newFile = new File(mPath);
 
@@ -655,20 +662,34 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("External storage", " Scanned " + path + ":");
                                     Log.i("External storage", " --> Uri = " + uri);
-
                                 }
                             });
                     //ponerlo en la imagen
 
+
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    imgFotoPerfil.setImageBitmap(bitmap);
+
+                    Toast.makeText(vista.getContext(), ""+mPath, Toast.LENGTH_SHORT).show();
+
+                   imgFotoPerfil.setImageBitmap(bitmap);
+                   Log.d("PRUEBAS", "mPath:                 "+mPath);
+                    //Guardamos la foto en el storage
+
+                    new BDBAA().almacenarFotoPerfil(mPath.toString(),vista.getContext(),0,null);
                     break;
 
                 case SELECT_PICTURE:
                     //cogemos el dato que nos envia el activity result con data
-                    Uri path = data.getData();
+                   Uri path = data.getData();
+
+
                     imgFotoPerfil.setImageURI(path);
+                    Log.d("PRUEBAS", "path:                 "+path.getPath());
+                    Log.d("PRUEBAS", "mPath:                 "+mPath);
+                    new BDBAA().almacenarFotoPerfil(mPath,vista.getContext(),1,path);
+
+
                     break;
             }
         }
