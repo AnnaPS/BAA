@@ -3,6 +3,8 @@ package com.example.pc.bandsnarts.Login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
     private TextView nombreGoogle, emailGoogle, identUsuGoogle;
     private ImageView fotoGoogle;
     EditText editUrl;
+    FloatingActionButton btnguardar;
 
 
 
@@ -42,10 +45,20 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_google);
-        editUrl=findViewById(R.id.edUrl);
+        editUrl=findViewById(R.id.edtexto);
         nombreGoogle = findViewById(R.id.txtNombreVGoogle);
         emailGoogle = findViewById(R.id.txtDirecVGoogle);
         identUsuGoogle = findViewById(R.id.txtCPVGoogle);
+        btnguardar = findViewById(R.id.fab);
+
+         btnguardar.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Snackbar.make(view, "Ha presionado sobre el boton", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+        }
+    });
        // fotoGoogle = findViewById(R.id.imvFotoVGoogle);
 
         // Opciones de inicio con google para login silencioso porque ya se realizo la autenticacion
@@ -78,10 +91,9 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         };
 
 
-
-
-
     }
+
+
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
