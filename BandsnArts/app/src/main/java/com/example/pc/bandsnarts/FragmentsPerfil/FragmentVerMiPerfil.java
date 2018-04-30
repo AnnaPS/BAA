@@ -486,11 +486,12 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             return true;
         }
         //comprueba si los permisos estan aceptados
-        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(mrView, "Los permisos son necesarios para usar la aplicacion.",
+            Snackbar.make(mrView, "Los permisos son necesarios para poder editar la foto de perfil",
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -579,7 +580,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         super.onSaveInstanceState(outState);
         outState.putString("file_path",mPath);
     }
-    //para poder usar lo guardado
+
 
 
 
@@ -617,7 +618,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     }
 
 
-    //acepte o deniege los permisos pasa por aqui
+    //acepte o deniegue los permisos pasa por aqui
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
