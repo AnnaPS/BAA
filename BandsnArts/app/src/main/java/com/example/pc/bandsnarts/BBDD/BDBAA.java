@@ -38,7 +38,8 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.RuntimeExecutionException;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -48,9 +49,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -269,12 +271,12 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case "musico":
                             nombre.setText(data.getValue(Musico.class).getNombre());
-                            accesoFotoPerfil("musico", '1', fotoPerfil, context);
+                            accesoFotoPerfil("musico", fotoPerfil, context);
 
                             break;
                         case "grupo":
                             nombre.setText(data.getValue(Grupo.class).getNombre());
-                            accesoFotoPerfil("grupo", '1', fotoPerfil, context);
+                            accesoFotoPerfil("grupo", fotoPerfil, context);
                             break;
                     }
 
@@ -303,7 +305,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("musico", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -319,9 +321,9 @@ public class BDBAA extends AppCompatActivity {
                             //Buscando
 
                             if (musico.getBuscando().equalsIgnoreCase("si")) {
-                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.yes));
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
                             } else {
-                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.no));
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
                             }
 
                             try {
@@ -340,7 +342,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("grupo", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -390,7 +392,7 @@ public class BDBAA extends AppCompatActivity {
                             Musico musico = data.getValue(Musico.class);
                             // Recuperamos y cargamos los datos del Musico
                             // FotoPerfil
-                            accesoFotoPerfil("musico", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
@@ -451,7 +453,7 @@ public class BDBAA extends AppCompatActivity {
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
                             // FotoPerfil
-                            accesoFotoPerfil("grupo", '1', ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
@@ -500,7 +502,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public void modificarDatosUsuario(final String tipo, final Context context, final String imagen, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
+    public void modificarDatosUsuario(final String tipo, final Context context,  final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
         // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Recuperamos al usuario a través de su UID
@@ -514,7 +516,6 @@ public class BDBAA extends AppCompatActivity {
                         case ("musico"):
 
                             Musico mus = ds.getValue(Musico.class);
-                            mus.setImagen(imagen);
                             mus.setSexo(sexo);
                             mus.setEstilo(estilo);
                             mus.setInstrumento(instrumento);
@@ -529,7 +530,6 @@ public class BDBAA extends AppCompatActivity {
                             break;
                         case ("grupo"):
                             Grupo gr = ds.getValue(Grupo.class);
-                            gr.setImagen(imagen);
                             gr.setEstilo(estilo);
                             gr.setDescripcion(descripcion);
                             gr.setProvincia(provincia);
@@ -641,22 +641,50 @@ public class BDBAA extends AppCompatActivity {
         return 0;
     }
 
-    ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
-    public void accesoFotoPerfil(final String tipo, char cantidad, final ImageView vista, final Context context) {
 
+    public void actualizarFotoPerfil(final String refFoto, final String tipo) {
+        // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        // Ordenamos por uid dentro del nodo tipo en le que estabamos
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case ("musico"):
+                            Musico mus = ds.getValue(Musico.class);
+                            mus.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+refFoto);
+                            bd.child(ds.getKey()).setValue(mus);
+                            break;
+                        case ("grupo"):
+                            Grupo gr = ds.getValue(Grupo.class);
+                            gr.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+refFoto);
+                            bd.child(ds.getKey()).setValue(gr);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
+    public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
+        // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = null;
-        switch (cantidad) {
-            case '1':
-                q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                break;
-            case 'n':
-                q = bd.orderByChild("nombre");
-                break;
-        }
+
+        q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String img;
@@ -669,11 +697,7 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                    try {
-                                        Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                    } catch (RuntimeExecutionException  ex) {
-
-                                    }
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
                                 }
                             });
                             break;
@@ -682,11 +706,7 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                    try {
-                                        Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                    } catch (RuntimeExecutionException ex) {
-
-                                    }
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
                                 }
                             });
                             break;
@@ -702,4 +722,74 @@ public class BDBAA extends AppCompatActivity {
 
 
     }
+
+
+    public void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
+
+        String img;
+        StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
+
+        if (o instanceof Musico) {
+            img = ((Musico) o).getImagen();
+            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                }
+            });
+        } else {
+            img = ((Grupo) o).getImagen();
+            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                }
+            });
+        }
+
+
+    }
+
+
+    public void almacenarFotoPerfil(String refFoto, final Context ctx, final int opcion, Uri uri) {
+        // Nos posicionamos en el nodo de imagenes del storage
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
+        Uri file;
+
+        switch (opcion) {
+            // Para la cámara(necesitamos convertir a Uri)
+            case (0):
+                file = Uri.fromFile(new File(refFoto));
+                break;
+
+            default:
+                file = uri;
+                break;
+        }
+
+
+        StorageReference referenceFoto = storage.child("imagenes/"+FirebaseAuth.getInstance().getCurrentUser().getUid() +"/" +file.getLastPathSegment());
+        UploadTask uploadTask = referenceFoto.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.d("Fallito", "       AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+
+                // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
+                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "musico"));
+            }
+        });
+
+    }
+
 }

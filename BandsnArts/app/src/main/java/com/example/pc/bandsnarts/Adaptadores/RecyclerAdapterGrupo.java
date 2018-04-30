@@ -63,7 +63,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
         anun.setText(String.valueOf(grupoItem.getAnuncio().size()));
-        new BDBAA().accesoFotoPerfil("grupo", 'n', imagenMusico, mContext);
+        new BDBAA().accesoFotoPerfilRecycler(imagenMusico, mContext, listaG.get(position));
 
     }
 

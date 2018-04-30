@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vermiperfil"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,6 +41,17 @@
                     android:src="@drawable/female"
                     app:civ_border_color="@color/md_light_green_600"
                     app:civ_border_width="2dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabFotoPerfil"
+                    android:layout_width="44dp"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="260dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/md_light_green_600"
+                    android:backgroundTint="@color/md_teal_400"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    app:fabSize="mini" />
 
                 <TextView
                     android:id="@+id/txtNombUsuarioVVerMiPerfil"
@@ -600,7 +612,6 @@
         android:layout_gravity="bottom|right"
         android:onClick="onClickOpcionesPerfil"
         android:src="@android:drawable/ic_input_add"
-        app:fabSize="normal"
         app:fab_colorPressed="@color/md_green_A700"
         app:fab_label=""
         app:menu_backgroundColor="@android:color/transparent"
@@ -610,19 +621,23 @@
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabGuardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="44dp"
+            android:layout_height="56dp"
             app:fab_colorPressed="@color/md_green_A700"
-            android:src="@android:drawable/ic_menu_save"
             app:fabSize="mini"
+            android:src="@android:drawable/ic_menu_save"
+            app:fab_label="Guardar"
             app:fab_colorNormal="@color/md_teal_800" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabDescartar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_width="44dp"
+            android:layout_height="56dp"
             app:fabSize="mini"
+            app:fab_label="Descartar"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:fab_colorNormal="@color/md_red_400" />
     </com.github.clans.fab.FloatingActionMenu>
+
+
 </FrameLayout>
