@@ -57,6 +57,7 @@
                     android:ems="10"
                     android:fontFamily="sans-serif"
                     android:hint="NOMBRE"
+                    android:background="@android:color/transparent"
                     android:inputType="textPersonName"
                     android:textSize="14sp"
                     android:textStyle="bold" />

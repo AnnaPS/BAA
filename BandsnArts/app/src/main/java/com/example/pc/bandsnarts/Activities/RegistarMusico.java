@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,12 +15,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.example.pc.bandsnarts.R;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 public class RegistarMusico extends AppCompatActivity {
 
@@ -51,7 +55,34 @@ public class RegistarMusico extends AppCompatActivity {
     }
 
     public void escuchadoresSpinner() {
+
+        spinnerSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarMusico.this);
+                return false;
+            }
+        }) ;
+        spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarMusico.this);
+                return false;
+            }
+        }) ;
+        spinnerInstrumentos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarMusico.this);
+                return false;
+
+            }
+        }) ;
+
+
         spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 posSexo = position;
@@ -92,9 +123,12 @@ public class RegistarMusico extends AppCompatActivity {
     public void onClickVRegMusico(View view) {
         if (edtRepitePassMusico.getText().toString().isEmpty() || edtPassMusico.getText().toString().isEmpty()
                 || edtMailMusico.getText().toString().isEmpty() || edtNombreMusico.getText().toString().isEmpty()) {
-
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
-        } else {
+        }  else if (posEstilo == 0) {
+            Toast.makeText(this, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+        } else if (posInstrumento == 0) {
+            Toast.makeText(this, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
+        }  else {
             // Comprobamos que el patron de correo y de contraseña son correctos
             if (!auth.validarEmail(edtMailMusico.getText().toString())) {
                 edtMailMusico.setError("e-mail no válido");
@@ -115,7 +149,13 @@ public class RegistarMusico extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg", edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo], getResources().getStringArray(R.array.instrumentos)[posInstrumento], edtDescripcion.getText().toString());
+
+                            ArrayList<String> intrumentos= new ArrayList<>();
+                            intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
+
+                            new BDBAA().agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg"
+                                    , edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo]
+                                    , intrumentos, edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

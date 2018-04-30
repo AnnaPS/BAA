@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.example.pc.bandsnarts.R;
 
@@ -49,6 +51,14 @@ public class RegistrarGrupo extends AppCompatActivity {
     }
 
     public void escuchadorSpinner() {
+        spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistrarGrupo.this);
+                return false;
+            }
+        }) ;
+
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -106,6 +116,8 @@ public class RegistrarGrupo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+
 
         FirebaseAuth.getInstance().signOut();
 
