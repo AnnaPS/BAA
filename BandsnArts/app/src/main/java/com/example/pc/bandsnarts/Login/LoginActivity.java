@@ -37,9 +37,11 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -66,9 +68,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private AlertDialog alerta;
     private LayoutInflater inflador;
     //Objeto para conectar con la api de facebook
-    public static LoginResult loginResult;
+
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
+    boolean gooogle;
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
@@ -144,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         new BDBAA().comprobarUID(estaVentana, usuario.getUid());
-                    }else{
+                    } else {
                         visualizarBotones(View.VISIBLE);
                     }
                 } else {
@@ -154,15 +157,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         };
 
 
-       /* // Comprobación de sesion iniciada en FaceBook
-        if (AccessToken.getCurrentAccessToken() != null) {
-            // Lanzamos la siguiente actividad
-            //siguienteActivity();
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-              //  new BDBAA().comprobarUID(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            }
-        }
-*/
+
         // Inicializamos CallbackManager
         callbackManager = CallbackManager.Factory.create();
         // Recogemos el Boton
@@ -173,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                LoginActivity.loginResult = loginResult;
+
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
@@ -186,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onCancel() {
                 // Cuando se cancele el inicio de sesion.
                 Toast.makeText(estaVentana, "Inicio Cancelado.", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -229,9 +225,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
                     new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
+
                 }
             }
         });
+
     }
 
 
@@ -268,8 +266,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void onClickIngresoGoogle(View view) {
+        Auth.GoogleSignInApi.signOut(clienteGoogle);
         Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
         startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+        gooogle = true;
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!ON ACTIVITY FOR RESULT!!!!!!!!!!!!!!!!!
@@ -304,7 +304,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         LoginManager.getInstance().logOut();
                         FirebaseAuth.getInstance().getCurrentUser().delete();
                         FirebaseAuth.getInstance().signOut();
-
+                        break;
+                    case BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL:
+                        if (gooogle) {
+                            Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
+                            startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+                            gooogle = false;
+                        }
                         break;
                 }
 
@@ -312,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } catch (NullPointerException e) {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // Facebbook
         }
     }
 

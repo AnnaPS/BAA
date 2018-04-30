@@ -31,6 +31,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -87,6 +88,7 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
                         context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
                     ((Activity) context).finish();
                 }
             }
@@ -126,7 +128,9 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
                         context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
                     ((Activity) context).finish();
+
                 }
             }
 

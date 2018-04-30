@@ -92,8 +92,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
-                FirebaseAuth.getInstance().getCurrentUser().delete();
-                FirebaseAuth.getInstance().signOut();
+//                FirebaseAuth.getInstance().getCurrentUser().delete();
+//                FirebaseAuth.getInstance().signOut();
+                setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
                 a.finish();
             }
         });
@@ -280,9 +281,9 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
-        FirebaseAuth.getInstance().signOut();
-
+//        FirebaseAuth.getInstance().getCurrentUser().delete();
+//        FirebaseAuth.getInstance().signOut();
+setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
         a.finish();
     }
 

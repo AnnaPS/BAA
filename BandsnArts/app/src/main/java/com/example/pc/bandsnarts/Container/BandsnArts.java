@@ -20,6 +20,7 @@ public class BandsnArts extends Application{
     public static final int CODIGO_DE_INICIO = 777;
     public static final int CODIGO_DE_DESLOGUEO=21;
     public static final int CODIGO_DE_REGISTRO=000;
+    public static final int CODIGO_DE_REGISTRO_RED_SOCIAL=333;
     public static final int CODIGO_DE_REDSOCIAL=111;
     public static final int CODIGO_DE_CIERRE=22;
 

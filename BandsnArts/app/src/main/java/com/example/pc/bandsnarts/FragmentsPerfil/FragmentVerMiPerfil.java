@@ -154,8 +154,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                 fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
                 Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
-
-
                 final FragmentManager fragment = getFragmentManager();
                 fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             }

@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.annotation.SuppressLint;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -47,7 +49,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     private ImageView fotoPerfil;
     private TextView txtNombre, txtCorreo;
-
+    private int id=R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
 
@@ -120,6 +122,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
         //En caso de que este desplegado el menu drawer al accionar este evento solo lo ocultara y
@@ -127,7 +130,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(id==R.id.inicioMenuDrawer2){
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
         }
@@ -162,7 +165,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragment = getSupportFragmentManager();
 
-        int id = item.getItemId();
+         id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
@@ -209,26 +212,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     public void cerrarSesion() {
-        //Deslogueo en Google
         firebaseAuth.signOut();
-        // deslogueo en Facebook
-        LoginManager.getInstance().logOut();
-
-        Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                if (status.isSuccess()) {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
-                    //El primer digito indica la ventana y el segundo la vez que
-                    setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
-                    VentanaInicialApp.this.finish();
-                    //volverActivityLogin();
-                } else {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        finish();
     }
 
     @Override
