@@ -213,6 +213,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     public void cerrarSesion() {
         firebaseAuth.signOut();
+        LoginManager.getInstance().logOut();
         finish();
     }
 
