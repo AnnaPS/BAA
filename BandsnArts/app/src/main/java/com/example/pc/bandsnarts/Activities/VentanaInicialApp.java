@@ -132,6 +132,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             drawer.closeDrawer(GravityCompat.START);
         } else if(id==R.id.inicioMenuDrawer2){
             setResult(BandsnArts.CODIGO_DE_CIERRE);
+            LoginManager.getInstance().logOut();
             finish();
         }
     }
@@ -214,7 +215,21 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public void cerrarSesion() {
         firebaseAuth.signOut();
         LoginManager.getInstance().logOut();
-        finish();
+
+        Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()) {
+                    Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
+                    //El primer digito indica la ventana y el segundo la vez que
+                    setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
+                    VentanaInicialApp.this.finish();
+                    // volverActivityLogin();
+                } else {
+                    Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
