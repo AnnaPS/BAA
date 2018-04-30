@@ -123,9 +123,12 @@ public class RegistarMusico extends AppCompatActivity {
     public void onClickVRegMusico(View view) {
         if (edtRepitePassMusico.getText().toString().isEmpty() || edtPassMusico.getText().toString().isEmpty()
                 || edtMailMusico.getText().toString().isEmpty() || edtNombreMusico.getText().toString().isEmpty()) {
-
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
-        } else {
+        }  else if (posEstilo == 0) {
+            Toast.makeText(this, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+        } else if (posInstrumento == 0) {
+            Toast.makeText(this, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
+        }  else {
             // Comprobamos que el patron de correo y de contraseña son correctos
             if (!auth.validarEmail(edtMailMusico.getText().toString())) {
                 edtMailMusico.setError("e-mail no válido");
@@ -167,7 +170,7 @@ public class RegistarMusico extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
+
         FirebaseAuth.getInstance().signOut();
         finish();
     }

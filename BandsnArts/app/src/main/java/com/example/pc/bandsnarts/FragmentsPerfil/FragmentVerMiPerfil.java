@@ -23,6 +23,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -42,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -118,7 +121,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         txtDescripcion = vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
         switchBuscar = vista.findViewById(R.id.swBuscando);
         imgSiNo = vista.findViewById(R.id.imgBuscandoVerMiPerfil);
-
         // navBotPerfil=vista.findViewById(R.id.bottomnav);
         txtEstilo = vista.findViewById(R.id.txtEstiloVVerMiPerfil);
         txtLocalidad = vista.findViewById(R.id.txtLocalidadVVerMiPerfil);
@@ -166,6 +168,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }
         });
         miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
+        miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // En funcion de si el usuario es músico o grupo
+            }
+        });
+        miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
 
         //poner a invisible al inicio el boton de cambiar foto
         fabFoto.setVisibility(View.INVISIBLE);
@@ -195,10 +205,23 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                                 buscando);
                         break;
                 }
-
-
+                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                mostrarComponentes();
+                botonCancelarEdicionPerfil();
+                ///////////////////////////////////////////////////
                 Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
 
+
+                /*final Fragment verperfil=new FragmentVerMiPerfil();
+                FragmentManager fragment = getFragmentManager();
+                FragmentTransaction fragmentTransaction=fragment.beginTransaction();
+                fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
+                Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
+
+
+                final FragmentManager fragment = getFragmentManager();
+                fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
@@ -216,6 +239,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                 mostrarComponentes();
+                botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -231,8 +255,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         escuchadoresSpinner();
 
         return vista;
-    }//on create
-
+    }
 
     public void escuchadoresSpinner() {
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -401,14 +424,24 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     }
 
     private void mostrarComponentes() {
-        txtEstilo.setVisibility(View.VISIBLE);
-        txtLocalidad.setVisibility(View.VISIBLE);
-        txtProvincia.setVisibility(View.VISIBLE);
-        txtSexo.setVisibility(View.VISIBLE);
-        ins1.setVisibility(View.VISIBLE);
-        ins2.setVisibility(View.VISIBLE);
-        ins3.setVisibility(View.VISIBLE);
-        ins4.setVisibility(View.VISIBLE);
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+            case "musico":
+                txtEstilo.setVisibility(View.VISIBLE);
+                txtLocalidad.setVisibility(View.VISIBLE);
+                txtProvincia.setVisibility(View.VISIBLE);
+                txtSexo.setVisibility(View.VISIBLE);
+                ins1.setVisibility(View.VISIBLE);
+                ins2.setVisibility(View.VISIBLE);
+                ins3.setVisibility(View.VISIBLE);
+                ins4.setVisibility(View.VISIBLE);
+            case "grupo":
+                txtEstilo.setVisibility(View.VISIBLE);
+                txtLocalidad.setVisibility(View.VISIBLE);
+                txtProvincia.setVisibility(View.VISIBLE);
+                break;
+        }
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+
     }
 
 
@@ -446,7 +479,11 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }else{
                 //no
             }
-*/                //navBotPerfil.setVisibility(View.INVISIBLE);
+*/
+
+
+                //navBotPerfil.setVisibility(View.INVISIBLE);
+             //navBotPerfil.setVisibility(View.INVISIBLE);
 
 
                 ///boton para cambiar foto de perfil
@@ -472,6 +509,20 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 switchBuscar.setVisibility(View.VISIBLE);
                 contenedorInstrumentos.setVisibility(View.GONE);
                 preguntaInstrumentos.setVisibility(View.GONE);
+                switchBuscar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
+                        if (check) {
+                            //si esta chequeado, es si
+                            Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
+                            buscando = "si";
+                        } else {
+                            //es no
+                            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
+                            buscando = "no";
+                        }
+                    }
+                });
                 break;
 
         }
@@ -665,7 +716,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     private void botonCancelarEdicionPerfil() {
         switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
 
-            case ("grupo"):
+            case("grupo"):
                 contenedorInstrumentos.setVisibility(View.GONE);
                 preguntaInstrumentos.setVisibility(View.GONE);
 
@@ -681,6 +732,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
         }
     }
+
 
 
     private void loadSpinnerProvincias() {

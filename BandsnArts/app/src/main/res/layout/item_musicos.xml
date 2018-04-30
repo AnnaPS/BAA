@@ -107,7 +107,7 @@
                 android:layout_height="23dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="190dp"
-                app:srcCompat="@drawable/yes" />
+                app:srcCompat="@drawable/no" />
 
 
             <TextView
