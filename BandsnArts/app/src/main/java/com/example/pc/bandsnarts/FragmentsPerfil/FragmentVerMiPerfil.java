@@ -1,22 +1,40 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -27,9 +45,17 @@ import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.CAMERA;
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -39,25 +65,42 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
     TextView ins1, ins2, ins3, ins4, preguntaInstrumentos;
     ImageView imgSiNo;
-    FloatingActionButton miFAB;
+    FloatingActionButton miFAB, fabFoto;
+    CircleImageView imgFotoPerfil;
     com.github.clans.fab.FloatingActionButton guardar, descartar;
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
+    FrameLayout mrView;
     View vista;
     private int posSexo, posEstilo, posLocalidad, posProvincia, posInst1, posInst2, posInst3, posInst4;
     private String buscando;
+
+
+    /////VARIABLES PARA USAR CAMARA Y GALERIA
+    private static String APP_DIRECTORY = "MisBnAImagenes/";
+    private static String MEDIA_DIRECTORY = APP_DIRECTORY + "BnAImagenes";
+
+    private final int MY_PERMISSIONS = 100;
+    private final int PHOTO_CODE = 200;
+    private final int SELECT_PICTURE = 300;
+
+    private String mPath;
+
+    //////////////////////
 
     CharSequence[] localidades;
 
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
+
 
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
@@ -76,11 +119,27 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         txtDescripcion = vista.findViewById(R.id.txtDescripcionVVerMiPerfil);
         switchBuscar = vista.findViewById(R.id.swBuscando);
         imgSiNo = vista.findViewById(R.id.imgBuscandoVerMiPerfil);
+
         // navBotPerfil=vista.findViewById(R.id.bottomnav);
         txtEstilo = vista.findViewById(R.id.txtEstiloVVerMiPerfil);
         txtLocalidad = vista.findViewById(R.id.txtLocalidadVVerMiPerfil);
         txtProvincia = vista.findViewById(R.id.txtProvinciaVVerMiPerfil);
         txtSexo = vista.findViewById(R.id.txtSexoVVerMiPerfil);
+
+        ///finds para usar cambio de foto de perfil
+        imgFotoPerfil = vista.findViewById(R.id.imgPerfilVPerfil);
+        fabFoto = (FloatingActionButton) vista.findViewById(R.id.fabFotoPerfil);
+        mrView = vista.findViewById(R.id.vermiperfil);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        if (mayRequestStoragePermission()) {
+            fabFoto.setEnabled(true);
+        } else {
+            fabFoto.setEnabled(false);
+        }
+
 
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
@@ -108,6 +167,10 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }
         });
         miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
+
+        //poner a invisible al inicio el boton de cambiar foto
+        fabFoto.setVisibility(View.INVISIBLE);
+        miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
         miFABGuardarRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,14 +191,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                         instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), "default_musico.jpg", getResources().getStringArray(R.array.sexo)[posSexo]
+                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                 , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
                                 , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
                         break;
                     case ("grupo"):
                         //Actualizamos los datos del grupo
-                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), "default_grupo.jpg", null
+                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
                                 , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
                                 , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
                                 buscando);
@@ -164,13 +227,20 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
+
+
+                ////LLAMADA AL ALERT DIALOG///////
+                android.app.FragmentManager fm = getActivity().getFragmentManager();
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios();
+                alerta.show(fm, "AlertaDescartar");
+                ////////////////////////////////////////
+
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                 mostrarComponentes();
                 botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                // new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
 
             }
         });
@@ -184,7 +254,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         escuchadoresSpinner();
 
         return vista;
-    }
+    }//on create
+
 
     public void escuchadoresSpinner() {
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -382,6 +453,8 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 mostrarSpinners("musico");
                 miFAB.setVisibility(View.INVISIBLE);
                 imgSiNo.setVisibility(View.INVISIBLE);
+                //poner a invisible al inicio el boton de cambiar foto
+                fabFoto.setVisibility(View.VISIBLE);
                 miFABGuardarRechazar.setVisibility(View.VISIBLE);
                 txtDescripcion.setEnabled(true);
                 switchBuscar.setVisibility(View.VISIBLE);
@@ -400,21 +473,33 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                         }
                     }
                 });
+
    /*         if (switchBuscar.isChecked()){
                 //si
             }else{
                 //no
             }
-*/
+*/                //navBotPerfil.setVisibility(View.INVISIBLE);
 
 
-                //navBotPerfil.setVisibility(View.INVISIBLE);
+                ///boton para cambiar foto de perfil
+                fabFoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        showOptions();
+
+
+                    }
+                });
+                new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
                 break;
 
             case ("grupo"):
                 ocultaTextviews();
                 mostrarSpinners("grupo");
                 miFAB.setVisibility(View.INVISIBLE);
+                fabFoto.setVisibility(View.VISIBLE);
                 imgSiNo.setVisibility(View.INVISIBLE);
                 miFABGuardarRechazar.setVisibility(View.VISIBLE);
                 txtDescripcion.setEnabled(true);
@@ -435,11 +520,223 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                         }
                     }
                 });
+                fabFoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        showOptions();
+
+
+                    }
+                });
                 break;
 
         }
         new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
+
+    }
+
+    //saber si tiene permisos para cambiar foto y abrir camara
+    private boolean mayRequestStoragePermission() {
+        //si el so es menor a la version 6 de android no se ven los permisos
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        //comprueba si los permisos estan aceptados
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))) {
+            Snackbar.make(mrView, "Los permisos son necesarios para usar la aplicacion.",
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //si le da al ok se aceptan los permisos
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                }
+            }).show();
+        } else {
+            //si es la primera vez que se les pide los permisos pasa por aqui
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+        }
+        return false;
+
+
+    }
+
+
+    //mostrar opciones
+    private void showOptions() {
+        Toast.makeText(vista.getContext(), "HOLIHA", Toast.LENGTH_SHORT).show();
+        //contiene todas las opciones que contiene el alert dialog
+        final CharSequence[] option = {"Hacer foto", "Elegir de galeria", "Cancelar"};
+        //alert dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Elija una opción");
+        //carga las opciones y los onclicks de estas opciones
+        builder.setItems(option, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if (option[i] == "Hacer foto") {
+                    openCamera();
+                } else if (option[i] == "Elegir de galeria") {
+                    //usamos un intent para abrir la aplicacion de galeria. Con ACTION_PICK se
+                    //indica que se quiere elegir entre aplicaciones y el segugo parametro indica la aplicacion
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //escoge todas las imagenes que tenga en su alamacenamiento del telefono
+                    intent.setType("image/*");
+                    //createChooser abre un cuadro de dialogo con todas las apps que contienen imagenes para poder seleccionar donde
+                    //SELECT_PICTURE indica de donde fue llamado el activity for result
+                    startActivityForResult(intent.createChooser(intent, "¿Dónde está esa imagen tan molona?"), SELECT_PICTURE);
+                } else {
+                    //cancelar
+                    dialog.dismiss();
+                }
+            }
+
+        });
+        builder.show();
+
+
+    }
+
+    //Metodo para abrir la camara
+    private void openCamera() {
+        Toast.makeText(getActivity(), "camaaaara", Toast.LENGTH_SHORT).show();
+        //esta variable guarda la ruta del alamacenamiento externo del dispositivo
+        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        //indica si el directorio media_directory esta creado o no
+        boolean isDirectoryCreated = file.exists();
+
+        //comprueba si existe y si no crea los dos
+        if (!isDirectoryCreated) {
+            isDirectoryCreated = file.mkdirs();
+        }
+        //si ya esta creado
+        if (isDirectoryCreated) {
+            //Usamos el fecha/hora/minutos/segundos/milisegundos para poner nombre a la imagen y asi conseguir que no se repita el nombre
+            Long timestamp = System.currentTimeMillis() / 1000;
+
+            // MIRAR GUARDAR LA FOTO ASOCIANDO EL UID DEL USUARIO!!!!!!
+         //  String imageName = timestamp.toString() + ".jpg";
+            String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid()+ ".jpg";
+
+
+
+
+
+                    //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
+            mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName;
+            File newFile = new File(mPath);
+
+            //Abrir la camara
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            startActivityForResult(intent, PHOTO_CODE);
+
+        }
+
+    }
+//justo antes de que opencamera termine va a guardar  guarda el path
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("file_path",mPath);
+    }
+    //para poder usar lo guardado
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PHOTO_CODE:
+                    //para ver la foto que acabamos de hacer en la galeria
+                    MediaScannerConnection.scanFile(getContext(),
+                            new String[]{mPath}, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                @Override
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.i("External storage", " Scanned " + path + ":");
+                                    Log.i("External storage", " --> Uri = " + uri);
+                                }
+                            });
+                    //ponerlo en la imagen
+
+
+                    //decodofica la ruta y coge la imagen que esta contenida en la ruta
+                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
+
+                    Toast.makeText(vista.getContext(), ""+mPath, Toast.LENGTH_SHORT).show();
+
+                   imgFotoPerfil.setImageBitmap(bitmap);
+                   Log.d("PRUEBAS", "mPath:                 "+mPath);
+                    //Guardamos la foto en el storage
+
+                    new BDBAA().almacenarFotoPerfil(mPath.toString(),vista.getContext(),0,null);
+                    break;
+
+                case SELECT_PICTURE:
+                    //cogemos el dato que nos envia el activity result con data
+                   Uri path = data.getData();
+
+
+                    imgFotoPerfil.setImageURI(path);
+                    Log.d("PRUEBAS", "path:                 "+path.getPath());
+                    Log.d("PRUEBAS", "mPath:                 "+mPath);
+                    new BDBAA().almacenarFotoPerfil(mPath,vista.getContext(),1,path);
+
+
+                    break;
+            }
+        }
+    }
+
+
+    //acepte o deniege los permisos pasa por aqui
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSIONS) {
+            //GRANDRESULTS hace referencia al array de los permisos de external y camera
+            if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "PERMISOS ACEPTADOS", Toast.LENGTH_SHORT).show();
+                fabFoto.setEnabled(true);
+
+            } else {
+                showExplanation();
+            }
+        }
+    }
+
+    //muestra la explicacion de porque se necesitan los permisos
+    private void showExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setTitle("Permisos denegados");
+        builder.setMessage("Para cambiar la foto necesita aceptar los permisos");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //abrir la configuracion para que le de permisos justo en el detalle de nuestra app
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package",getActivity().getPackageName(),null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                getActivity().finish();
+            }
+        });
+        builder.show();
 
     }
 

@@ -2,12 +2,14 @@ package com.example.pc.bandsnarts.Objetos;
 
 import java.util.ArrayList;
 
-class Anuncio {
+public class Anuncio {
     private String titulo;
     private String descripcion;
     private String tipo;
     private String fecha;
-    private ArrayList<String> mensaje=new ArrayList<String>();
+    private String provincia, localidad, estilo, instrumento,sexo;
+    private ArrayList<String> mensaje = new ArrayList<String>();
+
     public ArrayList<String> getMensaje() {
         return mensaje;
     }
@@ -15,16 +17,49 @@ class Anuncio {
     public void setMensaje(String mensaje) {
         this.mensaje.add(mensaje);
     }
+
     public Anuncio() {
     }
 
-    public Anuncio(String titulo, String descripcion) {
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Anuncio(String titulo, String descripcion, String fecha, String localidad, String provincia, String estilo, String instrumento, String sexo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.localidad = localidad;
+        this.provincia = provincia;
+
+        this.estilo = estilo;
+        this.instrumento = instrumento;
+        this.sexo=sexo;
+    }
+
+    public String getEstilo() {
+        return estilo;
+    }
+
+    public void setEstilo(String estilo) {
+        this.estilo = estilo;
+    }
+
+    public String getInstrumento() {
+        return instrumento;
+    }
+
+    public void setInstrumento(String instrumento) {
+        this.instrumento = instrumento;
     }
 
     public String getTipo() {
         return tipo;
+
     }
 
     public void setTipo(String tipo) {
@@ -41,6 +76,22 @@ class Anuncio {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 
     public void setTitulo(String titulo) {

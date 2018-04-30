@@ -64,7 +64,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         } catch (NullPointerException ex) {
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
-        new BDBAA().accesoFotoPerfil("musico",'n',imagenMusico,mContext);
+        new BDBAA().accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
     }
 
 
