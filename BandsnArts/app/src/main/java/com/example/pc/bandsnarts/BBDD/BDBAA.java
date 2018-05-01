@@ -31,6 +31,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
+import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -311,9 +312,9 @@ public class BDBAA extends AppCompatActivity {
                             //Buscando
 
                             if (musico.getBuscando().equalsIgnoreCase("si")) {
-                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.yes));
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
                             } else {
-                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(getDrawable(R.drawable.no));
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
                             }
 
                             try {
@@ -660,7 +661,7 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+//                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
                                 }
                             });
                             break;

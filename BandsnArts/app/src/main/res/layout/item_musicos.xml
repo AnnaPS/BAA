@@ -4,24 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardViewMusicos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/md_grey_200"
-        >
-
-        <LinearLayout
+        app:cardBackgroundColor="@color/md_grey_200">
+        <ImageButton
+            android:id="@+id/btnMenuMusicos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/item_detail"
+            android:layout_marginLeft="280dp"
+            android:background="@null"
+            android:src="@drawable/ic_more_vert_black_24dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgItemMusico"
@@ -34,18 +40,20 @@
 
             <TextView
                 android:id="@+id/txtNombreMusicoItemMusico"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="24dp"
                 android:text="Coffe Shop"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:textStyle="bold|italic" />
+
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -53,42 +61,59 @@
                 android:id="@+id/txtEstiloItemMusico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
                 android:layout_marginLeft="120dp"
+                android:layout_marginTop="70dp"
                 android:text="Rock"
                 android:textColor="@color/md_light_green_600"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtInstrumentoItemMusico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="70dp"
                 android:text="Guitarra"
                 android:textColor="@color/md_light_green_600"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/md_teal_800" />
+
         <TextView
             android:id="@+id/txtDescripcionItemMusico"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="125dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="110dp"
+            android:background="@color/md_green_200"
             android:text="Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes."
             android:textSize="15sp" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="220dp"
+            android:background="@color/md_teal_800" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <TextView
                 android:id="@+id/textView13"
@@ -96,17 +121,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="230dp"
                 android:text="Buscando"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold|italic"
+                android:textColor="@color/md_teal_800"/>
 
             <ImageView
                 android:id="@+id/imgBuscandoItemMusico"
                 android:layout_width="35dp"
                 android:layout_height="23dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="230dp"
                 app:srcCompat="@drawable/no" />
 
 
@@ -114,11 +140,11 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="230dp"
                 android:text="Anuncios"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:textStyle="bold|italic"
 
                 />
 
@@ -126,8 +152,8 @@
                 android:id="@+id/txtCantidadAnunciosItemMusico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="230dp"
                 android:text="22"
                 android:textColor="@color/md_light_green_600"
                 android:textSize="18sp"
@@ -135,6 +161,6 @@
 
 
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -141,7 +141,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -155,7 +155,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
