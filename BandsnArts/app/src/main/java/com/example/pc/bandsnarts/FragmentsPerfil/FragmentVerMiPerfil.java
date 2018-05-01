@@ -1,5 +1,7 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,22 +18,21 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -41,7 +42,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
@@ -52,14 +56,15 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemSelectedListener {
+public class FragmentVerMiPerfil extends Fragment
+        //implements AdapterView.OnItemSelectedListener
+         {
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
@@ -73,7 +78,10 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
     BottomNavigationView navBotPerfil;
     FrameLayout mrView;
     View vista;
-    private int posSexo, posEstilo, posLocalidad, posProvincia, posInst1, posInst2, posInst3, posInst4;
+    private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
+
+   public static int posProvincia, posLocalidad;
+
     private String buscando;
 
 
@@ -89,7 +97,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
     //////////////////////
 
-    CharSequence[] localidades;
+  public static CharSequence[] localidades;
 
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
@@ -164,6 +172,13 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                 // En funcion de si el usuario es músico o grupo
                 editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                mostrarComponentes();
+                botonCancelarEdicionPerfil();
+                //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+
             }
         });
         miFABGuardarRechazar = (FloatingActionMenu) vista.findViewById(R.id.floatingGuardarDescartar);
@@ -217,8 +232,9 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                 fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
                 Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
-                final FragmentManager fragment = getFragmentManager();
-                fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
+
+                startActivity(new Intent(view.getContext(), VentanaInicialApp.class));
+                VentanaInicialApp.a.finish();
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
@@ -280,30 +296,9 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             }
 
         });
-   /*     spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posLocalidad=position;
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
 
-        });
-        spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posProvincia=position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-        });*/
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -399,11 +394,13 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 spinnerInstrumentos2.setVisibility(View.INVISIBLE);
                 spinnerInstrumentos3.setVisibility(View.INVISIBLE);
                 spinnerInstrumentos4.setVisibility(View.INVISIBLE);
+                fabFoto.setVisibility(View.INVISIBLE);
                 break;
             case ("grupo"):
                 spProvincia.setVisibility(View.INVISIBLE);
                 spLocalidad.setVisibility(View.INVISIBLE);
                 spEstilo.setVisibility(View.INVISIBLE);
+                fabFoto.setVisibility(View.INVISIBLE);
                 break;
         }
 
@@ -472,14 +469,6 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                     }
                 });
 
-   /*         if (switchBuscar.isChecked()){
-                //si
-            }else{
-                //no
-            }
-*/                //navBotPerfil.setVisibility(View.INVISIBLE);
-
-
                 ///boton para cambiar foto de perfil
                 fabFoto.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -490,7 +479,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                     }
                 });
-                new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+
                 break;
 
             case ("grupo"):
@@ -527,6 +516,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
 
                     }
                 });
+
                 break;
 
         }
@@ -617,15 +607,13 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
             Long timestamp = System.currentTimeMillis() / 1000;
 
             // MIRAR GUARDAR LA FOTO ASOCIANDO EL UID DEL USUARIO!!!!!!
-         //  String imageName = timestamp.toString() + ".jpg";
-            String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid()+ ".jpg";
+            //  String imageName = timestamp.toString() + ".jpg";
+            String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
 
 
-
-
-
-                    //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
+            //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
             mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName;
+            Log.d("", "openCamera:                                 "+mPath);
             File newFile = new File(mPath);
 
             //Abrir la camara
@@ -636,14 +624,14 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         }
 
     }
-//justo antes de que opencamera termine va a guardar  guarda el path
+
+    //justo antes de que opencamera termine va a guardar  guarda el path
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("file_path",mPath);
+        outState.putString("file_path", mPath);
     }
     //para poder usar lo guardado
-
 
 
     @Override
@@ -668,24 +656,24 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
 
-                    Toast.makeText(vista.getContext(), ""+mPath, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(vista.getContext(), "" + mPath, Toast.LENGTH_SHORT).show();
 
-                   imgFotoPerfil.setImageBitmap(bitmap);
-                   Log.d("PRUEBAS", "mPath:                 "+mPath);
+                    imgFotoPerfil.setImageBitmap(bitmap);
+                    Log.d("PRUEBAS", "mPath:                 " + mPath);
                     //Guardamos la foto en el storage
 
-                    new BDBAA().almacenarFotoPerfil(mPath.toString(),vista.getContext(),0,null);
+                    new BDBAA().almacenarFotoPerfil(mPath.toString(), vista.getContext(), 0, null);
                     break;
 
                 case SELECT_PICTURE:
                     //cogemos el dato que nos envia el activity result con data
-                   Uri path = data.getData();
+                    Uri path = data.getData();
 
 
                     imgFotoPerfil.setImageURI(path);
-                    Log.d("PRUEBAS", "path:                 "+path.getPath());
-                    Log.d("PRUEBAS", "mPath:                 "+mPath);
-                    new BDBAA().almacenarFotoPerfil(mPath,vista.getContext(),1,path);
+                    Log.d("PRUEBAS", "path:                 " + path.getPath());
+                    Log.d("PRUEBAS", "mPath:                 " + mPath);
+                    new BDBAA().almacenarFotoPerfil(mPath, vista.getContext(), 1, path);
 
 
                     break;
@@ -722,7 +710,7 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 //abrir la configuracion para que le de permisos justo en el detalle de nuestra app
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package",getActivity().getPackageName(),null);
+                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
                 intent.setData(uri);
                 startActivity(intent);
             }
@@ -771,21 +759,20 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
         this.spProvincia.setAdapter(adapter);
 
         // This activity implements the AdapterView.OnItemSelectedListener
-        this.spProvincia.setOnItemSelectedListener(this);
-        this.spLocalidad.setOnItemSelectedListener(this);
+      /*  this.spProvincia.setOnItemSelectedListener(this);
+        this.spLocalidad.setOnItemSelectedListener(this);*/
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-                               long id) {
-        switch (parent.getId()) {
-            case R.id.spProvinVVerMiPerfil:
-                posProvincia = pos;
+    public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad ) {
+        spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posProvincia = position;
                 // Retrieves an array
-                TypedArray arrayLocalidades = getResources().obtainTypedArray(
+                TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
                         R.array.array_provincia_a_localidades);
-                localidades = arrayLocalidades.getTextArray(pos);
+                localidades = arrayLocalidades.getTextArray(position);
                 arrayLocalidades.recycle();
 
                 // Create an ArrayAdapter using the string array and a default
@@ -798,23 +785,68 @@ public class FragmentVerMiPerfil extends Fragment implements AdapterView.OnItemS
                 adapter.setDropDownViewResource(R.layout.spinner_item);
 
                 // Apply the adapter to the spinner
-                this.spLocalidad.setAdapter(adapter);
-                break;
+                spLocalidad.setAdapter(adapter);
+                spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
+            }
 
-            case R.id.spLocaliVVerMiPerfil:
-                posLocalidad = pos;
-                break;
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posLocalidad = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Callback method to be invoked when the selection disappears from this
-        // view. The selection can disappear for instance when touch is
-        // activated or when the adapter becomes empty.
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int pos,
+//                               long id) {
+//        switch (parent.getId()) {
+//            case R.id.spProvinVVerMiPerfil:
+//                posProvincia = pos;
+//                // Retrieves an array
+//                TypedArray arrayLocalidades = getResources().obtainTypedArray(
+//                        R.array.array_provincia_a_localidades);
+//                localidades = arrayLocalidades.getTextArray(pos);
+//                arrayLocalidades.recycle();
+//
+//                // Create an ArrayAdapter using the string array and a default
+//                // spinner layout
+//                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+//                        getApplicationContext(), R.layout.spinner_item,
+//                        localidades);
+//
+//                // Specify the layout to use when the list of choices appears
+//                adapter.setDropDownViewResource(R.layout.spinner_item);
+//
+//                // Apply the adapter to the spinner
+//                this.spLocalidad.setAdapter(adapter);
+//                break;
+//
+//            case R.id.spLocaliVVerMiPerfil:
+//                posLocalidad = pos;
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//        // Callback method to be invoked when the selection disappears from this
+//        // view. The selection can disappear for instance when touch is
+//        // activated or when the adapter becomes empty.
+//
 
-
-    }
+    //}
 
 
 }
