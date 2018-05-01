@@ -623,11 +623,11 @@
             android:id="@+id/fabGuardar"
             android:layout_width="44dp"
             android:layout_height="56dp"
-            app:fab_colorPressed="@color/md_green_A700"
-            app:fabSize="mini"
             android:src="@android:drawable/ic_menu_save"
-            app:fab_label="Guardar"
-            app:fab_colorNormal="@color/md_teal_800" />
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/md_teal_800"
+            app:fab_colorPressed="@color/md_green_A700"
+            app:fab_label="Guardar" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabDescartar"
