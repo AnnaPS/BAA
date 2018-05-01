@@ -31,6 +31,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -395,26 +396,27 @@ public class BDBAA extends AppCompatActivity {
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
                             // Provincia
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
+                            FragmentVerMiPerfil.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
                             ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
                             // Localidad
-                            CharSequence[] localidades1;
+
                             TypedArray arrayLocalidades1 = vista.getResources().obtainTypedArray(
                                     R.array.array_provincia_a_localidades);
-                            localidades1 = arrayLocalidades1.getTextArray(posicion);
+                            FragmentVerMiPerfil.localidades = arrayLocalidades1.getTextArray(FragmentVerMiPerfil.posProvincia);
                             arrayLocalidades1.recycle();
                             // Create an ArrayAdapter using the string array and a default
                             // spinner layout
                             ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                                     context, R.layout.spinner_item,
-                                    localidades1);
+                                    FragmentVerMiPerfil.localidades);
                             // Specify the layout to use when the list of choices appears
                             adapter.setDropDownViewResource(R.layout.spinner_item);
                             // Apply the adapter to the spinner
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter);
-                            posicion = posicionSpinner(localidades1, musico.getLocalidad());
-                            System.out.println(posicion);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
+                            FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, musico.getLocalidad());
+                            System.out.println( FragmentVerMiPerfil.posLocalidad);
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection( FragmentVerMiPerfil.posLocalidad);
+                          FragmentVerMiPerfil.escuchas(context,((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)),((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
@@ -452,26 +454,32 @@ public class BDBAA extends AppCompatActivity {
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             // Provincia
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
-                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
+
+                            FragmentVerMiPerfil.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
+
+                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posProvincia);
                             // Localidad
-                            CharSequence[] localidades;
+
                             TypedArray arrayLocalidades = vista.getResources().obtainTypedArray(
                                     R.array.array_provincia_a_localidades);
-                            localidades1 = arrayLocalidades.getTextArray(posicion);
+                            FragmentVerMiPerfil.localidades = arrayLocalidades.getTextArray( FragmentVerMiPerfil.posProvincia);
                             arrayLocalidades.recycle();
                             // Create an ArrayAdapter using the string array and a default
                             // spinner layout
                             ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(
                                     context, R.layout.spinner_item,
-                                    localidades1);
+                                    FragmentVerMiPerfil.localidades);
                             // Specify the layout to use when the list of choices appears
                             adapter1.setDropDownViewResource(R.layout.spinner_item);
                             // Apply the adapter to the spinner
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter1);
-                            posicion = posicionSpinner(localidades1, grupo.getLocalidad());
-                            System.out.println(posicion);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(posicion);
+                            FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, grupo.getLocalidad());
+                            System.out.println( FragmentVerMiPerfil.posLocalidad);
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection( FragmentVerMiPerfil.posLocalidad);
+                             FragmentVerMiPerfil.escuchas(context,((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)),((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
+
+
+
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
                             // Descripcion
@@ -496,7 +504,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public void modificarDatosUsuario(final String tipo, final Context context,  final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
+    public void modificarDatosUsuario(final String tipo, final Context context, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
         // Nos posicionamos
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Recuperamos al usuario a través de su UID
@@ -648,12 +656,12 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case ("musico"):
                             Musico mus = ds.getValue(Musico.class);
-                            mus.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+refFoto);
+                            mus.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refFoto);
                             bd.child(ds.getKey()).setValue(mus);
                             break;
                         case ("grupo"):
                             Grupo gr = ds.getValue(Grupo.class);
-                            gr.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+refFoto);
+                            gr.setImagen(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refFoto);
                             bd.child(ds.getKey()).setValue(gr);
                             break;
                     }
@@ -759,9 +767,9 @@ public class BDBAA extends AppCompatActivity {
                 file = uri;
                 break;
         }
+String [] nombreImg=file.getPath().split("/");
 
-
-        StorageReference referenceFoto = storage.child("imagenes/"+FirebaseAuth.getInstance().getCurrentUser().getUid() +"/" +file.getLastPathSegment());
+        StorageReference referenceFoto = storage.child("imagenes/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +nombreImg[nombreImg.length-1]);
         UploadTask uploadTask = referenceFoto.putFile(file);
 
         // Register observers to listen for when the download is done or if it fails
