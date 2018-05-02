@@ -21,10 +21,14 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -61,15 +66,15 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class FragmentVerMiPerfil extends Fragment
-        //implements AdapterView.OnItemSelectedListener
-{
+public class FragmentVerMiPerfil extends Fragment {
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
@@ -539,11 +544,12 @@ private ImageView progressEditarPerfil;
             return true;
         }
         //comprueba si los permisos estan aceptados
-        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(mrView, "Los permisos son necesarios para usar la aplicacion.",
+            Snackbar.make(mrView, "Los permisos son necesarios para poder editar la foto de perfil",
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -633,7 +639,7 @@ private ImageView progressEditarPerfil;
         super.onSaveInstanceState(outState);
         outState.putString("file_path", mPath);
     }
-    //para poder usar lo guardado
+
 
 
     @Override
@@ -650,6 +656,7 @@ private ImageView progressEditarPerfil;
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("External storage", " Scanned " + path + ":");
                                     Log.i("External storage", " --> Uri = " + uri);
+
                                 }
                             });
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
@@ -692,7 +699,7 @@ private ImageView progressEditarPerfil;
     }
 
 
-    //acepte o deniege los permisos pasa por aqui
+    //acepte o deniegue los permisos pasa por aqui
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -754,6 +761,7 @@ private ImageView progressEditarPerfil;
 
         }
     }
+
 
 
     private void loadSpinnerProvincias() {

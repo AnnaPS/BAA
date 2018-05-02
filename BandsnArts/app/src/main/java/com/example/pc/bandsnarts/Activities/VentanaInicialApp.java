@@ -146,7 +146,7 @@ a=this;
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -160,7 +160,7 @@ a=this;
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -206,7 +206,7 @@ a=this;
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo","musico"),fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", "musico"), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
@@ -214,9 +214,11 @@ a=this;
     }
 
     public void cerrarSesion() {
+        // deslogueo correo contraseña
         firebaseAuth.signOut();
+        // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-
+        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
