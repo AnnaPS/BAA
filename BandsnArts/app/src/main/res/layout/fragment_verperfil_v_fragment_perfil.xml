@@ -609,14 +609,17 @@
         android:id="@+id/floatingGuardarDescartar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="top|left"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="5dp"
+        app:menu_labels_position="right"
         android:onClick="onClickOpcionesPerfil"
         android:src="@android:drawable/ic_input_add"
         app:fab_colorPressed="@color/md_green_A700"
         app:fab_label=""
         app:menu_backgroundColor="@android:color/transparent"
         app:menu_colorNormal="@color/md_light_green_600"
-        app:menu_openDirection="up"
+        app:menu_openDirection="down"
         app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
@@ -624,17 +627,18 @@
             android:layout_width="44dp"
             android:layout_height="56dp"
             android:src="@android:drawable/ic_menu_save"
+            app:fab_label="guardar"
             app:fabSize="mini"
             app:fab_colorNormal="@color/md_teal_800"
             app:fab_colorPressed="@color/md_green_A700"
-            app:fab_label="Guardar" />
+          />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabDescartar"
             android:layout_width="44dp"
             android:layout_height="56dp"
             app:fabSize="mini"
-            app:fab_label="Descartar"
+            app:fab_label="descartar"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:fab_colorNormal="@color/md_red_400" />
     </com.github.clans.fab.FloatingActionMenu>

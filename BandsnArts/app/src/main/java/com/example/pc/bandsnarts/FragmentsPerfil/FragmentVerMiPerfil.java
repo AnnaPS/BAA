@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -51,7 +54,9 @@ import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -64,7 +69,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FragmentVerMiPerfil extends Fragment
         //implements AdapterView.OnItemSelectedListener
-         {
+{
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
@@ -80,7 +85,7 @@ public class FragmentVerMiPerfil extends Fragment
     View vista;
     private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
 
-   public static int posProvincia, posLocalidad;
+    public static int posProvincia, posLocalidad;
 
     private String buscando;
 
@@ -95,9 +100,11 @@ public class FragmentVerMiPerfil extends Fragment
 
     private String mPath;
 
+    private Uri rutaFotoPerfil;
+
     //////////////////////
 
-  public static CharSequence[] localidades;
+    public static CharSequence[] localidades;
 
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
@@ -219,11 +226,13 @@ public class FragmentVerMiPerfil extends Fragment
                                 buscando);
                         break;
                 }
-                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                 mostrarComponentes();
                 botonCancelarEdicionPerfil();
-                ///////////////////////////////////////////////////
+
+                new BDBAA().almacenarFotoPerfil(vista.getContext(), rutaFotoPerfil);
+
                 Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
 
 
@@ -249,11 +258,9 @@ public class FragmentVerMiPerfil extends Fragment
                 alerta.show(fm, "AlertaDescartar");
                 ////////////////////////////////////////
 
-                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                 mostrarComponentes();
                 botonCancelarEdicionPerfil();
-                //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
             }
@@ -295,7 +302,6 @@ public class FragmentVerMiPerfil extends Fragment
             }
 
         });
-
 
 
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -602,17 +608,12 @@ public class FragmentVerMiPerfil extends Fragment
         }
         //si ya esta creado
         if (isDirectoryCreated) {
-            //Usamos el fecha/hora/minutos/segundos/milisegundos para poner nombre a la imagen y asi conseguir que no se repita el nombre
-            Long timestamp = System.currentTimeMillis() / 1000;
-
-            // MIRAR GUARDAR LA FOTO ASOCIANDO EL UID DEL USUARIO!!!!!!
             //  String imageName = timestamp.toString() + ".jpg";
             String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
 
-
             //Le decimos donde queremos que se guarde la imagen. File.separator es lo mismo que /
             mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName;
-            Log.d("", "openCamera:                                 "+mPath);
+            Log.d("", "openCamera:                                 " + mPath);
             File newFile = new File(mPath);
 
             //Abrir la camara
@@ -649,40 +650,47 @@ public class FragmentVerMiPerfil extends Fragment
                                     Log.i("External storage", " --> Uri = " + uri);
                                 }
                             });
-                    //ponerlo en la imagen
-
-
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-
-                    Toast.makeText(vista.getContext(), "" + mPath, Toast.LENGTH_SHORT).show();
-
-                    imgFotoPerfil.setImageBitmap(bitmap);
-                    Log.d("PRUEBAS", "mPath:                 " + mPath);
-                    //Guardamos la foto en el storage
-
-                    new BDBAA().almacenarFotoPerfil(mPath.toString(), vista.getContext(), 0, null);
+                    rutaFotoPerfil = nuevaUri(bitmap,270);
                     break;
 
                 case SELECT_PICTURE:
                     //cogemos el dato que nos envia el activity result con data
-                    Uri path = data.getData();
+                    Uri path1 = data.getData();
+                    try {
+                        // Creamos un objeto bitmap a partir de la URI
+                        Bitmap bitmap2 = MediaStore.Images.Media.getBitmap(mrView.getContext().getContentResolver(), path1);
+                        rutaFotoPerfil = nuevaUri(bitmap2,90);
 
+                        Log.d("PRUEBAS", "path:                 " + path1.getPath());
+                        Log.d("PRUEBAS", "mPath:                 " + mPath);
 
-                    imgFotoPerfil.setImageURI(path);
-                    Log.d("PRUEBAS", "path:                 " + path.getPath());
-                    Log.d("PRUEBAS", "mPath:                 " + mPath);
-                    new BDBAA().almacenarFotoPerfil(mPath, vista.getContext(), 1, path);
-
-
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
     }
 
+    private Uri nuevaUri(Bitmap bitmap,int rotation) {
+        // Reescalamos la imagen
+        bitmap = BandsnArts.reescalarImagen(bitmap, 500, 500, rotation);
+        // Establecemos la imagen en el fragement de edicion (NO SE GUARDA AUN EN BBDD)
+        imgFotoPerfil.setImageBitmap(bitmap);
+
+        // Creamos de nuevo la URI con la imagen reescalada para porsteriormente guardarla en la BBDD
+        ByteArrayOutputStream bytes2 = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes2);
+        String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bitmap, "Title", null);
+        rutaFotoPerfil = Uri.parse(path);
+        Log.d("PRUEBAS", "mPath:                 " + path);
+        return rutaFotoPerfil;
+    }
+
 
     //acepte o deniege los permisos pasa por aqui
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -747,7 +755,6 @@ public class FragmentVerMiPerfil extends Fragment
 
 
     private void loadSpinnerProvincias() {
-
         // Create an ArrayAdapter using the string array and a default spinner
         // layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -760,10 +767,9 @@ public class FragmentVerMiPerfil extends Fragment
         // This activity implements the AdapterView.OnItemSelectedListener
       /*  this.spProvincia.setOnItemSelectedListener(this);
         this.spLocalidad.setOnItemSelectedListener(this);*/
-
     }
 
-    public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad ) {
+    public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad) {
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
