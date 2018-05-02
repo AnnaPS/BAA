@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
@@ -50,6 +52,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -451,7 +455,6 @@ public class BDBAA extends AppCompatActivity {
 
                             break;
                         case "grupo":
-                            Log.d("PENE", "onDataChange: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                             Grupo grupo = data.getValue(Grupo.class);
                             // Recuperamos y cargamos los datos del Musico
                             // FotoPerfil
@@ -758,7 +761,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void almacenarFotoPerfil( final Context ctx, Uri uri) {
+    public void almacenarFotoPerfil(final Context ctx, Uri uri, final ImageView imageProgressView) {
         // Nos posicionamos en el nodo de imagenes del storage
         StorageReference storage = FirebaseStorage.getInstance().getReference();
         Uri file;
@@ -775,17 +778,43 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Log.d("Fallito", "       AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
+                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getColor(R.color.md_light_green_600));
+                imageProgressView.setVisibility(View.INVISIBLE);
+                ((Activity) ctx).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
+                ((Activity) ctx).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
+                ((Activity) ctx).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getColor(R.color.md_white_1000));
+                Toast.makeText(ctx, "No pudo subirse la foto con exito pruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
                 new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "musico"));
+                ((Activity) ctx).startActivity(new Intent(ctx, VentanaInicialApp.class));
+                ((Activity) ctx).finish();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                AnimationDrawable animationDrawable;
+                imageProgressView.setBackgroundResource(R.drawable.gif);
+                animationDrawable = (AnimationDrawable) imageProgressView.getBackground();
+                animationDrawable.start();
+                imageProgressView.setVisibility(View.VISIBLE);
+                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getColor(R.color.md_black_1000));
+                ((Activity) ctx).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.INVISIBLE);
+                ((Activity) ctx).findViewById(R.id.floatingBPerfil).setVisibility(View.INVISIBLE);
+                ((Activity) ctx).findViewById(R.id.vermiperfil).setBackground(ctx.getDrawable(R.drawable.fondonegro));
+
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                System.out.println("Upload is " + progress + "% done");
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("Upload is paused");
             }
         });
 

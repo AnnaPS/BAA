@@ -36,6 +36,7 @@ public class FragmentMiPerfil extends Fragment {
     final Fragment anuncios=new FragmentAnuncios();
     final Fragment multi=new FragmentMultimedia();
     View vista;
+    public static View bottomTools;
 
     ////////////////////////////////////////
     @Override
@@ -43,8 +44,10 @@ public class FragmentMiPerfil extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_fragment_mi_perfil, container, false);
         //Se establece como principal el fragment de inicio
+        bottomTools=vista.findViewById(R.id.bottomnav);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();
+
         return vista;
     }
 

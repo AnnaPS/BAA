@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:design="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/miperfilfragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentsMenuDrawer.FragmentMiPerfil"
-    android:id="@+id/miperfilfragment"
-    xmlns:design="http://schemas.android.com/apk/res-auto">
+    tools:context=".FragmentsMenuDrawer.FragmentMiPerfil">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,22 +14,19 @@
         android:id="@+id/contenedormiperfil"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="56dp"
-        >
+        android:layout_marginTop="10dp">
 
 
     </FrameLayout>
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottomnav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            design:menu="@menu/menu_navigation"
-            android:background="@color/md_light_green_600"/>
 
-
-
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomnav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/md_light_green_600"
+        design:menu="@menu/menu_navigation" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -101,7 +101,7 @@ public class FragmentVerMiPerfil extends Fragment
     private String mPath;
 
     private Uri rutaFotoPerfil;
-
+private ImageView progressEditarPerfil;
     //////////////////////
 
     public static CharSequence[] localidades;
@@ -116,7 +116,7 @@ public class FragmentVerMiPerfil extends Fragment
 
         vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
 
-
+        progressEditarPerfil=vista.findViewById(R.id.progressBarVLoginEditarPerfil);
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
         spProvincia = vista.findViewById(R.id.spProvinVVerMiPerfil);
@@ -203,37 +203,37 @@ public class FragmentVerMiPerfil extends Fragment
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (posEstilo != 0) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "musico")) {
+                        case ("musico"):
+                            //Actualizamos los datos del musico
+                            ArrayList<String> instrumentos = new ArrayList<>();
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "musico")) {
-                    case ("musico"):
-                        //Actualizamos los datos del musico
-                        ArrayList<String> instrumentos = new ArrayList<>();
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
+                            new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
+                                    , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
+                                    buscando);
+                            break;
+                        case ("grupo"):
+                            //Actualizamos los datos del grupo
+                            new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
+                                    , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
+                                    buscando);
+                            break;
+                    }
 
-                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
-                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
-                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
-                                buscando);
-                        break;
-                    case ("grupo"):
-                        //Actualizamos los datos del grupo
-                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
-                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
-                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
-                                buscando);
-                        break;
-                }
-
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
-                mostrarComponentes();
-                botonCancelarEdicionPerfil();
-
-                new BDBAA().almacenarFotoPerfil(vista.getContext(), rutaFotoPerfil);
-
-                Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+                    ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                    mostrarComponentes();
+                    botonCancelarEdicionPerfil();
+                    if(rutaFotoPerfil != null) {
+                        new BDBAA().almacenarFotoPerfil(vista.getContext(), rutaFotoPerfil,progressEditarPerfil);
+                    }
+                    Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
 
 
                 /*final Fragment verperfil=new FragmentVerMiPerfil();
@@ -242,8 +242,10 @@ public class FragmentVerMiPerfil extends Fragment
                 fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
                 Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
 
-                startActivity(new Intent(view.getContext(), VentanaInicialApp.class));
-                VentanaInicialApp.a.finish();
+
+                } else {
+                    Toast.makeText(vista.getContext(), "Por favor seleccione un estilo.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
@@ -254,13 +256,12 @@ public class FragmentVerMiPerfil extends Fragment
 
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
-                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios();
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this);
+
+
+
                 alerta.show(fm, "AlertaDescartar");
                 ////////////////////////////////////////
-
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
-                mostrarComponentes();
-                botonCancelarEdicionPerfil();
 
 
             }
@@ -389,7 +390,7 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void ocultarSpinners(String tipo) {
+   public void ocultarSpinners(String tipo) {
         switch (tipo) {
             case ("musico"):
                 spSexo.setVisibility(View.INVISIBLE);
@@ -424,7 +425,7 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void mostrarComponentes() {
+  public void mostrarComponentes() {
         switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
             case "musico":
                 txtEstilo.setVisibility(View.VISIBLE);
@@ -653,7 +654,7 @@ public class FragmentVerMiPerfil extends Fragment
                             });
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    rutaFotoPerfil = nuevaUri(bitmap,270);
+                    rutaFotoPerfil = nuevaUri(bitmap, 0);
                     break;
 
                 case SELECT_PICTURE:
@@ -662,7 +663,7 @@ public class FragmentVerMiPerfil extends Fragment
                     try {
                         // Creamos un objeto bitmap a partir de la URI
                         Bitmap bitmap2 = MediaStore.Images.Media.getBitmap(mrView.getContext().getContentResolver(), path1);
-                        rutaFotoPerfil = nuevaUri(bitmap2,90);
+                        rutaFotoPerfil = nuevaUri(bitmap2, 0);
 
                         Log.d("PRUEBAS", "path:                 " + path1.getPath());
                         Log.d("PRUEBAS", "mPath:                 " + mPath);
@@ -675,7 +676,7 @@ public class FragmentVerMiPerfil extends Fragment
         }
     }
 
-    private Uri nuevaUri(Bitmap bitmap,int rotation) {
+    private Uri nuevaUri(Bitmap bitmap, int rotation) {
         // Reescalamos la imagen
         bitmap = BandsnArts.reescalarImagen(bitmap, 500, 500, rotation);
         // Establecemos la imagen en el fragement de edicion (NO SE GUARDA AUN EN BBDD)
@@ -734,7 +735,7 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void botonCancelarEdicionPerfil() {
+   public void botonCancelarEdicionPerfil() {
         switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
 
             case ("grupo"):
@@ -814,45 +815,6 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-//                               long id) {
-//        switch (parent.getId()) {
-//            case R.id.spProvinVVerMiPerfil:
-//                posProvincia = pos;
-//                // Retrieves an array
-//                TypedArray arrayLocalidades = getResources().obtainTypedArray(
-//                        R.array.array_provincia_a_localidades);
-//                localidades = arrayLocalidades.getTextArray(pos);
-//                arrayLocalidades.recycle();
-//
-//                // Create an ArrayAdapter using the string array and a default
-//                // spinner layout
-//                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-//                        getApplicationContext(), R.layout.spinner_item,
-//                        localidades);
-//
-//                // Specify the layout to use when the list of choices appears
-//                adapter.setDropDownViewResource(R.layout.spinner_item);
-//
-//                // Apply the adapter to the spinner
-//                this.spLocalidad.setAdapter(adapter);
-//                break;
-//
-//            case R.id.spLocaliVVerMiPerfil:
-//                posLocalidad = pos;
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//        // Callback method to be invoked when the selection disappears from this
-//        // view. The selection can disappear for instance when touch is
-//        // activated or when the adapter becomes empty.
-//
-
-    //}
 
 
 }

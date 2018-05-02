@@ -1,8 +1,11 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +16,21 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.R;
 
+@SuppressLint("ValidFragment")
 public class FragmentDialogDescartarCambios extends DialogFragment {
     Button btnAcepar, btnCancelar;
     private static final String TAG = "AlertaDescartar";
-
+    FragmentVerMiPerfil a;
     private interface OnInputListener {
         void sendInput(String input);
     }
 
     public OnInputListener onInputListener;
+
+    @SuppressLint("ValidFragment")
+    public FragmentDialogDescartarCambios(FragmentVerMiPerfil a) {
+        this.a=a;
+    }
 
     @Nullable
     @Override
@@ -36,6 +45,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "CANCELAR", Toast.LENGTH_SHORT).show();
+
                 getDialog().dismiss();
             }
         });
@@ -43,7 +53,9 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
-
+                a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", "musico"));
+                a.mostrarComponentes();
+                a.botonCancelarEdicionPerfil();
                 getDialog().dismiss();
             }
         });
