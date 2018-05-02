@@ -43,8 +43,8 @@ public class FragmentMiPerfil extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_fragment_mi_perfil, container, false);
         //Se establece como principal el fragment de inicio
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();
+       /* FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();*/
         return vista;
     }
 

@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.app.Activity;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ import com.google.firebase.auth.FirebaseUser;
 //IMPORTATE IMPLEMENTAR EL LISTENER DE CADA FRAGMENT
 public class VentanaInicialApp extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
-
+    public static Activity activity;
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
@@ -59,6 +60,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        activity=this;
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -201,7 +203,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo","musico"),fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", "musico"), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen

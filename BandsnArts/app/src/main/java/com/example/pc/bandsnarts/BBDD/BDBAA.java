@@ -691,7 +691,7 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-//                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                 Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
                                 }
                             });
                             break;
