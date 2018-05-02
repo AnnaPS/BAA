@@ -420,9 +420,9 @@ public class BDBAA extends AppCompatActivity {
                             // Apply the adapter to the spinner
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter);
                             FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, musico.getLocalidad());
-                            System.out.println( FragmentVerMiPerfil.posLocalidad);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection( FragmentVerMiPerfil.posLocalidad);
-                          FragmentVerMiPerfil.escuchas(context,((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)),((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
+                            System.out.println(FragmentVerMiPerfil.posLocalidad);
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posLocalidad);
+                            FragmentVerMiPerfil.escuchas(context, ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
@@ -468,7 +468,7 @@ public class BDBAA extends AppCompatActivity {
 
                             TypedArray arrayLocalidades = vista.getResources().obtainTypedArray(
                                     R.array.array_provincia_a_localidades);
-                            FragmentVerMiPerfil.localidades = arrayLocalidades.getTextArray( FragmentVerMiPerfil.posProvincia);
+                            FragmentVerMiPerfil.localidades = arrayLocalidades.getTextArray(FragmentVerMiPerfil.posProvincia);
                             arrayLocalidades.recycle();
                             // Create an ArrayAdapter using the string array and a default
                             // spinner layout
@@ -480,10 +480,9 @@ public class BDBAA extends AppCompatActivity {
                             // Apply the adapter to the spinner
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter1);
                             FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, grupo.getLocalidad());
-                            System.out.println( FragmentVerMiPerfil.posLocalidad);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection( FragmentVerMiPerfil.posLocalidad);
-                             FragmentVerMiPerfil.escuchas(context,((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)),((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
-
+                            System.out.println(FragmentVerMiPerfil.posLocalidad);
+                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posLocalidad);
+                            FragmentVerMiPerfil.escuchas(context, ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
 
 
                             // Sexo....
@@ -759,24 +758,16 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void almacenarFotoPerfil(String refFoto, final Context ctx, final int opcion, Uri uri) {
+    public void almacenarFotoPerfil( final Context ctx, Uri uri) {
         // Nos posicionamos en el nodo de imagenes del storage
         StorageReference storage = FirebaseStorage.getInstance().getReference();
         Uri file;
 
-        switch (opcion) {
-            // Para la cámara(necesitamos convertir a Uri)
-            case (0):
-                file = Uri.fromFile(new File(refFoto));
-                break;
 
-            default:
-                file = uri;
-                break;
-        }
-String [] nombreImg=file.getPath().split("/");
+        file = uri;
 
-        StorageReference referenceFoto = storage.child("imagenes/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +nombreImg[nombreImg.length-1]);
+
+        StorageReference referenceFoto = storage.child("imagenes/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         UploadTask uploadTask = referenceFoto.putFile(file);
 
         // Register observers to listen for when the download is done or if it fails
