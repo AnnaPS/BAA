@@ -51,12 +51,20 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
 
         nom.setText(musicoItem.getNombre());
-        ins.setText(musicoItem.getInstrumento());
+        ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
-        //anun.setText(musicoItem.getCantidadAnuncios());
-        busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
-        new BDBAA().accesoFotoPerfil("musico",'n',imagenMusico,mContext);
+        anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
+        try {
+            if (musicoItem.getBuscando().equalsIgnoreCase("si")) {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
+            } else {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.no));
+            }
+        } catch (NullPointerException ex) {
+            System.out.println("Sale por aqui en caso de que venga del primer registro");
+        }
+        new BDBAA().accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
     }
 
 

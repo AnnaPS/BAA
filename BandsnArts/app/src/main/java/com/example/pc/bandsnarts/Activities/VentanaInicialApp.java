@@ -1,5 +1,7 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -49,7 +51,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
-
+public static Activity a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+a=this;
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,8 +202,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this,"musico",fotoPerfil,txtNombre);
-        new BDBAA().cargarDrawerPerfil(this,"grupo",fotoPerfil,txtNombre);
+        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo","musico"),fotoPerfil,txtNombre);
+
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());

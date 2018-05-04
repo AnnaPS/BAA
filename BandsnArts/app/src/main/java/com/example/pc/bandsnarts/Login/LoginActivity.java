@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*import com.crashlytics.android.Crashlytics;*/
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
@@ -87,9 +88,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //   Forzar CRASHEO
+        //   Crashlytics.getInstance().crash(); // Force a crash
+
         titulo = findViewById(R.id.tituloVLogin);
         //asignar nueva fuente
         fuenteTitulo = Typeface.createFromAsset(getAssets(), "fonts/VtksSimplizinha.ttf");
+
         titulo.setTypeface(fuenteTitulo);
         ventanaPrincipal = this;
         //btnReg = findViewById(R.id.btnRegistrarVLogin);
@@ -270,7 +275,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case (BandsnArts.CODIGO_DE_INICIO):
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 compruebaResultado(result);
@@ -290,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        finish();
+                        //finish();
                         break;
                 }
           /*  case (BandsnArts.CODIGO_DE_FACEBOOK):
@@ -397,4 +401,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     /* public void onclick(View view) {
         startActivity(new Intent(this, VentanaInicialApp.class));
     }*/
+
+
+    @Override
+    public void onBackPressed() {
+        FirebaseAuth.getInstance().signOut();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseAuth.getInstance().signOut();
+
+    }
 }
