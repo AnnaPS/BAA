@@ -337,8 +337,7 @@
                         android:layout_height="20dp"
                         android:layout_marginBottom="20dp"
                         android:layout_marginLeft="-40dp"
-                        android:layout_marginTop="165dp"
-                        android:src="@drawable/no" />
+                        android:layout_marginTop="165dp" />
                 </LinearLayout>
 
 
