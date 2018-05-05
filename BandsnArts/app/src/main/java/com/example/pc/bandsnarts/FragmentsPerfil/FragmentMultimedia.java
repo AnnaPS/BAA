@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
 
 
@@ -48,6 +49,11 @@ public class FragmentMultimedia extends Fragment {
         return vista;
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!ComprobadorConexion.isConnected()){
+            ComprobadorConexion.simpleSnackbar(vista.findViewById(R.id.multimedia));
+        }
+    }
 }

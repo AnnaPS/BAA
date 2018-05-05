@@ -133,7 +133,7 @@
         tools:text="INICIA SESIÓN" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_logout_iniciogoogle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"

@@ -1,16 +1,24 @@
 package com.example.pc.bandsnarts.Login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,36 +30,36 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, ComprobadorConexion.ConnectivityReceiverListener {
 
     private TextView nombreGoogle, emailGoogle, identUsuGoogle;
     private ImageView fotoGoogle;
     EditText editUrl;
     FloatingActionButton btnguardar;
-
-
-
     // Variable para el usuario de Google
     private GoogleApiClient clienteGoogle;
-
-
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
+    Context mictx;
+    Button logout;
+    static boolean isConnected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_google);
-        editUrl=findViewById(R.id.edUrl);
+        editUrl = findViewById(R.id.edUrl);
         nombreGoogle = findViewById(R.id.txtNombreVGoogle);
         emailGoogle = findViewById(R.id.txtDirecVGoogle);
         identUsuGoogle = findViewById(R.id.txtCPVGoogle);
+       logout= findViewById(R.id.btn_logout_iniciogoogle);
+        mictx = this;
 
 
-
-       // fotoGoogle = findViewById(R.id.imvFotoVGoogle);
+        // fotoGoogle = findViewById(R.id.imvFotoVGoogle);
 
         // Opciones de inicio con google para login silencioso porque ya se realizo la autenticacion
         // y para poder acceder a los datos del usuarios
@@ -136,6 +144,39 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
 
 
+    public boolean comprobarTipoConexion(Context ctx){
+        ConnectivityManager cm=(ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo net=cm.getActiveNetworkInfo();
+        //comprobamos si hay conexion
+        if(net!=null){
+
+            switch (net.getType()){
+
+                case ConnectivityManager.TYPE_WIFI:
+                    nombreGoogle.setText("WIFI");
+                    Toast.makeText(ctx, "NOO", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case ConnectivityManager.TYPE_MOBILE:
+                    nombreGoogle.setText("DATOS MOVILES");
+                    break;
+
+                default:
+                    nombreGoogle.setText("CONEXION DESCONOCIDA");
+                    break;
+            }
+
+            return true;
+        }else{
+
+            return false;
+        }
+       
+        
+
+       
+
+    }
     public Boolean isOnlineNet() {
 
         try {
@@ -153,11 +194,22 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     public void onClickLogOut(View view) {
 
-        if(isOnlineNet()){
+        checkConnection();
+        showSnack(isConnected,view);
+
+       /* if(comprobarTipoConexion(this)){
             Toast.makeText(this, "CONECTADO", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "NO ESTA CONECTADO", Toast.LENGTH_SHORT).show();
-        }
+            nombreGoogle.setText("SIN CONEXION");
+        }*/
+
+
+       /* if(isOnlineNet()){
+            Toast.makeText(this, "CONECTADO", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "NO ESTA CONECTADO", Toast.LENGTH_SHORT).show();
+        }*/
         //verificaConexion(this);
 
       /*  if(BandsnArts.isUrl(editUrl.getText().toString())){
@@ -215,13 +267,22 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        onNetworkConnectionChanged(isConnected);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        BandsnArts.getInstance().setConnectivityListener(this);
+        onNetworkConnectionChanged(isConnected);
+    }
     @Override
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(escuchador);
+        onNetworkConnectionChanged(isConnected);
     }
 
     @Override
@@ -231,5 +292,45 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         if(escuchador!=null){
             firebaseAuth.removeAuthStateListener(escuchador);
         }
+        onNetworkConnectionChanged(isConnected);
+    }
+
+
+    // Method to manually check connection status
+    public void checkConnection() {
+        isConnected = ComprobadorConexion.isConnected();
+
+
+    }
+
+
+    public static void simpleSnackbar(View view){
+        Snackbar.make(view, "Estado de la conexión: "+ComprobadorConexion.isConnected(), Snackbar.LENGTH_SHORT)
+                .show();
+    }
+    // Showing the status in Snackbar
+    public static void showSnack(boolean isConnected,View v) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = "CONECTADO";
+            color = Color.WHITE;
+        } else {
+            message = "LO SIENTO, NO TIENE CONEXION A INTERNET";
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar
+                .make(v, message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+       checkConnection();
     }
 }

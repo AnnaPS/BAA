@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +18,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*import com.crashlytics.android.Crashlytics;*/
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -51,7 +50,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Arrays;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+/*import com.crashlytics.android.Crashlytics;*/
+
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private TextView titulo;
     private Typeface fuenteTitulo;
@@ -109,10 +110,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // ACCION BOTON GOOGLE
         botonGoogle = findViewById(R.id.btnGoogleVLogin);
+
         botonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickIngresoGoogle(null);
+                if(ComprobadorConexion.isConnected()){
+                    onClickIngresoGoogle(null);
+                }else{
+                   ComprobadorConexion.simpleSnackbar(v);
+                }
+
             }
         });
 
@@ -148,6 +155,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         };
+
 
 
        /* // Comprobación de sesion iniciada en FaceBook
@@ -186,6 +194,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onError(FacebookException error) {
+                if(!ComprobadorConexion.isConnected()){
+                    ComprobadorConexion.simpleSnackbar(findViewById(R.id.btnFacebookVLogin));
+                }
                 // Algun error como conexion u otros.
                 Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
@@ -247,11 +258,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void onClickIngresarVLogin(View view) {
-        if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
-            Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
-        } else {
-            auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+        if(ComprobadorConexion.isConnected()){
+            if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
+                Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
+            } else {
+                auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+            }
+        }else{
+            ComprobadorConexion.simpleSnackbar(view);
         }
+
 
     }
 
@@ -263,8 +279,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void onClickIngresoGoogle(View view) {
-        Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
-        startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+
+            Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
+            startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+
+
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!ON ACTIVITY FOR RESULT!!!!!!!!!!!!!!!!!
@@ -344,58 +363,64 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 */
     public void onClickRegistrarVLogin(View view) {
-        //sacar alert dialog para grupo o musico
-        alertaBuilder = new AlertDialog.Builder(this);
-        //si no, da error
-        inflador = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View vista = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
-        //hago aqui el find porque necesita la vista///////
-        btnCancelarAlerta = vista.findViewById(R.id.btnCancelarVAlert);
-        btnAceptarAlerta = vista.findViewById(R.id.btnAceptarVAlert);
-        grupo = vista.findViewById(R.id.chkGrupoVAlert);
-        musico = vista.findViewById(R.id.chkMusicoVAlert);
-        ////////////////////////////////////////////////
-        alerta = alertaBuilder.create();
-        alerta.setView(vista);
-        //para no poder usar el onbackpressed
-        alerta.setCancelable(false);
-        alerta.show();
-        btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //cierra el alert
-                alerta.cancel();
-            }
-        });
-        //al pulsar aceptar se abrira una u otra ventana
-        btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
-                if (grupo.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), 000);
+
+        if(ComprobadorConexion.isConnected()){
+            //sacar alert dialog para grupo o musico
+            alertaBuilder = new AlertDialog.Builder(this);
+            //si no, da error
+            inflador = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View vista = inflador.inflate(R.layout.alertdialoggrupomusico, (ViewGroup) findViewById(R.id.alertaregistro));
+            //hago aqui el find porque necesita la vista///////
+            btnCancelarAlerta = vista.findViewById(R.id.btnCancelarVAlert);
+            btnAceptarAlerta = vista.findViewById(R.id.btnAceptarVAlert);
+            grupo = vista.findViewById(R.id.chkGrupoVAlert);
+            musico = vista.findViewById(R.id.chkMusicoVAlert);
+            ////////////////////////////////////////////////
+            alerta = alertaBuilder.create();
+            alerta.setView(vista);
+            //para no poder usar el onbackpressed
+            alerta.setCancelable(false);
+            alerta.show();
+            btnCancelarAlerta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //cierra el alert
                     alerta.cancel();
-                } else if (musico.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), 000);
-                    alerta.cancel();
-                } else {
-                    Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        //control de los checkbox
-        musico.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                grupo.setChecked(false);
-            }
-        });
-        grupo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                musico.setChecked(false);
-            }
-        });
+            });
+            //al pulsar aceptar se abrira una u otra ventana
+            btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
+                    if (grupo.isChecked()) {
+                        startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), 000);
+                        alerta.cancel();
+                    } else if (musico.isChecked()) {
+                        startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), 000);
+                        alerta.cancel();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            //control de los checkbox
+            musico.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    grupo.setChecked(false);
+                }
+            });
+            grupo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    musico.setChecked(false);
+                }
+            });
+        }else{
+           ComprobadorConexion.simpleSnackbar(view);
+        }
+
     }
 
     /* public void onclick(View view) {
@@ -414,5 +439,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onDestroy();
         FirebaseAuth.getInstance().signOut();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!ComprobadorConexion.isConnected()){
+            ComprobadorConexion.simpleSnackbar(findViewById(R.id.llVerticalVLogin));
+        }
     }
 }

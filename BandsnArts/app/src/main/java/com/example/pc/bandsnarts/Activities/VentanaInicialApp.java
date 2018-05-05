@@ -1,11 +1,11 @@
 package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,16 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
-
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
-import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -102,6 +99,7 @@ a=this;
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
                 if (usuario != null) {
                     // Si hay usuario, pintamos sus datos
+
                     datosUsuario(usuario);
                 }
             }

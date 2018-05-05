@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
+import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.R;
 
@@ -57,5 +58,14 @@ public class FragmentAnuncios extends Fragment {
 
 
         return vista;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //no funciona revisar
+        if(!ComprobadorConexion.isConnected()){
+            ComprobadorConexion.simpleSnackbar(vista.findViewById(R.id.fragmentAnuncio));
+        }
     }
 }

@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/vRegistrarMusico">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
@@ -203,7 +204,7 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="20dp"
                     android:ems="10"
-                    android:maxLength="25"
+                    android:maxLength="35"
                     android:fontFamily="sans-serif"
                     android:hint="EMAIL"
                     android:textStyle="bold"

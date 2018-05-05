@@ -1,6 +1,5 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,9 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -25,13 +21,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,11 +38,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -813,7 +805,16 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-//    @Override
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //no funciona revisar
+        if(!ComprobadorConexion.isConnected()){
+            ComprobadorConexion.simpleSnackbar(mrView.findViewById(R.id.vermiperfil));
+        }
+    }
+    //    @Override
 //    public void onItemSelected(AdapterView<?> parent, View view, int pos,
 //                               long id) {
 //        switch (parent.getId()) {

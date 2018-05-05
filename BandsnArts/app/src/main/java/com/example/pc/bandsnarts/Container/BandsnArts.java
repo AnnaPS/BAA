@@ -23,12 +23,14 @@ public class BandsnArts extends Application{
     public static final int CODIGO_DE_REGISTRO=000;
     public static final int CODIGO_DE_FACEBOOK=111;
     public static final int CODIGO_DE_CIERRE=22;
+    private static BandsnArts mInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+        mInstance = this;
     }
 
     public static void ocultaTeclado(Activity act){
@@ -68,6 +70,14 @@ public class BandsnArts extends Application{
         // si queremos poder mostrar nuestra imagen tenemos que crear un
         // objeto drawable y así asignarlo a un botón, imageview...
         return resizedBitmap;
+    }
+
+    public static synchronized BandsnArts getInstance() {
+        return mInstance;
+    }
+
+    public void setConnectivityListener(ComprobadorConexion.ConnectivityReceiverListener listener) {
+        ComprobadorConexion.connectivityReceiverListener = listener;
     }
 
 }
