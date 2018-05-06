@@ -466,12 +466,9 @@ public class BDBAA extends AppCompatActivity {
                             posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             // Provincia
-
                             FragmentVerMiPerfil.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
-
                             ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posProvincia);
                             // Localidad
-
                             TypedArray arrayLocalidades = vista.getResources().obtainTypedArray(
                                     R.array.array_provincia_a_localidades);
                             FragmentVerMiPerfil.localidades = arrayLocalidades.getTextArray(FragmentVerMiPerfil.posProvincia);
@@ -489,8 +486,6 @@ public class BDBAA extends AppCompatActivity {
                             System.out.println(FragmentVerMiPerfil.posLocalidad);
                             ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posLocalidad);
                             FragmentVerMiPerfil.escuchas(context, ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
-
-
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
                             // Descripcion
@@ -635,7 +630,7 @@ public class BDBAA extends AppCompatActivity {
             }
         } catch (NullPointerException ex) {
             return 0;
-        }catch (ArrayIndexOutOfBoundsException ex){
+        } catch (ArrayIndexOutOfBoundsException ex) {
             return 0;
         }
         return 0;
@@ -652,7 +647,7 @@ public class BDBAA extends AppCompatActivity {
             }
         } catch (NullPointerException ex) {
             return 0;
-        }catch (ArrayIndexOutOfBoundsException ex){
+        } catch (ArrayIndexOutOfBoundsException ex) {
             return 0;
         }
         return 0;
@@ -714,7 +709,7 @@ public class BDBAA extends AppCompatActivity {
                             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
-                                 Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
                                 }
                             });
                             break;
@@ -785,6 +780,7 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
                 FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_light_green_600));
                 imageProgressView.setVisibility(View.INVISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
@@ -799,10 +795,10 @@ public class BDBAA extends AppCompatActivity {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
                 new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
-                FragmentManager fragment = ((FragmentActivity)VentanaInicialApp.a).getSupportFragmentManager();
+                FragmentManager fragment = ((FragmentActivity) VentanaInicialApp.a).getSupportFragmentManager();
                 fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
-                ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-                new BDBAA().cargarDatosPerfil(ctx,PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo","musico"));
+                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
+                new BDBAA().cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -812,11 +808,11 @@ public class BDBAA extends AppCompatActivity {
                 animationDrawable = (AnimationDrawable) imageProgressView.getBackground();
                 animationDrawable.start();
                 imageProgressView.setVisibility(View.VISIBLE);
+                FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
                 FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_black_1000));
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.INVISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.INVISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackground(ctx.getContext().getDrawable(R.drawable.fondonegro));
-
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 System.out.println("Upload is " + progress + "% done");
             }

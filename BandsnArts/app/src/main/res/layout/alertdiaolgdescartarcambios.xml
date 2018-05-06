@@ -11,26 +11,28 @@
     android:id="@+id/alertadescartar">
 
     <TextView
+        android:id="@+id/tv_titlo_alerta_descartar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:buttonTint="@color/md_black_1000"
         android:fontFamily="sans-serif"
-        android:textAlignment="center"
         android:text="¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?"
+        android:textAlignment="center"
         android:textColor="@color/md_black_1000"
         android:textSize="14sp"
         android:textStyle="bold" />
 
-   <TextView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:text="Los cambios se perderán"
-       android:textStyle="italic"
-       android:textAlignment="center"
-       android:textColor="@color/md_red_400"
-       android:fontFamily="sans-serif"/>
+    <TextView
+        android:id="@+id/tv_subtitlo_alerta_descartar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif"
+        android:text="Los cambios se perderán"
+        android:textAlignment="center"
+        android:textColor="@color/md_red_400"
+        android:textStyle="italic" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

@@ -112,10 +112,9 @@ public class FragmentVerMiPerfil extends Fragment {
     //////////////////////
 
     public static CharSequence[] localidades;
-
+    public static boolean banderaLocalidad = true;
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
-
 
 
     @Override
@@ -238,17 +237,16 @@ public class FragmentVerMiPerfil extends Fragment {
                     miFABGuardarRechazar.close(true);
                     if (rutaFotoPerfil != null) {
                         new BDBAA().almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
-                    }else {
+                    } else {
+                        FragmentVerMiPerfil.banderaLocalidad = false;
 
-                        FragmentManager fragment = ((FragmentActivity)VentanaInicialApp.a).getSupportFragmentManager();
-                        fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil()).commit();
-                        ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-
+                        android.app.FragmentManager fm = getActivity().getFragmentManager();
+                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"Se han guardado los cambios con exito","");
+                        alerta.setCancelable(false);
+                        miFABGuardarRechazar.close(true);
+                        alerta.show(fm, "AlertaDescartar");
                     }
-                    ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
-                    mostrarComponentes();
-                    botonCancelarEdicionPerfil();
-                    Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(vista.getContext(), "Por favor seleccione un estilo.", Toast.LENGTH_SHORT).show();
                 }
@@ -259,11 +257,11 @@ public class FragmentVerMiPerfil extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
 
-
+                FragmentVerMiPerfil.banderaLocalidad = false;
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
-                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this);
-
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?","Los cambios se perderán");
+                alerta.setCancelable(false);
                 miFABGuardarRechazar.close(true);
                 alerta.show(fm, "AlertaDescartar");
                 ////////////////////////////////////////
@@ -532,6 +530,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 break;
 
         }
+        FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
         new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
 
@@ -781,36 +780,33 @@ public class FragmentVerMiPerfil extends Fragment {
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    posProvincia = position;
-                    // Retrieves an array
-                    TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
-                            R.array.array_provincia_a_localidades);
-                    localidades = arrayLocalidades.getTextArray(posProvincia);
-                    arrayLocalidades.recycle();
-
-                    // Create an ArrayAdapter using the string array and a default
-                    // spinner layout
-                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                            getApplicationContext(), R.layout.spinner_item,
-                            localidades);
-
-                    // Specify the layout to use when the list of choices appears
-                    adapter.setDropDownViewResource(R.layout.spinner_item);
-
-                    // Apply the adapter to the spinner
-                    spLocalidad.setAdapter(adapter);
-
+                posProvincia = position;
+                // Retrieves an array
+                TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
+                        R.array.array_provincia_a_localidades);
+                localidades = arrayLocalidades.getTextArray(posProvincia);
+                arrayLocalidades.recycle();
+                // Create an ArrayAdapter using the string array and a default
+                // spinner layout
+                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                        getApplicationContext(), R.layout.spinner_item,
+                        localidades);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(R.layout.spinner_item);
+                // Apply the adapter to the spinner
+                spLocalidad.setAdapter(adapter);
+                if (FragmentVerMiPerfil.banderaLocalidad) {
                     spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
-                } catch (ArrayIndexOutOfBoundsException ex) {
+                    FragmentVerMiPerfil.banderaLocalidad = false;
+                } else {
                     FragmentVerMiPerfil.posLocalidad = 0;
                     spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
+                    FragmentVerMiPerfil.banderaLocalidad = true;
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -821,7 +817,6 @@ public class FragmentVerMiPerfil extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 

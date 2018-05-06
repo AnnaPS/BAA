@@ -12,15 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 
 @SuppressLint("ValidFragment")
 public class FragmentDialogDescartarCambios extends DialogFragment {
     Button btnAcepar, btnCancelar;
+    TextView tv_titulo, tv_subtitulo;
     private static final String TAG = "AlertaDescartar";
+    private String titulo, subtilo;
     FragmentVerMiPerfil a;
+
     private interface OnInputListener {
         void sendInput(String input);
     }
@@ -28,8 +33,10 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
     public OnInputListener onInputListener;
 
     @SuppressLint("ValidFragment")
-    public FragmentDialogDescartarCambios(FragmentVerMiPerfil a) {
-        this.a=a;
+    public FragmentDialogDescartarCambios(FragmentVerMiPerfil a, String titulo, String subTitulo) {
+        this.a = a;
+        this.titulo = titulo;
+        this.subtilo = subTitulo;
     }
 
     @Nullable
@@ -39,16 +46,22 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
 
         btnAcepar = vista.findViewById(R.id.btnAceptarVDescartar);
         btnCancelar = vista.findViewById(R.id.btnCancelarVDescartar);
+        tv_titulo = vista.findViewById(R.id.tv_titlo_alerta_descartar);
+        tv_subtitulo = vista.findViewById(R.id.tv_subtitlo_alerta_descartar);
+        tv_titulo.setText(titulo);
+        tv_subtitulo.setText(subtilo);
+        if(subtilo.equals("")){
+            btnCancelar.setVisibility(View.GONE);
+        }else{
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "CANCELAR", Toast.LENGTH_SHORT).show();
+                    getDialog().dismiss();
+                }
+            });
+        }
 
-
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "CANCELAR", Toast.LENGTH_SHORT).show();
-
-                getDialog().dismiss();
-            }
-        });
         btnAcepar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +69,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
                 a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", "musico"));
                 a.mostrarComponentes();
                 a.botonCancelarEdicionPerfil();
+                FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
                 getDialog().dismiss();
             }
         });
