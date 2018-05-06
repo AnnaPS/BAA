@@ -298,6 +298,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         break;
                     case (BandsnArts.CODIGO_DE_DESLOGUEO):
                         visualizarBotones(View.VISIBLE);
+                        BandsnArts.posProvincia=0;
+                        BandsnArts.posLocalidad=0;
                         System.out.println("Ha sido deslogueado");
                         Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_LONG).show();
                         break;

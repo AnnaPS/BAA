@@ -207,7 +207,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", "musico"), fotoPerfil, txtNombre);
+        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
