@@ -57,6 +57,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getActivity(), "CANCELAR", Toast.LENGTH_SHORT).show();
+                    FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
                     getDialog().dismiss();
                 }
             });
@@ -66,10 +67,10 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
-                a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", "musico"));
+                a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", ""));
                 a.mostrarComponentes();
                 a.botonCancelarEdicionPerfil();
-                FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
+                FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
                 getDialog().dismiss();
             }
         });

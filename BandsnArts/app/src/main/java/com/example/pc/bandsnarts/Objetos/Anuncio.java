@@ -8,17 +8,29 @@ public class Anuncio {
     private String tipo;
     private String fecha;
     private String provincia, localidad, estilo, instrumento,sexo;
-    private ArrayList<String> mensaje = new ArrayList<String>();
+    private ArrayList<Mensaje> mensaje = new ArrayList<Mensaje>();
 
-    public ArrayList<String> getMensaje() {
+    public ArrayList getMensaje() {
         return mensaje;
     }
 
-    public void setMensaje(String mensaje) {
+    public void setMensaje(Mensaje mensaje) {
         this.mensaje.add(mensaje);
     }
 
     public Anuncio() {
+    }
+
+    public Anuncio(String titulo, String descripcion, String tipo, String fecha, String provincia, String localidad, String estilo, String instrumento, String sexo) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.fecha = fecha;
+        this.provincia = provincia;
+        this.localidad = localidad;
+        this.estilo = estilo;
+        this.instrumento = instrumento;
+        this.sexo = sexo;
     }
 
     public String getSexo() {

@@ -93,7 +93,7 @@ public class FragmentVerMiPerfil extends Fragment {
     View vista;
     private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
 
-    public static int posProvincia, posLocalidad;
+
 
     private String buscando;
 
@@ -112,8 +112,7 @@ public class FragmentVerMiPerfil extends Fragment {
     private ImageView progressEditarPerfil;
     //////////////////////
 
-    public static CharSequence[] localidades;
-    public static boolean banderaLocalidad = true;
+
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
 
@@ -175,7 +174,7 @@ public class FragmentVerMiPerfil extends Fragment {
         contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
         preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
 
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
@@ -186,13 +185,13 @@ public class FragmentVerMiPerfil extends Fragment {
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
 
                 // En funcion de si el usuario es músico o grupo
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 mostrarComponentes();
                 botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
             }
         });
@@ -212,7 +211,7 @@ public class FragmentVerMiPerfil extends Fragment {
             @Override
             public void onClick(View view) {
                 if (posEstilo != 0) {
-                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "musico")) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
                         case ("musico"):
                             //Actualizamos los datos del musico
                             ArrayList<String> instrumentos = new ArrayList<>();
@@ -223,14 +222,14 @@ public class FragmentVerMiPerfil extends Fragment {
 
                             new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
-                                    , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
+                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
                         case ("grupo"):
                             //Actualizamos los datos del grupo
                             new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
-                                    , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
+                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
                     }
@@ -239,8 +238,7 @@ public class FragmentVerMiPerfil extends Fragment {
                     if (rutaFotoPerfil != null) {
                         new BDBAA().almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
                     } else {
-                        FragmentVerMiPerfil.banderaLocalidad = false;
-
+                        BandsnArts.banderaLocalidad = false;
                         android.app.FragmentManager fm = getActivity().getFragmentManager();
                         FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"Se han guardado los cambios con exito","");
                         alerta.setCancelable(false);
@@ -258,7 +256,7 @@ public class FragmentVerMiPerfil extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
 
-                FragmentVerMiPerfil.banderaLocalidad = false;
+                BandsnArts.banderaLocalidad = false;
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
                 FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?","Los cambios se perderán");
@@ -275,7 +273,7 @@ public class FragmentVerMiPerfil extends Fragment {
         //Poner de incio a invisible el switch
         switchBuscar.setVisibility(View.INVISIBLE);
 
-        loadSpinnerProvincias();
+        BandsnArts.loadSpinnerProvincias(spProvincia);
 
         escuchadoresSpinner();
 
@@ -475,7 +473,7 @@ public class FragmentVerMiPerfil extends Fragment {
     }
 
     public void mostrarComponentes() {
-        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "")) {
             case "musico":
                 txtEstilo.setVisibility(View.VISIBLE);
                 txtLocalidad.setVisibility(View.VISIBLE);
@@ -491,7 +489,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
     }
 
@@ -786,7 +784,7 @@ public class FragmentVerMiPerfil extends Fragment {
     }
 
     public void botonCancelarEdicionPerfil() {
-        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "")) {
 
             case ("grupo"):
                 contenedorInstrumentos.setVisibility(View.GONE);
@@ -806,80 +804,6 @@ public class FragmentVerMiPerfil extends Fragment {
     }
 
 
-    private void loadSpinnerProvincias() {
-        // Create an ArrayAdapter using the string array and a default spinner
-        // layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getApplicationContext(), R.array.provincias, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        // Apply the adapter to the spinner
-        this.spProvincia.setAdapter(adapter);
-
-        // This activity implements the AdapterView.OnItemSelectedListener
-      /*  this.spProvincia.setOnItemSelectedListener(this);
-        this.spLocalidad.setOnItemSelectedListener(this);*/
-    }
-
-    public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad) {
-        spProvincia.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
-                return false;
-            }
-        });
-        spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posProvincia = position;
-                // Retrieves an array
-                TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
-                        R.array.array_provincia_a_localidades);
-                localidades = arrayLocalidades.getTextArray(posProvincia);
-                arrayLocalidades.recycle();
-                // Create an ArrayAdapter using the string array and a default
-                // spinner layout
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                        getApplicationContext(), R.layout.spinner_item,
-                        localidades);
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(R.layout.spinner_item);
-                // Apply the adapter to the spinner
-                spLocalidad.setAdapter(adapter);
-                if (FragmentVerMiPerfil.banderaLocalidad) {
-                    spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
-                    FragmentVerMiPerfil.banderaLocalidad = false;
-                } else {
-                    FragmentVerMiPerfil.posLocalidad = 0;
-                    spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
-                    FragmentVerMiPerfil.banderaLocalidad = true;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        spLocalidad.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
-                return false;
-            }
-        });
-        spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posLocalidad = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-    }
 
 
 }

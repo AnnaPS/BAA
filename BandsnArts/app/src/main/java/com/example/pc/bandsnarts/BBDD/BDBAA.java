@@ -38,6 +38,7 @@ import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
+import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -66,14 +67,14 @@ import java.util.ArrayList;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BDBAA extends AppCompatActivity {
-    DatabaseReference bd;
+
 
     public BDBAA() {
     }
 
     public void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
         // Nos posicionamos
-        bd = FirebaseDatabase.getInstance().getReference("musico");
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
 
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,9 +112,9 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void agregarGrupo(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
+    public static void agregarGrupo(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
 
-        bd = FirebaseDatabase.getInstance().getReference("grupo");
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
         Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -153,8 +154,52 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
+    public static void agregarAnuncio(String uid, final String tipos, final String titulo, final String descripcion, final String tipo, final String fecha, final String provincia, final String localidad, final String estilo, final String instrumento, final String sexo) {
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipos);
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        Log.d("UID!", "onDataChange: " + uid);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("UID!", "onDataChange: PEPEPEPE");
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Anuncio anu=new Anuncio(
+                            titulo,
+                            descripcion,
+                            tipo,
+                            fecha,
+                            provincia,
+                            localidad,
+                            estilo,
+                            instrumento,
+                            sexo);
+                    switch (tipos) {
+                        case "musico":
+                            Musico mus = ds.getValue(Musico.class);
+                            mus.setAnuncios(anu);
+                            bd.child(ds.getKey()).setValue(mus);
+                            break;
+                        case "grupo":
+                            Grupo gru = ds.getValue(Grupo.class);
+                            gru.setAnuncios(anu);
+                            bd.child(ds.getKey()).setValue(gru);
+                            break;
+                    }
+                    Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "GUARDADO CON EXITO", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     public void borrarPerfil(final String uid) {
-        bd = FirebaseDatabase.getInstance().getReference("uids");
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -181,8 +226,8 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void eliminarNodo(String type, String uid) {
-        bd = FirebaseDatabase.getInstance().getReference(type);
+    public static void eliminarNodo(String type, String uid) {
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(type);
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,8 +253,8 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public void comprobarUID(final Context cont, final String uid) {
-        bd = FirebaseDatabase.getInstance().getReference("uids");
+    public static void comprobarUID(final Context cont, final String uid) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
 
@@ -240,8 +285,8 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    private void comprobarTipo(final Context cont, String uid) {
-        bd = FirebaseDatabase.getInstance().getReference("musico");
+    public static void comprobarTipo(final Context cont, String uid) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
         Query q = bd.orderByChild("uid").equalTo(uid);
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -269,8 +314,8 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public void cargarDrawerPerfil(final Context context, final String tipo, final ImageView fotoPerfil, final TextView nombre) {
-        bd = FirebaseDatabase.getInstance().getReference(tipo);
+    public static void cargarDrawerPerfil(final Context context, final String tipo, final ImageView fotoPerfil, final TextView nombre) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -299,8 +344,8 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void cargarDatosPerfil(final View vista, final String tipo) {
-        bd = FirebaseDatabase.getInstance().getReference(tipo);
+    public static void cargarDatosPerfil(final View vista, final String tipo) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -385,8 +430,8 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void cargarDatosPerfilEditar(final View vista, final String tipo, final Context context) {
-        bd = FirebaseDatabase.getInstance().getReference(tipo);
+    public static void cargarDatosPerfilEditar(final View vista, final String tipo, final Context context) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -402,34 +447,13 @@ public class BDBAA extends AppCompatActivity {
                             // FotoPerfil
                             accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
+                            posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             Toast.makeText(context, "" + posicion, Toast.LENGTH_SHORT).show();
                             // Sexo....
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
+                            posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
-                            // Provincia
-                            FragmentVerMiPerfil.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
-                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(posicion);
-                            // Localidad
-
-                            TypedArray arrayLocalidades1 = vista.getResources().obtainTypedArray(
-                                    R.array.array_provincia_a_localidades);
-                            FragmentVerMiPerfil.localidades = arrayLocalidades1.getTextArray(FragmentVerMiPerfil.posProvincia);
-                            arrayLocalidades1.recycle();
-                            // Create an ArrayAdapter using the string array and a default
-                            // spinner layout
-                            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                                    context, R.layout.spinner_item,
-                                    FragmentVerMiPerfil.localidades);
-                            // Specify the layout to use when the list of choices appears
-                            adapter.setDropDownViewResource(R.layout.spinner_item);
-                            // Apply the adapter to the spinner
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter);
-                            FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, musico.getLocalidad());
-                            System.out.println(FragmentVerMiPerfil.posLocalidad);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posLocalidad);
-                            FragmentVerMiPerfil.escuchas(context, ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
+                            BandsnArts.cargarLocalidadProvincia(vista, musico, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
@@ -442,15 +466,15 @@ public class BDBAA extends AppCompatActivity {
 
                             //Instrumentos
                             // Instumento Principal
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
+                            posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
                             ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil1)).setSelection(posicion);
 
                             try {
-                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(1));
+                                posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(1));
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil2)).setSelection(posicion);
-                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(2));
+                                posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(2));
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil3)).setSelection(posicion);
-                                posicion = posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(3));
+                                posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(3));
                                 ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil4)).setSelection(posicion);
                             } catch (IndexOutOfBoundsException e) {
                                 // En caso de que solo tenga el instrumento principal
@@ -463,29 +487,9 @@ public class BDBAA extends AppCompatActivity {
                             // FotoPerfil
                             accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
                             // Estilo
-                            posicion = posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
+                            posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
-                            // Provincia
-                            FragmentVerMiPerfil.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
-                            ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posProvincia);
-                            // Localidad
-                            TypedArray arrayLocalidades = vista.getResources().obtainTypedArray(
-                                    R.array.array_provincia_a_localidades);
-                            FragmentVerMiPerfil.localidades = arrayLocalidades.getTextArray(FragmentVerMiPerfil.posProvincia);
-                            arrayLocalidades.recycle();
-                            // Create an ArrayAdapter using the string array and a default
-                            // spinner layout
-                            ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(
-                                    context, R.layout.spinner_item,
-                                    FragmentVerMiPerfil.localidades);
-                            // Specify the layout to use when the list of choices appears
-                            adapter1.setDropDownViewResource(R.layout.spinner_item);
-                            // Apply the adapter to the spinner
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setAdapter(adapter1);
-                            FragmentVerMiPerfil.posLocalidad = posicionSpinner(FragmentVerMiPerfil.localidades, grupo.getLocalidad());
-                            System.out.println(FragmentVerMiPerfil.posLocalidad);
-                            ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)).setSelection(FragmentVerMiPerfil.posLocalidad);
-                            FragmentVerMiPerfil.escuchas(context, ((Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil)), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
+                            BandsnArts.cargarLocalidadProvincia(vista, grupo, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
                             // Descripcion
@@ -509,10 +513,38 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
+    public static void cargarDatosAnuncio(final View vista, final String tipo, final Context context,final Spinner spProvincia,final Spinner spLocalidad) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
 
-    public void modificarDatosUsuario(final String tipo, final Context context, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            Musico musico = data.getValue(Musico.class);
+                           BandsnArts.cargarLocalidadProvincia(vista,musico,spProvincia,spLocalidad);
+                            break;
+                        case "grupo":
+                            Grupo grupo = data.getValue(Grupo.class);
+                            BandsnArts.cargarLocalidadProvincia(vista,grupo,spProvincia,spLocalidad);
+                            break;
+                    }
+                    BandsnArts.escuchas(context,spProvincia,spLocalidad);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void modificarDatosUsuario(final String tipo, final Context context, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion, final String provincia, final String localidad, final String buscando) {
         // Nos posicionamos
-        bd = FirebaseDatabase.getInstance().getReference(tipo);
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Recuperamos al usuario a través de su UID
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -561,7 +593,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {
+    public static void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("nombre");
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -621,40 +653,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public int posicionSpinner(String[] lista, String sp) {
-        try {
-            for (int i = 0; i < lista.length; i++) {
-                if (sp.equals(lista[i])) {
-                    return i;
-                }
-            }
-        } catch (NullPointerException ex) {
-            return 0;
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            return 0;
-        }
-        return 0;
-    }
-
-    public int posicionSpinner(CharSequence[] lista, String sp) {
-        try {
-            for (int i = 0; i < lista.length; i++) {
-
-                if (sp.equalsIgnoreCase(lista[i].toString())) {
-                    System.out.println(lista[i]);
-                    return i;
-                }
-            }
-        } catch (NullPointerException ex) {
-            return 0;
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            return 0;
-        }
-        return 0;
-    }
-
-
-    public void actualizarFotoPerfil(final String refFoto, final String tipo) {
+    public static void actualizarFotoPerfil(final String refFoto, final String tipo) {
         // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Ordenamos por uid dentro del nodo tipo en le que estabamos
@@ -686,7 +685,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
-    public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
+    public static void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
         // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = null;
@@ -736,7 +735,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
+    public static void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
 
         String img;
         StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
@@ -794,11 +793,11 @@ public class BDBAA extends AppCompatActivity {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
-                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
+                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
                 FragmentManager fragment = ((FragmentActivity) VentanaInicialApp.a).getSupportFragmentManager();
                 fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-                new BDBAA().cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
+                new BDBAA().cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
