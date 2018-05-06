@@ -51,10 +51,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -285,7 +287,17 @@ private ImageView progressEditarPerfil;
 
 
     public void escuchadoresSpinner() {
+        spSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+
+
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 posSexo = position;
@@ -296,6 +308,13 @@ private ImageView progressEditarPerfil;
 
             }
 
+        });
+        spEstilo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spEstilo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -311,6 +330,13 @@ private ImageView progressEditarPerfil;
         });
 
 
+        spinnerInstrumentos1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -322,6 +348,13 @@ private ImageView progressEditarPerfil;
 
             }
 
+        });
+        spinnerInstrumentos2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -335,6 +368,13 @@ private ImageView progressEditarPerfil;
             }
 
         });
+        spinnerInstrumentos3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -346,6 +386,13 @@ private ImageView progressEditarPerfil;
 
             }
 
+        });
+        spinnerInstrumentos4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -566,7 +613,6 @@ private ImageView progressEditarPerfil;
 
     }
 
-
     //mostrar opciones
     private void showOptions() {
         Toast.makeText(vista.getContext(), "HOLIHA", Toast.LENGTH_SHORT).show();
@@ -780,6 +826,13 @@ private ImageView progressEditarPerfil;
     }
 
     public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad) {
+        spProvincia.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -807,6 +860,13 @@ private ImageView progressEditarPerfil;
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        spLocalidad.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
             }
         });
         spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
