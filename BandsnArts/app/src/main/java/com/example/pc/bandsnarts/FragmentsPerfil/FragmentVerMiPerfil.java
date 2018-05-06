@@ -405,7 +405,6 @@ public class FragmentVerMiPerfil extends Fragment {
         });
     }
 
-
     private void ocultarSpinners() {
         spSexo.setVisibility(View.INVISIBLE);
         spProvincia.setVisibility(View.INVISIBLE);
@@ -715,7 +714,7 @@ public class FragmentVerMiPerfil extends Fragment {
                         Bitmap bitmap2 = MediaStore.Images.Media.getBitmap(mrView.getContext().getContentResolver(), path1);
                         rutaFotoPerfil = nuevaUri(bitmap2, 0);
 
-                        Log.d("PRUEBAS", "path:                 " + path1.getPath());
+                        Log.d("PRUEBAS", "path:                 " + path1);
                         Log.d("PRUEBAS", "mPath:                 " + mPath);
 
                     } catch (IOException e) {
