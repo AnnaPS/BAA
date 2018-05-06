@@ -52,6 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
@@ -283,7 +284,17 @@ public class FragmentVerMiPerfil extends Fragment {
 
 
     public void escuchadoresSpinner() {
+        spSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+
+
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 posSexo = position;
@@ -294,6 +305,13 @@ public class FragmentVerMiPerfil extends Fragment {
 
             }
 
+        });
+        spEstilo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spEstilo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -309,6 +327,13 @@ public class FragmentVerMiPerfil extends Fragment {
         });
 
 
+        spinnerInstrumentos1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -320,6 +345,13 @@ public class FragmentVerMiPerfil extends Fragment {
 
             }
 
+        });
+        spinnerInstrumentos2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -333,6 +365,13 @@ public class FragmentVerMiPerfil extends Fragment {
             }
 
         });
+        spinnerInstrumentos3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -344,6 +383,13 @@ public class FragmentVerMiPerfil extends Fragment {
 
             }
 
+        });
+        spinnerInstrumentos4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -565,7 +611,6 @@ public class FragmentVerMiPerfil extends Fragment {
 
     }
 
-
     //mostrar opciones
     private void showOptions() {
         Toast.makeText(vista.getContext(), "HOLIHA", Toast.LENGTH_SHORT).show();
@@ -777,6 +822,13 @@ public class FragmentVerMiPerfil extends Fragment {
     }
 
     public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad) {
+        spProvincia.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -807,6 +859,13 @@ public class FragmentVerMiPerfil extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spLocalidad.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
             }
         });
         spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
