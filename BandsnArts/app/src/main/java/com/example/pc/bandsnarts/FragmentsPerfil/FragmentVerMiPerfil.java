@@ -27,6 +27,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
@@ -108,7 +109,7 @@ public class FragmentVerMiPerfil extends Fragment {
     private String mPath;
 
     private Uri rutaFotoPerfil;
-private ImageView progressEditarPerfil;
+    private ImageView progressEditarPerfil;
     //////////////////////
 
     public static CharSequence[] localidades;
@@ -117,13 +118,14 @@ private ImageView progressEditarPerfil;
     CardView contenedorInstrumentos;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
 
-        progressEditarPerfil=vista.findViewById(R.id.progressBarVLoginEditarPerfil);
+        progressEditarPerfil = vista.findViewById(R.id.progressBarVLoginEditarPerfil);
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
         spProvincia = vista.findViewById(R.id.spProvinVVerMiPerfil);
@@ -174,7 +176,7 @@ private ImageView progressEditarPerfil;
         contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
         preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
 
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
 
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
@@ -234,22 +236,20 @@ private ImageView progressEditarPerfil;
                             break;
                     }
 
+                    miFABGuardarRechazar.close(true);
+                    if (rutaFotoPerfil != null) {
+                        new BDBAA().almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                    }else {
+
+                        FragmentManager fragment = ((FragmentActivity)VentanaInicialApp.a).getSupportFragmentManager();
+                        fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil()).commit();
+                        ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
+
+                    }
                     ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                     mostrarComponentes();
                     botonCancelarEdicionPerfil();
-                    if(rutaFotoPerfil != null) {
-                        new BDBAA().almacenarFotoPerfil(vista.getContext(), rutaFotoPerfil,progressEditarPerfil);
-                    }
                     Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
-
-
-                /*final Fragment verperfil=new FragmentVerMiPerfil();
-                FragmentManager fragment = getFragmentManager();
-                FragmentTransaction fragmentTransaction=fragment.beginTransaction();
-                fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
-                Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
-
-
                 } else {
                     Toast.makeText(vista.getContext(), "Por favor seleccione un estilo.", Toast.LENGTH_SHORT).show();
                 }
@@ -265,8 +265,7 @@ private ImageView progressEditarPerfil;
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
                 FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this);
 
-
-
+                miFABGuardarRechazar.close(true);
                 alerta.show(fm, "AlertaDescartar");
                 ////////////////////////////////////////
 
@@ -442,7 +441,7 @@ private ImageView progressEditarPerfil;
 
     }
 
-   public void ocultarSpinners(String tipo) {
+    public void ocultarSpinners(String tipo) {
         switch (tipo) {
             case ("musico"):
                 spSexo.setVisibility(View.INVISIBLE);
@@ -477,7 +476,7 @@ private ImageView progressEditarPerfil;
 
     }
 
-  public void mostrarComponentes() {
+    public void mostrarComponentes() {
         switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
             case "musico":
                 txtEstilo.setVisibility(View.VISIBLE);
@@ -494,7 +493,7 @@ private ImageView progressEditarPerfil;
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
 
     }
 
@@ -687,7 +686,6 @@ private ImageView progressEditarPerfil;
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -788,7 +786,7 @@ private ImageView progressEditarPerfil;
 
     }
 
-   public void botonCancelarEdicionPerfil() {
+    public void botonCancelarEdicionPerfil() {
         switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
 
             case ("grupo"):
@@ -807,7 +805,6 @@ private ImageView progressEditarPerfil;
 
         }
     }
-
 
 
     private void loadSpinnerProvincias() {
@@ -836,25 +833,31 @@ private ImageView progressEditarPerfil;
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posProvincia = position;
-                // Retrieves an array
-                TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
-                        R.array.array_provincia_a_localidades);
-                localidades = arrayLocalidades.getTextArray(position);
-                arrayLocalidades.recycle();
+                try {
+                    posProvincia = position;
+                    // Retrieves an array
+                    TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
+                            R.array.array_provincia_a_localidades);
+                    localidades = arrayLocalidades.getTextArray(posProvincia);
+                    arrayLocalidades.recycle();
 
-                // Create an ArrayAdapter using the string array and a default
-                // spinner layout
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                        getApplicationContext(), R.layout.spinner_item,
-                        localidades);
+                    // Create an ArrayAdapter using the string array and a default
+                    // spinner layout
+                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                            getApplicationContext(), R.layout.spinner_item,
+                            localidades);
 
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(R.layout.spinner_item);
+                    // Specify the layout to use when the list of choices appears
+                    adapter.setDropDownViewResource(R.layout.spinner_item);
 
-                // Apply the adapter to the spinner
-                spLocalidad.setAdapter(adapter);
-                spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
+                    // Apply the adapter to the spinner
+                    spLocalidad.setAdapter(adapter);
+
+                    spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    FragmentVerMiPerfil.posLocalidad = 0;
+                    spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
+                }
             }
 
             @Override
@@ -882,7 +885,6 @@ private ImageView progressEditarPerfil;
         });
 
     }
-
 
 
 }

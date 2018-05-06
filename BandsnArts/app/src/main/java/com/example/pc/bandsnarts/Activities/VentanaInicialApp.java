@@ -50,10 +50,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     private ImageView fotoPerfil;
     private TextView txtNombre, txtCorreo;
-    private int id=R.id.inicioMenuDrawer2;
+    private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
-public static Activity a;
+    public static Activity a;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public static Activity a;
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-a=this;
+        a = this;
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +132,7 @@ a=this;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(id==R.id.inicioMenuDrawer2){
+        } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             LoginManager.getInstance().logOut();
             finish();
@@ -167,7 +168,7 @@ a=this;
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragment = getSupportFragmentManager();
 
-         id = item.getItemId();
+        id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();

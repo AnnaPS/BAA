@@ -8,6 +8,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -297,7 +299,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void cargarDatosPerfil(final View vista, final String tipo, final Context context) {
+    public void cargarDatosPerfil(final View vista, final String tipo) {
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -311,7 +313,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), vista.getContext());
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
                             // Provincia
@@ -348,7 +350,7 @@ public class BDBAA extends AppCompatActivity {
                             // nombre
                             ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
                             // FotoPerfil
-                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), context);
+                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), vista.getContext());
                             // Estilo
                             ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
                             // Provincia
@@ -632,7 +634,9 @@ public class BDBAA extends AppCompatActivity {
                 }
             }
         } catch (NullPointerException ex) {
-
+            return 0;
+        }catch (ArrayIndexOutOfBoundsException ex){
+            return 0;
         }
         return 0;
     }
@@ -647,7 +651,9 @@ public class BDBAA extends AppCompatActivity {
                 }
             }
         } catch (NullPointerException ex) {
-
+            return 0;
+        }catch (ArrayIndexOutOfBoundsException ex){
+            return 0;
         }
         return 0;
     }
@@ -762,7 +768,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void almacenarFotoPerfil(final Context ctx, Uri uri, final ImageView imageProgressView) {
+    public void almacenarFotoPerfil(final View ctx, Uri uri, final ImageView imageProgressView) {
         // Nos posicionamos en el nodo de imagenes del storage
         StorageReference storage = FirebaseStorage.getInstance().getReference();
         Uri file;
@@ -779,12 +785,12 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getColor(R.color.md_light_green_600));
+                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_light_green_600));
                 imageProgressView.setVisibility(View.INVISIBLE);
-                ((Activity) ctx).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
-                ((Activity) ctx).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
-                ((Activity) ctx).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getColor(R.color.md_white_1000));
-                Toast.makeText(ctx, "No pudo subirse la foto con exito pruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
+                ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
+                ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
+                ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getContext().getColor(R.color.md_white_1000));
+                Toast.makeText(ctx.getContext(), "No pudo subirse la foto con exito pruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -792,9 +798,11 @@ public class BDBAA extends AppCompatActivity {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
-                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "musico"));
-                ((Activity) ctx).startActivity(new Intent(ctx, VentanaInicialApp.class));
-                ((Activity) ctx).finish();
+                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
+                FragmentManager fragment = ((FragmentActivity)VentanaInicialApp.a).getSupportFragmentManager();
+                fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+                ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
+                new BDBAA().cargarDatosPerfil(ctx,PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo","musico"));
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -804,10 +812,10 @@ public class BDBAA extends AppCompatActivity {
                 animationDrawable = (AnimationDrawable) imageProgressView.getBackground();
                 animationDrawable.start();
                 imageProgressView.setVisibility(View.VISIBLE);
-                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getColor(R.color.md_black_1000));
-                ((Activity) ctx).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.INVISIBLE);
-                ((Activity) ctx).findViewById(R.id.floatingBPerfil).setVisibility(View.INVISIBLE);
-                ((Activity) ctx).findViewById(R.id.vermiperfil).setBackground(ctx.getDrawable(R.drawable.fondonegro));
+                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_black_1000));
+                ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.INVISIBLE);
+                ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.INVISIBLE);
+                ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackground(ctx.getContext().getDrawable(R.drawable.fondonegro));
 
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 System.out.println("Upload is " + progress + "% done");
