@@ -685,6 +685,37 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
+    public static void actualizarCancionPerfil(final String refCancion, final String tipo) {
+        // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        // Ordenamos por uid dentro del nodo tipo en le que estabamos
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case ("musico"):
+                            Musico mus = ds.getValue(Musico.class);
+                          mus.setAudio(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refCancion);
+                            bd.child(ds.getKey()).setValue(mus);
+                            break;
+                        case ("grupo"):
+                            Grupo gr = ds.getValue(Grupo.class);
+                            gr.setAudio(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refCancion);
+                            bd.child(ds.getKey()).setValue(gr);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
         // Nos posicionamos en el nodo segun el tipo

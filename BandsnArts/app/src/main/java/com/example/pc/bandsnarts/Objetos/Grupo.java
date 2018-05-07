@@ -6,12 +6,13 @@ public class Grupo {
 
     private String uid;
     private String imagen;
+    private String audio;
     private String nombre;
     private String estilo;
     private String descripcion;
     private String provincia;
     private String localidad;
-    private String buscando="no";
+    private String buscando ="no";
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>();
@@ -24,6 +25,13 @@ public class Grupo {
         this.anuncio.add(anuncio);
     }
 
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
 
     public void setRedsocial(String redsocial) {
         this.redsocial.add(redsocial);

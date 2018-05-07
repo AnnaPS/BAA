@@ -223,6 +223,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == 1) {
             Uri path1 = data.getData();
             File file = new File(path1.getLastPathSegment());
@@ -254,12 +255,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     //
                     // *****************************************************************
 
-                    /*// METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
-                    new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));
-                    FragmentManager fragment = ((FragmentActivity) VentanaInicialApp.a).getSupportFragmentManager();
-                    fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
-                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-                    new BDBAA().cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", "musico"));*/
+                    // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
+                    new BDBAA().actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                    Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
+
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override

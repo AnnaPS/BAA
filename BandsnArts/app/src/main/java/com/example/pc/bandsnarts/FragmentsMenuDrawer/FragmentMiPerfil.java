@@ -54,15 +54,14 @@ public class FragmentMiPerfil extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ///parte de los botones de navegacion
+        // parte de los botones de navegacion
         bottomNavigationView = (BottomNavigationView)vista.findViewById(R.id.bottomnav);
-        //info = vista.findViewById(R.id.info);
+        // info = vista.findViewById(R.id.info);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 FragmentManager fragment = getFragmentManager();
                 int id = item.getItemId();
                 if (id == R.id.menuPerfil) {
@@ -82,7 +81,5 @@ public class FragmentMiPerfil extends Fragment {
                 return true;
             }
         });
-
-
     }
 }

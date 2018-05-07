@@ -6,6 +6,7 @@ public class Musico {
 
     private String uid;
     private String imagen;
+    private String audio;
     private String nombre;
     private String sexo;
     private String estilo;
@@ -66,6 +67,14 @@ public class Musico {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
     }
 
     public String getNombre() {
