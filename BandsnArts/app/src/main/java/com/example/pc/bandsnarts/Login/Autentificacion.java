@@ -70,7 +70,7 @@ public class Autentificacion extends AppCompatActivity {
 
     public void loginMailPass(final Context cont, String user, String password) {
 
-        if(ComprobadorConexion.isConnected()){
+
             mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(user.trim(), password.trim())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -108,9 +108,7 @@ public class Autentificacion extends AppCompatActivity {
                             }
                         }
                     });
-        }else{
-            Toast.makeText(cont, "NO TIENE CONEXION A INTERNET", Toast.LENGTH_SHORT).show();
-        }
+        
        
 
     }

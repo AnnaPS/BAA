@@ -16,14 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 // Clase necesaria para conocer los logueos con FaceBook
 // Reutilizar esta clase para Datos comunes y metodos staticos en toda la App
@@ -36,7 +33,7 @@ public class BandsnArts extends Application {
     public static final int CODIGO_DE_REGISTRO_RED_SOCIAL = 333;
     public static final int CODIGO_DE_REDSOCIAL = 111;
     public static final int CODIGO_DE_CIERRE = 22;
-
+    private static BandsnArts mInstance;
 
     public static CharSequence[] localidades;
     public static boolean banderaLocalidad = true;
@@ -224,4 +221,7 @@ public class BandsnArts extends Application {
         return resizedBitmap;
     }
 
+    public static synchronized BandsnArts getInstance() {
+        return mInstance;
+    }
 }

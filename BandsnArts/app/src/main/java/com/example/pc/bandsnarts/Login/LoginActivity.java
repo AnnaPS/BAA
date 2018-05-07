@@ -430,4 +430,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         FirebaseAuth.getInstance().signOut();
 
     }
+
+    public void recuperarClave(View view) {
+
+        if(edtUser.getText().toString().isEmpty()){
+            Toast.makeText(ventanaPrincipal, "DEBE INDICAR UN CORREO ELECTRONICO", Toast.LENGTH_SHORT).show();
+        }else{
+            firebaseAuth.sendPasswordResetEmail(edtUser.getText().toString());
+            Toast.makeText(ventanaPrincipal, "HEMOS ENVIADO UN CORREO A SU CUENTA", Toast.LENGTH_SHORT).show();
+        }
+        
+    }
 }
