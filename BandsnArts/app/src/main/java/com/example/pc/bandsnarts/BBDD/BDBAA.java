@@ -30,6 +30,7 @@ import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
 
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
@@ -163,7 +164,7 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("UID!", "onDataChange: PEPEPEPE");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Anuncio anu=new Anuncio(
+                    Anuncio anu = new Anuncio(
                             titulo,
                             descripcion,
                             tipo,
@@ -513,7 +514,8 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
-    public static void cargarDatosAnuncio(final View vista, final String tipo, final Context context,final Spinner spProvincia,final Spinner spLocalidad) {
+
+    public static void cargarDatosAnuncio(final View vista, final String tipo, final Context context, final Spinner spProvincia, final Spinner spLocalidad) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -524,14 +526,14 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case "musico":
                             Musico musico = data.getValue(Musico.class);
-                           BandsnArts.cargarLocalidadProvincia(vista,musico,spProvincia,spLocalidad);
+                            BandsnArts.cargarLocalidadProvincia(vista, musico, spProvincia, spLocalidad);
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
-                            BandsnArts.cargarLocalidadProvincia(vista,grupo,spProvincia,spLocalidad);
+                            BandsnArts.cargarLocalidadProvincia(vista, grupo, spProvincia, spLocalidad);
                             break;
                     }
-                    BandsnArts.escuchas(context,spProvincia,spLocalidad);
+                    BandsnArts.escuchas(context, spProvincia, spLocalidad);
                 }
             }
 
@@ -591,6 +593,43 @@ public class BDBAA extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static void cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "grupo":
+                            Grupo grp = data.getValue(Grupo.class);
+                            for(Anuncio anu:grp.getAnuncio()){
+                                lista.add(anu);
+                            }
+
+                            break;
+                        case "musico":
+                            Musico mus = data.getValue(Musico.class);
+                            for(Anuncio anu:mus.getAnuncio()){
+                                lista.add(anu);
+                            }
+                            break;
+
+                    }
+                }
+                RecyclerAdapterAnuncioPropio adapter = new RecyclerAdapterAnuncioPropio(activity.getApplicationContext(), lista);
+                recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                recyclerView.setAdapter(adapter);
+                recyclerView.setNestedScrollingEnabled(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {

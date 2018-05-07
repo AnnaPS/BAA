@@ -1,12 +1,17 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.res.TypedArray;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,14 +23,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.text.DateFormat;
+import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -41,7 +45,6 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
     int posEstilo, posInst, posSexo, posTipo;
-    CharSequence[] localidades;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
@@ -71,6 +74,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
 
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 BandsnArts.banderaLocalidad = false;
@@ -83,21 +87,18 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                                             PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
                                             titulo.getText().toString(), descripcionAnuncio.getText().toString(),
                                             getResources().getStringArray(R.array.tipobusqueda)[posTipo],
-                                            DateFormat.getDateInstance().getCalendar().getTimeZone().toString(),
+                                            new SimpleDateFormat("dd/MM/yyyy").format(new Date()),
                                             getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
                                             BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                             getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                             getResources().getStringArray(R.array.instrumentos)[posInst],
                                             getResources().getStringArray(R.array.sexo)[posSexo]);
                                     getDialog().dismiss();
-
                                 }
                             }
                         }
                     }
                 }
-
-
             }
         });
 
