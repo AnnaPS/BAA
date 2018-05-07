@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,35 +86,27 @@ public class RegistrarGrupo extends AppCompatActivity {
             } else if (!edtPassGrupo.getText().toString().equals(edtRepitePassGrupo.getText().toString())) {
                 edtRepitePassGrupo.setError("Las contraseñas no coinciden");
             } else {
-                //PERMITIR EL REGISTRO SOLO SI HAY CONEXION A INTERNET
-                if(ComprobadorConexion.isConnected()){
-                    // Correo y password correctas
-                    view.setVisibility(View.INVISIBLE);
-                    auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
-                    // RECOGER DATOS DEL GRUPO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
-                    // Mensaje de control
-                    FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
-                    Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
-                    //se lanza la info inicial
-                    FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-                        @Override
-                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                            if (firebaseAuth.getCurrentUser() != null) {
-                                new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial), edtNombreGrupo, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
-                                // ENVIO CORREO VERIFICACION
-                                Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
-                                firebaseAuth.getCurrentUser().sendEmailVerification();
-                                FirebaseAuth.getInstance().removeAuthStateListener(this);
-
-
-                            }
+                // Correo y password correctas
+                view.setVisibility(View.INVISIBLE);
+                auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
+                // RECOGER DATOS DEL GRUPO Y LANZAR ACTIVIDAD DE BIENVENIDA !!!
+                // Mensaje de control
+                FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
+                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                //se lanza la info inicial
+                FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if (firebaseAuth.getCurrentUser() != null) {
+                            new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial), edtNombreGrupo, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
+                            // ENVIO CORREO VERIFICACION
+                            Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
+                            firebaseAuth.getCurrentUser().sendEmailVerification();
+                            FirebaseAuth.getInstance().removeAuthStateListener(this);
                         }
-                    });
-                }else{
-                   ComprobadorConexion.simpleSnackbar(view);
-                }
-
+                    }
+                });
             }
         }
     }
@@ -124,15 +115,9 @@ public class RegistrarGrupo extends AppCompatActivity {
     public void onBackPressed() {
 
 
-        FirebaseAuth.getInstance().signOut();
-        finish();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!ComprobadorConexion.isConnected()){
-            ComprobadorConexion.simpleSnackbar(findViewById(R.id.vRegistroGrupo));
-        }
+        FirebaseAuth.getInstance().signOut();
+
+        finish();
     }
 }

@@ -89,8 +89,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
-                FirebaseAuth.getInstance().getCurrentUser().delete();
-                FirebaseAuth.getInstance().signOut();
+//                FirebaseAuth.getInstance().getCurrentUser().delete();
+//                FirebaseAuth.getInstance().signOut();
+                setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
                 a.finish();
             }
         });
@@ -206,7 +207,7 @@ public class RegistarRedSocial extends AppCompatActivity {
             Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
         } else if (posEstilo == 0) {
             Toast.makeText(a, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
-        } else if (posInstrumento == 0 && tipo==0) {
+        } else if (posInstrumento == 0 && tipo == 0) {
             Toast.makeText(a, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
         } else {
             if(ComprobadorConexion.isConnected()){
@@ -248,8 +249,6 @@ public class RegistarRedSocial extends AppCompatActivity {
     }
 
 
-
-
     private void guardarBD(Context cont, Intent data) {
         int tipo = data.getExtras().getInt("tipo");
         switch (tipo) {
@@ -282,9 +281,9 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
-        FirebaseAuth.getInstance().signOut();
-
+//        FirebaseAuth.getInstance().getCurrentUser().delete();
+//        FirebaseAuth.getInstance().signOut();
+        setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
         a.finish();
     }
 

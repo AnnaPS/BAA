@@ -20,12 +20,19 @@ public class Grupo {
     }
 
 
-    public void setAnuncio(Anuncio anuncio) {
+    public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
     }
 
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
 
-    public void setRedsocial(String redsocial) {
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
         this.redsocial.add(redsocial);
     }
 

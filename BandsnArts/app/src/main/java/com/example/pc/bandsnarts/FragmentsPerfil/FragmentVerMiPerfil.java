@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -17,18 +21,27 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -38,10 +51,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.RegistarMusico;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.Container.ComprobadorConexion;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,15 +69,15 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class FragmentVerMiPerfil extends Fragment
-        //implements AdapterView.OnItemSelectedListener
-{
+public class FragmentVerMiPerfil extends Fragment {
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
     EditText txtLocalidad, txtProvincia, txtSexo, txtEstilo, txtDescripcion;
@@ -77,7 +93,7 @@ public class FragmentVerMiPerfil extends Fragment
     View vista;
     private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
 
-    public static int posProvincia, posLocalidad;
+
 
     private String buscando;
 
@@ -93,10 +109,9 @@ public class FragmentVerMiPerfil extends Fragment
     private String mPath;
 
     private Uri rutaFotoPerfil;
-
+    private ImageView progressEditarPerfil;
     //////////////////////
 
-    public static CharSequence[] localidades;
 
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
@@ -108,7 +123,7 @@ public class FragmentVerMiPerfil extends Fragment
 
         vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
 
-
+        progressEditarPerfil = vista.findViewById(R.id.progressBarVLoginEditarPerfil);
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
         spProvincia = vista.findViewById(R.id.spProvinVVerMiPerfil);
@@ -159,7 +174,7 @@ public class FragmentVerMiPerfil extends Fragment
         contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
         preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
 
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
@@ -170,13 +185,13 @@ public class FragmentVerMiPerfil extends Fragment
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
 
                 // En funcion de si el usuario es músico o grupo
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 mostrarComponentes();
                 botonCancelarEdicionPerfil();
                 //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
             }
         });
@@ -195,47 +210,45 @@ public class FragmentVerMiPerfil extends Fragment
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (posEstilo != 0) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                        case ("musico"):
+                            //Actualizamos los datos del musico
+                            ArrayList<String> instrumentos = new ArrayList<>();
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
+                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "musico")) {
-                    case ("musico"):
-                        //Actualizamos los datos del musico
-                        ArrayList<String> instrumentos = new ArrayList<>();
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
-                        instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
+                            new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
+                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                    buscando);
+                            break;
+                        case ("grupo"):
+                            //Actualizamos los datos del grupo
+                            new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
+                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                    buscando);
+                            break;
+                    }
 
-                        new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
-                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
-                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
-                                buscando);
-                        break;
-                    case ("grupo"):
-                        //Actualizamos los datos del grupo
-                        new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
-                                , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
-                                , getResources().getStringArray(R.array.provincias)[posProvincia], localidades[posLocalidad].toString(),
-                                buscando);
-                        break;
+                    miFABGuardarRechazar.close(true);
+                    if (rutaFotoPerfil != null) {
+                        new BDBAA().almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                    } else {
+                        BandsnArts.banderaLocalidad = false;
+                        android.app.FragmentManager fm = getActivity().getFragmentManager();
+                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"Se han guardado los cambios con exito","");
+                        alerta.setCancelable(false);
+                        miFABGuardarRechazar.close(true);
+                        alerta.show(fm, "AlertaDescartar");
+                    }
+
+                } else {
+                    Toast.makeText(vista.getContext(), "Por favor seleccione un estilo.", Toast.LENGTH_SHORT).show();
                 }
-
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
-                mostrarComponentes();
-                botonCancelarEdicionPerfil();
-
-                new BDBAA().almacenarFotoPerfil(vista.getContext(), rutaFotoPerfil);
-
-                Toast.makeText(getActivity(), "Guardar", Toast.LENGTH_SHORT).show();
-
-
-                /*final Fragment verperfil=new FragmentVerMiPerfil();
-                FragmentManager fragment = getFragmentManager();
-                FragmentTransaction fragmentTransaction=fragment.beginTransaction();
-                fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
-                Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();*/
-
-                startActivity(new Intent(view.getContext(), VentanaInicialApp.class));
-                VentanaInicialApp.a.finish();
             }
         });
         descartar.setOnClickListener(new View.OnClickListener() {
@@ -243,16 +256,14 @@ public class FragmentVerMiPerfil extends Fragment
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
 
-
+                BandsnArts.banderaLocalidad = false;
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
-                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios();
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?","Los cambios se perderán");
+                alerta.setCancelable(false);
+                miFABGuardarRechazar.close(true);
                 alerta.show(fm, "AlertaDescartar");
                 ////////////////////////////////////////
-
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
-                mostrarComponentes();
-                botonCancelarEdicionPerfil();
 
 
             }
@@ -262,7 +273,8 @@ public class FragmentVerMiPerfil extends Fragment
         //Poner de incio a invisible el switch
         switchBuscar.setVisibility(View.INVISIBLE);
 
-        loadSpinnerProvincias();
+        BandsnArts.loadSpinnerProvincias(spProvincia);
+
         escuchadoresSpinner();
 
         return vista;
@@ -270,7 +282,17 @@ public class FragmentVerMiPerfil extends Fragment
 
 
     public void escuchadoresSpinner() {
+        spSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+
+
         spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 posSexo = position;
@@ -281,6 +303,13 @@ public class FragmentVerMiPerfil extends Fragment
 
             }
 
+        });
+        spEstilo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spEstilo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -296,6 +325,13 @@ public class FragmentVerMiPerfil extends Fragment
         });
 
 
+        spinnerInstrumentos1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -307,6 +343,13 @@ public class FragmentVerMiPerfil extends Fragment
 
             }
 
+        });
+        spinnerInstrumentos2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -320,6 +363,13 @@ public class FragmentVerMiPerfil extends Fragment
             }
 
         });
+        spinnerInstrumentos3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
         spinnerInstrumentos3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -331,6 +381,13 @@ public class FragmentVerMiPerfil extends Fragment
 
             }
 
+        });
+        spinnerInstrumentos4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
         });
         spinnerInstrumentos4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -345,7 +402,6 @@ public class FragmentVerMiPerfil extends Fragment
 
         });
     }
-
 
     private void ocultarSpinners() {
         spSexo.setVisibility(View.INVISIBLE);
@@ -380,7 +436,7 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void ocultarSpinners(String tipo) {
+    public void ocultarSpinners(String tipo) {
         switch (tipo) {
             case ("musico"):
                 spSexo.setVisibility(View.INVISIBLE);
@@ -415,8 +471,8 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void mostrarComponentes() {
-        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+    public void mostrarComponentes() {
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "")) {
             case "musico":
                 txtEstilo.setVisibility(View.VISIBLE);
                 txtLocalidad.setVisibility(View.VISIBLE);
@@ -432,7 +488,7 @@ public class FragmentVerMiPerfil extends Fragment
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), getApplicationContext());
+        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
     }
 
@@ -517,6 +573,7 @@ public class FragmentVerMiPerfil extends Fragment
                 break;
 
         }
+        FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
         new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
 
@@ -529,11 +586,12 @@ public class FragmentVerMiPerfil extends Fragment
             return true;
         }
         //comprueba si los permisos estan aceptados
-        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(mrView, "Los permisos son necesarios para usar la aplicacion.",
+            Snackbar.make(mrView, "Los permisos son necesarios para poder editar la foto de perfil",
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -549,7 +607,6 @@ public class FragmentVerMiPerfil extends Fragment
 
 
     }
-
 
     //mostrar opciones
     private void showOptions() {
@@ -623,7 +680,6 @@ public class FragmentVerMiPerfil extends Fragment
         super.onSaveInstanceState(outState);
         outState.putString("file_path", mPath);
     }
-    //para poder usar lo guardado
 
 
     @Override
@@ -640,11 +696,12 @@ public class FragmentVerMiPerfil extends Fragment
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("External storage", " Scanned " + path + ":");
                                     Log.i("External storage", " --> Uri = " + uri);
+
                                 }
                             });
                     //decodofica la ruta y coge la imagen que esta contenida en la ruta
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    rutaFotoPerfil = nuevaUri(bitmap,270);
+                    rutaFotoPerfil = nuevaUri(bitmap, 0);
                     break;
 
                 case SELECT_PICTURE:
@@ -653,9 +710,9 @@ public class FragmentVerMiPerfil extends Fragment
                     try {
                         // Creamos un objeto bitmap a partir de la URI
                         Bitmap bitmap2 = MediaStore.Images.Media.getBitmap(mrView.getContext().getContentResolver(), path1);
-                        rutaFotoPerfil = nuevaUri(bitmap2,90);
+                        rutaFotoPerfil = nuevaUri(bitmap2, 0);
 
-                        Log.d("PRUEBAS", "path:                 " + path1.getPath());
+                        Log.d("PRUEBAS", "path:                 " + path1);
                         Log.d("PRUEBAS", "mPath:                 " + mPath);
 
                     } catch (IOException e) {
@@ -666,7 +723,7 @@ public class FragmentVerMiPerfil extends Fragment
         }
     }
 
-    private Uri nuevaUri(Bitmap bitmap,int rotation) {
+    private Uri nuevaUri(Bitmap bitmap, int rotation) {
         // Reescalamos la imagen
         bitmap = BandsnArts.reescalarImagen(bitmap, 500, 500, rotation);
         // Establecemos la imagen en el fragement de edicion (NO SE GUARDA AUN EN BBDD)
@@ -682,7 +739,7 @@ public class FragmentVerMiPerfil extends Fragment
     }
 
 
-    //acepte o deniege los permisos pasa por aqui
+    //acepte o deniegue los permisos pasa por aqui
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -725,8 +782,8 @@ public class FragmentVerMiPerfil extends Fragment
 
     }
 
-    private void botonCancelarEdicionPerfil() {
-        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico")) {
+    public void botonCancelarEdicionPerfil() {
+        switch (PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "")) {
 
             case ("grupo"):
                 contenedorInstrumentos.setVisibility(View.GONE);
@@ -746,113 +803,6 @@ public class FragmentVerMiPerfil extends Fragment
     }
 
 
-    private void loadSpinnerProvincias() {
-        // Create an ArrayAdapter using the string array and a default spinner
-        // layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getApplicationContext(), R.array.provincias, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        // Apply the adapter to the spinner
-        this.spProvincia.setAdapter(adapter);
-
-        // This activity implements the AdapterView.OnItemSelectedListener
-      /*  this.spProvincia.setOnItemSelectedListener(this);
-        this.spLocalidad.setOnItemSelectedListener(this);*/
-    }
-
-    public static void escuchas(final Context contextc, Spinner spProvincia, final Spinner spLocalidad) {
-        spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posProvincia = position;
-                // Retrieves an array
-                TypedArray arrayLocalidades = contextc.getResources().obtainTypedArray(
-                        R.array.array_provincia_a_localidades);
-                localidades = arrayLocalidades.getTextArray(position);
-                arrayLocalidades.recycle();
-
-                // Create an ArrayAdapter using the string array and a default
-                // spinner layout
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                        getApplicationContext(), R.layout.spinner_item,
-                        localidades);
-
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(R.layout.spinner_item);
-
-                // Apply the adapter to the spinner
-                spLocalidad.setAdapter(adapter);
-                spLocalidad.setSelection(FragmentVerMiPerfil.posLocalidad);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        spLocalidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posLocalidad = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //no funciona revisar
-        if(!ComprobadorConexion.isConnected()){
-            ComprobadorConexion.simpleSnackbar(mrView.findViewById(R.id.vermiperfil));
-        }
-    }
-    //    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-//                               long id) {
-//        switch (parent.getId()) {
-//            case R.id.spProvinVVerMiPerfil:
-//                posProvincia = pos;
-//                // Retrieves an array
-//                TypedArray arrayLocalidades = getResources().obtainTypedArray(
-//                        R.array.array_provincia_a_localidades);
-//                localidades = arrayLocalidades.getTextArray(pos);
-//                arrayLocalidades.recycle();
-//
-//                // Create an ArrayAdapter using the string array and a default
-//                // spinner layout
-//                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-//                        getApplicationContext(), R.layout.spinner_item,
-//                        localidades);
-//
-//                // Specify the layout to use when the list of choices appears
-//                adapter.setDropDownViewResource(R.layout.spinner_item);
-//
-//                // Apply the adapter to the spinner
-//                this.spLocalidad.setAdapter(adapter);
-//                break;
-//
-//            case R.id.spLocaliVVerMiPerfil:
-//                posLocalidad = pos;
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//        // Callback method to be invoked when the selection disappears from this
-//        // view. The selection can disappear for instance when touch is
-//        // activated or when the adapter becomes empty.
-//
-
-    //}
 
 
 }
