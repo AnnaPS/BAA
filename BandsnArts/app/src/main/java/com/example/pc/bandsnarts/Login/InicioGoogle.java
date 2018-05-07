@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.auth.api.Auth;
@@ -270,14 +269,7 @@ public class InicioGoogle extends AppCompatActivity implements GoogleApiClient.O
         onNetworkConnectionChanged(isConnected);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        // register connection status listener
-        BandsnArts.getInstance().setConnectivityListener(this);
-        onNetworkConnectionChanged(isConnected);
-    }
     @Override
     protected void onStart() {
         super.onStart();

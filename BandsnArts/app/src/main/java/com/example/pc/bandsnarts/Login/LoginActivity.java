@@ -339,7 +339,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         AuthCredential credencial = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         // Autenticamos con firebase y agragamos un escuchador que nos dirá cuando termina
-        
+
         firebaseAuth.signInWithCredential(credencial).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

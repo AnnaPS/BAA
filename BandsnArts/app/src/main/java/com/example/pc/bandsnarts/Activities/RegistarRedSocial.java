@@ -24,7 +24,6 @@ import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Container.ComprobadorConexion;
 import com.example.pc.bandsnarts.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
