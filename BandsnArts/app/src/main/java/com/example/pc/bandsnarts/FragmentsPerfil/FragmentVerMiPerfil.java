@@ -521,15 +521,11 @@ public class FragmentVerMiPerfil extends Fragment {
                         }
                     }
                 });
-
                 ///boton para cambiar foto de perfil
                 fabFoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         showOptions();
-
-
                     }
                 });
 
