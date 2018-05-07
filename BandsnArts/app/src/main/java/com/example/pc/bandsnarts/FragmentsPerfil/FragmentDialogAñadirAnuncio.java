@@ -75,26 +75,29 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
             public void onClick(View view) {
                 BandsnArts.banderaLocalidad = false;
                 if (!titulo.getText().toString().equals("")) {
-                    if (posEstilo != 0) {
-                        if (posInst != 0) {
-                            if (BandsnArts.posLocalidad != 0) {
-                                BDBAA.agregarAnuncio(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                        PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
-                                        titulo.getText().toString(), descripcionAnuncio.getText().toString(),
-                                        getResources().getStringArray(R.array.tipobusqueda)[posTipo],
-                                        DateFormat.getDateInstance().getCalendar().getTimeZone().toString(),
-                                        getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
-                                        BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
-                                        getResources().getStringArray(R.array.estiloMusical)[posEstilo],
-                                        getResources().getStringArray(R.array.instrumentos)[posInst],
-                                        getResources().getStringArray(R.array.sexo)[posSexo]);
+                    if (!descripcionAnuncio.getText().toString().equals("")) {
+                        if (posEstilo != 0) {
+                            if (posInst != 0) {
+                                if (BandsnArts.posProvincia != 0) {
+                                    BDBAA.agregarAnuncio(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                            PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
+                                            titulo.getText().toString(), descripcionAnuncio.getText().toString(),
+                                            getResources().getStringArray(R.array.tipobusqueda)[posTipo],
+                                            DateFormat.getDateInstance().getCalendar().getTimeZone().toString(),
+                                            getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
+                                            BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                            getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                            getResources().getStringArray(R.array.instrumentos)[posInst],
+                                            getResources().getStringArray(R.array.sexo)[posSexo]);
+                                    getDialog().dismiss();
 
+                                }
                             }
                         }
                     }
                 }
 
-                getDialog().dismiss();
+
             }
         });
 
