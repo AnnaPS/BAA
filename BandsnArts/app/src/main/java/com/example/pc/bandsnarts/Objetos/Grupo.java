@@ -12,7 +12,7 @@ public class Grupo {
     private String descripcion;
     private String provincia;
     private String localidad;
-    private String buscando ="no";
+    private String buscando="no";
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>();
@@ -21,7 +21,7 @@ public class Grupo {
     }
 
 
-    public void setAnuncio(Anuncio anuncio) {
+    public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
     }
 
@@ -32,8 +32,15 @@ public class Grupo {
     public void setAudio(String audio) {
         this.audio = audio;
     }
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
 
-    public void setRedsocial(String redsocial) {
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
         this.redsocial.add(redsocial);
     }
 

@@ -50,6 +50,8 @@ public class Musico {
     public Musico() {
     }
 
+
+
     public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
         this.uid=uid;
         this.imagen = imagen;
@@ -138,11 +140,19 @@ public class Musico {
         return anuncio;
     }
 
-    public void setAnuncio(Anuncio anuncio) {
+    public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
     }
 
-    public void setRedsocial(String redsocial) {
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
+
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
         this.redsocial.add(redsocial);
     }
 
