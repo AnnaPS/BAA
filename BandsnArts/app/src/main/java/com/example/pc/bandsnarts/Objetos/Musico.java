@@ -6,19 +6,30 @@ public class Musico {
 
     private String uid;
     private String imagen;
-    int cantidadAnuncios, img,buscandoInt;
-
+    private String audio;
     private String nombre;
     private String sexo;
     private String estilo;
-    private String instrumento;
+    private ArrayList<String> instrumento;
     private String descripcion;
     private String provincia;
     private String localidad;
-    private ArrayList<String> mensaje=new ArrayList<String>();
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
-    private String buscando;
+    private String buscando="no";
     private ArrayList<String> redsocial=new ArrayList<String>();
+
+
+
+    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+        this.imagen = imagen;
+        this.sexo = sexo;
+        this.estilo = estilo;
+        this.instrumento = instrumento;
+        this.descripcion = descripcion;
+        this.provincia = provincia;
+        this.localidad = localidad;
+        this.buscando = buscando;
+    }
 
     public String getBuscando() {
         return buscando;
@@ -32,15 +43,6 @@ public class Musico {
         this.uid = uid;
     }
 
-    public ArrayList<String> getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(ArrayList<String> mensaje) {
-        this.mensaje = mensaje;
-    }
-
-
     public void setBuscando(String buscando) {
         this.buscando = buscando;
     }
@@ -48,7 +50,9 @@ public class Musico {
     public Musico() {
     }
 
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, String instrumento, String descripcion) {
+
+
+    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;
@@ -58,12 +62,21 @@ public class Musico {
         this.descripcion = descripcion;
     }
 
+
     public String getImagen() {
         return imagen;
     }
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
     }
 
     public String getNombre() {
@@ -91,11 +104,11 @@ public class Musico {
         this.estilo = estilo;
     }
 
-    public String getInstrumento() {
+    public ArrayList<String> getInstrumento() {
         return instrumento;
     }
 
-    public void setInstrumento(String instrumento) {
+    public void setInstrumento(ArrayList<String> instrumento) {
         this.instrumento = instrumento;
     }
 
@@ -126,36 +139,20 @@ public class Musico {
     public ArrayList<Anuncio> getAnuncio() {
         return anuncio;
     }
-    public int getBuscandoInt() {
-        return buscandoInt;
-    }
 
-    public void setBuscandoInt(int buscandoInt) {
-        this.buscandoInt = buscandoInt;
-    }
-
-    public int getCantidadAnuncios() {
-        return cantidadAnuncios;
-
-    }
-
-    public void setCantidadAnuncios(int cantidadAnuncios) {
-        this.cantidadAnuncios = cantidadAnuncios;
-    }
-
-    public int getImg() {
-        return img;
-    }
-
-    public void setImg(int img) {
-        this.img = img;
-    }
-
-    public void setAnuncio(Anuncio anuncio) {
+    public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
     }
 
-    public void setRedsocial(String redsocial) {
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
+
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
         this.redsocial.add(redsocial);
     }
 

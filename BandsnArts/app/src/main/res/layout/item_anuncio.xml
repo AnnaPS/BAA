@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemAnuncio"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/md_grey_200">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtfechaItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="03/02/2018"
+                    android:textColor="@color/md_light_green_600"
+                    android:textStyle="italic" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/item_detail"
+                    android:layout_marginLeft="240dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_more_vert_black_24dp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txtTituloItemAnunciosPropio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="NECESITAMOS GUITARRISTA"
+                android:textAlignment="center"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="*"
+                    android:textColor="@color/md_teal_800"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtTipoItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Grupo busca músico"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="*"
+                    android:textColor="@color/md_teal_800"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtEstiloItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Rock"
+                    android:textColor="@color/md_light_green_600"
+                    android:textSize="16dp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="*"
+                    android:textColor="@color/md_teal_800"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtInstrumentoItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Guitarra Eléctrica"
+                    android:textColor="@color/md_light_green_600"
+                    android:textSize="16dp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="*"
+                    android:textColor="@color/md_teal_800"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/txtSexoItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Hombre"
+                    android:textColor="@color/md_light_green_600"
+                    android:textSize="16dp"
+                    android:textStyle="bold|italic" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/md_teal_800">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/txtProvinciaItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Madrid"
+                    android:textColor="@color/md_light_green_600"
+                    android:textSize="14dp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="/"
+                    android:textColor="@color/md_teal_800"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtLocalidadItemAnunciosPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp"
+                    android:text="San Sebastian de los Reyes"
+                    android:textColor="@color/md_light_green_600"
+                    android:textSize="14dp"
+                    android:textStyle="bold|italic" />
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/md_green_200">
+
+                <TextView
+                    android:id="@+id/txtDescripcionItemAnuncioPropio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes."
+                    android:textSize="15sp" />
+
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -52,7 +53,17 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         nom.setText(grupoItem.getNombre());
         est.setText(grupoItem.getEstilo());
         desc.setText(grupoItem.getDescripcion());
-
+        try {
+            if (grupoItem.getBuscando().equalsIgnoreCase("si")) {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
+            } else {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.no));
+            }
+        } catch (NullPointerException ex) {
+            System.out.println("Sale por aqui en caso de que venga del primer registro");
+        }
+        anun.setText(String.valueOf(grupoItem.getAnuncio().size()));
+         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaG.get(position));
 
     }
 

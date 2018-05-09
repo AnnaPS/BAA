@@ -1,5 +1,8 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +29,8 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -46,9 +51,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     private ImageView fotoPerfil;
     private TextView txtNombre, txtCorreo;
-
+    private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
+    public static Activity a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +64,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        a = this;
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +125,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
         //En caso de que este desplegado el menu drawer al accionar este evento solo lo ocultara y
@@ -126,8 +133,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
+            LoginManager.getInstance().logOut();
             finish();
         }
     }
@@ -140,7 +148,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -154,14 +162,14 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragment = getSupportFragmentManager();
 
-        int id = item.getItemId();
+        id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
@@ -188,6 +196,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
+        FragmentMultimedia.paraHilo = true;
+        if(FragmentMultimedia.mediaPlayer!=null) {
+            FragmentMultimedia.mediaPlayer.stop();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -200,19 +212,19 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this,"musico",fotoPerfil,txtNombre);
-        new BDBAA().cargarDrawerPerfil(this,"grupo",fotoPerfil,txtNombre);
+         BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
+
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
         // Log.d("MIAPP", cuentaUsuario.getPhotoUrl().toString());
     }
 
     public void cerrarSesion() {
-        //Deslogueo en Google
+        // deslogueo correo contraseña
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-
+        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -227,7 +239,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 }
             }
         });
-
     }
 
     @Override

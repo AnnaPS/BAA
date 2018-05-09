@@ -121,6 +121,7 @@
                     android:fontFamily="sans-serif"
                     android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
                     android:maxLength="200"
                     android:textSize="14sp"
                     android:textStyle="bold"

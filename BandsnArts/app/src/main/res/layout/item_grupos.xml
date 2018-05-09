@@ -17,9 +17,18 @@
         app:cardBackgroundColor="@color/md_grey_200"
 
         >
-
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/btnMenuGrupos"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/item_detail"
+            android:layout_marginLeft="280dp"
+            android:background="@null"
+            android:src="@drawable/ic_more_vert_black_24dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
@@ -41,12 +50,12 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="24dp"
                 android:text="Coffe Shop"
-                android:textSize="40sp"
+                android:textSize="20sp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -57,24 +66,37 @@
                 android:layout_marginTop="70dp"
                 android:layout_marginLeft="180dp"
                 android:text="Rock"
-                android:textColor="@color/md_light_green_600"
+                android:textColor="@color/md_green_300"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/md_teal_800" />
         <TextView
             android:id="@+id/txtDescripcionItemGrupo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="125dp"
+            android:layout_marginTop="110dp"
+            android:background="@color/md_green_300"
             android:text="Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes.Grupo de rock, de 5 componentes."
             android:textSize="15sp" />
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="220dp"
+            android:background="@color/md_teal_800" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="230dp"
                 android:text="Buscando"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -97,7 +119,7 @@
                 android:layout_width="35dp"
                 android:layout_height="23dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="230dp"
                 app:srcCompat="@drawable/yes" />
 
 
@@ -106,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="230dp"
                 android:text="Anuncios"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -117,8 +139,8 @@
                 android:id="@+id/txtCantidadAnunciosItemGrupo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="190dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="230dp"
                 android:text="22"
                 android:textColor="@color/md_light_green_600"
                 android:textSize="18sp"

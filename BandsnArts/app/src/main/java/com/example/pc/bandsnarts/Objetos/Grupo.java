@@ -6,17 +6,46 @@ public class Grupo {
 
     private String uid;
     private String imagen;
+    private String audio;
     private String nombre;
     private String estilo;
     private String descripcion;
     private String provincia;
     private String localidad;
-    private String buscando;
-    private ArrayList<String> mensaje=new ArrayList<String>();
+    private String buscando="no";
+
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>();
 
     public Grupo(){
+    }
+
+
+    public void setAnuncios(Anuncio anuncio) {
+        this.anuncio.add(anuncio);
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
+
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
+        this.redsocial.add(redsocial);
+    }
+
+    public ArrayList<String> getRedsocial() {
+        return redsocial;
     }
 
     public String getBuscando() {
@@ -27,13 +56,7 @@ public class Grupo {
         this.buscando = buscando;
     }
 
-    public ArrayList<String> getMensaje() {
-        return mensaje;
-    }
 
-    public void setMensaje(ArrayList<String> mensaje) {
-        this.mensaje = mensaje;
-    }
 
     public String getUid() {
         return uid;
@@ -104,14 +127,6 @@ public class Grupo {
         return anuncio;
     }
 
-    public void setAnuncio(Anuncio anuncio) {
-        this.anuncio.add(anuncio);
-    }
-    public void setRedsocial(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
-    public ArrayList<String> getRedsocial() {
-        return redsocial;
-    }
+
 }

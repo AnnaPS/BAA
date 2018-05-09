@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,11 +23,16 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class RegistarRedSocial extends AppCompatActivity {
-    Spinner spinnerInstrumentos, spinnerEstilos,spinnerSexo;
+    Spinner spinnerInstrumentos, spinnerEstilos, spinnerSexo;
     EditText edtNombre, edtDescripcion;
     private int posEstilo;
     private int posInstrumento;
@@ -48,7 +55,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         //finds///
         setContentView(R.layout.activity_registar_red_social);
         spinnerEstilos = findViewById(R.id.spEstiloVRegSocial);
-        spinnerSexo=findViewById(R.id.spinnerSexoVRegSocial);
+        spinnerSexo = findViewById(R.id.spinnerSexoVRegSocial);
         textViewInstrumentos = findViewById(R.id.tvInstrumentoVRegSocial);
         //spinners para estilo musical e instrumentos
         spinnerInstrumentos = findViewById(R.id.spInstrumentoVRegSocial);
@@ -85,7 +92,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             public void onClick(View view) {
                 //cierra el alert
                 alerta.cancel();
-                FirebaseAuth.getInstance().signOut();
+//                FirebaseAuth.getInstance().getCurrentUser().delete();
+//                FirebaseAuth.getInstance().signOut();
+                setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
                 a.finish();
             }
         });
@@ -131,9 +140,34 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     public void escuchadoresSpinner() {
 
+        // Para ocultar el teclado al pulsar en un spinner
+        spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+                return false;
+            }
+        });
+        spinnerInstrumentos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+                return false;
+            }
+        });
+
+        spinnerSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(RegistarRedSocial.this);
+                return false;
+            }
+        });
+
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 posEstilo = position;
             }
 
@@ -171,39 +205,46 @@ public class RegistarRedSocial extends AppCompatActivity {
 
 
     public void onClickLogueo(View view) {
+        if (edtNombre.getText().toString().isEmpty()) {
+            edtNombre.setError("Debe Insertar su nombre");
+            Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
+        } else if (posEstilo == 0) {
+            Toast.makeText(a, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+        } else if (posInstrumento == 0 && tipo == 0) {
+            Toast.makeText(a, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
+        } else {
+            view.setVisibility(View.INVISIBLE);
+            Intent i;
+            Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
+            switch (tipo) {
+                //Es un grupo
+                case 1:
+                    i = new Intent()
+                            .putExtra("img", "default_grupo.jpg")
+                            .putExtra("tipo", tipo)
+                            .putExtra("nom", edtNombre.getText().toString())
+                            .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                            .putExtra("des", edtDescripcion.getText().toString());
+                    guardarBD(this, i);
+                    break;
+                //Es un musico
+                case 0:
+                    ArrayList<String> intrumentos = new ArrayList<>();
+                    intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-        if (!edtNombre.getText().toString().isEmpty()) {
-
-                Intent i;
-                Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
-                switch (tipo) {
-                    //Es un grupo
-                    case 1:
-                        i = new Intent()
-                                .putExtra("img","default_grupo.jpg")
-                                .putExtra("tipo", tipo)
-                                .putExtra("nom", edtNombre.getText().toString())
-                                .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                                .putExtra("des", edtDescripcion.getText().toString());
-                        guardarBD(this, i);
-                        break;
-                    //Es un musico
-                    case 0:
-                           i=new Intent()
-                                   .putExtra("img","default_musico.jpg")
-                                   .putExtra("tipo", tipo)
-                                   .putExtra("nom", edtNombre.getText().toString())
-                                   .putExtra("sex",getResources().getStringArray(R.array.sexo)[posSexo])
-                                   .putExtra("est",getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                                   .putExtra("ins",getResources().getStringArray(R.array.instrumentos)[posInstrumento])
-                                   .putExtra("des", edtDescripcion.getText().toString());
-                        guardarBD(this, i);
-                        break;
-                }
+                    i = new Intent()
+                            .putExtra("img", "default_musico.jpg")
+                            .putExtra("tipo", tipo)
+                            .putExtra("nom", edtNombre.getText().toString())
+                            .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
+                            .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
+                            .putExtra("ins", intrumentos)
+                            .putExtra("des", edtDescripcion.getText().toString());
+                    guardarBD(this, i);
+                    break;
             }
         }
-
-
+    }
 
 
     private void guardarBD(Context cont, Intent data) {
@@ -211,8 +252,9 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                new BDBAA().agregarGrupo(cont
-                        ,edtNombre
+                BDBAA.agregarGrupo(cont
+                        , findViewById(R.id.btnRegistrarVRegSocial)
+                        , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("est")
@@ -221,13 +263,14 @@ public class RegistarRedSocial extends AppCompatActivity {
             //Es un musico
             case 0:
                 //pendiente de implementacion de sexo
-                new BDBAA().agregarMusico(cont
-                        ,edtNombre
+                 BDBAA.agregarMusico(cont
+                        , findViewById(R.id.btnRegistrarVRegSocial)
+                        , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
                         , data.getStringExtra("sex")
                         , data.getStringExtra("est")
-                        , data.getStringExtra("ins")
+                        , data.getStringArrayListExtra("ins")
                         , data.getStringExtra("des"));
                 break;
         }
@@ -236,5 +279,10 @@ public class RegistarRedSocial extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+//        FirebaseAuth.getInstance().getCurrentUser().delete();
+//        FirebaseAuth.getInstance().signOut();
+        setResult(BandsnArts.CODIGO_DE_REDSOCIAL);
+        a.finish();
     }
+
 }

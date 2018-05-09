@@ -36,11 +36,7 @@ public class FragmentGruposTabInicio extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_grupos_fragment, container, false);
         recyclerViewGrupos = vista.findViewById(R.id.recyclerGrupos);
-
-        if(listaGrupos.isEmpty()){
-            new BDBAA().cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
-        }
-
+            BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
         return vista;
     }
 }

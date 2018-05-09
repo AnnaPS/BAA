@@ -1,12 +1,27 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+
+
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+
+import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
+
 
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -22,10 +37,12 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
     private Context mContext;
     private ArrayList<Musico> listaM;
+    FragmentMusicosTabInicio a;
 
     public RecyclerAdapterMusico(Context context, ArrayList<Musico> listaMusicos) {
         mContext = context;
         listaM = listaMusicos;
+
     }
 
     @Override
@@ -37,7 +54,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapterMusico.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerAdapterMusico.ViewHolder holder, int position) {
 
         final Musico musicoItem = (Musico) listaM.get(position);
         CircleImageView imagenMusico = holder.img;
@@ -47,15 +64,25 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView desc = holder.descripcion;
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
+        ImageButton btnMenu = holder.menuButton;
 
-        //imagenMusico.setImageResource(musicoItem.getImg());
         nom.setText(musicoItem.getNombre());
-        ins.setText(musicoItem.getInstrumento());
+        ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
-//        anun.setText(musicoItem.getCantidadAnuncios());
-        busc.setImageResource(musicoItem.getBuscandoInt());
+        anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
 
+
+        try {
+            if (musicoItem.getBuscando().equalsIgnoreCase("si")) {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
+            } else {
+                busc.setImageDrawable(mContext.getDrawable(R.drawable.no));
+            }
+        } catch (NullPointerException ex) {
+            System.out.println("Sale por aqui en caso de que venga del primer registro");
+        }
+         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
     }
 
 
@@ -68,6 +95,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         CircleImageView img;
         ImageView buscando;
         TextView nombre, instrumento, estilo, descripcion, anuncios;
+        ImageButton menuButton;
 
         public ViewHolder(View itemView) {
             super(itemView);

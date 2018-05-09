@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.example.pc.bandsnarts.Adaptadores.MiPageAdapter;
+import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
 
 public class VentanaSliderParteDos extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
             //si ya no es la primera vez se lanza la ventana de inicio !!! PONGO ESTA PORQUE LA DE INICIO NO ESTA HECHA AUN
             //AQUI SE LANZARIA LA POR DEFECTO AL ABRIR LA APP YA LOGUEADO
             establecerPrimeraVezInicio(true);
-            startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
+            startActivity(new Intent(this, VentanaInicialApp.class));
             finish();
         }
         layaoutLinear = findViewById(R.id.linearSlider);
@@ -96,7 +97,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
             //nos movemos a la siguiente
             viewPager.setCurrentItem(paginaActual);
         }else{
-            startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
+            startActivity(new Intent(this, VentanaInicialApp.class));
             finish();
         }
     }
@@ -104,7 +105,7 @@ public class VentanaSliderParteDos extends AppCompatActivity {
     //si pulsa saltar se lanza la actividad de bienvenida
     public void onClickSaltarVSlider(View view) {
         establecerPrimeraVezInicio(true);
-        startActivityForResult(new Intent(this, VentanaInicialApp.class),222);
+        startActivity(new Intent(this, VentanaInicialApp.class));
         finish();
     }
     private void setDotStatus(int page){
