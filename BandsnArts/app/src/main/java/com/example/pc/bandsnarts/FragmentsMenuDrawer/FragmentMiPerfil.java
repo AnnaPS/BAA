@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,26 +55,31 @@ public class FragmentMiPerfil extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ///parte de los botones de navegacion
+        // parte de los botones de navegacion
         bottomNavigationView = (BottomNavigationView)vista.findViewById(R.id.bottomnav);
-        //info = vista.findViewById(R.id.info);
+        // info = vista.findViewById(R.id.info);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 FragmentManager fragment = getFragmentManager();
                 int id = item.getItemId();
                 if (id == R.id.menuPerfil) {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
                     Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
+                    FragmentMultimedia.paraHilo = true;
+                    if(FragmentMultimedia.mediaPlayer.isPlaying()) {
+                        FragmentMultimedia.mediaPlayer.stop();
+                    }
+                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB"              +FragmentMultimedia.paraHilo);
                 } else if (id == R.id.menuAnuncios) {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,anuncios).commit();
                     Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
-
+                    FragmentMultimedia.paraHilo = true;
+                    FragmentMultimedia.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,multi).commit();
@@ -82,7 +88,5 @@ public class FragmentMiPerfil extends Fragment {
                 return true;
             }
         });
-
-
     }
 }

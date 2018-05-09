@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +39,8 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogDescartarCambios;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
@@ -48,6 +52,7 @@ import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,6 +68,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -758,7 +764,111 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
+    public static void actualizarCancionPerfil(final String refCancion, final String tipo) {
+        // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        // Ordenamos por uid dentro del nodo tipo en le que estabamos
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case ("musico"):
+                            Musico mus = ds.getValue(Musico.class);
+                            mus.setAudio(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refCancion);
+                            bd.child(ds.getKey()).setValue(mus);
+
+                            break;
+                        case ("grupo"):
+                            Grupo gr = ds.getValue(Grupo.class);
+                            gr.setAudio(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + refCancion);
+                            bd.child(ds.getKey()).setValue(gr);
+
+                            break;
+                    }
+                    comprobacionAudioUsuario(tipo, VentanaInicialApp.a.getApplicationContext());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
+    public static void comprobacionAudioUsuario(final String tipo, final Context ctx) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = null;
+        q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String audio = null;
+                StorageReference ref = FirebaseStorage.getInstance().getReference("audios");
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            audio = data.getValue(Musico.class).getAudio();
+                            break;
+                        case "grupo":
+                            audio = data.getValue(Grupo.class).getAudio();
+                            break;
+                    }
+                    if (audio != null) {
+                        ref.child(audio).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                Log.d("AAAAA", "onComplete: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                                // PONER LA CANCION EN EL REPRODUCTOR
+                                FragmentMultimedia.mediaPlayer = MediaPlayer.create(ctx, task.getResult());
+                                FragmentMultimedia.mediaPlayer.seekTo(0);
+                                FragmentMultimedia.mediaPlayer.setVolume(0.5f, 0.5f);
+                                FragmentMultimedia.totalTime = FragmentMultimedia.mediaPlayer.getDuration();
+                                FragmentMultimedia.positionBar.setMax(FragmentMultimedia.totalTime);
+                                FragmentMultimedia.paraHilo = false;
+                                FragmentMultimedia.hiloMusica = new Thread((Runnable) FragmentMultimedia.fragment);
+                                FragmentMultimedia.hiloMusica.start();
+
+                                (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia).setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
+
+                                FragmentMultimedia.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                    @Override
+                                    public void onCompletion(MediaPlayer mp) {
+
+                                        FragmentMultimedia.mediaPlayer.pause();
+                                        (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia).setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
+
+                                    }
+                                });
+
+                            }
+
+                        });
+
+
+                    } else {
+                        // OCULTAR REPRODUCTOR
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
     public static void accesoFotoPerfil(final String tipo, final ImageView vista, final Context context) {
         // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
@@ -897,5 +1007,6 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
+
 
 }
