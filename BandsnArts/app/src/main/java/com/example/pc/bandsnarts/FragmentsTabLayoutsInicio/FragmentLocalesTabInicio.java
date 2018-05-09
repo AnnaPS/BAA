@@ -39,7 +39,7 @@ public class FragmentLocalesTabInicio extends Fragment {
 
         recyclerViewLocal = vista.findViewById(R.id.recyclerLocal);
         if (listaLocal.isEmpty()) {
-            new BDBAA().cargarDatos(listaLocal, recyclerViewLocal, getActivity(),"locales");
+             BDBAA.cargarDatos(listaLocal, recyclerViewLocal, getActivity(),"locales");
         }
 
 

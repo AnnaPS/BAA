@@ -79,7 +79,7 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    public void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
+    public static void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
         // Nos posicionamos
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
 
@@ -206,7 +206,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public void borrarPerfil(final String uid) {
+    public static void borrarPerfil(final String uid) {
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
         Query q = bd.orderByChild("uid").equalTo(uid);
         Log.d("UID", "onDataChange: " + uid);
@@ -946,7 +946,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public void almacenarFotoPerfil(final View ctx, Uri uri, final ImageView imageProgressView) {
+    public static void almacenarFotoPerfil(final View ctx, Uri uri, final ImageView imageProgressView) {
         // Nos posicionamos en el nodo de imagenes del storage
         StorageReference storage = FirebaseStorage.getInstance().getReference();
         Uri file;
@@ -977,11 +977,11 @@ public class BDBAA extends AppCompatActivity {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
-                new BDBAA().actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
+                 BDBAA.actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
                 FragmentManager fragment = ((FragmentActivity) VentanaInicialApp.a).getSupportFragmentManager();
                 fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-                new BDBAA().cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
+                 BDBAA.cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override

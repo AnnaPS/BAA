@@ -48,7 +48,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
 
     View vista;
     private Button playButton;
-    private SeekBar  volumenBar;
+    private SeekBar volumenBar;
     public static SeekBar positionBar;
     private TextView tiempoTranscurrido, tiempoRestante;
     public static MediaPlayer mediaPlayer;
@@ -78,7 +78,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
 
         // COMPROBAR SI EL USUARIO TIENE AUDIO
 
-        BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""),vista.getContext());
+        BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
 
         subirAudio = vista.findViewById(R.id.btnAnadirVMultimedia);
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -139,16 +139,12 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         });
 
 
-
-
-
         subirAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 subirAudio();
             }
         });
-
 
 
         return vista;
@@ -226,7 +222,9 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             if (requestCode == 1) {
                 Uri path1 = data.getData();
                 File file = new File(path1.getLastPathSegment());
-
+                if (mediaPlayer.isPlaying()) {
+                    FragmentMultimedia.mediaPlayer.stop();
+                }
                 mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
 
                 // Guardar audio
@@ -255,7 +253,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
 
                         android.app.FragmentManager fm = getActivity().getFragmentManager();
-                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(this,"Se han guardado los cambios con exito","");
+                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(this, "Se han guardado los cambios con exito", "");
                         alerta.setCancelable(false);
 
                         alerta.show(fm, "AlertaDescartar");

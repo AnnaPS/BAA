@@ -33,9 +33,9 @@ public class FragmentMiPerfil extends Fragment {
     ///Objeto necesario para los botones de navegacion
     private BottomNavigationView bottomNavigationView;
     private TextView info;
-    final Fragment verperfil=new FragmentVerMiPerfil();
-    final Fragment anuncios=new FragmentAnuncios();
-    final Fragment multi=new FragmentMultimedia();
+    final Fragment verperfil = new FragmentVerMiPerfil();
+    final Fragment anuncios = new FragmentAnuncios();
+    final Fragment multi = new FragmentMultimedia();
     View vista;
     public static View bottomTools;
 
@@ -45,9 +45,9 @@ public class FragmentMiPerfil extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_fragment_mi_perfil, container, false);
         //Se establece como principal el fragment de inicio
-        bottomTools=vista.findViewById(R.id.bottomnav);
+        bottomTools = vista.findViewById(R.id.bottomnav);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil,new FragmentVerMiPerfil()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil()).commit();
 
         return vista;
     }
@@ -56,7 +56,7 @@ public class FragmentMiPerfil extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // parte de los botones de navegacion
-        bottomNavigationView = (BottomNavigationView)vista.findViewById(R.id.bottomnav);
+        bottomNavigationView = (BottomNavigationView) vista.findViewById(R.id.bottomnav);
         // info = vista.findViewById(R.id.info);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,23 +66,24 @@ public class FragmentMiPerfil extends Fragment {
                 FragmentManager fragment = getFragmentManager();
                 int id = item.getItemId();
                 if (id == R.id.menuPerfil) {
-                    FragmentTransaction fragmentTransaction=fragment.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
+                    FragmentTransaction fragmentTransaction = fragment.beginTransaction();
+                    fragmentTransaction.replace(R.id.contenedormiperfil, verperfil).commit();
                     Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
                     FragmentMultimedia.paraHilo = true;
-                    if(FragmentMultimedia.mediaPlayer.isPlaying()) {
+                    if (FragmentMultimedia.mediaPlayer!=null) {
                         FragmentMultimedia.mediaPlayer.stop();
                     }
-                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB"              +FragmentMultimedia.paraHilo);
+                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB" + FragmentMultimedia.paraHilo);
                 } else if (id == R.id.menuAnuncios) {
-                    FragmentTransaction fragmentTransaction=fragment.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenedormiperfil,anuncios).commit();
+                    FragmentTransaction fragmentTransaction = fragment.beginTransaction();
+                    fragmentTransaction.replace(R.id.contenedormiperfil, anuncios).commit();
                     Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
                     FragmentMultimedia.paraHilo = true;
-                    FragmentMultimedia.mediaPlayer.stop();
+                    if (FragmentMultimedia.mediaPlayer!=null)
+                        FragmentMultimedia.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
-                    FragmentTransaction fragmentTransaction=fragment.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenedormiperfil,multi).commit();
+                    FragmentTransaction fragmentTransaction = fragment.beginTransaction();
+                    fragmentTransaction.replace(R.id.contenedormiperfil, multi).commit();
                     Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show();
                 }
                 return true;

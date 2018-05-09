@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()|| clienteGoogle.isConnecting()) {
-                        new BDBAA().comprobarUID(estaVentana, usuario.getUid());
+                         BDBAA.comprobarUID(estaVentana, usuario.getUid());
                     } else {
                         visualizarBotones(View.VISIBLE);
                     }
@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
-                    new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                     BDBAA.comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
 
                 }
@@ -350,7 +350,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 } else {
                     visualizarBotones(View.INVISIBLE);
-                    new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                     BDBAA.comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
                 }
             }
         });

@@ -86,9 +86,9 @@ public class Autentificacion extends AppCompatActivity {
                                         FirebaseAuth.getInstance().signOut();
                                     } else {
                                         PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", 1);
-                                        new BDBAA().borrarPerfil(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        new BDBAA().eliminarNodo("musico",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        new BDBAA().eliminarNodo("grupo",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                         BDBAA.borrarPerfil(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                         BDBAA.eliminarNodo("musico",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                         BDBAA.eliminarNodo("grupo",FirebaseAuth.getInstance().getCurrentUser().getUid());
                                         Toast.makeText(cont, "Eliminado", Toast.LENGTH_SHORT).show();
                                     }
                                 }

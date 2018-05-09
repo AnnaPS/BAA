@@ -174,7 +174,7 @@ public class FragmentVerMiPerfil extends Fragment {
         contenedorInstrumentos = vista.findViewById(R.id.appBarLayoutInstrumentos);
         preguntaInstrumentos = vista.findViewById(R.id.txtPregInstrum);
 
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
+        BDBAA.cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
         //BOTON FLOTANTE PARA EDITAR EL PERFIL
         miFAB = (FloatingActionButton) vista.findViewById(R.id.floatingBPerfil);
@@ -220,14 +220,14 @@ public class FragmentVerMiPerfil extends Fragment {
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
 
-                            new BDBAA().modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
+                             BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
                         case ("grupo"):
                             //Actualizamos los datos del grupo
-                            new BDBAA().modificarDatosUsuario("grupo", view.getContext(), null
+                             BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
@@ -236,7 +236,7 @@ public class FragmentVerMiPerfil extends Fragment {
 
                     miFABGuardarRechazar.close(true);
                     if (rutaFotoPerfil != null) {
-                        new BDBAA().almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                         BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
                     } else {
                         BandsnArts.banderaLocalidad = false;
                         android.app.FragmentManager fm = getActivity().getFragmentManager();
@@ -488,7 +488,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
-        new BDBAA().cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
+         BDBAA.cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
     }
 
@@ -574,7 +574,7 @@ public class FragmentVerMiPerfil extends Fragment {
 
         }
         FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
-        new BDBAA().cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+         BDBAA.cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
 
     }
