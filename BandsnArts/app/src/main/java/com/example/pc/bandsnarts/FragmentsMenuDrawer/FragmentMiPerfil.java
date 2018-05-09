@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,11 +69,17 @@ public class FragmentMiPerfil extends Fragment {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,verperfil).commit();
                     Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
+                    FragmentMultimedia.paraHilo = true;
+                    if(FragmentMultimedia.mediaPlayer.isPlaying()) {
+                        FragmentMultimedia.mediaPlayer.stop();
+                    }
+                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB"              +FragmentMultimedia.paraHilo);
                 } else if (id == R.id.menuAnuncios) {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,anuncios).commit();
                     Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
-
+                    FragmentMultimedia.paraHilo = true;
+                    FragmentMultimedia.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
                     FragmentTransaction fragmentTransaction=fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil,multi).commit();

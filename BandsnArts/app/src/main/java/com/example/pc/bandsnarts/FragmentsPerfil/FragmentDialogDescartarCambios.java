@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.FragmentsPerfil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,7 +25,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
     TextView tv_titulo, tv_subtitulo;
     private static final String TAG = "AlertaDescartar";
     private String titulo, subtilo;
-    FragmentVerMiPerfil a;
+    public static Object a = null;
 
     private interface OnInputListener {
         void sendInput(String input);
@@ -33,7 +34,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
     public OnInputListener onInputListener;
 
     @SuppressLint("ValidFragment")
-    public FragmentDialogDescartarCambios(FragmentVerMiPerfil a, String titulo, String subTitulo) {
+    public FragmentDialogDescartarCambios(Object a, String titulo, String subTitulo) {
         this.a = a;
         this.titulo = titulo;
         this.subtilo = subTitulo;
@@ -67,10 +68,14 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
-                a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", ""));
-                a.mostrarComponentes();
-                a.botonCancelarEdicionPerfil();
-                FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                if(a instanceof FragmentVerMiPerfil){
+                    FragmentVerMiPerfil a = (FragmentVerMiPerfil) FragmentDialogDescartarCambios.a;
+                    a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", ""));
+                    a.mostrarComponentes();
+                    a.botonCancelarEdicionPerfil();
+                    FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                }
+
                 getDialog().dismiss();
             }
         });
