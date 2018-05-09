@@ -96,7 +96,7 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
             }
         });
 
-        
+
 
     }
 
