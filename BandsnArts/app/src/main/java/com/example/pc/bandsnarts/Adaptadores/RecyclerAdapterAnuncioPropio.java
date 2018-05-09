@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,8 +13,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -77,8 +80,8 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
                                 break;
 
                             case R.id.menu_anuncio_eliminar:
-
                                 listaA.remove(position);
+                                BDBAA.eliminarAnuncio(PreferenceManager.getDefaultSharedPreferences(mContext).getString("tipo",""), FirebaseAuth.getInstance().getCurrentUser().getUid(),listaA);
                                 notifyDataSetChanged();
                                 Toast.makeText(mContext, "Eliminado con exito", Toast.LENGTH_SHORT).show();
                                 break;
@@ -93,7 +96,7 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
             }
         });
 
-        //new BDBAA().accesoFotoPerfil("grupo",'n',imagenMusico,mContext);
+        
 
     }
 
@@ -132,4 +135,5 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
 }

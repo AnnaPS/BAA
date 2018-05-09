@@ -189,6 +189,7 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "GUARDADO CON EXITO", Toast.LENGTH_SHORT).show();
 
                 }
+
             }
 
             @Override
@@ -225,6 +226,39 @@ public class BDBAA extends AppCompatActivity {
             }
         });
 
+    }
+    public static void eliminarAnuncio(final String type, String uid, final ArrayList lista) {
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(type);
+        Query q = bd.orderByChild("uid").equalTo(uid);
+        Log.d("UID", "onDataChange: " + uid);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (type){
+                        case"musico":
+                            Musico mus= data.getValue(Musico.class);
+                            mus.setAnuncio(lista);
+                            bd.child(data.getKey()).setValue(mus);
+                            break;
+                        case "grupo":
+                            Grupo gru= data.getValue(Grupo.class);
+                            gru.setAnuncio(lista);
+                            bd.child(data.getKey()).setValue(gru);
+                            break;
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void eliminarNodo(String type, String uid) {
@@ -598,6 +632,7 @@ public class BDBAA extends AppCompatActivity {
     public static void cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(uid);
+       lista.clear();
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
