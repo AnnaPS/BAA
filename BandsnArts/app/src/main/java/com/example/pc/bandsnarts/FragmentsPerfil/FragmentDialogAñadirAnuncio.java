@@ -1,6 +1,9 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,22 +48,20 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
     int posEstilo, posInst, posSexo, posTipo;
+     View vista;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
-
+        vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
         atras = vista.findViewById(R.id.btnAtrasAnuncio);
         fecha = vista.findViewById(R.id.txtFechaAnuncio);
         titulo = vista.findViewById(R.id.edtTituloAnuncio);
         descripcionAnuncio = vista.findViewById(R.id.edtAnuncio);
-
         spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
         spSexo = vista.findViewById(R.id.spSexoAnuncio);
         spInstrumento = vista.findViewById(R.id.spInstrumentoAnuncio);
         spTipoBusqueda = vista.findViewById(R.id.spTipoBusqueda);
         spProvincia = vista.findViewById(R.id.spProvinciaAnuncio);
         spLocalidad = vista.findViewById(R.id.spLocalidadAnuncio);
-
 
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));

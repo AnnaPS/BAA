@@ -128,13 +128,19 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                    playButton.setBackgroundResource(R.drawable.stop);
-                } else {
-                    mediaPlayer.pause();
-                    playButton.setBackgroundResource(R.drawable.play);
+                if(mediaPlayer!=null){
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                        playButton.setBackgroundResource(R.drawable.stop);
+                    } else {
+                        mediaPlayer.pause();
+                        playButton.setBackgroundResource(R.drawable.play);
+                    }
+                }else{
+                    // PENDIENTE DEFINICION QUE HACER CUANDO EL USUARIO NO TIENE CANCION
+                    Toast.makeText(vista.getContext(), "SUBE TU CANCION!!!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -217,12 +223,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data != null) {
-
-
             if (requestCode == 1) {
                 Uri path1 = data.getData();
                 File file = new File(path1.getLastPathSegment());
-                if (mediaPlayer.isPlaying()) {
+                if (mediaPlayer!=null && mediaPlayer.isPlaying()) {
                     FragmentMultimedia.mediaPlayer.stop();
                 }
                 mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
@@ -255,37 +259,32 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         android.app.FragmentManager fm = getActivity().getFragmentManager();
                         FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(this, "Se han guardado los cambios con exito", "");
                         alerta.setCancelable(false);
-
-                        alerta.show(fm, "AlertaDescartar");
-
-
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
                         if (taskSnapshot.getTotalByteCount() > 5000000) {
                             uploadTask.cancel();
-                            Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
-                            System.out.println("SUPERIOR A 5 MEGAS");
+                            /*Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
+                            System.out.println("SUPERIOR A 5 MEGAS");*/
                         }
-
 
                     }
                 }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                        System.out.println("Upload is paused");
+                        Toast.makeText(vista.getContext(), "DESCARGA PAUSADA", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-
                 for (int i = 0; i < mediaPlayer.getTrackInfo().length; i++) {
                     System.out.println("" + mediaPlayer.getTrackInfo()[i]);
-
                 }
-                // Toast.makeText(vista.getContext(), "" + path1, Toast.LENGTH_SHORT).show();
-                Log.d("PRUEBAS", "path:                 " + file.getPath());
             }
         }
     }
