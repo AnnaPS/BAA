@@ -6,6 +6,7 @@ public class Grupo {
 
     private String uid;
     private String imagen;
+    private String audio;
     private String nombre;
     private String estilo;
     private String descripcion;
@@ -24,6 +25,13 @@ public class Grupo {
         this.anuncio.add(anuncio);
     }
 
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
     public void setAnuncio(ArrayList<Anuncio> anuncio) {
         this.anuncio = anuncio;
     }

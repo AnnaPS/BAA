@@ -252,7 +252,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                new BDBAA().agregarGrupo(cont
+                BDBAA.agregarGrupo(cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         , edtNombre
                         , data.getStringExtra("img")
@@ -263,7 +263,7 @@ public class RegistarRedSocial extends AppCompatActivity {
             //Es un musico
             case 0:
                 //pendiente de implementacion de sexo
-                new BDBAA().agregarMusico(cont
+                 BDBAA.agregarMusico(cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         , edtNombre
                         , data.getStringExtra("img")

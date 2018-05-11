@@ -153,7 +153,7 @@ public class RegistarMusico extends AppCompatActivity {
                             ArrayList<String> intrumentos= new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                            new BDBAA().agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg"
+                             BDBAA.agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg"
                                     , edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo]
                                     , intrumentos, edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
