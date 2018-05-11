@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.Container;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -194,6 +195,13 @@ public class BandsnArts extends Application {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    public  static String quitarSaltos(String cadena) {
+        // Para el reemplazo usamos un string vacío
+        return cadena.replaceAll("\n", "").trim();
+    }
+
+
 
 
     // Metodo para reescalado de la imagen de perfil

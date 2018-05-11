@@ -54,6 +54,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     int posEstilo, posInst, posSexo, posTipo,posControl;
     View vista;
 
+
     public FragmentDialogAñadirAnuncio(int posControl) {
         this.posControl=posControl;
     }
@@ -61,12 +62,10 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
          vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
-
         atras = vista.findViewById(R.id.btnAtrasAnuncio);
         fecha = vista.findViewById(R.id.txtFechaAnuncio);
         titulo = vista.findViewById(R.id.edtTituloAnuncio);
         descripcionAnuncio = vista.findViewById(R.id.edtAnuncio);
-
         spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
         spSexo = vista.findViewById(R.id.spSexoAnuncio);
         spInstrumento = vista.findViewById(R.id.spInstrumentoAnuncio);

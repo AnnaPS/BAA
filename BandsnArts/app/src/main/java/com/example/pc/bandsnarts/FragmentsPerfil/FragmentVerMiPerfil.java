@@ -219,14 +219,14 @@ public class FragmentVerMiPerfil extends Fragment {
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
                              BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
-                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
-                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
+                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
                         case ("grupo"):
                             //Actualizamos los datos del grupo
                              BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
-                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), txtDescripcion.getText().toString()
+                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
@@ -521,15 +521,11 @@ public class FragmentVerMiPerfil extends Fragment {
                         }
                     }
                 });
-
                 ///boton para cambiar foto de perfil
                 fabFoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         showOptions();
-
-
                     }
                 });
 

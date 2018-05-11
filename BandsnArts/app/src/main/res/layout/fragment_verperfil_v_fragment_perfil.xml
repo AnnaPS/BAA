@@ -385,14 +385,15 @@
 
                 <EditText
                     android:id="@+id/txtDescripcionVVerMiPerfil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="40dp"
                     android:background="@android:color/transparent"
                     android:enabled="false"
                     android:fontFamily="sans-serif"
+                    android:maxLength="230"
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp" />
 

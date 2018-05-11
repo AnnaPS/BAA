@@ -71,6 +71,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -902,7 +903,13 @@ public class BDBAA extends AppCompatActivity {
                                 FragmentMultimedia.hiloMusica = new Thread((Runnable) FragmentMultimedia.fragment);
                                 FragmentMultimedia.hiloMusica.start();
 
-                                (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia).setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
+
+                                 if((VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)!=null){
+                                     (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)
+                                             .setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
+                                 }
+
+                                
 
                                 FragmentMultimedia.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                     @Override

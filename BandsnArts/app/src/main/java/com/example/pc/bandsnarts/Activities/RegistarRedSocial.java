@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -209,13 +210,23 @@ public class RegistarRedSocial extends AppCompatActivity {
             edtNombre.setError("Debe Insertar su nombre");
             Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
         } else if (posEstilo == 0) {
-            Toast.makeText(a, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+            // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
+            TextView errorText = (TextView)spinnerEstilos.getSelectedView();
+            // errorText.setError("anything here, just to add the icon");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Seleccine un estilo");//changes the selected item text to this
+
         } else if (posInstrumento == 0 && tipo == 0) {
-            Toast.makeText(a, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
+            // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
+            TextView errorText = (TextView)spinnerInstrumentos.getSelectedView();
+            // errorText.setError("anything here, just to add the icon");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Seleccione un instrumento");//changes the selected item text to this
+
         } else {
             view.setVisibility(View.INVISIBLE);
             Intent i;
-            Log.d("TIPO DE LOGUIEO", "onClickLogueo: " + tipo);
+            Log.d("TIPO DE LOGUEO", "onClickLogueo: " + tipo);
             switch (tipo) {
                 //Es un grupo
                 case 1:
@@ -224,7 +235,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                             .putExtra("tipo", tipo)
                             .putExtra("nom", edtNombre.getText().toString())
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                            .putExtra("des", edtDescripcion.getText().toString());
+                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
                     guardarBD(this, i);
                     break;
                 //Es un musico
@@ -239,7 +250,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                             .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
                             .putExtra("ins", intrumentos)
-                            .putExtra("des", edtDescripcion.getText().toString());
+                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString())) ;
                     guardarBD(this, i);
                     break;
             }
