@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -49,12 +50,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
-    private ImageView fotoPerfil;
+    public static ImageView fotoPerfil;
     private TextView txtNombre, txtCorreo;
     private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
+   public static FragmentManager fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +169,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        FragmentManager fragment = getSupportFragmentManager();
+         fragment = getSupportFragmentManager();
 
         id = item.getItemId();
 

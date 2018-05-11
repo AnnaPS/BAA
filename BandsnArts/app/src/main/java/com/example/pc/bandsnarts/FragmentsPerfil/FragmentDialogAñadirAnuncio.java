@@ -1,6 +1,9 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,12 +26,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -37,6 +43,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * CLASE PARA ALERT DIALOG DE AÑADIR ANUNCIO
  */
 
+@SuppressLint("ValidFragment")
 public class FragmentDialogAñadirAnuncio extends DialogFragment {
     private static final String TAG = "AlertaAnuncio";
     Spinner spEstilo, spSexo, spInstrumento, spTipoBusqueda, spProvincia, spLocalidad;
@@ -44,10 +51,16 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     TextView fecha;
     EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
-    int posEstilo, posInst, posSexo, posTipo;
+    int posEstilo, posInst, posSexo, posTipo,posControl;
+    View vista;
 
+    public FragmentDialogAñadirAnuncio(int posControl) {
+        this.posControl=posControl;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
+         vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
 
         atras = vista.findViewById(R.id.btnAtrasAnuncio);
         fecha = vista.findViewById(R.id.txtFechaAnuncio);
@@ -61,7 +74,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
         spProvincia = vista.findViewById(R.id.spProvinciaAnuncio);
         spLocalidad = vista.findViewById(R.id.spLocalidadAnuncio);
 
-
+        fecha.setText("" + new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
         spInstrumento.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.instrumentos)));
@@ -83,7 +96,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                         if (posEstilo != 0) {
                             if (posInst != 0) {
                                 if (BandsnArts.posProvincia != 0) {
-                                    BDBAA.agregarAnuncio(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                    BDBAA.agregarEditarAnuncio(posControl,FirebaseAuth.getInstance().getCurrentUser().getUid(),
                                             PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
                                             titulo.getText().toString(), descripcionAnuncio.getText().toString(),
                                             getResources().getStringArray(R.array.tipobusqueda)[posTipo],
@@ -93,6 +106,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                                             getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                             getResources().getStringArray(R.array.instrumentos)[posInst],
                                             getResources().getStringArray(R.array.sexo)[posSexo]);
+
                                     getDialog().dismiss();
                                 }
                             }

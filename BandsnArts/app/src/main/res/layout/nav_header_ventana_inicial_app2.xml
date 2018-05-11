@@ -18,11 +18,10 @@
         android:id="@+id/ivFotoPerfilNav"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:contentDescription="@string/nav_header_desc"
         android:src="@mipmap/ic_launcher3"
         app:civ_border_color="@color/md_light_green_600"
-        app:civ_border_width="2dp"
-        android:contentDescription="@string/nav_header_desc"
-      />
+        app:civ_border_width="2dp" />
 
     <TextView
         android:id="@+id/txtNombreNavH"

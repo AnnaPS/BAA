@@ -38,7 +38,6 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="-10dp"
-                    android:src="@drawable/female"
                     app:civ_border_color="@color/md_light_green_600"
                     app:civ_border_width="2dp" />
 

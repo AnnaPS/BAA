@@ -128,13 +128,18 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                    playButton.setBackgroundResource(R.drawable.stop);
-                } else {
-                    mediaPlayer.pause();
-                    playButton.setBackgroundResource(R.drawable.play);
+                if (mediaPlayer != null) {
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                        playButton.setBackgroundResource(R.drawable.stop);
+                    } else {
+                        mediaPlayer.pause();
+                        playButton.setBackgroundResource(R.drawable.play);
+                    }
+                }else{
+                    Toast.makeText(vista.getContext(), "Debe insertar antes un audio.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -222,7 +227,8 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             if (requestCode == 1) {
                 Uri path1 = data.getData();
                 File file = new File(path1.getLastPathSegment());
-                if (mediaPlayer.isPlaying()) {
+
+                if (mediaPlayer!=null&&mediaPlayer.isPlaying()) {
                     FragmentMultimedia.mediaPlayer.stop();
                 }
                 mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);

@@ -185,7 +185,6 @@ public class FragmentVerMiPerfil extends Fragment {
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
 
                 // En funcion de si el usuario es músico o grupo
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
                 ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
                 mostrarComponentes();
@@ -219,7 +218,6 @@ public class FragmentVerMiPerfil extends Fragment {
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
-
                              BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, txtDescripcion.getText().toString()
                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
@@ -244,6 +242,8 @@ public class FragmentVerMiPerfil extends Fragment {
                         alerta.setCancelable(false);
                         miFABGuardarRechazar.close(true);
                         alerta.show(fm, "AlertaDescartar");
+                        BDBAA.accesoFotoPerfil( PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""),VentanaInicialApp.fotoPerfil, vista.getContext());
+
                     }
 
                 } else {
@@ -573,8 +573,9 @@ public class FragmentVerMiPerfil extends Fragment {
                 break;
 
         }
-        FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
-         BDBAA.cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+       FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
+
+        BDBAA.cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
 
 
     }
