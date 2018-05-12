@@ -51,7 +51,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
-    private TextView txtNombre, txtCorreo;
+    private TextView txtNombre;
     private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
@@ -97,7 +97,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         View vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
-        txtCorreo = vista.findViewById(R.id.txtCorreoNavH);
+
 
         // Inicializamos el FireBaseAuth y su escuchador
         firebaseAuth = FirebaseAuth.getInstance();
@@ -179,7 +179,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.configuracionMenuDrawer2) {

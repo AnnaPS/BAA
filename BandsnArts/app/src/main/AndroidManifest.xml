@@ -62,9 +62,6 @@
         </service>
 
         <activity
-            android:name=".Activities.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity
             android:name=".Activities.RegistrarGrupo"
             android:screenOrientation="portrait" />
         <activity
@@ -81,10 +78,11 @@
             android:name=".Activities.VentanaInicialApp"
             android:label="@string/title_activity_ventana_inicial_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login.InicioGoogle" /><![CDATA[
+            android:theme="@style/AppTheme.NoActionBar" /><![CDATA[
+
 
             />
+
 
 
     ]]>

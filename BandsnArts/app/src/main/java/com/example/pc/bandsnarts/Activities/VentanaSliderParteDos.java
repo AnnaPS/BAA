@@ -41,14 +41,15 @@ public class VentanaSliderParteDos extends AppCompatActivity {
         btnSiguiente = findViewById(R.id.btnAvanzarVSliderParteDos);
 
 
-        //SE COMPRUEBA SI ES LA PRIMERA VEZ DE ENTRAR EN LA APP PARA SACAR O NO LA VENTANA DE INFORMACION
+        // SE COMPRUEBA SI ES LA PRIMERA VEZ DE ENTRAR EN LA APP PARA SACAR O NO LA VENTANA DE INFORMACION
         if (!saberSiEsLaPrimeraVezDeInicio()){
-            //si ya no es la primera vez se lanza la ventana de inicio !!! PONGO ESTA PORQUE LA DE INICIO NO ESTA HECHA AUN
-            //AQUI SE LANZARIA LA POR DEFECTO AL ABRIR LA APP YA LOGUEADO
+            // si ya no es la primera vez se lanza la ventana de inicio !!! PONGO ESTA PORQUE LA DE INICIO NO ESTA HECHA AUN
+            // AQUI SE LANZARIA LA POR DEFECTO AL ABRIR LA APP YA LOGUEADO
             establecerPrimeraVezInicio(true);
             startActivity(new Intent(this, VentanaInicialApp.class));
             finish();
         }
+
         layaoutLinear = findViewById(R.id.linearSlider);
         setStatusBarTransparent();
         layouts = new int[]{R.layout.slider_1, R.layout.slider_2, R.layout.slider_3};

@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -16,11 +17,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,7 @@ import java.io.File;
 import java.io.IOException;
 
 
+@SuppressLint("ValidFragment")
 public class FragmentMultimedia extends Fragment implements Runnable {
 
     View vista;
@@ -57,10 +61,27 @@ public class FragmentMultimedia extends Fragment implements Runnable {
     public static boolean paraHilo;
     public static Fragment fragment;
 
+
+
     // Boton añadir audio
     private Button subirAudio;
     // Referencia al storage para la subida del audio
     private StorageReference storageReference;
+
+    public static ImageView progressBar;
+    public static AnimationDrawable animationDrawable;
+
+
+    private View scrollMedia;
+
+    private View layout;
+
+    int num;
+
+    @SuppressLint("ValidFragment")
+    public FragmentMultimedia(int num) {
+        this.num = num;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,16 +95,26 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
         tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
 
+        scrollMedia = vista.findViewById(R.id.svMedia);
+
+        layout = vista.findViewById(R.id.multimedia);
+
         fragment = this;
-
+        progressBar = vista.findViewById(R.id.progressBarVMedia);
         // COMPROBAR SI EL USUARIO TIENE AUDIO
-
-        BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
-
+        if(num!=1) {
+            BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
+        }else{
+            progressBar.setBackgroundResource(R.drawable.gif);
+            animationDrawable = (AnimationDrawable) progressBar.getBackground();
+            animationDrawable.start();
+            esconderVistas();
+        }
         subirAudio = vista.findViewById(R.id.btnAnadirVMultimedia);
         storageReference = FirebaseStorage.getInstance().getReference();
 
         //Toast.makeText(getActivity(), "Valor de media player: "+mediaPlayer, Toast.LENGTH_SHORT).show();
+
 
 
         positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -110,7 +141,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float volumeNumber = progress / 100f;
-                mediaPlayer.setVolume(volumeNumber, volumeNumber);
+                if (mediaPlayer!=null){
+                    mediaPlayer.setVolume(volumeNumber, volumeNumber);
+                }
+
             }
 
             @Override
@@ -148,6 +182,9 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         subirAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // ESCONDER LOS TABS INFERIORES
+                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMultimedia(1)).commit();
+                ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                 subirAudio();
             }
         });
@@ -238,12 +275,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                 final UploadTask uploadTask = referenceAudio.putFile(path1);
 
                 // Register observers to listen for when the download is done or if it fails
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
@@ -256,9 +288,16 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
                         Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
 
-                        android.app.FragmentManager fm = getActivity().getFragmentManager();
+                        animationDrawable.stop();
+
+
+
+                        android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
                         FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(this, "Se han guardado los cambios con exito", "");
                         alerta.setCancelable(false);
+                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
+
+                        ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
 
                         alerta.show(fm, "AlertaDescartar");
 
@@ -269,8 +308,8 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         if (taskSnapshot.getTotalByteCount() > 5000000) {
                             uploadTask.cancel();
-                            /*Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
-                            System.out.println("SUPERIOR A 5 MEGAS");*/
+                            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
+                            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                         }
 
                     }
@@ -292,4 +331,11 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             }
         }
     }
+
+    private void esconderVistas(){
+        progressBar.setVisibility(View.VISIBLE);
+        scrollMedia.setVisibility(View.GONE);
+        layout.setBackground(VentanaInicialApp.a.getDrawable(R.drawable.fondonegro));
+    }
+
 }

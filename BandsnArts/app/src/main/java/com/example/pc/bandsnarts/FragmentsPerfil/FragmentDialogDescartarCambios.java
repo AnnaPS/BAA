@@ -71,7 +71,7 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
                 if(a instanceof FragmentVerMiPerfil){
-                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
                     ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
                     FragmentVerMiPerfil a = (FragmentVerMiPerfil) FragmentDialogDescartarCambios.a;
                     a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
