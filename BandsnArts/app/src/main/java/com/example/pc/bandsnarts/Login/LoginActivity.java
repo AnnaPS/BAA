@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
                 // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
-                if (usuario != null) {
+                if (usuario != null ) {
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()|| clienteGoogle.isConnecting()) {

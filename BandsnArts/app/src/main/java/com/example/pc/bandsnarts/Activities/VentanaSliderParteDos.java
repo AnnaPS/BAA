@@ -132,7 +132,6 @@ public class VentanaSliderParteDos extends AppCompatActivity {
         SharedPreferences.Editor editor=preferences.edit();
         editor.putBoolean("infobienvenida",stt);
         editor.commit();
-
     }
 
 }

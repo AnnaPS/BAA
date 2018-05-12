@@ -101,7 +101,11 @@ public class RegistrarGrupo extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial), edtNombreGrupo, "default_grupo.jpg", edtNombreGrupo.getText().toString(), getResources().getStringArray(R.array.estiloMusical)[posEstilo], edtDescripcion.getText().toString());
+                            new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial),
+                                    edtNombreGrupo, "default_grupo.jpg",
+                                    edtNombreGrupo.getText().toString(),
+                                    getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

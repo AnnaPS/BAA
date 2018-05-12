@@ -139,6 +139,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             LoginManager.getInstance().logOut();
             finish();
+
+        } else if(id == R.id.perfilMenuDrawer2){
+            // Estando en Perfil, volvemo a Inicio
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
+            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
         }
     }
 

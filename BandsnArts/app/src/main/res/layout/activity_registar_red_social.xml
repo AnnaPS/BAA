@@ -157,6 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="195dp"
                 android:layout_marginTop="8dp"
+                android:hint="DESCRIPCIÓN"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +174,7 @@
                     android:layout_marginTop="20dp"
                     android:ems="10"
                     android:fontFamily="sans-serif"
-                    android:hint="DESCRIPCIÓN"
+
                     android:inputType="textMultiLine"
                     android:maxLength="230"
                     android:textSize="14sp"
