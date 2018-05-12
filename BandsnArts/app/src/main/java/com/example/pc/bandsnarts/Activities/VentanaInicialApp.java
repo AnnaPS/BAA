@@ -51,7 +51,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
-
+public static Activity a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +60,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        activity=this;
-
+a=this;
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
