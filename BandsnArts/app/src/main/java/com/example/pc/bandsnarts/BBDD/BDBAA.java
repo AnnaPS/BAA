@@ -912,7 +912,7 @@ public class BDBAA extends AppCompatActivity {
                                              .setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
                                  }
 
-                                
+
 
                                 FragmentMultimedia.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                     @Override
