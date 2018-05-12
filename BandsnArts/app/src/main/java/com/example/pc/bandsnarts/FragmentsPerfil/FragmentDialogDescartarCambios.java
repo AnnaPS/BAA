@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 
@@ -69,8 +71,10 @@ public class FragmentDialogDescartarCambios extends DialogFragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
                 if(a instanceof FragmentVerMiPerfil){
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
                     FragmentVerMiPerfil a = (FragmentVerMiPerfil) FragmentDialogDescartarCambios.a;
-                    a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(a.getContext()).getString("tipo", ""));
+                    a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
                     a.mostrarComponentes();
                     a.botonCancelarEdicionPerfil();
                     FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);

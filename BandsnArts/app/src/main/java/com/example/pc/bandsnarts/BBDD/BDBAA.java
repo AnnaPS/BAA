@@ -558,11 +558,13 @@ public class BDBAA extends AppCompatActivity {
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
                             Toast.makeText(context, "" + posicion, Toast.LENGTH_SHORT).show();
+                            //localidaProvincia
+                            BandsnArts.cargarLocalidadProvincia(vista, musico, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
+
                             // Sexo....
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
-                            BandsnArts.cargarLocalidadProvincia(vista, musico, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
-                            // Descripcion
+                             // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
 
@@ -597,6 +599,7 @@ public class BDBAA extends AppCompatActivity {
                             // Estilo
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), grupo.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
+                            //localidadProvincia
                             BandsnArts.cargarLocalidadProvincia(vista, grupo, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
                             // Sexo....
                             ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
@@ -640,7 +643,7 @@ public class BDBAA extends AppCompatActivity {
                             BandsnArts.cargarLocalidadProvincia(vista, grupo, spProvincia, spLocalidad);
                             break;
                     }
-                    BandsnArts.escuchas(context, spProvincia, spLocalidad);
+
                 }
             }
 
@@ -1036,9 +1039,10 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
-                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_light_green_600));
+                //FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                //FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_light_green_600));
                 imageProgressView.setVisibility(View.INVISIBLE);
+                FragmentVerMiPerfil.miFABGuardarRechazar.setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getContext().getColor(R.color.md_white_1000));
@@ -1051,12 +1055,10 @@ public class BDBAA extends AppCompatActivity {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 // METODO PARA GUARDAR EL EL STORAGE LA FOTO DE PERFIL
                 BDBAA.actualizarFotoPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
-                FragmentManager fragment = ((FragmentActivity) VentanaInicialApp.a).getSupportFragmentManager();
-                fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
                 BDBAA.cargarDatosPerfil(ctx, PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""));
                 BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(ctx.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, ctx.getContext());
-
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -1067,7 +1069,8 @@ public class BDBAA extends AppCompatActivity {
                 animationDrawable.start();
                 imageProgressView.setVisibility(View.VISIBLE);
                 FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
-                FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_black_1000));
+                FragmentVerMiPerfil.miFABGuardarRechazar.setVisibility(View.INVISIBLE);
+                //FragmentMiPerfil.bottomTools.setBackgroundColor(ctx.getContext().getColor(R.color.md_black_1000));
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.INVISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.INVISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackground(ctx.getContext().getDrawable(R.drawable.fondonegro));
