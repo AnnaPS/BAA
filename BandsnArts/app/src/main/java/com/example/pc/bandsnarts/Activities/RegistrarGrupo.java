@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
@@ -104,8 +106,6 @@ public class RegistrarGrupo extends AppCompatActivity {
                             Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();
                             FirebaseAuth.getInstance().removeAuthStateListener(this);
-
-
                         }
                     }
                 });
@@ -117,7 +117,9 @@ public class RegistrarGrupo extends AppCompatActivity {
     public void onBackPressed() {
 
 
+
         FirebaseAuth.getInstance().signOut();
+
         finish();
     }
 }

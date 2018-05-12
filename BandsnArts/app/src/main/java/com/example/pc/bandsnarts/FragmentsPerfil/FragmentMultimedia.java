@@ -1,11 +1,22 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +25,42 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class FragmentMultimedia extends Fragment implements Runnable {
 
     View vista;
-    Button reproducir;
-    MediaPlayer mp;
-
-
     private Button playButton;
-    private SeekBar positionBar, volumenBar;
+    private SeekBar volumenBar;
+    public static SeekBar positionBar;
     private TextView tiempoTranscurrido, tiempoRestante;
-    private MediaPlayer mediaPlayer;
-    private int totalTime;
-    private Thread hiloMusica;
+    public static MediaPlayer mediaPlayer;
+    public static int totalTime;
+    public static Thread hiloMusica;
+    public static boolean paraHilo;
+    public static Fragment fragment;
+
+    // Boton añadir audio
+    private Button subirAudio;
+    // Referencia al storage para la subida del audio
+    private StorageReference storageReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,16 +74,18 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
         tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
 
+        fragment = this;
 
-        mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), R.raw.pushittothelimit);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.seekTo(0);
-        mediaPlayer.setVolume(0.5f, 0.5f);
-        totalTime = mediaPlayer.getDuration();
+        // COMPROBAR SI EL USUARIO TIENE AUDIO
+
+        BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
+
+        subirAudio = vista.findViewById(R.id.btnAnadirVMultimedia);
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         //Toast.makeText(getActivity(), "Valor de media player: "+mediaPlayer, Toast.LENGTH_SHORT).show();
 
-        positionBar.setMax(totalTime);
+
         positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -95,19 +128,30 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                    playButton.setBackgroundResource(R.drawable.stop);
-                } else {
-                    mediaPlayer.pause();
-                    playButton.setBackgroundResource(R.drawable.play);
+                if(mediaPlayer != null){
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                        playButton.setBackgroundResource(R.drawable.stop);
+                    } else {
+                        mediaPlayer.pause();
+                        playButton.setBackgroundResource(R.drawable.play);
+                    }
+                }else{
+                    // PENDIENTE DEFINICION QUE HACER CUANDO EL USUARIO NO TIENE CANCION
+                    Toast.makeText(vista.getContext(), "SUBE TU CANCION!!!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
 
-        hiloMusica = new Thread(this);
-        hiloMusica.start();
+        subirAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subirAudio();
+            }
+        });
+
 
         return vista;
     }
@@ -131,6 +175,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         }
     };
 
+
     private String createTimeLable(int time) {
         String timeLable = "";
         int min = time / 1000 / 60;
@@ -149,8 +194,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
 
     @Override
     public void run() {
-        while (mediaPlayer != null) {
-            // Toast.makeText(getActivity(), "pasa por aqui", Toast.LENGTH_SHORT).show();
+        while (mediaPlayer != null && !paraHilo) {
             try {
                 Message message = new Message();
                 message.what = mediaPlayer.getCurrentPosition();
@@ -160,8 +204,92 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
+        Log.d("RUN", "run: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + mediaPlayer);
+    }
+
+
+    private void subirAudio() {
+        Intent intent = new Intent();
+        intent.setType("audio/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        startActivityForResult(Intent.createChooser(intent, "Choose Sound File"), 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            if (requestCode == 1) {
+                Uri path1 = data.getData();
+                File file = new File(path1.getLastPathSegment());
+                if (mediaPlayer!=null && mediaPlayer.isPlaying()) {
+                    FragmentMultimedia.mediaPlayer.stop();
+                }
+                mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
+
+                // Guardar audio
+                // Nos posicionamos en el nodo de imagenes del storage
+                StorageReference storage = FirebaseStorage.getInstance().getReference();
+                StorageReference referenceAudio = storage.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".mpeg");
+                final UploadTask uploadTask = referenceAudio.putFile(path1);
+
+                // Register observers to listen for when the download is done or if it fails
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        System.out.println("" + taskSnapshot.getMetadata().getSizeBytes());
+                        System.out.println("" + taskSnapshot.getMetadata().getName());
+
+                        paraHilo = true;
+
+                        // Guardamos la referencia del audio asociada al usuario en la BD
+                        BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                        Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
+
+                        android.app.FragmentManager fm = getActivity().getFragmentManager();
+                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(this, "Se han guardado los cambios con exito", "");
+                        alerta.setCancelable(false);
+
+                        alerta.show(fm, "AlertaDescartar");
+
+
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        if (taskSnapshot.getTotalByteCount() > 5000000) {
+                            uploadTask.cancel();
+                            /*Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
+                            System.out.println("SUPERIOR A 5 MEGAS");*/
+                        }
+
+                    }
+                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(vista.getContext(), "DESCARGA PAUSADA", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(vista.getContext(), "SUPERIOR A 5 MEGAS", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                for (int i = 0; i < mediaPlayer.getTrackInfo().length; i++) {
+                    System.out.println("" + mediaPlayer.getTrackInfo()[i]);
+                }
+            }
+        }
     }
 }

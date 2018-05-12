@@ -6,6 +6,7 @@ public class Grupo {
 
     private String uid;
     private String imagen;
+    private String audio;
     private String nombre;
     private String estilo;
     private String descripcion;
@@ -20,12 +21,26 @@ public class Grupo {
     }
 
 
-    public void setAnuncio(Anuncio anuncio) {
+    public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
     }
 
+    public String getAudio() {
+        return audio;
+    }
 
-    public void setRedsocial(String redsocial) {
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+    public void setAnuncio(ArrayList<Anuncio> anuncio) {
+        this.anuncio = anuncio;
+    }
+
+    public void setRedsocial(ArrayList<String> redsocial) {
+        this.redsocial = redsocial;
+    }
+
+    public void setRedsociales(String redsocial) {
         this.redsocial.add(redsocial);
     }
 

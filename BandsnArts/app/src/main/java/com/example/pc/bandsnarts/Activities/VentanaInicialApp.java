@@ -1,6 +1,8 @@
 package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -42,16 +46,18 @@ import com.google.firebase.auth.FirebaseUser;
 //IMPORTATE IMPLEMENTAR EL LISTENER DE CADA FRAGMENT
 public class VentanaInicialApp extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
-    public static Activity activity;
+
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
-    private ImageView fotoPerfil;
+    public static ImageView fotoPerfil;
     private TextView txtNombre, txtCorreo;
-
+    private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
-public static Activity a;
+    public static Activity a;
+   public static FragmentManager fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,7 @@ public static Activity a;
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-a=this;
+        a = this;
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +127,7 @@ a=this;
                 .build();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
         //En caso de que este desplegado el menu drawer al accionar este evento solo lo ocultara y
@@ -128,8 +135,9 @@ a=this;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
+            LoginManager.getInstance().logOut();
             finish();
         }
     }
@@ -161,9 +169,9 @@ a=this;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        FragmentManager fragment = getSupportFragmentManager();
+         fragment = getSupportFragmentManager();
 
-        int id = item.getItemId();
+        id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
@@ -190,6 +198,10 @@ a=this;
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
+        FragmentMultimedia.paraHilo = true;
+        if(FragmentMultimedia.mediaPlayer!=null) {
+            FragmentMultimedia.mediaPlayer.stop();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -202,7 +214,7 @@ a=this;
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-        new BDBAA().cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", "musico"), fotoPerfil, txtNombre);
+         BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
@@ -210,11 +222,11 @@ a=this;
     }
 
     public void cerrarSesion() {
-        //Deslogueo en Google
+        // deslogueo correo contraseña
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-
+        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -229,7 +241,6 @@ a=this;
                 }
             }
         });
-
     }
 
     @Override

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vermiperfil"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/sv_fragment_v_perfil"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
@@ -38,7 +38,6 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="-10dp"
-                    android:src="@drawable/female"
                     app:civ_border_color="@color/md_light_green_600"
                     app:civ_border_width="2dp" />
 
@@ -337,8 +336,7 @@
                         android:layout_height="20dp"
                         android:layout_marginBottom="20dp"
                         android:layout_marginLeft="-40dp"
-                        android:layout_marginTop="165dp"
-                        android:src="@drawable/no" />
+                        android:layout_marginTop="165dp" />
                 </LinearLayout>
 
 
@@ -387,14 +385,15 @@
 
                 <EditText
                     android:id="@+id/txtDescripcionVVerMiPerfil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="40dp"
                     android:background="@android:color/transparent"
                     android:enabled="false"
                     android:fontFamily="sans-serif"
+                    android:maxLength="230"
                     android:textColor="@color/md_black_1000"
                     android:textSize="18dp" />
 
@@ -605,20 +604,30 @@
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
+    <ImageView
+        android:id="@+id/progressBarVLoginEditarPerfil"
+        android:layout_width="140dp"
+        android:layout_height="154dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:adjustViewBounds="false"
+        android:baselineAlignBottom="false"
+        android:cropToPadding="false" />
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingGuardarDescartar"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_gravity="top|left"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="5dp"
-        app:menu_labels_position="right"
+        android:layout_marginTop="50dp"
         android:onClick="onClickOpcionesPerfil"
         android:src="@android:drawable/ic_input_add"
         app:fab_colorPressed="@color/md_green_A700"
         app:fab_label=""
         app:menu_backgroundColor="@android:color/transparent"
         app:menu_colorNormal="@color/md_light_green_600"
+        app:menu_labels_position="right"
         app:menu_openDirection="down"
         app:menu_showShadow="true">
 
@@ -627,20 +636,19 @@
             android:layout_width="44dp"
             android:layout_height="56dp"
             android:src="@android:drawable/ic_menu_save"
-            app:fab_label="guardar"
             app:fabSize="mini"
             app:fab_colorNormal="@color/md_teal_800"
             app:fab_colorPressed="@color/md_green_A700"
-          />
+            app:fab_label="guardar" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabDescartar"
             android:layout_width="44dp"
             android:layout_height="56dp"
-            app:fabSize="mini"
-            app:fab_label="descartar"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:fab_colorNormal="@color/md_red_400" />
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/md_red_400"
+            app:fab_label="descartar" />
     </com.github.clans.fab.FloatingActionMenu>
 
 

@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
@@ -125,7 +127,7 @@ public class RegistarMusico extends AppCompatActivity {
                 || edtMailMusico.getText().toString().isEmpty() || edtNombreMusico.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
         }  else if (posEstilo == 0) {
-            Toast.makeText(this, "Debe seleccionar un estilo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Debe seleccionar un estiloooooo", Toast.LENGTH_SHORT).show();
         } else if (posInstrumento == 0) {
             Toast.makeText(this, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
         }  else {
@@ -141,6 +143,7 @@ public class RegistarMusico extends AppCompatActivity {
                 // Correo y password correctas
                 view.setVisibility(View.INVISIBLE);
                 auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
+
                 // Mensaje de control
                 final FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
@@ -153,7 +156,7 @@ public class RegistarMusico extends AppCompatActivity {
                             ArrayList<String> intrumentos= new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                            new BDBAA().agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg"
+                             BDBAA.agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),edtNombreMusico, "default_musico.jpg"
                                     , edtNombreMusico.getText().toString(), getResources().getStringArray(R.array.sexo)[posSexo], getResources().getStringArray(R.array.estiloMusical)[posEstilo]
                                     , intrumentos, edtDescripcion.getText().toString());
                             // ENVIO CORREO VERIFICACION
@@ -170,7 +173,6 @@ public class RegistarMusico extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         FirebaseAuth.getInstance().signOut();
         finish();
     }

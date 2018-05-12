@@ -32,14 +32,19 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -63,9 +68,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private AlertDialog alerta;
     private LayoutInflater inflador;
     //Objeto para conectar con la api de facebook
-    public static LoginResult loginResult;
+
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
+    boolean gooogle;
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
@@ -77,7 +83,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private ImageView progressBar;
     // Boton Login con Google
     com.google.android.gms.common.SignInButton botonGoogle;
-
 
 
     AnimationDrawable animationDrawable;
@@ -100,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //btnReg = findViewById(R.id.btnRegistrarVLogin);
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
-        progressBar=findViewById(R.id.progressBarVLogin);
+        progressBar = findViewById(R.id.progressBarVLogin);
 
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
@@ -140,25 +145,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (usuario != null) {
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
-                        new BDBAA().comprobarUID(estaVentana, usuario.getUid());
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()|| clienteGoogle.isConnecting()) {
+                         BDBAA.comprobarUID(estaVentana, usuario.getUid());
+                    } else {
+                        visualizarBotones(View.VISIBLE);
                     }
-                }else{
+                } else {
+                    Toast.makeText(LoginActivity.this, "Usuario null", Toast.LENGTH_SHORT).show();
                     visualizarBotones(View.VISIBLE);
                 }
             }
         };
 
 
-       /* // Comprobación de sesion iniciada en FaceBook
-        if (AccessToken.getCurrentAccessToken() != null) {
-            // Lanzamos la siguiente actividad
-            //siguienteActivity();
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-              //  new BDBAA().comprobarUID(this, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            }
-        }
-*/
+
         // Inicializamos CallbackManager
         callbackManager = CallbackManager.Factory.create();
         // Recogemos el Boton
@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                LoginActivity.loginResult = loginResult;
+
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
@@ -182,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onCancel() {
                 // Cuando se cancele el inicio de sesion.
                 Toast.makeText(estaVentana, "Inicio Cancelado.", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -192,16 +193,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         visualizarBotones(View.INVISIBLE);
     }
-    public void visualizarBotones(int vis){
-      findViewById(R.id.llVerticalVLogin).setVisibility(vis);
-      findViewById(R.id.llhVLogin).setVisibility(vis);
+
+    public void visualizarBotones(int vis) {
+        findViewById(R.id.llVerticalVLogin).setVisibility(vis);
+        findViewById(R.id.llhVLogin).setVisibility(vis);
         findViewById(R.id.vVLoging).setVisibility(vis);
-        if(vis==View.INVISIBLE){
+        if (vis == View.INVISIBLE) {
             progressBar.setBackgroundResource(R.drawable.gif);
-            animationDrawable = (AnimationDrawable)progressBar.getBackground();
+            animationDrawable = (AnimationDrawable) progressBar.getBackground();
             animationDrawable.start();
             progressBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             animationDrawable.stop();
             progressBar.setVisibility(View.INVISIBLE);
         }
@@ -222,11 +224,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     visualizarBotones(View.INVISIBLE);
                     Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
-                    new BDBAA().comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                     BDBAA.comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
+
                 }
             }
         });
+
     }
 
 
@@ -236,6 +240,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Aqui escucharemos los cambios de estado de la autenticacion
         firebaseAuth.addAuthStateListener(escuchador);
     }
+
 
     @Override
     protected void onStop() {
@@ -263,8 +268,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void onClickIngresoGoogle(View view) {
+        Auth.GoogleSignInApi.signOut(clienteGoogle);
         Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
         startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+        gooogle = true;
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!ON ACTIVITY FOR RESULT!!!!!!!!!!!!!!!!!
@@ -283,30 +290,41 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             case (BandsnArts.CODIGO_DE_REGISTRO):
                 FirebaseAuth.getInstance().signOut();
                 break;
-            case 222:
+            default:
                 switch (resultCode) {
                     case (BandsnArts.CODIGO_DE_CIERRE):
+                        Toast.makeText(ventanaPrincipal, "Codigo cierre", Toast.LENGTH_LONG).show();
                         finish();
                         break;
                     case (BandsnArts.CODIGO_DE_DESLOGUEO):
                         visualizarBotones(View.VISIBLE);
+                        BandsnArts.posProvincia=0;
+                        BandsnArts.posLocalidad=0;
                         System.out.println("Ha sido deslogueado");
-                        Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_LONG).show();
                         break;
-                    default:
-                        //finish();
+                    case (BandsnArts.CODIGO_DE_REDSOCIAL):
+                        // Clear data
+                        LoginManager.getInstance().logOut();
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(ventanaPrincipal, "Codigo REDSOCIAL", Toast.LENGTH_LONG).show();
+                        break;
+                    case BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL:
+                        if (gooogle) {
+                            Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
+                            startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
+                            gooogle = false;
+                        }
+                        Toast.makeText(ventanaPrincipal, "Codigo cierreRED", Toast.LENGTH_LONG).show();
                         break;
                 }
-          /*  case (BandsnArts.CODIGO_DE_FACEBOOK):
-                Log.d("PRUEBA CON FACEBOOK", "onActivityResult: " + loginResult);
-                manejadorTokenFacebook(loginResult.getAccessToken());
-                // Para reconocer las acciones del boton de Inicio de FaceBook
-                break;*/
+
         }
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } catch (NullPointerException e) {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // Facebbook
         }
     }
 
@@ -332,17 +350,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 } else {
                     visualizarBotones(View.INVISIBLE);
-                    new BDBAA().comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                     BDBAA.comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
                 }
             }
         });
     }
 
-  /*  private void siguienteActivity() {
-        Intent i = new Intent(this, VentanaInicialApp.class);
-        startActivity(i);
-    }
-*/
+    /*  private void siguienteActivity() {
+          Intent i = new Intent(this, VentanaInicialApp.class);
+          startActivity(i);
+      }
+  */
     public void onClickRegistrarVLogin(View view) {
         //sacar alert dialog para grupo o musico
         alertaBuilder = new AlertDialog.Builder(this);
@@ -373,10 +391,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View view) {
                 PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
                 if (grupo.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), 000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
                 } else if (musico.isChecked()) {
-                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), 000);
+                    startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
                 } else {
                     Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();

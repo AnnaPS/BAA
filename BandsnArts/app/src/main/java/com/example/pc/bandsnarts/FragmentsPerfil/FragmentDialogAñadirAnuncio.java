@@ -1,11 +1,22 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.res.TypedArray;
+import android.app.Fragment;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,7 +27,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -24,48 +43,75 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * CLASE PARA ALERT DIALOG DE AÑADIR ANUNCIO
  */
 
-public class FragmentDialogAñadirAnuncio extends DialogFragment implements AdapterView.OnItemSelectedListener{
+@SuppressLint("ValidFragment")
+public class FragmentDialogAñadirAnuncio extends DialogFragment {
     private static final String TAG = "AlertaAnuncio";
-    Spinner spEstilo,spSexo,spInstrumento,spTipoBusqueda,spProvincia,spLocalidad;
+    Spinner spEstilo, spSexo, spInstrumento, spTipoBusqueda, spProvincia, spLocalidad;
     Button atras;
     TextView fecha;
-    EditText titulo,descripcionAnuncio;
+    EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
-    int posProvincia,posLocalidad;
-    CharSequence[] localidades;
+    int posEstilo, posInst, posSexo, posTipo,posControl;
+    View vista;
 
+
+    public FragmentDialogAñadirAnuncio(int posControl) {
+        this.posControl=posControl;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
+         vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
+        atras = vista.findViewById(R.id.btnAtrasAnuncio);
+        fecha = vista.findViewById(R.id.txtFechaAnuncio);
+        titulo = vista.findViewById(R.id.edtTituloAnuncio);
+        descripcionAnuncio = vista.findViewById(R.id.edtAnuncio);
+        spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
+        spSexo = vista.findViewById(R.id.spSexoAnuncio);
+        spInstrumento = vista.findViewById(R.id.spInstrumentoAnuncio);
+        spTipoBusqueda = vista.findViewById(R.id.spTipoBusqueda);
+        spProvincia = vista.findViewById(R.id.spProvinciaAnuncio);
+        spLocalidad = vista.findViewById(R.id.spLocalidadAnuncio);
 
-        atras=vista.findViewById(R.id.btnAtrasAnuncio);
-        fecha=vista.findViewById(R.id.txtFechaAnuncio);
-        titulo=vista.findViewById(R.id.edtTituloAnuncio);
-        descripcionAnuncio=vista.findViewById(R.id.edtAnuncio);
-
-        spEstilo=vista.findViewById(R.id.spEstiloAnuncio);
-        spSexo=vista.findViewById(R.id.spSexoAnuncio);
-        spInstrumento=vista.findViewById(R.id.spInstrumentoAnuncio);
-        spTipoBusqueda=vista.findViewById(R.id.spTipoBusqueda);
-        spProvincia=vista.findViewById(R.id.spProvinciaAnuncio);
-        spLocalidad=vista.findViewById(R.id.spLocalidadAnuncio);
-
-
+        fecha.setText("" + new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
         spInstrumento.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.instrumentos)));
         spTipoBusqueda.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.tipobusqueda)));
+        escuchadoresSpinner();
 
-
-        loadSpinnerProvincias();
+        BandsnArts.loadSpinnerProvincias(spProvincia);
+        BDBAA.cargarDatosAnuncio(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), spProvincia, spLocalidad);
         //OnClick floating
 
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "GUARDADO CON EXITO", Toast.LENGTH_SHORT).show();
+                BandsnArts.banderaLocalidad = false;
+                if (!titulo.getText().toString().equals("")) {
+                    if (!descripcionAnuncio.getText().toString().equals("")) {
+                        if (posEstilo != 0) {
+                            if (posInst != 0) {
+                                if (BandsnArts.posProvincia != 0) {
+                                    BDBAA.agregarEditarAnuncio(posControl,FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                            PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
+                                            titulo.getText().toString(), descripcionAnuncio.getText().toString(),
+                                            getResources().getStringArray(R.array.tipobusqueda)[posTipo],
+                                            new SimpleDateFormat("dd/MM/yyyy").format(new Date()),
+                                            getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
+                                            BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                            getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                            getResources().getStringArray(R.array.instrumentos)[posInst],
+                                            getResources().getStringArray(R.array.sexo)[posSexo]);
 
-                getDialog().dismiss();
+                                    getDialog().dismiss();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         });
 
@@ -74,6 +120,8 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment implements Adap
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ATRAS", Toast.LENGTH_SHORT).show();
+                BandsnArts.banderaLocalidad = false;
+
                 getDialog().dismiss();
             }
         });
@@ -81,67 +129,93 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment implements Adap
 
         return vista;
     }
-    private void loadSpinnerProvincias() {
 
-        // Create an ArrayAdapter using the string array and a default spinner
-        // layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getApplicationContext(), R.array.provincias, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        // Apply the adapter to the spinner
-        this.spProvincia.setAdapter(adapter);
+    public void escuchadoresSpinner() {
+        spTipoBusqueda.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
 
-        // This activity implements the AdapterView.OnItemSelectedListener
-        this.spProvincia.setOnItemSelectedListener(this);
-        this.spLocalidad.setOnItemSelectedListener(this);
+
+        spTipoBusqueda.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posTipo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spSexo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+
+
+        spSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posSexo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        spEstilo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+        spEstilo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posEstilo = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+
+
+        spInstrumento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+                return false;
+            }
+        });
+        spInstrumento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posInst = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
 
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-                               long id) {
-        switch (parent.getId()) {
-            case R.id.spProvinciaAnuncio:
-                posProvincia=pos;
-                // Retrieves an array
-                TypedArray arrayLocalidades = getResources().obtainTypedArray(
-                        R.array.array_provincia_a_localidades);
-                localidades = arrayLocalidades.getTextArray(pos);
-                arrayLocalidades.recycle();
-
-                // Create an ArrayAdapter using the string array and a default
-                // spinner layout
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                        getApplicationContext(), R.layout.spinner_item,
-                        localidades);
-
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(R.layout.spinner_item);
-
-                // Apply the adapter to the spinner
-                this.spLocalidad.setAdapter(adapter);
-                break;
-
-            case R.id.spLocalidadAnuncio:
-                posLocalidad=pos;
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            onInputListener = (OnInputListener) getActivity();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach:ClassCastException: " + e.getMessage());
-        }
-    }*/
 
 }
