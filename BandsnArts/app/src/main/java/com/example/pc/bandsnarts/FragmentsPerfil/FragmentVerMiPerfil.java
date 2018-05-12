@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,7 @@ public class FragmentVerMiPerfil extends Fragment
     FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
     BottomNavigationView navBotPerfil;
-    FrameLayout mrView;
+    CoordinatorLayout mrView;
     View vista;
     private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
 
