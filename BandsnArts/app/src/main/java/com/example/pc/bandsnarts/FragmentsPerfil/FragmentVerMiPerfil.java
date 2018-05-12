@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -77,6 +78,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
+@SuppressLint("ValidFragment")
 public class FragmentVerMiPerfil extends Fragment {
 
     Spinner spLocalidad, spProvincia, spSexo, spEstilo, spinnerInstrumentos1, spinnerInstrumentos2, spinnerInstrumentos3, spinnerInstrumentos4;
@@ -86,13 +88,12 @@ public class FragmentVerMiPerfil extends Fragment {
     FloatingActionButton miFAB, fabFoto;
     CircleImageView imgFotoPerfil;
     com.github.clans.fab.FloatingActionButton guardar, descartar;
-    FloatingActionMenu miFABGuardarRechazar;
+    public static FloatingActionMenu miFABGuardarRechazar;
     Switch switchBuscar;
-    BottomNavigationView navBotPerfil;
     FrameLayout mrView;
     View vista;
-    private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4;
 
+    private int posSexo, posEstilo, posInst1, posInst2, posInst3, posInst4, op;
 
 
     private String buscando;
@@ -107,7 +108,7 @@ public class FragmentVerMiPerfil extends Fragment {
     private final int SELECT_PICTURE = 300;
 
     private String mPath;
-
+    private FragmentVerMiPerfil fragmentVerMiPerfil;
     private Uri rutaFotoPerfil;
     private ImageView progressEditarPerfil;
     //////////////////////
@@ -116,13 +117,19 @@ public class FragmentVerMiPerfil extends Fragment {
     //Recogemos el AppBarLayout de instrumentos para poder esconderlo cuando edite un grupo
     CardView contenedorInstrumentos;
 
+    @SuppressLint("ValidFragment")
+    public FragmentVerMiPerfil(int op) {
+        if (op == 1) {
+            this.op = op;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_verperfil_v_fragment_perfil, container, false);
-
+        fragmentVerMiPerfil = this;
         progressEditarPerfil = vista.findViewById(R.id.progressBarVLoginEditarPerfil);
         spEstilo = vista.findViewById(R.id.spEstiloVVerMiPerfil);
         spLocalidad = vista.findViewById(R.id.spLocaliVVerMiPerfil);
@@ -183,14 +190,9 @@ public class FragmentVerMiPerfil extends Fragment {
             public void onClick(View view) {
                 //IMPLEMENTAR LA FUNCIONALIDAD DEL BOTON
                 Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
+                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentVerMiPerfil(1)).commit();
+                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
 
-                // En funcion de si el usuario es músico o grupo
-                ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
-                ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
-                mostrarComponentes();
-                botonCancelarEdicionPerfil();
-                //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
             }
         });
@@ -218,14 +220,14 @@ public class FragmentVerMiPerfil extends Fragment {
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
                             instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
-                             BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
+                            BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
-                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
                             break;
                         case ("grupo"):
                             //Actualizamos los datos del grupo
-                             BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
+                            BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
                                     , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
                                     , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
                                     buscando);
@@ -234,15 +236,18 @@ public class FragmentVerMiPerfil extends Fragment {
 
                     miFABGuardarRechazar.close(true);
                     if (rutaFotoPerfil != null) {
-                         BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                        BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
                     } else {
                         BandsnArts.banderaLocalidad = false;
+                        BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, vista.getContext());
+
+
                         android.app.FragmentManager fm = getActivity().getFragmentManager();
-                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"Se han guardado los cambios con exito","");
+
+                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this, "Se han guardado los cambios con exito", "");
                         alerta.setCancelable(false);
                         miFABGuardarRechazar.close(true);
                         alerta.show(fm, "AlertaDescartar");
-                        BDBAA.accesoFotoPerfil( PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""),VentanaInicialApp.fotoPerfil, vista.getContext());
 
                     }
 
@@ -259,7 +264,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 BandsnArts.banderaLocalidad = false;
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
-                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this,"¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?","Los cambios se perderán");
+                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this, "¿ESTÁS SEGURO DE DESCARTAR LOS CAMBIOS?", "Los cambios se perderán");
                 alerta.setCancelable(false);
                 miFABGuardarRechazar.close(true);
                 alerta.show(fm, "AlertaDescartar");
@@ -276,7 +281,15 @@ public class FragmentVerMiPerfil extends Fragment {
         BandsnArts.loadSpinnerProvincias(spProvincia);
 
         escuchadoresSpinner();
-
+        if (op == 1) {
+            // En funcion de si el usuario es músico o grupo
+            ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
+            ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
+            mostrarComponentes();
+            botonCancelarEdicionPerfil();
+            //////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            editaPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
+        }
         return vista;
     }//on create
 
@@ -488,7 +501,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 txtProvincia.setVisibility(View.VISIBLE);
                 break;
         }
-         BDBAA.cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
+        BDBAA.cargarDatosPerfil(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
 
     }
 
@@ -569,9 +582,10 @@ public class FragmentVerMiPerfil extends Fragment {
                 break;
 
         }
-       FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
+        // FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
 
         BDBAA.cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
+
 
 
     }
@@ -798,8 +812,6 @@ public class FragmentVerMiPerfil extends Fragment {
 
         }
     }
-
-
 
 
 }

@@ -86,7 +86,6 @@ public class BandsnArts extends Application {
     public static void cargarLocalidadProvincia(View vista, Object o,Spinner spProvincia,Spinner spLocalidad) {
         if (o instanceof Grupo) {
             Grupo grupo = (Grupo) o;
-            // Provincia
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
         }else{
@@ -112,6 +111,7 @@ public class BandsnArts extends Application {
         System.out.println(BandsnArts.posLocalidad);
         spLocalidad.setSelection(BandsnArts.posLocalidad);
         BandsnArts.escuchas(vista.getContext(), spProvincia,spLocalidad);
+
     }
 
     public static void loadSpinnerProvincias(Spinner spProvincia) {
@@ -153,12 +153,12 @@ public class BandsnArts extends Application {
                 adapter.setDropDownViewResource(R.layout.spinner_item);
                 // Apply the adapter to the spinner
                 spLocalidad.setAdapter(adapter);
-                if (BandsnArts.banderaLocalidad) {
+                if (BandsnArts.posLocalidad < BandsnArts.localidades.length) {
                     spLocalidad.setSelection(BandsnArts.posLocalidad);
                     BandsnArts.banderaLocalidad = false;
                 } else {
-                    BandsnArts.posLocalidad = 0;
-                    spLocalidad.setSelection(BandsnArts.posLocalidad);
+
+                    spLocalidad.setSelection(0);
                     BandsnArts.banderaLocalidad = true;
                 }
             }
@@ -178,6 +178,7 @@ public class BandsnArts extends Application {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BandsnArts.posLocalidad = position;
+
             }
 
             @Override

@@ -33,7 +33,7 @@ public class FragmentMiPerfil extends Fragment {
     ///Objeto necesario para los botones de navegacion
     private BottomNavigationView bottomNavigationView;
     private TextView info;
-    final Fragment verperfil = new FragmentVerMiPerfil();
+    final Fragment verperfil = new FragmentVerMiPerfil(0);
     final Fragment anuncios = new FragmentAnuncios();
     final Fragment multi = new FragmentMultimedia();
     View vista;
@@ -47,7 +47,7 @@ public class FragmentMiPerfil extends Fragment {
         //Se establece como principal el fragment de inicio
         bottomTools = vista.findViewById(R.id.bottomnav);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil(0)).commit();
 
         return vista;
     }
