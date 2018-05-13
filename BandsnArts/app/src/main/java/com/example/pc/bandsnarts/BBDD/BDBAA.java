@@ -71,6 +71,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
@@ -199,7 +200,7 @@ public class BDBAA extends AppCompatActivity {
                                 mus.getAnuncio().get(posControl).setEstilo(estilo);
                                 mus.getAnuncio().get(posControl).setInstrumento(instrumento);
                                 mus.getAnuncio().get(posControl).setSexo(sexo);
-                                RecyclerAdapterAnuncioPropio.listaA.set(posControl,anu);
+                                RecyclerAdapterAnuncioPropio.listaA.set(posControl, anu);
                             }
                             bd.child(ds.getKey()).setValue(mus);
                             break;
@@ -218,7 +219,7 @@ public class BDBAA extends AppCompatActivity {
                                 gru.getAnuncio().get(posControl).setEstilo(estilo);
                                 gru.getAnuncio().get(posControl).setInstrumento(instrumento);
                                 gru.getAnuncio().get(posControl).setSexo(sexo);
-                                RecyclerAdapterAnuncioPropio.listaA.set(posControl,anu);
+                                RecyclerAdapterAnuncioPropio.listaA.set(posControl, anu);
                             }
                             bd.child(ds.getKey()).setValue(gru);
                             break;
@@ -564,7 +565,7 @@ public class BDBAA extends AppCompatActivity {
                             // Sexo....
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.sexo), musico.getSexo());
                             ((Spinner) vista.findViewById(R.id.spSexoVVerMiPerfil)).setSelection(posicion);
-                             // Descripcion
+                            // Descripcion
                             ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
                             //Buscando
 
@@ -870,11 +871,66 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
+
+    public static void guardarURL(final String tipo, final String tipoRed, final String urlRedSocial) {
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList redes;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Musico mus =null;
+                    Grupo grup = null;
+                    switch (tipo){
+                        case("musico"):
+                            mus = data.getValue(Musico.class);
+                            redes = mus.getRedsocial();
+                            break;
+                        case("grupo"):
+                            grup = data.getValue(Grupo.class);
+                            redes = grup.getRedsocial();
+                            break;
+                    }
+
+                    switch (tipoRed){
+                        case("YouTube"):
+                            redes.set(0,urlRedSocial);
+                            break;
+                        case("FaceBook"):
+                            redes.set(1,urlRedSocial);
+                            break;
+                        case("InstaGram"):
+                            redes.set(2,urlRedSocial);
+                            break;
+                    }
+
+                    switch (tipo){
+                        case("musico"):
+                            bd.child(data.getKey()).setValue(mus);
+                            break;
+                        case("grupo"):
+                            bd.child(data.getKey()).setValue(grup);
+                            break;
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public static void comprobacionAudioUsuario(final String tipo, final Context ctx) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
-        Query q = null;
-        q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -907,11 +963,10 @@ public class BDBAA extends AppCompatActivity {
                                 FragmentMultimedia.hiloMusica.start();
 
 
-                                 if((VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)!=null){
-                                     (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)
-                                             .setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
-                                 }
-
+                                if ((VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia) != null) {
+                                    (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)
+                                            .setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
+                                }
 
 
                                 FragmentMultimedia.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -1085,6 +1140,5 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
-
 
 }

@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.support.annotation.NonNull;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -83,13 +84,13 @@ public class BandsnArts extends Application {
     }
 
 
-    public static void cargarLocalidadProvincia(View vista, Object o,Spinner spProvincia,Spinner spLocalidad) {
+    public static void cargarLocalidadProvincia(View vista, Object o, Spinner spProvincia, Spinner spLocalidad) {
         if (o instanceof Grupo) {
             Grupo grupo = (Grupo) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
-        }else{
-            Musico musico=(Musico) o;
+        } else {
+            Musico musico = (Musico) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, musico.getLocalidad());
         }
@@ -110,7 +111,7 @@ public class BandsnArts extends Application {
         spLocalidad.setAdapter(adapter1);
         System.out.println(BandsnArts.posLocalidad);
         spLocalidad.setSelection(BandsnArts.posLocalidad);
-        BandsnArts.escuchas(vista.getContext(), spProvincia,spLocalidad);
+        BandsnArts.escuchas(vista.getContext(), spProvincia, spLocalidad);
 
     }
 
@@ -197,12 +198,10 @@ public class BandsnArts extends Application {
         }
     }
 
-    public  static String quitarSaltos(String cadena) {
+    public static String quitarSaltos(String cadena) {
         // Para el reemplazo usamos un string vacío
         return cadena.replaceAll("\n", "").trim();
     }
-
-
 
 
     // Metodo para reescalado de la imagen de perfil
@@ -231,6 +230,27 @@ public class BandsnArts extends Application {
         // si queremos poder mostrar nuestra imagen tenemos que crear un
         // objeto drawable y así asignarlo a un botón, imageview...
         return resizedBitmap;
+    }
+
+    public static boolean compruebaURL(String tipo, String url) {
+        String pattern = null;
+        switch (tipo) {
+            case ("YouTube"):
+              pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+                break;
+            case ("InstaGram"):
+                pattern = "((http|https)://)?(www[.])?instagram.com/.+";
+                break;
+            case ("FaceBook"):
+                pattern = "((http|https)://)?(www[.])?facebook.com/.+";
+                break;
+        }
+
+        if (!url.isEmpty() && url.matches(pattern)) {
+            return true;
+        }
+        return false;
+
     }
 
 }

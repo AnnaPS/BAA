@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +50,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+
+import static android.app.DialogFragment.STYLE_NO_TITLE;
 
 
 @SuppressLint("ValidFragment")
@@ -192,51 +195,65 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             }
         });
 
-
         // Redes Sociales
         btnYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutInflater inflador = getActivity().getLayoutInflater();
-                final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
-                EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
-                Toast.makeText(getContext(), "YOUTUBE", Toast.LENGTH_SHORT).show();
-                AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-                ad.setView(vistainflada);
-                ad.setCancelable(false);
-                ad.setTitle("YOUTUBE");
-                ad.setMessage("Inserta tu link de YouTube");
-
-                ad.setButton(Dialog.BUTTON_POSITIVE,"OK",new DialogInterface.OnClickListener(){
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // COMPROBAR LA URL
-                        dialog.dismiss();
-                    }
-                });
-
-
-                ad.show();
-
+                agregaURLSocial("YouTube","Agrega tu link de YouTube");
             }
         });
-
         btnInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "INSTAGRAM", Toast.LENGTH_SHORT).show();
+                agregaURLSocial("InstaGram","Agrega tu link de Instagram");
+
             }
         });
-
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "FACEBOOK", Toast.LENGTH_SHORT).show();
+                agregaURLSocial("FaceBook","Agrega tu link de FaceBook");
+
             }
         });
 
         return vista;
+    }
+
+    public static void agregaURLSocial(final String tipo,String mensaje){
+        LayoutInflater inflador = VentanaInicialApp.a.getLayoutInflater();
+        final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
+        final EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
+        Toast.makeText(VentanaInicialApp.a, tipo, Toast.LENGTH_SHORT).show();
+       final AlertDialog ad = new AlertDialog.Builder(VentanaInicialApp.a).create();
+        ad.setView(vistainflada);
+        ad.setCancelable(false);
+        ad.setTitle(tipo);
+        ad.setMessage(mensaje);
+        ad.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ad.setButton(Dialog.BUTTON_POSITIVE,"ACEPTAR",new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              if(BandsnArts.compruebaURL(tipo,cajaredes.getText().toString()))  {
+                  // guardar la URL en BD
+                  BDBAA.guardarURL(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a.getApplicationContext()).getString("tipo",""),tipo,cajaredes.getText().toString());
+                  dialog.dismiss();
+              }else{
+                  Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "NO VALIDA", Toast.LENGTH_SHORT).show();
+                  cajaredes.setError("URL no válida");
+                  ad.show();
+              }
+            }
+        });
+
+
+        ad.show();
     }
 
     @Override
@@ -355,7 +372,6 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         if (taskSnapshot.getTotalByteCount() > 5000000) {
                             uploadTask.cancel();
                             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
-
                             ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                         }
 
