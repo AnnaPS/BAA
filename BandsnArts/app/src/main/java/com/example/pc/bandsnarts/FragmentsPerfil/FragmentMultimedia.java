@@ -2,6 +2,8 @@ package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
@@ -16,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.util.Log;
@@ -23,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -61,8 +65,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
     public static boolean paraHilo;
     public static Fragment fragment;
 
-
-
+    private Button btnYoutube,btnFacebook,btnInstagram;
     // Boton añadir audio
     private Button subirAudio;
     // Referencia al storage para la subida del audio
@@ -70,12 +73,9 @@ public class FragmentMultimedia extends Fragment implements Runnable {
 
     public static ImageView progressBar;
     public static AnimationDrawable animationDrawable;
-
-
     private View scrollMedia;
-
     private View layout;
-
+    // Variable de control para la carga del Fragmento
     int num;
 
     @SuppressLint("ValidFragment")
@@ -94,13 +94,16 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         volumenBar = vista.findViewById(R.id.volumenVMultimedia);
         tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
         tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
-
         scrollMedia = vista.findViewById(R.id.svMedia);
-
         layout = vista.findViewById(R.id.multimedia);
-
         fragment = this;
         progressBar = vista.findViewById(R.id.progressBarVMedia);
+
+        btnFacebook = vista.findViewById(R.id.btnEditarFacebookVMultimedia);
+        btnInstagram = vista.findViewById(R.id.btnEditarInstagramVMultimedia);
+        btnYoutube = vista.findViewById(R.id.btnEditarYoutubeVMultimedia);
+
+
         // COMPROBAR SI EL USUARIO TIENE AUDIO
         if(num!=1) {
             BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
@@ -182,13 +185,56 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         subirAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // ESCONDER LOS TABS INFERIORES
+                // Ocultamos los tabs inferiores pasandole un 1 a la carga del fragmento
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMultimedia(1)).commit();
                 ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                 subirAudio();
             }
         });
 
+
+        // Redes Sociales
+        btnYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflador = getActivity().getLayoutInflater();
+                final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
+                EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
+                Toast.makeText(getContext(), "YOUTUBE", Toast.LENGTH_SHORT).show();
+                AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
+                ad.setView(vistainflada);
+                ad.setCancelable(false);
+                ad.setTitle("YOUTUBE");
+                ad.setMessage("Inserta tu link de YouTube");
+
+                ad.setButton(Dialog.BUTTON_POSITIVE,"OK",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // COMPROBAR LA URL
+                        dialog.dismiss();
+                    }
+                });
+
+
+                ad.show();
+
+            }
+        });
+
+        btnInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "INSTAGRAM", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "FACEBOOK", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return vista;
     }
@@ -308,7 +354,8 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         if (taskSnapshot.getTotalByteCount() > 5000000) {
                             uploadTask.cancel();
-                            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
+                            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
+
                             ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                         }
 
@@ -329,6 +376,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     System.out.println("" + mediaPlayer.getTrackInfo()[i]);
                 }
             }
+        }else{
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
+
+            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
         }
     }
 
