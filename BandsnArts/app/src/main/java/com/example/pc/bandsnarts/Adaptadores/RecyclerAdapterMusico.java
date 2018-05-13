@@ -96,12 +96,14 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                             case R.id.itemperfilvisitado:
                                i = new Intent(mContext,VisitarPerfilDeseado.class);
                                 Toast.makeText(mContext, "visitar perfil", Toast.LENGTH_SHORT).show();
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
                                 break;
 
                             case R.id.itemanunciosvisitado:
                                 i = new Intent(mContext,VisitarPerfilDeseado.class);
                                 Toast.makeText(mContext, "visitar anuncio", Toast.LENGTH_SHORT).show();
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
                                 break;
                             default:
