@@ -19,6 +19,7 @@ import android.widget.Spinner;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
+import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -89,10 +90,14 @@ public class BandsnArts extends Application {
             Grupo grupo = (Grupo) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
-        } else {
+        } else if(o instanceof Musico){
             Musico musico = (Musico) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, musico.getLocalidad());
+        }else if(o instanceof Anuncio){
+            Anuncio anuncio = (Anuncio) o;
+            BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), anuncio.getProvincia());
+            BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, anuncio.getLocalidad());
         }
         spProvincia.setSelection(BandsnArts.posProvincia);
         // Localidad

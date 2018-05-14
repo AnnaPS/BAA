@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
+import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
 
@@ -54,6 +55,7 @@ import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,6 +68,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -83,7 +86,7 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    public static void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
+    /*public static void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
         // Nos posicionamos
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
 
@@ -108,8 +111,7 @@ public class BDBAA extends AppCompatActivity {
                     bd.child(bd.push().getKey()).setValue(mus);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
-                        context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
                     ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
                     ((Activity) context).finish();
                 }
@@ -133,26 +135,26 @@ public class BDBAA extends AppCompatActivity {
                 boolean encontrado = false;
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.d("INSERt", "No insertado ");
+                    Grupo gru = ds.getValue(Grupo.class);
+
                     Toast.makeText(context, "Ya existe un grupo con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
                     edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                     view.setVisibility(View.VISIBLE);
+
                     encontrado = true;
                 }
+
                 if (!encontrado) {
-
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
-
                     Log.d("INSERt", "Insertado ");
                     DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
                     Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
                     bd.child(bd.push().getKey()).setValue(gru);
                     FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
-                        context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
                     ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
                     ((Activity) context).finish();
-
                 }
             }
 
@@ -160,6 +162,72 @@ public class BDBAA extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
                 Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }*/
+
+    public static void agregarFackingMaster(final String tipo, final Context context, final View view, final EditText correo, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList instrumento, final String descripcion) {
+        Query q = FirebaseDatabase.getInstance().getReference("uids").orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            boolean encontrado = false;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    view.setVisibility(View.VISIBLE);
+                    correo.setError("Ese correo ya esta registrado.");
+                    FirebaseAuth.getInstance().signOut();
+                    encontrado = true;
+                }
+                if (!encontrado) {
+                    DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                    Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
+                    q.addListenerForSingleValueEvent(new ValueEventListener() {
+                        boolean encontrados = false;
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Log.d("INSERt", "No insertado ");
+                                edtnombre.setError("EL nombre ya esta en uso pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
+                                view.setVisibility(View.VISIBLE);
+                                encontrados = true;
+                            }
+                            if (!encontrados) {
+                                DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                                switch (tipo) {
+                                    case "musico":
+                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
+                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
+                                        bd.child(bd.push().getKey()).setValue(mus);
+                                        break;
+                                    case "grupo":
+                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
+                                        Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
+                                        bd.child(bd.push().getKey()).setValue(gru);
+                                        break;
+                                }
+                                FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                                ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
+                                ((Activity) context).finish();
+                                Toast.makeText(context, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
+                                Log.d("INSERTADO", "Insertado con exito");
+                                FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
+                            Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
@@ -377,7 +445,7 @@ public class BDBAA extends AppCompatActivity {
                     }
                     if (numAnuncios < 4) {
                         android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
-                        FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(-1);
+                        FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(0, -1);
                         alerta.show(fm, "AlertaAnuncio");
                     } else {
                         Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "Solo puede añadir hasta 4 anuncios.", Toast.LENGTH_SHORT).show();
@@ -626,7 +694,53 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public static void cargarDatosAnuncio(final View vista, final String tipo, final Context context, final Spinner spProvincia, final Spinner spLocalidad) {
+    public static void cargarAnuncio(final View vista, final int position, final String tipo, final Context context, final Spinner spProvincia, final Spinner spLocalidad, final Spinner spTipoBusqueda,
+                                     final TextView fecha, final EditText titulo, final TextView descripcionAnuncio, final Spinner spEstilo,
+                                     final Spinner spSexo, final Spinner spInstrumento) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            Anuncio anuM = data.getValue(Musico.class).getAnuncio().get(position);
+                            spTipoBusqueda.setAdapter(new ArrayAdapter(context, R.layout.spinner_item, vista.getResources().getStringArray(R.array.tipobusquedamusico)));
+                            spTipoBusqueda.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.tipobusquedamusico), anuM.getTipo()));
+                            spEstilo.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), anuM.getEstilo()));
+                            spSexo.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.sexo), anuM.getSexo()));
+                            spInstrumento.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), anuM.getInstrumento()));
+                            fecha.setText(anuM.getFecha());
+                            titulo.setText(anuM.getTitulo());
+                            descripcionAnuncio.setText(anuM.getDescripcion());
+                            BandsnArts.cargarLocalidadProvincia(vista, anuM, spProvincia, spLocalidad);
+                            break;
+                        case "grupo":
+                            Anuncio anuG = data.getValue(Grupo.class).getAnuncio().get(position);
+                            spTipoBusqueda.setAdapter(new ArrayAdapter(context, R.layout.spinner_item, vista.getResources().getStringArray(R.array.tipobusquedamusico)));
+                            spTipoBusqueda.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.tipobusquedamusico), anuG.getTipo()));
+                            spEstilo.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), anuG.getEstilo()));
+                            spSexo.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.sexo), anuG.getSexo()));
+                            spInstrumento.setSelection(BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), anuG.getInstrumento()));
+                            fecha.setText(anuG.getFecha());
+                            titulo.setText(anuG.getTitulo());
+                            descripcionAnuncio.setText(anuG.getDescripcion());
+                            BandsnArts.cargarLocalidadProvincia(vista, anuG, spProvincia, spLocalidad);
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void cargarDatosAnuncio(final View vista, final String tipo, final Context context, final Spinner spProvincia, final Spinner spLocalidad, final Spinner spTipoBusqueda) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -637,10 +751,12 @@ public class BDBAA extends AppCompatActivity {
                     switch (tipo) {
                         case "musico":
                             Musico musico = data.getValue(Musico.class);
+                            spTipoBusqueda.setAdapter(new ArrayAdapter(context, R.layout.spinner_item, vista.getResources().getStringArray(R.array.tipobusquedamusico)));
                             BandsnArts.cargarLocalidadProvincia(vista, musico, spProvincia, spLocalidad);
                             break;
                         case "grupo":
                             Grupo grupo = data.getValue(Grupo.class);
+                            spTipoBusqueda.setAdapter(new ArrayAdapter(context, R.layout.spinner_item, vista.getResources().getStringArray(R.array.tipobusquedagrupo)));
                             BandsnArts.cargarLocalidadProvincia(vista, grupo, spProvincia, spLocalidad);
                             break;
                     }
@@ -877,44 +993,44 @@ public class BDBAA extends AppCompatActivity {
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList redes;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Musico mus =null;
+                    Musico mus = null;
                     Grupo grup = null;
-                    switch (tipo){
-                        case("musico"):
+                    switch (tipo) {
+                        case ("musico"):
                             mus = data.getValue(Musico.class);
                             redes = mus.getRedsocial();
                             break;
-                        case("grupo"):
+                        case ("grupo"):
                             grup = data.getValue(Grupo.class);
                             redes = grup.getRedsocial();
                             break;
                     }
 
-                    switch (tipoRed){
-                        case("YouTube"):
-                            redes.set(0,urlRedSocial);
+                    switch (tipoRed) {
+                        case ("YouTube"):
+                            redes.set(0, urlRedSocial);
                             break;
-                        case("FaceBook"):
-                            redes.set(1,urlRedSocial);
+                        case ("FaceBook"):
+                            redes.set(1, urlRedSocial);
                             break;
-                        case("InstaGram"):
-                            redes.set(2,urlRedSocial);
+                        case ("InstaGram"):
+                            redes.set(2, urlRedSocial);
                             break;
                     }
 
-                    switch (tipo){
-                        case("musico"):
+                    switch (tipo) {
+                        case ("musico"):
                             bd.child(data.getKey()).setValue(mus);
                             break;
-                        case("grupo"):
+                        case ("grupo"):
                             bd.child(data.getKey()).setValue(grup);
                             break;
                     }
                 }
-
 
 
             }
@@ -1013,30 +1129,30 @@ public class BDBAA extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String img;
+                String img = null;
                 StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     switch (tipo) {
                         case "musico":
                             img = data.getValue(Musico.class).getImagen();
-                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                }
-                            });
                             break;
                         case "grupo":
                             img = data.getValue(Grupo.class).getImagen();
-                            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                                }
-                            });
                             break;
                     }
+                    ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (!VentanaInicialApp.a.isFinishing()) {
+                                try {
+                                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                                } catch (IllegalArgumentException | RuntimeExecutionException ex) {
+                                    System.out.println("Cerro antes de tiempo de carga");
+                                }
+                            }
+                        }
+                    });
                 }
             }
 
@@ -1057,22 +1173,25 @@ public class BDBAA extends AppCompatActivity {
 
         if (o instanceof Musico) {
             img = ((Musico) o).getImagen();
-            ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-                }
-            });
+
         } else {
             img = ((Grupo) o).getImagen();
+
+        }
+        try {
             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+                    if (!VentanaInicialApp.a.isFinishing()) {
+
+                        Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
+
+                    }
                 }
             });
+        } catch (IllegalArgumentException | RuntimeExecutionException ex) {
+            System.out.println("Cerro antes de tiempo de carga");
         }
-
 
     }
 
@@ -1081,14 +1200,9 @@ public class BDBAA extends AppCompatActivity {
         // Nos posicionamos en el nodo de imagenes del storage
         StorageReference storage = FirebaseStorage.getInstance().getReference();
         Uri file;
-
-
         file = uri;
-
-
         StorageReference referenceFoto = storage.child("imagenes/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         UploadTask uploadTask = referenceFoto.putFile(file);
-
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -1100,7 +1214,7 @@ public class BDBAA extends AppCompatActivity {
                 FragmentVerMiPerfil.miFABGuardarRechazar.setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
-                ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getContext().getColor(R.color.md_white_1000));
+                ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getContext().getResources().getColor(R.color.md_white_1000));
                 Toast.makeText(ctx.getContext(), "No pudo subirse la foto con exito pruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

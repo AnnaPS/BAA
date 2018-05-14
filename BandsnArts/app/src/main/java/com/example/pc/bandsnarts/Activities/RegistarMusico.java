@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -68,14 +69,14 @@ public class RegistarMusico extends AppCompatActivity {
                 BandsnArts.ocultaTeclado(RegistarMusico.this);
                 return false;
             }
-        }) ;
+        });
         spinnerEstilos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 BandsnArts.ocultaTeclado(RegistarMusico.this);
                 return false;
             }
-        }) ;
+        });
         spinnerInstrumentos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -83,7 +84,7 @@ public class RegistarMusico extends AppCompatActivity {
                 return false;
 
             }
-        }) ;
+        });
 
 
         spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -115,7 +116,7 @@ public class RegistarMusico extends AppCompatActivity {
         spinnerInstrumentos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posInstrumento=position;
+                posInstrumento = position;
             }
 
             @Override
@@ -130,11 +131,11 @@ public class RegistarMusico extends AppCompatActivity {
         if (edtRepitePassMusico.getText().toString().isEmpty() || edtPassMusico.getText().toString().isEmpty()
                 || edtMailMusico.getText().toString().isEmpty() || edtNombreMusico.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE COMPLETAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
-        }  else if (posEstilo == 0) {
+        } else if (posEstilo == 0) {
             Toast.makeText(this, "Debe seleccionar un estiloooooo", Toast.LENGTH_SHORT).show();
         } else if (posInstrumento == 0) {
             Toast.makeText(this, "Debe seleccionar un instrumento", Toast.LENGTH_SHORT).show();
-        }  else {
+        } else {
             // Comprobamos que el patron de correo y de contraseña son correctos
             if (!auth.validarEmail(edtMailMusico.getText().toString())) {
                 edtMailMusico.setError("e-mail no válido");
@@ -157,16 +158,17 @@ public class RegistarMusico extends AppCompatActivity {
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
 
-                            ArrayList<String> intrumentos= new ArrayList<>();
+                            ArrayList<String> intrumentos = new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                             BDBAA.agregarMusico(RegistarMusico.this,RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
-                                     edtNombreMusico, "default_musico.jpg"
-                                    , edtNombreMusico.getText().toString(),
-                                     getResources().getStringArray(R.array.sexo)[posSexo],
-                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo]
-                                    , intrumentos,
-                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
+                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", ""), RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
+                                    edtMailMusico, edtNombreMusico,
+                                    "default_musico.jpg",
+                                    edtNombreMusico.getText().toString(),
+                                    getResources().getStringArray(R.array.sexo)[posSexo],
+                                    getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                    intrumentos,
+                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -95,20 +96,23 @@ public class RegistrarGrupo extends AppCompatActivity {
                 // Mensaje de control
                 FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
-                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
                 //se lanza la info inicial
                 FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            new BDBAA().agregarGrupo(RegistrarGrupo.this, RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegSocial),
+                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),
+                                    RegistrarGrupo.this,
+                                    RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegGrupo),
+                                    edtMailGrupo,
                                     edtNombreGrupo, "default_grupo.jpg",
                                     edtNombreGrupo.getText().toString(),
+                                    null,
                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                    null,
                                     BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
                             // ENVIO CORREO VERIFICACION
-                            Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
-                            firebaseAuth.getCurrentUser().sendEmailVerification();
+
                             FirebaseAuth.getInstance().removeAuthStateListener(this);
                         }
                     }

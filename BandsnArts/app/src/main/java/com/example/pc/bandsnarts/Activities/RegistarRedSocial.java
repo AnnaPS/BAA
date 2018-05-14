@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -211,14 +212,14 @@ public class RegistarRedSocial extends AppCompatActivity {
             Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
         } else if (posEstilo == 0) {
             // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
-            TextView errorText = (TextView)spinnerEstilos.getSelectedView();
+            TextView errorText = (TextView) spinnerEstilos.getSelectedView();
             // errorText.setError("anything here, just to add the icon");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Seleccine un estilo");//changes the selected item text to this
 
         } else if (posInstrumento == 0 && tipo == 0) {
             // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
-            TextView errorText = (TextView)spinnerInstrumentos.getSelectedView();
+            TextView errorText = (TextView) spinnerInstrumentos.getSelectedView();
             // errorText.setError("anything here, just to add the icon");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Seleccione un instrumento");//changes the selected item text to this
@@ -235,7 +236,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                             .putExtra("tipo", tipo)
                             .putExtra("nom", edtNombre.getText().toString())
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
-                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
+                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
                     guardarBD(this, i);
                     break;
                 //Es un musico
@@ -250,7 +251,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                             .putExtra("sex", getResources().getStringArray(R.array.sexo)[posSexo])
                             .putExtra("est", getResources().getStringArray(R.array.estiloMusical)[posEstilo])
                             .putExtra("ins", intrumentos)
-                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString())) ;
+                            .putExtra("des", BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
                     guardarBD(this, i);
                     break;
             }
@@ -263,19 +264,24 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                BDBAA.agregarGrupo(cont
+                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
-                        , edtNombre
+                        ,null
+                        ,edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
+                        ,null
                         , data.getStringExtra("est")
+                        ,null
                         , data.getStringExtra("des"));
                 break;
             //Es un musico
             case 0:
                 //pendiente de implementacion de sexo
-                 BDBAA.agregarMusico(cont
+                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", "")
+                        , cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
+                        , null
                         , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
