@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -49,12 +50,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     // Objeto FirebaseAuth y su escuchador
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
-    private ImageView fotoPerfil;
-    private TextView txtNombre, txtCorreo;
+    public static ImageView fotoPerfil;
+    private TextView txtNombre;
     private int id = R.id.inicioMenuDrawer2;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
+   public static FragmentManager fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         View vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
-        txtCorreo = vista.findViewById(R.id.txtCorreoNavH);
+
 
         // Inicializamos el FireBaseAuth y su escuchador
         firebaseAuth = FirebaseAuth.getInstance();
@@ -135,8 +137,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
-            LoginManager.getInstance().logOut();
             finish();
+
+        } else if(id == R.id.perfilMenuDrawer2){
+            // Estando en Perfil, volvemo a Inicio
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
+            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
         }
     }
 
@@ -167,12 +173,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        FragmentManager fragment = getSupportFragmentManager();
+         fragment = getSupportFragmentManager();
 
         id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.configuracionMenuDrawer2) {
@@ -220,25 +226,25 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     public void cerrarSesion() {
-        // deslogueo correo contraseña
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
                 if (status.isSuccess()) {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
+                    clienteGoogle.disconnect();
+                    System.out.println("Sesion cerrada");
                     //El primer digito indica la ventana y el segundo la vez que
                     setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
                     VentanaInicialApp.this.finish();
                     // volverActivityLogin();
                 } else {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
+                    System.out.println("Sesion no cerrada");
                 }
             }
         });
+
     }
 
     @Override

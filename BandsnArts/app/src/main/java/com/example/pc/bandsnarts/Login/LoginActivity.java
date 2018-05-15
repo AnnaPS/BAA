@@ -25,6 +25,7 @@ import android.widget.Toast;
 /*import com.crashlytics.android.Crashlytics;*/
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
@@ -142,16 +143,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
                 // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
-                if (usuario != null) {
+                if (usuario != null ) {
                     visualizarBotones(View.INVISIBLE);
-                    Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()|| clienteGoogle.isConnecting()) {
+                    System.out.println("Usuario Verificado");
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
                          BDBAA.comprobarUID(estaVentana, usuario.getUid());
                     } else {
                         visualizarBotones(View.VISIBLE);
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Usuario null", Toast.LENGTH_SHORT).show();
+                    System.out.println("Usuario null");
                     visualizarBotones(View.VISIBLE);
                 }
             }
@@ -175,19 +176,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 manejadorTokenFacebook(loginResult.getAccessToken());
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
-                Toast.makeText(estaVentana, "ACCESO CON FACEBOOK CORRECTO", Toast.LENGTH_SHORT).show();
+                System.out.println("ACCESO CON FACEBOOK CORRECTO");
+
             }
 
             @Override
             public void onCancel() {
                 // Cuando se cancele el inicio de sesion.
-                Toast.makeText(estaVentana, "Inicio Cancelado.", Toast.LENGTH_SHORT).show();
-
+                System.out.println("Inicio Cancelado.");
             }
 
             @Override
             public void onError(FacebookException error) {
                 // Algun error como conexion u otros.
+
                 Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -220,10 +222,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(estaVentana, "Error de login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                    System.out.println("Error de login en Firebase con FaceBook");
                 } else {
                     visualizarBotones(View.INVISIBLE);
-                    Toast.makeText(estaVentana, "Login en Firebase con FaceBook", Toast.LENGTH_SHORT).show();
+                    System.out.println("Login en Firebase con FaceBook");
                      BDBAA.comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
 
@@ -283,40 +285,48 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (BandsnArts.CODIGO_DE_INICIO):
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                compruebaResultado(result);
+                if(gooogle) {
+                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                    compruebaResultado(result);
+                    System.out.println("Codigo de inicio" + resultCode);
+                }
                 break;
             //Este if es para saber que ha rellenado todo lo necesario en el logueo
             case (BandsnArts.CODIGO_DE_REGISTRO):
+                System.out.println("Codigo de registro");
                 FirebaseAuth.getInstance().signOut();
                 break;
             default:
                 switch (resultCode) {
                     case (BandsnArts.CODIGO_DE_CIERRE):
-                        Toast.makeText(ventanaPrincipal, "Codigo cierre", Toast.LENGTH_LONG).show();
+                        System.out.println("Codigo de cierre");
                         finish();
                         break;
                     case (BandsnArts.CODIGO_DE_DESLOGUEO):
+                        System.out.println("Codigo de deslogueo");
                         visualizarBotones(View.VISIBLE);
                         BandsnArts.posProvincia=0;
                         BandsnArts.posLocalidad=0;
+                        // deslogueo correo contraseña
+                        // deslogueo google
                         System.out.println("Ha sido deslogueado");
-                        Toast.makeText(ventanaPrincipal, "Gracias por usar BANDS N' ARTS \n<3", Toast.LENGTH_LONG).show();
                         break;
                     case (BandsnArts.CODIGO_DE_REDSOCIAL):
                         // Clear data
+                        System.out.println("Codigo de red social");
                         LoginManager.getInstance().logOut();
                         FirebaseAuth.getInstance().getCurrentUser().delete();
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(ventanaPrincipal, "Codigo REDSOCIAL", Toast.LENGTH_LONG).show();
                         break;
                     case BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL:
+                        System.out.println("Codigo de reg red social");
                         if (gooogle) {
+                            System.out.println("Codigo de reg red social"+requestCode);
                             Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
                             startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
                             gooogle = false;
                         }
-                        Toast.makeText(ventanaPrincipal, "Codigo cierreRED", Toast.LENGTH_LONG).show();
                         break;
                 }
 
@@ -427,10 +437,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         finish();
     }
 
-    @Override
+   /* @Override
     protected void onDestroy() {
         super.onDestroy();
         FirebaseAuth.getInstance().signOut();
 
-    }
+    }*/
 }

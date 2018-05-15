@@ -3,11 +3,13 @@ package com.example.pc.bandsnarts.Container;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.support.annotation.NonNull;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
+import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -82,16 +85,19 @@ public class BandsnArts extends Application {
     }
 
 
-    public static void cargarLocalidadProvincia(View vista, Object o,Spinner spProvincia,Spinner spLocalidad) {
+    public static void cargarLocalidadProvincia(View vista, Object o, Spinner spProvincia, Spinner spLocalidad) {
         if (o instanceof Grupo) {
             Grupo grupo = (Grupo) o;
-            // Provincia
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
-        }else{
-            Musico musico=(Musico) o;
+        } else if(o instanceof Musico){
+            Musico musico = (Musico) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, musico.getLocalidad());
+        }else if(o instanceof Anuncio){
+            Anuncio anuncio = (Anuncio) o;
+            BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), anuncio.getProvincia());
+            BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, anuncio.getLocalidad());
         }
         spProvincia.setSelection(BandsnArts.posProvincia);
         // Localidad
@@ -110,7 +116,8 @@ public class BandsnArts extends Application {
         spLocalidad.setAdapter(adapter1);
         System.out.println(BandsnArts.posLocalidad);
         spLocalidad.setSelection(BandsnArts.posLocalidad);
-        BandsnArts.escuchas(vista.getContext(), spProvincia,spLocalidad);
+        BandsnArts.escuchas(vista.getContext(), spProvincia, spLocalidad);
+
     }
 
     public static void loadSpinnerProvincias(Spinner spProvincia) {
@@ -152,12 +159,12 @@ public class BandsnArts extends Application {
                 adapter.setDropDownViewResource(R.layout.spinner_item);
                 // Apply the adapter to the spinner
                 spLocalidad.setAdapter(adapter);
-                if (BandsnArts.banderaLocalidad) {
+                if (BandsnArts.posLocalidad < BandsnArts.localidades.length) {
                     spLocalidad.setSelection(BandsnArts.posLocalidad);
                     BandsnArts.banderaLocalidad = false;
                 } else {
-                    BandsnArts.posLocalidad = 0;
-                    spLocalidad.setSelection(BandsnArts.posLocalidad);
+
+                    spLocalidad.setSelection(0);
                     BandsnArts.banderaLocalidad = true;
                 }
             }
@@ -177,6 +184,7 @@ public class BandsnArts extends Application {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BandsnArts.posLocalidad = position;
+
             }
 
             @Override
@@ -193,6 +201,11 @@ public class BandsnArts extends Application {
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static String quitarSaltos(String cadena) {
+        // Para el reemplazo usamos un string vacío
+        return cadena.replaceAll("\n", "").trim();
     }
 
 
@@ -222,6 +235,27 @@ public class BandsnArts extends Application {
         // si queremos poder mostrar nuestra imagen tenemos que crear un
         // objeto drawable y así asignarlo a un botón, imageview...
         return resizedBitmap;
+    }
+
+    public static boolean compruebaURL(String tipo, String url) {
+        String pattern = null;
+        switch (tipo) {
+            case ("YouTube"):
+              pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+                break;
+            case ("InstaGram"):
+                pattern = "((http|https)://)?(www[.])?instagram.com/.+";
+                break;
+            case ("FaceBook"):
+                pattern = "((http|https)://)?(www[.])?facebook.com/.+";
+                break;
+        }
+
+        if (!url.isEmpty() && url.matches(pattern)) {
+            return true;
+        }
+        return false;
+
     }
 
 }

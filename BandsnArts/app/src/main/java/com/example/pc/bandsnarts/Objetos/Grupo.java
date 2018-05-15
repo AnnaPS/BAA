@@ -15,7 +15,11 @@ public class Grupo {
     private String buscando="no";
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
-    private ArrayList<String> redsocial=new ArrayList<String>();
+    private ArrayList<String> redsocial=new ArrayList<String>(){{
+        add("youtube");
+        add("facebook");
+        add("instagram");
+    }};
 
     public Grupo(){
     }

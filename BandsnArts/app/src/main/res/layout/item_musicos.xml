@@ -21,7 +21,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/item_detail"
-            android:layout_marginLeft="280dp"
+            android:layout_marginLeft="320dp"
             android:background="@null"
             android:src="@drawable/ic_more_vert_black_24dp" />
         <LinearLayout

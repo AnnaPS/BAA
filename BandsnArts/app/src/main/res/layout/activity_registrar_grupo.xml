@@ -101,11 +101,12 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/impDescripcionVRegGrupo"
-                android:layout_width="match_parent"
+                android:layout_width="351dp"
                 android:layout_height="194dp"
                 android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                android:hint="DESCRIPCIÓN"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spEstiloVRegGrupo"
                 tools:ignore="MissingConstraints">
@@ -117,11 +118,11 @@
                     android:layout_marginEnd="34dp"
                     android:layout_marginStart="35dp"
                     android:layout_marginTop="7dp"
+                    android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="sans-serif"
                     android:hint="DESCRIPCIÓN"
                     android:inputType="textMultiLine"
-                    android:background="@android:color/transparent"
                     android:maxLength="200"
                     android:textSize="14sp"
                     android:textStyle="bold"

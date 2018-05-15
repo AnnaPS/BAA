@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,15 +17,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 
 
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -50,6 +56,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         View vista;
         vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_musicos, parent, false);
         ViewHolder viewHolder = new ViewHolder(vista);
+
         return viewHolder;
     }
 
@@ -64,14 +71,53 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView desc = holder.descripcion;
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
-        ImageButton btnMenu = holder.menuButton;
+
 
         nom.setText(musicoItem.getNombre());
         ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
         anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
+        ImageButton btnMenu = holder.menuButton;
 
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //creacion del menu para el cardview
+                PopupMenu popupMenu = new PopupMenu(mContext, holder.menuButton);
+                popupMenu.inflate(R.menu.visitar_perfil);
+                //Listener del menu
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        Intent i;
+                        switch (menuItem.getItemId()) {
+                            case R.id.itemperfilvisitado:
+                               i = new Intent(mContext,VisitarPerfilDeseado.class);
+                                Toast.makeText(mContext, "visitar perfil", Toast.LENGTH_SHORT).show();
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                                break;
+
+                            case R.id.itemanunciosvisitado:
+                                i = new Intent(mContext,VisitarPerfilDeseado.class);
+                                Toast.makeText(mContext, "visitar anuncio", Toast.LENGTH_SHORT).show();
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        return false;
+                    }
+                });
+                //mostrar menu
+                popupMenu.show();
+
+            }
+        });
 
         try {
             if (musicoItem.getBuscando().equalsIgnoreCase("si")) {
@@ -108,6 +154,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
             estilo = itemView.findViewById(R.id.txtEstiloItemMusico);
             descripcion = itemView.findViewById(R.id.txtDescripcionItemMusico);
             anuncios = itemView.findViewById(R.id.txtCantidadAnunciosItemMusico);
+            menuButton = itemView.findViewById(R.id.btnMenuMusicos);
 
         }
     }
