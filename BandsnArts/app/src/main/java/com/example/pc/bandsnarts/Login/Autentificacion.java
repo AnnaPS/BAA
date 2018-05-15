@@ -47,13 +47,10 @@ public class Autentificacion extends AppCompatActivity {
                             String name = usuario.getDisplayName();
                             String email = usuario.getEmail();
                             Uri photoUrl = usuario.getPhotoUrl();
+
                             // Check if user's email is verified
                             boolean emailVerified = usuario.isEmailVerified();
-                            // The user's ID, unique to the Firebase project. Do NOT use this value to
-                            // authenticate with your backend server, if you have one. Use
-                            // FirebaseUser.getToken() instead.
-                            String uid = usuario.getUid();
-                            Toast.makeText(vLog, "nombre: "+name+"\ncorreo: "+email+"\nURL de la foto: "+photoUrl+"\nemail verificado: "+emailVerified, Toast.LENGTH_SHORT).show();
+                            System.out.println("nombre: "+name+"\ncorreo: "+email+"\nURL de la foto: "+photoUrl+"\nemail verificado: "+emailVerified);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
@@ -98,7 +95,7 @@ public class Autentificacion extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             deslogueo();
-                            Toast.makeText(vLog, "Se ha equivocado en sus credenciales ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(vLog, "Credenciales no correctas", Toast.LENGTH_SHORT).show();
                             Log.w("TAG", "loginUserWithEmail:failure", task.getException());
                         }
                     }

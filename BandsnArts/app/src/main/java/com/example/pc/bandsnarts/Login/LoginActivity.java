@@ -144,14 +144,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
                 if (usuario != null ) {
                     visualizarBotones(View.INVISIBLE);
-                    Toast.makeText(LoginActivity.this, "Usuario Verificado", Toast.LENGTH_SHORT).show();
+                    System.out.println("Usuario Verificado");
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()|| clienteGoogle.isConnecting()) {
                          BDBAA.comprobarUID(estaVentana, usuario.getUid());
                     } else {
                         visualizarBotones(View.VISIBLE);
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Usuario null", Toast.LENGTH_SHORT).show();
+                    System.out.println("Usuario null");
                     visualizarBotones(View.VISIBLE);
                 }
             }
