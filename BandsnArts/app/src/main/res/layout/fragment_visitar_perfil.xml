@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -431,9 +435,99 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_margin="10dp"
-                app:cardBackgroundColor="@color/md_grey_300"></android.support.v7.widget.CardView>
+                android:layout_height="180dp"
+                android:layout_marginBottom="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/md_grey_300">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/youtube" />
+
+                    <EditText
+                        android:id="@+id/edtYoutubeVVisitarPerfil"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        android:enabled="false"
+                        android:text="  PERFIL YOUTUBE"
+                        android:textAlignment="center"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="60dp"
+                        android:src="@drawable/com_facebook_button_icon_blue" />
+
+
+                    <EditText
+                        android:id="@+id/edtFacebookVVisitarPerfil"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:clickable="true"
+                        android:enabled="false"
+                        android:text="  PERFIL FACEBOOK"
+                        android:textAlignment="center"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="110dp"
+                        android:src="@drawable/instagram" />
+
+                    <EditText
+                        android:id="@+id/edtInstagramVVisitarPerfil"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="110dp"
+                        android:clickable="true"
+                        android:enabled="false"
+                        android:text="  PERFIL INSTAGRAM"
+                        android:textAlignment="center"
+                        android:textColor="@color/md_teal_800"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
