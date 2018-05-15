@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -159,6 +160,9 @@ public class RegistarMusico extends AppCompatActivity {
                 view.setVisibility(View.INVISIBLE);
                 auth.registroMailPass(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
 
+
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailMusico.getText().toString(), edtPassMusico.getText().toString());
+                Toast.makeText(this, "\n\nREGISTRADO CON EXITO" + FirebaseAuth.getInstance().getCurrentUser(), Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -167,12 +171,13 @@ public class RegistarMusico extends AppCompatActivity {
                             ArrayList<String> intrumentos = new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                            BDBAA.agregarMusico(RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
-                                    edtNombreMusico, "default_musico.jpg"
-                                    , edtNombreMusico.getText().toString(),
+                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", ""), RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
+                                    edtMailMusico, edtNombreMusico,
+                                    "default_musico.jpg",
+                                    edtNombreMusico.getText().toString(),
                                     getResources().getStringArray(R.array.sexo)[posSexo],
-                                    getResources().getStringArray(R.array.estiloMusical)[posEstilo]
-                                    , intrumentos,
+                                    getResources().getStringArray(R.array.estiloMusical)[posEstilo],
+                                    intrumentos,
                                     BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();

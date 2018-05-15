@@ -137,7 +137,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
-            LoginManager.getInstance().logOut();
             finish();
 
         } else if(id == R.id.perfilMenuDrawer2){
@@ -227,25 +226,25 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     public void cerrarSesion() {
-        // deslogueo correo contraseña
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
                 if (status.isSuccess()) {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
+                    clienteGoogle.disconnect();
+                    System.out.println("Sesion cerrada");
                     //El primer digito indica la ventana y el segundo la vez que
                     setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
                     VentanaInicialApp.this.finish();
                     // volverActivityLogin();
                 } else {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
+                    System.out.println("Sesion no cerrada");
                 }
             }
         });
+
     }
 
     @Override

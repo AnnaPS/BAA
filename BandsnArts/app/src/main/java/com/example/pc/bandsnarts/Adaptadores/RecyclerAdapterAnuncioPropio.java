@@ -82,7 +82,7 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
                         switch (menuItem.getItemId()) {
                             case R.id.menu_anuncio_editar:
                                 android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
-                                FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(position);
+                                FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(1,position);
                                 alerta.show(fm, "AlertaAnuncio");
                                 Toast.makeText(mContext, "Opcion editar", Toast.LENGTH_SHORT).show();
                                 break;

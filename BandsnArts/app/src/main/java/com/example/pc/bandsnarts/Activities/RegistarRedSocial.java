@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -267,18 +268,24 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                BDBAA.agregarGrupo(cont
+                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
-                        , edtNombre
+                        ,null
+                        ,edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
+                        ,null
                         , data.getStringExtra("est")
+                        ,null
                         , data.getStringExtra("des"));
                 break;
             //Es un musico
             case 0:
-                BDBAA.agregarMusico(cont
+
+                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", "")
+                        , cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
+                        , null
                         , edtNombre
                         , data.getStringExtra("img")
                         , data.getStringExtra("nom")
