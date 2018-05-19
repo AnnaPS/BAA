@@ -171,6 +171,7 @@ public class BDBAA extends AppCompatActivity {
         Query q = FirebaseDatabase.getInstance().getReference("uids").orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             boolean encontrado = false;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -184,6 +185,7 @@ public class BDBAA extends AppCompatActivity {
                     Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
                     q.addListenerForSingleValueEvent(new ValueEventListener() {
                         boolean encontrados = false;
+
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -216,6 +218,7 @@ public class BDBAA extends AppCompatActivity {
 
                             }
                         }
+
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
@@ -1126,6 +1129,62 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
+
+    // Metodo para recuperar las redes sociales al inicio del Fragmento(opcion 0) ó
+    // para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
+    public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram) {
+
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            ArrayList<String> urls = null;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case ("musico"):
+                            Musico m = data.getValue(Musico.class);
+                            urls = m.getRedsocial();
+                            break;
+                        case ("grupo"):
+                            Grupo g = data.getValue(Grupo.class);
+                            urls = g.getRedsocial();
+                            break;
+                    }
+                    switch (opcion) {
+                        case (0):
+                            // Para la carga inicial del fragmento
+                            for (String uri : urls) {
+                                switch (uri) {
+                                    case ("youtube"):
+                                        youtube.setText(" AÑADE TU YOUTUBE");
+                                        break;
+                                    case ("instagram"):
+                                        instagram.setText(" AÑADE TU INSTAGRAM");
+                                        break;
+                                    case ("facebook"):
+                                        facebook.setText(" AÑADE TU FACEBOOK");
+                                        break;
+                                }
+                            }
+                            break;
+                        case (1):
+                            // Ir a la URL
+                            BandsnArts.lanzarURLNavegador(urls.get(pos));
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public static void comprobacionAudioUsuario(final String tipo, final Context ctx) {

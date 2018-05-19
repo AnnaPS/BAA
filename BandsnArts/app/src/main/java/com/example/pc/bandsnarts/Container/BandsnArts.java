@@ -4,10 +4,13 @@ package com.example.pc.bandsnarts.Container;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Patterns;
 import android.view.MotionEvent;
@@ -16,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
@@ -255,6 +259,17 @@ public class BandsnArts extends Application {
             return true;
         }
         return false;
+
+    }
+
+    public static void lanzarURLNavegador(String URL){
+        try {
+            Uri uri = Uri.parse(URL);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            VentanaInicialApp.a.startActivity(intent);
+        }catch (ActivityNotFoundException e){
+            Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "INSERTE UNA URL", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

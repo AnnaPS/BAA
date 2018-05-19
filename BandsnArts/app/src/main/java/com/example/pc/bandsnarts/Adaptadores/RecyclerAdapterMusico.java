@@ -145,7 +145,6 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             //finds de los componentes de los items
             img = itemView.findViewById(R.id.imgItemMusico);
             buscando = itemView.findViewById(R.id.imgBuscandoItemMusico);
