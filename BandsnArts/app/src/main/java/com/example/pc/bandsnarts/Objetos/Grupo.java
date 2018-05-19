@@ -44,9 +44,6 @@ public class Grupo {
         this.redsocial = redsocial;
     }
 
-    public void setRedsociales(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
     public ArrayList<String> getRedsocial() {
         return redsocial;
