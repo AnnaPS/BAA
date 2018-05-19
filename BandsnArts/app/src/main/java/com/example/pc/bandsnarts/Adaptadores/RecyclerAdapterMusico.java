@@ -90,23 +90,23 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-
                         Intent i;
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
-                               i = new Intent(mContext,VisitarPerfilDeseado.class);
-                                Toast.makeText(mContext, "visitar perfil", Toast.LENGTH_SHORT).show();
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                //op 0 lanza perfil
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                System.out.println("visitar perfil");
                                 mContext.startActivity(i);
                                 break;
 
                             case R.id.itemanunciosvisitado:
-                                i = new Intent(mContext,VisitarPerfilDeseado.class);
-                                Toast.makeText(mContext, "visitar anuncio", Toast.LENGTH_SHORT).show();
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                //op 1 lanza anuncio del perfil
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                System.out.println("visitar anuncio");
                                 mContext.startActivity(i);
                                 break;
                             default:
+                                System.out.println("Por si acaso.");
                                 break;
                         }
 
@@ -128,7 +128,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         } catch (NullPointerException ex) {
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
-         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
+        BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
     }
 
 

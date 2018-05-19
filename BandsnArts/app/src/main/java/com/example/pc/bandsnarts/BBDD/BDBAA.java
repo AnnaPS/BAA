@@ -187,7 +187,7 @@ public class BDBAA extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.d("INSERt", "No insertado ");
+                                Log.d("INSERT", "No insertado ");
                                 edtnombre.setError("EL nombre ya esta en uso pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
                                 edtnombre.requestFocus();
                                 view.setVisibility(View.VISIBLE);
@@ -607,7 +607,90 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
+    public static void cargarDatosVisitarPerfil(final View vista, final String tipo) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    switch (tipo) {
+                        case "musico":
+                            Musico musico = data.getValue(Musico.class);
+                            // Recuperamos y cargamos los datos del Musico
+                            // nombre
+                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(musico.getNombre());
+                            // FotoPerfil
+                            accesoFotoPerfil("musico", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), vista.getContext());
+                            // Estilo
+                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(musico.getEstilo());
+                            // Provincia
+                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(musico.getProvincia());
+                            // Localidad
+                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(musico.getLocalidad());
+                            // Sexo....
+                            ((TextView) vista.findViewById(R.id.txtSexoVVerMiPerfil)).setText(musico.getSexo());
+                            // Descripcion
+                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(musico.getDescripcion());
+                            //Instrumentos
+                            ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil1)).setText(musico.getInstrumento().get(0));
+                            //Buscando
 
+                            if (musico.getBuscando().equalsIgnoreCase("si")) {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
+                            } else {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
+                            }
+
+                            try {
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil2)).setText(musico.getInstrumento().get(1));
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil3)).setText(musico.getInstrumento().get(2));
+                                ((TextView) vista.findViewById(R.id.txtInstrumentoVVerMiPerfil4)).setText(musico.getInstrumento().get(3));
+                            } catch (IndexOutOfBoundsException e) {
+                                // En caso de que solo tenga el instrumento principal
+                                System.out.println("Si me salgo de rango");
+                            }
+                            break;
+                        case "grupo":
+
+                            Grupo grupo = data.getValue(Grupo.class);
+                            // Recuperamos y cargamos los datos del Musico
+                            // nombre
+                            ((TextView) vista.findViewById(R.id.txtNombUsuarioVVerMiPerfil)).setText(grupo.getNombre());
+                            // FotoPerfil
+                            accesoFotoPerfil("grupo", ((ImageView) vista.findViewById(R.id.imgPerfilVPerfil)), vista.getContext());
+                            // Estilo
+                            ((TextView) vista.findViewById(R.id.txtEstiloVVerMiPerfil)).setText(grupo.getEstilo());
+                            // Provincia
+                            ((TextView) vista.findViewById(R.id.txtProvinciaVVerMiPerfil)).setText(grupo.getProvincia());
+                            // Localidad
+                            ((TextView) vista.findViewById(R.id.txtLocalidadVVerMiPerfil)).setText(grupo.getLocalidad());
+                            // Sexo....
+                            ((LinearLayout) vista.findViewById(R.id.llSexoVVerMiPerfil)).setVisibility(View.GONE);
+
+                            // Descripcion
+                            ((TextView) vista.findViewById(R.id.txtDescripcionVVerMiPerfil)).setText(grupo.getDescripcion());
+                            //Buscando
+
+                            if (grupo.getBuscando().equalsIgnoreCase("si")) {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.yes));
+                            } else {
+                                ((ImageView) vista.findViewById(R.id.imgBuscandoVerMiPerfil)).setImageDrawable(vista.getResources().getDrawable(R.drawable.no));
+                            }
+
+                            // Ocultamos los Instrumentos por tratarse de un grupo
+                            vista.findViewById(R.id.appBarLayoutInstrumentos).setVisibility(View.GONE);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public static void cargarDatosPerfilEditar(final View vista, final String tipo, final Context context) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());

@@ -13,8 +13,7 @@ import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.R;
 
 public class VisitarPerfilDeseado extends AppCompatActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener{
-
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
 
 
     @Override
@@ -26,15 +25,24 @@ public class VisitarPerfilDeseado extends AppCompatActivity
         BottomNavigationView navigation = findViewById(R.id.navVisitarPerfil);
         navigation.setOnNavigationItemSelectedListener(this);
         //carga de inicio visitar perfil
-        cargarFragment(new Visitar_Perfil());
+        switch (getIntent().getExtras().getInt("op")) {
+            case 0:
+                cargarFragment(new Visitar_Perfil());
+                break;
+            case 1:
+                cargarFragment(new Visitar_Anuncios());
+                break;
+            default:
+                break;
+        }
     }
 
-    private boolean cargarFragment(Fragment fragment){
-        if(fragment!=null){
+    private boolean cargarFragment(Fragment fragment) {
+        if (fragment != null) {
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.contenedor_visitar_perfil,fragment)
+                    .replace(R.id.contenedor_visitar_perfil, fragment)
                     .commit();
             return true;
         }
@@ -46,16 +54,16 @@ public class VisitarPerfilDeseado extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Fragment fragment =null;
+        Fragment fragment = null;
 
         //saber que opcion esta seleccionada
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.itemperfilvisitado:
-               fragment=new Visitar_Perfil();
+                fragment = new Visitar_Perfil();
 
                 break;
             case R.id.itemanunciosvisitado:
-                fragment=new Visitar_Anuncios();
+                fragment = new Visitar_Anuncios();
 
                 break;
         }
