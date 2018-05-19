@@ -12,8 +12,8 @@ public class Musico {
     private String estilo;
     private ArrayList<String> instrumento;
     private String descripcion;
-    private String provincia;
-    private String localidad;
+    private String provincia="Sin especificar";
+    private String localidad="Sin especificar";
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
     private ArrayList<String> redsocial=new ArrayList<String>(){{

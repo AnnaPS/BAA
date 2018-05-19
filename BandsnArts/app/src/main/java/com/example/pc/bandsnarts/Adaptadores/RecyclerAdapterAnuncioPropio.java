@@ -30,12 +30,14 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
     private Context mContext;
     public static ArrayList<Anuncio> listaA;
     public static RecyclerAdapterAnuncioPropio adapterAnuncioPropio;
+    int op;
 
-    public RecyclerAdapterAnuncioPropio(Context context, ArrayList<Anuncio> listaAnuncio) {
+    public RecyclerAdapterAnuncioPropio(Context context, ArrayList<Anuncio> listaAnuncio, int op) {
         mContext = context;
         listaA = listaAnuncio;
         adapterAnuncioPropio = this;
         listaA = listaAnuncio;
+        this.op = op;
     }
 
     @Override
@@ -69,40 +71,48 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
         localidad.setText(anuncioItem.getLocalidad());
         instrumento.setText(anuncioItem.getInstrumento());
         sexo.setText(anuncioItem.getSexo());
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //creacion del menu para el cardview
-                PopupMenu popupMenu = new PopupMenu(mContext, holder.menuButton);
-                popupMenu.inflate(R.menu.menu_anuncios_propios);
-                //Listener del menu
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        switch (op){
+            case 0:
+                btnMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_anuncio_editar:
-                                android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
-                                FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(1,position);
-                                alerta.show(fm, "AlertaAnuncio");
-                                Toast.makeText(mContext, "Opcion editar", Toast.LENGTH_SHORT).show();
-                                break;
+                    public void onClick(View view) {
+                        //creacion del menu para el cardview
+                        PopupMenu popupMenu = new PopupMenu(mContext, holder.menuButton);
+                        popupMenu.inflate(R.menu.menu_anuncios_propios);
+                        //Listener del menu
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.menu_anuncio_editar:
+                                        android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
+                                        FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(1, position);
+                                        alerta.show(fm, "AlertaAnuncio");
+                                        Toast.makeText(mContext, "Opcion editar", Toast.LENGTH_SHORT).show();
+                                        break;
 
-                            case R.id.menu_anuncio_eliminar:
-                                listaA.remove(position);
-                                BDBAA.eliminarAnuncio(PreferenceManager.getDefaultSharedPreferences(mContext).getString("tipo", ""), FirebaseAuth.getInstance().getCurrentUser().getUid(), listaA);
-                                notifyDataSetChanged();
-                                Toast.makeText(mContext, "Eliminado con exito", Toast.LENGTH_SHORT).show();
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
+                                    case R.id.menu_anuncio_eliminar:
+                                        listaA.remove(position);
+                                        BDBAA.eliminarAnuncio(PreferenceManager.getDefaultSharedPreferences(mContext).getString("tipo", ""), FirebaseAuth.getInstance().getCurrentUser().getUid(), listaA);
+                                        notifyDataSetChanged();
+                                        Toast.makeText(mContext, "Eliminado con exito", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                return false;
+                            }
+                        });
+                        //mostrar menu
+                        popupMenu.show();
                     }
                 });
-                //mostrar menu
-                popupMenu.show();
-            }
-        });
+                break;
+            case 1:
+                btnMenu.setVisibility(View.GONE);
+                break;
+        }
+
 
 
     }

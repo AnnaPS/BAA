@@ -104,7 +104,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         if (firebaseAuth.getCurrentUser() != null) {
-                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),
+                            BDBAA.agregarFackingMaster("grupo",
                                     RegistrarGrupo.this,
                                     RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegGrupo),
                                     edtMailGrupo,

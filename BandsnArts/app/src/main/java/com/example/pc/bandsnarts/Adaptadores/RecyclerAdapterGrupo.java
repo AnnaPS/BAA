@@ -1,13 +1,18 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
@@ -39,7 +44,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapterGrupo.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerAdapterGrupo.ViewHolder holder, final int position) {
 
         final Grupo grupoItem = (Grupo) listaG.get(position);
         CircleImageView imagenMusico = holder.img;
@@ -53,6 +58,48 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         nom.setText(grupoItem.getNombre());
         est.setText(grupoItem.getEstilo());
         desc.setText(grupoItem.getDescripcion());
+        ImageButton btnMenu = holder.menuButton;
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //creacion del menu para el cardview
+                PopupMenu popupMenu = new PopupMenu(mContext, holder.menuButton);
+                popupMenu.inflate(R.menu.visitar_perfil);
+                //Listener del menu
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Intent i;
+                        switch (menuItem.getItemId()) {
+                            case R.id.itemperfilvisitado:
+                                //op 0 lanza perfil
+                                System.out.println(position);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",position).putExtra("tipo","grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                System.out.println("visitar perfil");
+                                mContext.startActivity(i);
+                                break;
+
+                            case R.id.itemanunciosvisitado:
+                                //op 1 lanza anuncio del perfil
+                                System.out.println(position);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",position).putExtra("tipo","grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                System.out.println("visitar anuncio");
+                                mContext.startActivity(i);
+                                break;
+                            default:
+                                System.out.println("Por si acaso.");
+                                break;
+                        }
+
+                        return false;
+                    }
+                });
+                //mostrar menu
+                popupMenu.show();
+
+            }
+        });
         try {
             if (grupoItem.getBuscando().equalsIgnoreCase("si")) {
                 busc.setImageDrawable(mContext.getDrawable(R.drawable.yes));
@@ -77,7 +124,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         CircleImageView img;
         ImageView buscando;
         TextView nombre, estilo, descripcion, anuncios;
-
+        ImageButton menuButton;
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -88,7 +135,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
             estilo = itemView.findViewById(R.id.txtEstiloItemGrupo);
             descripcion = itemView.findViewById(R.id.txtDescripcionItemGrupo);
             anuncios = itemView.findViewById(R.id.txtCantidadAnunciosItemGrupo);
-
+            menuButton = itemView.findViewById(R.id.btnMenuGrupos);
         }
     }
 

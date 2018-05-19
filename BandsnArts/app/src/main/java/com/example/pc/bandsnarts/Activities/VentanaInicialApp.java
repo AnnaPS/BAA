@@ -52,17 +52,18 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
     private TextView txtNombre;
-    private int id = R.id.inicioMenuDrawer2;
+    public int id;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
-   public static FragmentManager fragment;
+    public static FragmentManager fragment;
+    public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventana_inicial_app2);
-
+        id = R.id.inicioMenuDrawer2;
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +76,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                         .setAction("Action", null).show();
             }
         });*/
-
+        getSupportActionBar().setTitle("Inicio");
 
         //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -89,8 +90,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(id);
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
@@ -139,10 +141,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
 
-        } else if(id == R.id.perfilMenuDrawer2){
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2) {
             // Estando en Perfil, volvemo a Inicio
+            id = R.id.inicioMenuDrawer2;
+            navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
-            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+
         }
     }
 
@@ -173,27 +178,27 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-         fragment = getSupportFragmentManager();
+        fragment = getSupportFragmentManager();
 
         id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show();
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.configuracionMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentConfiguracion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "conf", Toast.LENGTH_SHORT).show();
-
+            id = R.id.configuracionMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.ayudaMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentAyuda()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
+            id = R.id.ayudaMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.cerrarMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
+            //fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "salir", Toast.LENGTH_SHORT).show();
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
 
@@ -203,7 +208,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
         FragmentMultimedia.paraHilo = true;
-        if(FragmentMultimedia.mediaPlayer!=null) {
+        if (FragmentMultimedia.mediaPlayer != null) {
             FragmentMultimedia.mediaPlayer.stop();
         }
 
@@ -218,7 +223,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-         BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
+        BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen

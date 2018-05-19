@@ -10,8 +10,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +53,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:cardBackgroundColor="@color/md_grey_300">
 
@@ -94,7 +96,7 @@
                         android:layout_marginTop="40dp"
                         android:text="Rock"
                         android:textSize="16dp"
-                        android:textStyle="italic" />
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -156,6 +158,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -186,6 +189,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_sexo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -213,6 +217,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_instrumentos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -223,8 +228,10 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
+                        android:id="@+id/ll_inst1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -232,10 +239,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="5dp"
-                            android:text="*"
+                            android:text="-Principal"
                             android:textColor="@color/md_teal_800"
-                            android:textSize="20dp"
-                            android:textStyle="italic" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtInstrumentoVVisitarPerfil1"
@@ -245,35 +252,21 @@
                             android:layout_marginTop="5dp"
                             android:text="Guitarra"
                             android:textSize="16dp"
-                            android:textStyle="italic" />
+                            android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:text="*"
-                            android:textColor="@color/md_teal_800"
-                            android:textSize="20dp"
-                            android:textStyle="italic" />
 
-                        <TextView
-                            android:id="@+id/txtInstrumentoVVisitarPerfil2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:text="Piano"
-                            android:textSize="16dp"
-                            android:textStyle="italic" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_inst2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
                         android:orientation="vertical">
 
                         <LinearLayout
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -283,44 +276,107 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="5dp"
-                                android:text="*"
+                                android:text="-Secundario"
                                 android:textColor="@color/md_teal_800"
-                                android:textSize="20dp"
-                                android:textStyle="italic" />
-
-                            <TextView
-                                android:id="@+id/txtInstrumentoVVisitarPerfil3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:text="Guitarra Electrica"
                                 android:textSize="16dp"
-                                android:textStyle="italic" />
+                                android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ll_instsec1"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="5dp"
-                                android:text="*"
-                                android:textColor="@color/md_teal_800"
-                                android:textSize="20dp"
-                                android:textStyle="italic" />
+                                android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/txtInstrumentoVVisitarPerfil4"
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="*"
+                                    android:textColor="@color/md_teal_800"
+                                    android:textSize="20dp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txtInstrumentoVVisitarPerfil2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="Piano"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_instsec2"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:text="Bateria"
-                                android:textSize="16dp"
-                                android:textStyle="italic" />
+                                android:layout_marginLeft="10dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="*"
+                                    android:textColor="@color/md_teal_800"
+                                    android:textSize="20dp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txtInstrumentoVVisitarPerfil3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="Guitarra Electrica"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_instsec3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="*"
+                                    android:textColor="@color/md_teal_800"
+                                    android:textSize="20dp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txtInstrumentoVVisitarPerfil4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:text="Bateria"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
-
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView

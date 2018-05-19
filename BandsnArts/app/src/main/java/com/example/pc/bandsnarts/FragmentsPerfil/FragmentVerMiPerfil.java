@@ -240,7 +240,7 @@ public class FragmentVerMiPerfil extends Fragment {
                         BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
                     } else {
                         BandsnArts.banderaLocalidad = false;
-                        BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, vista.getContext());
+                        BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, vista.getContext(),FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
                         android.app.FragmentManager fm = getActivity().getFragmentManager();

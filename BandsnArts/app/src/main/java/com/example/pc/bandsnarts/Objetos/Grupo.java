@@ -10,8 +10,8 @@ public class Grupo {
     private String nombre;
     private String estilo;
     private String descripcion;
-    private String provincia;
-    private String localidad;
+    private String provincia="Sin especificar";
+    private String localidad="Sin especificar";
     private String buscando="no";
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();

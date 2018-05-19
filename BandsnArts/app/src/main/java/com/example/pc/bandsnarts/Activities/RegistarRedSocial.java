@@ -268,7 +268,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),cont
+                BDBAA.agregarFackingMaster("grupo",cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         ,null
                         ,edtNombre
@@ -281,8 +281,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                 break;
             //Es un musico
             case 0:
-
-                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", "")
+                BDBAA.agregarFackingMaster("musico"
                         , cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         , null

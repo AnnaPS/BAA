@@ -171,7 +171,7 @@ public class RegistarMusico extends AppCompatActivity {
                             ArrayList<String> intrumentos = new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", ""), RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
+                            BDBAA.agregarFackingMaster("musico", RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
                                     edtMailMusico, edtNombreMusico,
                                     "default_musico.jpg",
                                     edtNombreMusico.getText().toString(),

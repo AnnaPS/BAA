@@ -27,10 +27,12 @@ public class VisitarPerfilDeseado extends AppCompatActivity
         //carga de inicio visitar perfil
         switch (getIntent().getExtras().getInt("op")) {
             case 0:
-                cargarFragment(new Visitar_Perfil());
+                cargarFragment(new Visitar_Perfil(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo")));
+                getSupportActionBar().setTitle("Perfil");
                 break;
             case 1:
-                cargarFragment(new Visitar_Anuncios());
+                cargarFragment(new Visitar_Anuncios(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo")));
+                getSupportActionBar().setTitle("Anuncio");
                 break;
             default:
                 break;
@@ -59,12 +61,12 @@ public class VisitarPerfilDeseado extends AppCompatActivity
         //saber que opcion esta seleccionada
         switch (item.getItemId()) {
             case R.id.itemperfilvisitado:
-                fragment = new Visitar_Perfil();
-
+                fragment = new Visitar_Perfil(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo"));
+                getSupportActionBar().setTitle("Perfil");
                 break;
             case R.id.itemanunciosvisitado:
-                fragment = new Visitar_Anuncios();
-
+                fragment = new Visitar_Anuncios(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo"));
+                getSupportActionBar().setTitle("Anuncio");
                 break;
         }
 

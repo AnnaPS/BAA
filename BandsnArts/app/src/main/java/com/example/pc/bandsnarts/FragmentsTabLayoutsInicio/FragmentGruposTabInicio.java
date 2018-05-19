@@ -31,10 +31,19 @@ public class FragmentGruposTabInicio extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        listaGrupos=new ArrayList<>();
+        BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_grupos_fragment, container, false);
+        listaGrupos.clear();
+
         recyclerViewGrupos = vista.findViewById(R.id.recyclerGrupos);
             BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
         return vista;

@@ -43,7 +43,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
     private Context mContext;
     private ArrayList<Musico> listaM;
-    FragmentMusicosTabInicio a;
+
 
     public RecyclerAdapterMusico(Context context, ArrayList<Musico> listaMusicos) {
         mContext = context;
@@ -61,7 +61,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerAdapterMusico.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerAdapterMusico.ViewHolder holder, final int position) {
 
         final Musico musicoItem = (Musico) listaM.get(position);
         CircleImageView imagenMusico = holder.img;
@@ -94,14 +94,14 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
                                 //op 0 lanza perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",position).putExtra("tipo","musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar perfil");
                                 mContext.startActivity(i);
                                 break;
 
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",position).putExtra("tipo","musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar anuncio");
                                 mContext.startActivity(i);
                                 break;
