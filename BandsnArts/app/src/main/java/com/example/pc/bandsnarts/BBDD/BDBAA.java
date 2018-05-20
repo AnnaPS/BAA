@@ -636,76 +636,86 @@ public class BDBAA extends AppCompatActivity {
                         switch (tipo) {
                             case "musico":
                                 Musico musico = data.getValue(Musico.class);
-                                // Recuperamos y cargamos los datos del Musico
-                                // Asignamos la UID a la varible static declarada en Visitar_Perfil
-                                Visitar_Perfil.UIDvisited = musico.getUid();
-                                // nombre
-                                nombreUsuario.setText(musico.getNombre());
-                                // FotoPerfil
-                                accesoFotoPerfil("musico", imagenPerfil, vista.getContext(), musico.getUid());
-                                // Estilo
-                                cajaEstilo.setText(musico.getEstilo());
-                                // Provincia
-                                cajaProvincia.setText(musico.getProvincia());
-                                // Localidad
-                                cajaLocalidad.setText(musico.getLocalidad());
-                                // Sexo....
-                                cajaSexo.setText(musico.getSexo());
-                                // Descripcion
-                                cajaDescripcion.setText(musico.getDescripcion());
-                                //Instrumentos
-                                instrumnetos[0].setText(musico.getInstrumento().get(0));
-                                try {
-                                    if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(1))) {
-                                        ll_instsec1.setVisibility(View.GONE);
-                                    } else {
-                                        instrumnetos[1].setText(musico.getInstrumento().get(1));
-                                    }
-                                    if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(2))) {
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(musico.getUid())) {
+                                    // Recuperamos y cargamos los datos del Musico
+                                    // Asignamos la UID a la varible static declarada en Visitar_Perfil
+                                    Visitar_Perfil.UIDvisited = musico.getUid();
+                                    // nombre
+                                    nombreUsuario.setText(musico.getNombre());
+                                    // FotoPerfil
+                                    accesoFotoPerfil("musico", imagenPerfil, vista.getContext(), musico.getUid());
+                                    // Estilo
+                                    cajaEstilo.setText(musico.getEstilo());
+                                    // Provincia
+                                    cajaProvincia.setText(musico.getProvincia());
+                                    // Localidad
+                                    cajaLocalidad.setText(musico.getLocalidad());
+                                    // Sexo....
+                                    cajaSexo.setText(musico.getSexo());
+                                    // Descripcion
+                                    cajaDescripcion.setText(musico.getDescripcion());
+                                    //Instrumentos
+                                    instrumnetos[0].setText(musico.getInstrumento().get(0));
+                                    try {
+                                        if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(1))) {
+                                            ll_instsec1.setVisibility(View.GONE);
+                                        } else {
+                                            instrumnetos[1].setText(musico.getInstrumento().get(1));
+                                        }
+                                        if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(2))) {
 
-                                        ll_instsec2.setVisibility(View.GONE);
-                                    } else {
-                                        instrumnetos[2].setText(musico.getInstrumento().get(2));
+                                            ll_instsec2.setVisibility(View.GONE);
+                                        } else {
+                                            instrumnetos[2].setText(musico.getInstrumento().get(2));
+                                        }
+                                        if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(3))) {
+                                            ll_instsec3.setVisibility(View.GONE);
+                                        } else {
+                                            instrumnetos[3].setText(musico.getInstrumento().get(3));
+                                        }
+                                    } catch (IndexOutOfBoundsException e) {
+                                        // En caso de que solo tenga el instrumento principal
+                                        System.out.println("Si me salgo de rango");
                                     }
-                                    if ("Sin especificar".equalsIgnoreCase(musico.getInstrumento().get(3))) {
-                                        ll_instsec3.setVisibility(View.GONE);
-                                    } else {
-                                        instrumnetos[3].setText(musico.getInstrumento().get(3));
-                                    }
-                                } catch (IndexOutOfBoundsException e) {
-                                    // En caso de que solo tenga el instrumento principal
-                                    System.out.println("Si me salgo de rango");
+                                } else {
+                                    i--;
                                 }
                                 break;
                             case "grupo":
 
                                 Grupo grupo = data.getValue(Grupo.class);
-                                // Recuperamos y cargamos los datos del Musico
-                                // Asignamos la UID a la varible static declarada en Visitar_Perfil
-                                Visitar_Perfil.UIDvisited = grupo.getUid();
-                                // nombre
-                                nombreUsuario.setText(grupo.getNombre());
-                                // FotoPerfil
-                                accesoFotoPerfil("grupo", imagenPerfil, vista.getContext(), grupo.getUid());
-                                // Estilo
-                                cajaEstilo.setText(grupo.getEstilo());
-                                // Provincia
-                                cajaProvincia.setText(grupo.getProvincia());
-                                // Localidad
-                                cajaLocalidad.setText(grupo.getLocalidad());
-                                // Sexo....
-                                tvSexo.setVisibility(View.GONE);
-                                cajaSexo.setVisibility(View.GONE);
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(grupo.getUid())) {
+                                    // Recuperamos y cargamos los datos del Musico
+                                    // Asignamos la UID a la varible static declarada en Visitar_Perfil
+                                    Visitar_Perfil.UIDvisited = grupo.getUid();
+                                    // nombre
+                                    nombreUsuario.setText(grupo.getNombre());
+                                    // FotoPerfil
+                                    accesoFotoPerfil("grupo", imagenPerfil, vista.getContext(), grupo.getUid());
+                                    // Estilo
+                                    cajaEstilo.setText(grupo.getEstilo());
+                                    // Provincia
+                                    cajaProvincia.setText(grupo.getProvincia());
+                                    // Localidad
+                                    cajaLocalidad.setText(grupo.getLocalidad());
+                                    // Sexo....
+                                    tvSexo.setVisibility(View.GONE);
+                                    cajaSexo.setVisibility(View.GONE);
 
-                                // Descripcion
-                                cajaDescripcion.setText(grupo.getDescripcion());
-                                // Ocultamos los Instrumentos por tratarse de un grupo
-                                tvInstrumento.setVisibility(View.GONE);
-                                ll_inst1.setVisibility(View.GONE);
-                                ll_inst2.setVisibility(View.GONE);
+                                    // Descripcion
+                                    cajaDescripcion.setText(grupo.getDescripcion());
+                                    // Ocultamos los Instrumentos por tratarse de un grupo
+                                    tvInstrumento.setVisibility(View.GONE);
+                                    ll_inst1.setVisibility(View.GONE);
+                                    ll_inst2.setVisibility(View.GONE);
+                                } else {
+                                    i--;
+                                }
                                 break;
                         }
-                        break;
+                        if (i == pos) {
+                            break;
+                        }
                     }
                     i++;
                 }
@@ -794,17 +804,17 @@ public class BDBAA extends AppCompatActivity {
                             cvRedes.setVisibility(View.GONE);
                         } else {
                             for (String red : redes) {
-                               switch (red){
-                                   case("youtube"):
-                                       linearYoutube.setVisibility(View.GONE);
-                                       break;
-                                   case("facebook"):
-                                       linearFaceBook.setVisibility(View.GONE);
-                                       break;
-                                   case("instagram"):
-                                       linearInstagram.setVisibility(View.GONE);
-                                       break;
-                               }
+                                switch (red) {
+                                    case ("youtube"):
+                                        linearYoutube.setVisibility(View.GONE);
+                                        break;
+                                    case ("facebook"):
+                                        linearFaceBook.setVisibility(View.GONE);
+                                        break;
+                                    case ("instagram"):
+                                        linearInstagram.setVisibility(View.GONE);
+                                        break;
+                                }
                             }
                         }
                         break;
@@ -1089,13 +1099,25 @@ public class BDBAA extends AppCompatActivity {
                     if (i == position) {
                         switch (tipo) {
                             case "musico":
-                                lista = data.getValue(Musico.class).getAnuncio();
+
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals((data.getValue(Grupo.class)).getUid())) {
+                                    lista = data.getValue(Musico.class).getAnuncio();
+                                } else {
+                                    i--;
+                                }
                                 break;
                             case "grupo":
-                                lista = data.getValue(Grupo.class).getAnuncio();
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals((data.getValue(Grupo.class)).getUid())) {
+                                    lista = data.getValue(Grupo.class).getAnuncio();
+                                } else {
+                                    i--;
+                                }
                                 break;
                         }
-                        break;
+                        if (i == position) {
+                            break;
+                        }
+
                     }
                     i++;
                 }
@@ -1303,7 +1325,7 @@ public class BDBAA extends AppCompatActivity {
 
     // Metodo para recuperar las redes sociales al inicio del Fragmento(opcion 0) ó
 // para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
-    public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram,String uid) {
+    public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram, String uid) {
 
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(uid);
