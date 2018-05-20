@@ -18,6 +18,11 @@
             android:id="@+id/configuracionMenuDrawer2"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuración" />
+
+        <item
+            android:id="@+id/mensajesMenuDrawer2"
+            android:icon="@drawable/ic_comment_text_multiple_outline_black_18dp"
+            android:title="Mis mensajes" />
     </group>
 
     <item android:title="¿Tiene alguna duda?">
