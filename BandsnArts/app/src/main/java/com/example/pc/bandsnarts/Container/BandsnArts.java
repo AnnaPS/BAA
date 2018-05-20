@@ -10,15 +10,21 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
@@ -30,13 +36,15 @@ import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import java.util.ArrayList;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 // Clase necesaria para conocer los logueos con FaceBook
 // Reutilizar esta clase para Datos comunes y metodos staticos en toda la App
 
 
-public class BandsnArts extends Application {
+public class BandsnArts extends Application implements Runnable {
     public static final int CODIGO_DE_INICIO = 777;
     public static final int CODIGO_DE_DESLOGUEO = 21;
     public static final int CODIGO_DE_REGISTRO = 000;
@@ -48,6 +56,67 @@ public class BandsnArts extends Application {
     public static CharSequence[] localidades;
     public static boolean banderaLocalidad = true;
     public static int posProvincia, posLocalidad;
+
+
+    //MULTIMEDIA
+    public static MediaPlayer mediaPlayer;
+    public static int totalTime;
+    public static Thread hiloMusica;
+    public static boolean paraHilo;
+    public static SeekBar positionBar;
+    public static TextView tiempoTranscurrido, tiempoRestante;
+
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int currentPosition = msg.what;
+            positionBar.setProgress(currentPosition);
+
+            String tiempoTranscurridoMusica = createTimeLable(currentPosition);
+            tiempoTranscurrido.setText(tiempoTranscurridoMusica);
+            String tiempoRestanteMusica = createTimeLable(BandsnArts.totalTime - currentPosition);
+            tiempoRestante.setText("- " + tiempoRestanteMusica);
+        }
+    };
+
+
+    public String createTimeLable(int time) {
+        String timeLable = "";
+        int min = time / 1000 / 60;
+        int sec = time / 1000 % 60;
+
+        timeLable = min + ":";
+
+        if (sec < 10)
+            timeLable += 0;
+        timeLable += sec;
+
+
+        return timeLable;
+    }
+
+
+    @Override
+    public void run() {
+        while (BandsnArts.mediaPlayer != null && !BandsnArts.paraHilo) {
+            try {
+                Message message = new Message();
+                message.what = BandsnArts.mediaPlayer.getCurrentPosition();
+                handler.sendMessage(message);
+
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("RUN", "run: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + BandsnArts.mediaPlayer);
+    }
+    /////////////////
+    // MULTIMEDIA //
+    ////////////////
+
 
     @Override
     public void onCreate() {
@@ -94,11 +163,11 @@ public class BandsnArts extends Application {
             Grupo grupo = (Grupo) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
-        } else if(o instanceof Musico){
+        } else if (o instanceof Musico) {
             Musico musico = (Musico) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, musico.getLocalidad());
-        }else if(o instanceof Anuncio){
+        } else if (o instanceof Anuncio) {
             Anuncio anuncio = (Anuncio) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), anuncio.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, anuncio.getLocalidad());
@@ -245,7 +314,7 @@ public class BandsnArts extends Application {
         String pattern = null;
         switch (tipo) {
             case ("YouTube"):
-              pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+                pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
                 break;
             case ("InstaGram"):
                 pattern = "((http|https)://)?(www[.])?instagram.com/.+";
@@ -262,15 +331,17 @@ public class BandsnArts extends Application {
 
     }
 
-    public static void lanzarURLNavegador(String URL){
+    public static void lanzarURLNavegador(String URL) {
         try {
             Uri uri = Uri.parse(URL);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             VentanaInicialApp.a.startActivity(intent);
-        }catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "INSERTE UNA URL", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+
 
 }

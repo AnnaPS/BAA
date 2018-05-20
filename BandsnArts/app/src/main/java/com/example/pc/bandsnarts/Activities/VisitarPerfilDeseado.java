@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Anuncios;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.R;
@@ -67,9 +68,22 @@ public class VisitarPerfilDeseado extends AppCompatActivity
             case R.id.itemanunciosvisitado:
                 fragment = new Visitar_Anuncios(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo"));
                 getSupportActionBar().setTitle("Anuncio");
+                BandsnArts.paraHilo = true;
+                if (BandsnArts.mediaPlayer != null)
+                    BandsnArts.mediaPlayer.stop();
                 break;
         }
 
         return cargarFragment(fragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        BandsnArts.paraHilo = true;
+        if (BandsnArts.mediaPlayer != null)
+            BandsnArts.mediaPlayer.stop();
+        finish();
+
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -380,6 +381,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cvMultimediaVVisitarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -431,7 +433,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="260dp"
                         android:layout_marginTop="50dp"
-                        android:text="-4:00"
+                        android:text="00:00"
                         android:textColor="@color/md_white_1000" />
 
 
@@ -441,7 +443,7 @@
                         android:layout_height="40dp"
                         android:layout_marginLeft="140dp"
                         android:layout_marginTop="60dp"
-                        android:background="@drawable/play"
+                        android:background="@drawable/download"
                         android:backgroundTint="@color/md_black_1000" />
 
                     <LinearLayout
@@ -483,6 +485,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="200dp"
                     android:fontFamily="sans-serif"
+                    android:paddingBottom="50dp"
                     android:text="¡Escucha este temazo!"
                     android:textSize="16dp"
                     android:textStyle="italic" />
@@ -490,8 +493,9 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:id="@+id/cvRedesSocialesVVisitarPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -500,10 +504,31 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="sans-serif"
+                        android:paddingBottom="20dp"
+                        android:text="REDES SOCIALES"
+                        android:textColor="@color/md_light_green_600"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_youtubeVVisitarPerfil"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <ImageView
+                        android:id="@+id/im_youtube_VVisitarMiPerfil"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"
@@ -526,16 +551,20 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_facebookVVisitarPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <ImageView
+                        android:id="@+id/im_facebook_VVisitarMiPerfil"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="60dp"
-                        android:src="@drawable/com_facebook_button_icon_blue" />
+                        android:src="@drawable/facebook" />
 
 
                     <EditText
@@ -554,12 +583,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_instagramVVisitarPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <ImageView
+                        android:id="@+id/im_instagram_VVisitarMiPerfil"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
@@ -82,18 +83,18 @@ public class FragmentMiPerfil extends Fragment {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, verperfil).commit();
                     Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
-                    FragmentMultimedia.paraHilo = true;
-                    if (FragmentMultimedia.mediaPlayer != null) {
-                        FragmentMultimedia.mediaPlayer.stop();
+                    BandsnArts.paraHilo = true;
+                    if (BandsnArts.mediaPlayer != null) {
+                        BandsnArts.mediaPlayer.stop();
                     }
-                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB" + FragmentMultimedia.paraHilo);
+                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB" + BandsnArts.paraHilo);
                 } else if (id == R.id.menuAnuncios) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, anuncios).commit();
                     Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
-                    FragmentMultimedia.paraHilo = true;
-                    if (FragmentMultimedia.mediaPlayer != null)
-                        FragmentMultimedia.mediaPlayer.stop();
+                    BandsnArts.paraHilo = true;
+                    if (BandsnArts.mediaPlayer != null)
+                        BandsnArts.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, multi).commit();

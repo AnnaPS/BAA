@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,17 +58,14 @@ import static android.text.InputType.TYPE_NULL;
 
 
 @SuppressLint("ValidFragment")
-public class FragmentMultimedia extends Fragment implements Runnable {
+public class FragmentMultimedia extends Fragment  {
 
     View vista;
     private Button playButton;
     private SeekBar volumenBar;
-    public static SeekBar positionBar;
-    private TextView tiempoTranscurrido, tiempoRestante;
-    public static MediaPlayer mediaPlayer;
-    public static int totalTime;
-    public static Thread hiloMusica;
-    public static boolean paraHilo;
+
+
+
     public static Fragment fragment;
 
     private Button btnYoutube, btnFacebook, btnInstagram;
@@ -80,14 +78,14 @@ public class FragmentMultimedia extends Fragment implements Runnable {
     public static AnimationDrawable animationDrawable;
     private View scrollMedia;
     private View layout;
-
     private ImageView ivFacebook;
     private ImageView ivInstagram;
     private ImageView ivYoutube;
-
     private EditText edFacebook;
     private EditText edInstagram;
     private EditText edYoutube;
+
+
     // Variable de control para la carga del Fragmento
     int num;
 
@@ -103,10 +101,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         vista = inflater.inflate(R.layout.fragment_multimedia_v_fragment_perfil, container, false);
 
         playButton = vista.findViewById(R.id.btnPlayVMultimedia);
-        positionBar = vista.findViewById(R.id.progresoMusicaVMultimedia);
+        BandsnArts.positionBar = vista.findViewById(R.id.progresoMusicaVMultimedia);
         volumenBar = vista.findViewById(R.id.volumenVMultimedia);
-        tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
-        tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
+        BandsnArts.tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
+        BandsnArts.tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
         scrollMedia = vista.findViewById(R.id.svMedia);
         layout = vista.findViewById(R.id.multimedia);
         fragment = this;
@@ -125,9 +123,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         edYoutube = vista.findViewById(R.id.edtYoutubeVMultimedia);
 
 
+
         // COMPROBAR SI EL USUARIO TIENE AUDIO
         if (num != 1) {
-            BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
+            BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(),subirAudio);
         } else {
             progressBar.setBackgroundResource(R.drawable.gif);
             animationDrawable = (AnimationDrawable) progressBar.getBackground();
@@ -140,12 +139,12 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         //Toast.makeText(getActivity(), "Valor de media player: "+mediaPlayer, Toast.LENGTH_SHORT).show();
 
 
-        positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        BandsnArts.positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mediaPlayer.seekTo(progress);
-                    positionBar.setProgress(progress);
+                    BandsnArts.mediaPlayer.seekTo(progress);
+                    BandsnArts.positionBar.setProgress(progress);
                 }
             }
 
@@ -164,8 +163,8 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float volumeNumber = progress / 100f;
-                if (mediaPlayer != null) {
-                    mediaPlayer.setVolume(volumeNumber, volumeNumber);
+                if (BandsnArts.mediaPlayer != null) {
+                    BandsnArts.mediaPlayer.setVolume(volumeNumber, volumeNumber);
                 }
 
             }
@@ -185,12 +184,12 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mediaPlayer != null) {
-                    if (!mediaPlayer.isPlaying()) {
-                        mediaPlayer.start();
+                if (BandsnArts.mediaPlayer != null) {
+                    if (!BandsnArts.mediaPlayer.isPlaying()) {
+                        BandsnArts.mediaPlayer.start();
                         playButton.setBackgroundResource(R.drawable.stop);
                     } else {
-                        mediaPlayer.pause();
+                        BandsnArts.mediaPlayer.pause();
                         playButton.setBackgroundResource(R.drawable.play);
                     }
                 } else {
@@ -216,21 +215,21 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         btnYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("YouTube", "Agrega tu link de YouTube");
+                agregaURLSocial("YouTube", "Agrega tu link de YouTube",edYoutube," VISITA TU YOUTUBE");
             }
         });
 
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("FaceBook", "Agrega tu link de FaceBook");
+                agregaURLSocial("FaceBook", "Agrega tu link de FaceBook",edFacebook," VISITA TU FACEBOOK");
 
             }
         });
         btnInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("InstaGram", "Agrega tu link de Instagram");
+                agregaURLSocial("InstaGram", "Agrega tu link de Instagram",edInstagram," VISITA TU INSTAGRAM");
 
             }
         });
@@ -241,61 +240,54 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             @Override
             public void onClick(View v) {
                 // Traerse el tipo
-                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null);
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+            }
+        });
+        edYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Traerse el tipo
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            }
+        });
+        edYoutube.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                return false;
             }
         });
         ivFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 1, 1, null, null, null);
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 1, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
         ivInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 2, 1, null, null, null);
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 2, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
         edFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null);
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null,FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });
 
-
-
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-
-        ((TextView) edYoutube).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null);
-
-                return false;
-            }
-        });
-
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-
-        BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), -1, 0, edFacebook, edYoutube, edInstagram);
-
-
-
-
+        BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), -1, 0, edFacebook, edYoutube, edInstagram,FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         return vista;
     }
 
-    public static void agregaURLSocial(final String tipo, String mensaje) {
+
+
+    public static void agregaURLSocial(final String tipo, String mensaje, final EditText editText, final String mens) {
         LayoutInflater inflador = VentanaInicialApp.a.getLayoutInflater();
         final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
         final EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
@@ -318,6 +310,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                 if (BandsnArts.compruebaURL(tipo, cajaredes.getText().toString())) {
                     // guardar la URL en BD
                     BDBAA.guardarURL(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a.getApplicationContext()).getString("tipo", ""), tipo, cajaredes.getText().toString());
+                        editText.setText(mens);
                     dialog.dismiss();
 
                 } else {
@@ -339,52 +332,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
 
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            int currentPosition = msg.what;
-            positionBar.setProgress(currentPosition);
 
-            String tiempoTranscurridoMusica = createTimeLable(currentPosition);
-            tiempoTranscurrido.setText(tiempoTranscurridoMusica);
-            String tiempoRestanteMusica = createTimeLable(totalTime - currentPosition);
-            tiempoRestante.setText("- " + tiempoRestanteMusica);
-        }
-    };
-
-
-    private String createTimeLable(int time) {
-        String timeLable = "";
-        int min = time / 1000 / 60;
-        int sec = time / 1000 % 60;
-
-        timeLable = min + ":";
-
-        if (sec < 10)
-            timeLable += 0;
-        timeLable += sec;
-
-
-        return timeLable;
-    }
-
-
-    @Override
-    public void run() {
-        while (mediaPlayer != null && !paraHilo) {
-            try {
-                Message message = new Message();
-                message.what = mediaPlayer.getCurrentPosition();
-                handler.sendMessage(message);
-
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Log.d("RUN", "run: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + mediaPlayer);
-    }
 
 
     private void subirAudio() {
@@ -402,11 +350,11 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         if (data != null) {
             if (requestCode == 1) {
                 Uri path1 = data.getData();
-                File file = new File(path1.getLastPathSegment());
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    FragmentMultimedia.mediaPlayer.stop();
+
+                if (BandsnArts.mediaPlayer != null && BandsnArts.mediaPlayer.isPlaying()) {
+                    BandsnArts.mediaPlayer.stop();
                 }
-                mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
+                BandsnArts.mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
 
                 // Guardar audio
                 // Nos posicionamos en el nodo de imagenes del storage
@@ -422,10 +370,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         System.out.println("" + taskSnapshot.getMetadata().getSizeBytes());
                         System.out.println("" + taskSnapshot.getMetadata().getName());
 
-                        paraHilo = true;
+                        BandsnArts.paraHilo = true;
 
                         // Guardamos la referencia del audio asociada al usuario en la BD
-                        BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                        BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"),playButton);
                         Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
 
                         animationDrawable.stop();
@@ -464,13 +412,12 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     }
                 });
 
-                for (int i = 0; i < mediaPlayer.getTrackInfo().length; i++) {
-                    System.out.println("" + mediaPlayer.getTrackInfo()[i]);
+                for (int i = 0; i < BandsnArts.mediaPlayer.getTrackInfo().length; i++) {
+                    System.out.println("" + BandsnArts.mediaPlayer.getTrackInfo()[i]);
                 }
             }
         } else {
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
-
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
         }
     }

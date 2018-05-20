@@ -189,8 +189,10 @@
                 app:cardBackgroundColor="@color/md_grey_300">
 
                 <LinearLayout
+                    android:id="@+id/ll_youtube"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="clickLinearYoutube"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -201,6 +203,7 @@
                         android:layout_marginTop="10dp"
                         android:src="@drawable/youtube" />
 
+
                     <EditText
                         android:id="@+id/edtYoutubeVMultimedia"
                         android:layout_width="220dp"
@@ -208,18 +211,21 @@
                         android:layout_marginTop="10dp"
                         android:enabled="false"
                         android:text="  VISITA TU YOUTUBE"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />
 
-                    <Button
-                        android:id="@+id/btnEditarYoutubeVMultimedia"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/ic_border_color_black_24dp"
-                        android:backgroundTint="@color/md_teal_800" />
+
+
+                        <Button
+                            android:id="@+id/btnEditarYoutubeVMultimedia"
+                            android:layout_width="33dp"
+                            android:layout_height="33dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/ic_border_color_black_24dp"
+                            android:backgroundTint="@color/md_teal_800" />
 
                 </LinearLayout>
 
@@ -244,6 +250,7 @@
                         android:layout_marginTop="60dp"
                         android:enabled="false"
                         android:text=" VISITA TU FACEBOOK"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -279,6 +286,7 @@
                         android:layout_marginTop="110dp"
                         android:enabled="false"
                         android:text="  VISITA TU INSTAGRAM"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />

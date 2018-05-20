@@ -17,9 +17,9 @@ public class Musico {
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
     private ArrayList<String> redsocial=new ArrayList<String>(){{
-        add(null);
-        add(null);
-        add(null);
+        add("youtube");
+        add("facebook");
+        add("instagram");
     }};
 
 

@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +40,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
@@ -635,6 +637,8 @@ public class BDBAA extends AppCompatActivity {
                             case "musico":
                                 Musico musico = data.getValue(Musico.class);
                                 // Recuperamos y cargamos los datos del Musico
+                                // Asignamos la UID a la varible static declarada en Visitar_Perfil
+                                Visitar_Perfil.UIDvisited = musico.getUid();
                                 // nombre
                                 nombreUsuario.setText(musico.getNombre());
                                 // FotoPerfil
@@ -677,6 +681,8 @@ public class BDBAA extends AppCompatActivity {
 
                                 Grupo grupo = data.getValue(Grupo.class);
                                 // Recuperamos y cargamos los datos del Musico
+                                // Asignamos la UID a la varible static declarada en Visitar_Perfil
+                                Visitar_Perfil.UIDvisited = grupo.getUid();
                                 // nombre
                                 nombreUsuario.setText(grupo.getNombre());
                                 // FotoPerfil
@@ -698,6 +704,108 @@ public class BDBAA extends AppCompatActivity {
                                 ll_inst1.setVisibility(View.GONE);
                                 ll_inst2.setVisibility(View.GONE);
                                 break;
+                        }
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void cargarMultimediaVisitarPerfil(final CardView multimedia, final String tipo, final int pos) {
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            int i = 0;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    System.out.println("Posición " + pos + " Puntero " + i);
+                    if (i == pos) {
+                        switch (tipo) {
+                            case "musico":
+                                Musico musico = data.getValue(Musico.class);
+                                // Recuperamos y cargamos los datos del Musico
+                                if (musico.getAudio() == null) {
+                                    multimedia.setVisibility(View.GONE);
+                                }
+                                break;
+                            case "grupo":
+
+                                Grupo grupo = data.getValue(Grupo.class);
+                                // Recuperamos y cargamos los datos del Musico
+                                if (grupo.getAudio() == null) {
+                                    multimedia.setVisibility(View.GONE);
+                                }
+                                break;
+                        }
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void cargarRedesSocialesViaitarPerfil(final CardView cvRedes, final String tipo
+            , final int pos, final LinearLayout linearYoutube, final LinearLayout linearFaceBook, final LinearLayout linearInstagram) {
+
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            int i = 0;
+
+            ArrayList<String> redes = null;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    System.out.println("Posición " + pos + " Puntero " + i);
+                    if (i == pos) {
+                        switch (tipo) {
+                            case "musico":
+                                Musico musico = data.getValue(Musico.class);
+                                // Recuperamos y cargamos los datos del Musico
+                                redes = musico.getRedsocial();
+                                break;
+                            case "grupo":
+
+                                Grupo grupo = data.getValue(Grupo.class);
+                                // Recuperamos y cargamos los datos del Musico
+                                redes = grupo.getRedsocial();
+                                break;
+                        }
+
+                        if (redes.get(0).equals("youtube") && redes.get(1).equals("facebook") && redes.get(2).equals("instagram")) {
+                            cvRedes.setVisibility(View.GONE);
+                        } else {
+                            for (String red : redes) {
+                               switch (red){
+                                   case("youtube"):
+                                       linearYoutube.setVisibility(View.GONE);
+                                       break;
+                                   case("facebook"):
+                                       linearFaceBook.setVisibility(View.GONE);
+                                       break;
+                                   case("instagram"):
+                                       linearInstagram.setVisibility(View.GONE);
+                                       break;
+                               }
+                            }
                         }
                         break;
                     }
@@ -1100,7 +1208,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public static void actualizarCancionPerfil(final String refCancion, final String tipo) {
+    public static void actualizarCancionPerfil(final String refCancion, final String tipo, final View view) {
 // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Ordenamos por uid dentro del nodo tipo en le que estabamos
@@ -1123,7 +1231,7 @@ public class BDBAA extends AppCompatActivity {
 
                             break;
                     }
-                    comprobacionAudioUsuario(tipo, VentanaInicialApp.a.getApplicationContext());
+                    comprobacionAudioUsuario(tipo, VentanaInicialApp.a.getApplicationContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(), view);
                 }
             }
 
@@ -1179,6 +1287,7 @@ public class BDBAA extends AppCompatActivity {
                             bd.child(data.getKey()).setValue(grup);
                             break;
                     }
+
                 }
 
 
@@ -1194,10 +1303,10 @@ public class BDBAA extends AppCompatActivity {
 
     // Metodo para recuperar las redes sociales al inicio del Fragmento(opcion 0) ó
 // para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
-    public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram) {
+    public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram,String uid) {
 
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
-        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query q = bd.orderByChild("uid").equalTo(uid);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
 
             ArrayList<String> urls = null;
@@ -1236,6 +1345,7 @@ public class BDBAA extends AppCompatActivity {
                             // Ir a la URL
                             BandsnArts.lanzarURLNavegador(urls.get(pos));
                             break;
+
                     }
                 }
             }
@@ -1249,9 +1359,9 @@ public class BDBAA extends AppCompatActivity {
 
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
-    public static void comprobacionAudioUsuario(final String tipo, final Context ctx) {
+    public static void comprobacionAudioUsuario(final String tipo, final Context ctx, String uid, final View view) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
-        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query q = bd.orderByChild("uid").equalTo(uid);
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -1272,30 +1382,28 @@ public class BDBAA extends AppCompatActivity {
                         ref.child(audio).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                             @Override
                             public void onComplete(@NonNull Task<Uri> task) {
-                                Log.d("AAAAA", "onComplete: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
                                 // PONER LA CANCION EN EL REPRODUCTOR
-                                FragmentMultimedia.mediaPlayer = MediaPlayer.create(ctx, task.getResult());
-                                FragmentMultimedia.mediaPlayer.seekTo(0);
-                                FragmentMultimedia.mediaPlayer.setVolume(0.5f, 0.5f);
-                                FragmentMultimedia.totalTime = FragmentMultimedia.mediaPlayer.getDuration();
-                                FragmentMultimedia.positionBar.setMax(FragmentMultimedia.totalTime);
-                                FragmentMultimedia.paraHilo = false;
-                                FragmentMultimedia.hiloMusica = new Thread((Runnable) FragmentMultimedia.fragment);
-                                FragmentMultimedia.hiloMusica.start();
+                                BandsnArts.mediaPlayer = MediaPlayer.create(ctx, task.getResult());
+                                BandsnArts.mediaPlayer.seekTo(0);
+                                BandsnArts.mediaPlayer.setVolume(0.5f, 0.5f);
+                                BandsnArts.totalTime = BandsnArts.mediaPlayer.getDuration();
+                                BandsnArts.positionBar.setMax(BandsnArts.totalTime);
+                                BandsnArts.paraHilo = false;
+                                BandsnArts.hiloMusica = new Thread(new BandsnArts());
+                                BandsnArts.hiloMusica.start();
 
 
-                                if ((VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia) != null) {
-                                    (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia)
-                                            .setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
+                                if (view != null) {
+                                    view.setBackgroundDrawable(ctx.getDrawable(R.drawable.play));
                                 }
 
 
-                                FragmentMultimedia.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                BandsnArts.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                     @Override
                                     public void onCompletion(MediaPlayer mp) {
-
-                                        FragmentMultimedia.mediaPlayer.pause();
-                                        (VentanaInicialApp.a).findViewById(R.id.btnPlayVMultimedia).setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
+                                        BandsnArts.mediaPlayer.pause();
+                                        view.setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
 
                                     }
                                 });

@@ -51,13 +51,13 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     TextView fecha;
     EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
-    int posEstilo, posInst, posSexo, posTipo, posControl,posEditar;
+    int posEstilo, posInst, posSexo, posTipo, posControl, posEditar;
     View vista;
 
 
-    public FragmentDialogAñadirAnuncio(int posControl,int posEditar) {
+    public FragmentDialogAñadirAnuncio(int posControl, int posEditar) {
         this.posControl = posControl;
-        this.posEditar=posEditar;
+        this.posEditar = posEditar;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,7 +84,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
         BDBAA.cargarDatosAnuncio(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), spProvincia, spLocalidad, spTipoBusqueda);
         //OnClick floating
         if (posControl != 0) {
-            BDBAA.cargarAnuncio(vista,posEditar,PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""),getContext(),spProvincia,spLocalidad,spTipoBusqueda,fecha,titulo,descripcionAnuncio,spEstilo,spSexo,spInstrumento);
+            BDBAA.cargarAnuncio(vista, posEditar, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), getContext(), spProvincia, spLocalidad, spTipoBusqueda, fecha, titulo, descripcionAnuncio, spEstilo, spSexo, spInstrumento);
         }
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +93,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
             public void onClick(View view) {
                 BandsnArts.banderaLocalidad = false;
                 if (!titulo.getText().toString().equals("")) {
+
                     if (!descripcionAnuncio.getText().toString().equals("")) {
                         if (posEstilo != 0) {
                             if (posInst != 0) {
@@ -118,10 +119,24 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                                             getResources().getStringArray(R.array.sexo)[posSexo]);
 
                                     getDialog().dismiss();
+                                }else{
+                                    TextView errorText = (TextView) spProvincia.getSelectedView();
+                                    errorText.setError("ERROR");
                                 }
+                            }else{
+                                TextView errorText = (TextView) spInstrumento.getSelectedView();
+                                errorText.setError("ERROR");
                             }
+                        } else {
+                            TextView errorText = (TextView) spEstilo.getSelectedView();
+                            errorText.setError("ERROR");
+
                         }
+                    } else {
+                        descripcionAnuncio.setError("DATO REQUERIDO");
                     }
+                }else{
+                    titulo.setError("DATO REQUERIDO");
                 }
             }
         });

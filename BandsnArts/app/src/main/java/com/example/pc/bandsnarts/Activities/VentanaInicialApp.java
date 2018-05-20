@@ -207,9 +207,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
-        FragmentMultimedia.paraHilo = true;
-        if (FragmentMultimedia.mediaPlayer != null) {
-            FragmentMultimedia.mediaPlayer.stop();
+        BandsnArts.paraHilo = true;
+        if (BandsnArts.mediaPlayer != null) {
+            BandsnArts.mediaPlayer.stop();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
