@@ -267,7 +267,6 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -398,7 +397,6 @@
                     android:textSize="25dp"
                     android:textStyle="bold" />
 
-
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -485,7 +483,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="200dp"
                     android:fontFamily="sans-serif"
-                    android:paddingBottom="50dp"
                     android:text="¡Escucha este temazo!"
                     android:textSize="16dp"
                     android:textStyle="italic" />
@@ -494,7 +491,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cvRedesSocialesVVisitarPerfil"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="70dp"
                 android:layout_marginLeft="10dp"
@@ -504,7 +501,9 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="30dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -525,7 +524,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:layout_marginTop="30dp"
+                    >
 
                     <ImageView
                         android:id="@+id/im_youtube_VVisitarMiPerfil"
@@ -556,7 +556,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:layout_marginTop="30dp">
 
                     <ImageView
                         android:id="@+id/im_facebook_VVisitarMiPerfil"
@@ -588,8 +588,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:layout_marginTop="30dp">
 
                     <ImageView
                         android:id="@+id/im_instagram_VVisitarMiPerfil"
