@@ -21,7 +21,6 @@
         android:id="@+id/navVisitarPerfil"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
         android:background="@color/md_light_green_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

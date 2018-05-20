@@ -28,6 +28,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
@@ -67,15 +68,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         a = this;
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
 
         //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -195,6 +187,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         } else if (id == R.id.inicioMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
+            getSupportActionBar().setTitle(item.getTitle());
+            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.mensajesMenuDrawer2) {
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
