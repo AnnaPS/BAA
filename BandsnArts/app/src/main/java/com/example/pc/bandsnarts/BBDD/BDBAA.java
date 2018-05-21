@@ -1583,5 +1583,18 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
+    //////////////////////////////////
+    ////    PERSISTENCIA        //////
+    //////////////////////////////////
+
+    public static void persistirDatos() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference("grupo").keepSynced(true);
+        FirebaseDatabase.getInstance().getReference("musico").keepSynced(true);
+        FirebaseDatabase.getInstance().getReference("uids").keepSynced(true);
+        FirebaseDatabase.getInstance().getReference("locales").keepSynced(true);
+        FirebaseDatabase.getInstance().getReference("salas").keepSynced(true);
+    }
+
 
 }

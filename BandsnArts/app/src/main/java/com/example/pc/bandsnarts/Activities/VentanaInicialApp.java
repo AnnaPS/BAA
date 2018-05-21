@@ -64,7 +64,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventana_inicial_app2);
+
         id = R.id.inicioMenuDrawer2;
+
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,6 +121,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+
+
     }
 
     @SuppressLint("NewApi")

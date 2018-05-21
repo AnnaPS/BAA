@@ -94,6 +94,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Persistencia Datos
+        BDBAA.persistirDatos();
+
         //   Forzar CRASHEO
         //   Crashlytics.getInstance().crash(); // Force a crash
 
@@ -334,7 +337,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } catch (NullPointerException e) {
-            // Facebbook
+            // Facebook
         }
     }
 

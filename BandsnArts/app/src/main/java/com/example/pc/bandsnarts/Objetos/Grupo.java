@@ -13,6 +13,24 @@ public class Grupo {
     private String provincia="Sin especificar";
     private String localidad="Sin especificar";
     private String buscando="no";
+    private String token;
+    private String keyChat;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getKeyChat() {
+        return keyChat;
+    }
+
+    public void setKeyChat(String keyChat) {
+        this.keyChat = keyChat;
+    }
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
     private ArrayList<String> redsocial=new ArrayList<String>(){{

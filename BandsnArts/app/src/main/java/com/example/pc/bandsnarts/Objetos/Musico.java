@@ -22,6 +22,24 @@ public class Musico {
         add("instagram");
     }};
 
+    private String token;
+    private String keyChat;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getKeyChat() {
+        return keyChat;
+    }
+
+    public void setKeyChat(String keyChat) {
+        this.keyChat = keyChat;
+    }
 
 
     public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {

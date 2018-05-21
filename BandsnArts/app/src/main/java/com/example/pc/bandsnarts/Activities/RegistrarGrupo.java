@@ -18,6 +18,7 @@ import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.example.pc.bandsnarts.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -97,8 +98,13 @@ public class RegistrarGrupo extends AppCompatActivity {
                 view.setVisibility(View.INVISIBLE);
                 auth.registroMailPass(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
 
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString());
-                Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtMailGrupo.getText().toString(), edtPassGrupo.getText().toString()).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegGrupo).setVisibility(View.VISIBLE);
+                    }
+                });
+                /*Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();*/
                 //se lanza la info inicial
                 FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
                     @Override
@@ -120,6 +126,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                             FirebaseAuth.getInstance().removeAuthStateListener(this);
                         }
                     }
+
                 });
             }
         }
