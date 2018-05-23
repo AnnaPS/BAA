@@ -71,7 +71,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         a = this;
-
+        getSupportActionBar().setTitle("Inicio");
         //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();

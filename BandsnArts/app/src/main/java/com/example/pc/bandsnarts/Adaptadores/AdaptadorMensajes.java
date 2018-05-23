@@ -16,11 +16,12 @@ import java.util.List;
  * Clase adaptadora para los mensajes
  */
 public class AdaptadorMensajes extends RecyclerView.Adapter <HolderMensajes>{
-    List<Mensajes2> listaMensajes=new ArrayList<>();
+    List<Mensajes2> listaMensajes;
     private Context contexto;
 
-    public AdaptadorMensajes(Context contexto) {
+    public AdaptadorMensajes(Context contexto,List <Mensajes2> listaMensajes) {
         this.contexto = contexto;
+        this.listaMensajes=listaMensajes;
     }
 
     public void addMensaje(Mensajes2 m){

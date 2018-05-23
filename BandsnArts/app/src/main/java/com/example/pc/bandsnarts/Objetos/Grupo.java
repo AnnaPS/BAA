@@ -86,7 +86,8 @@ public class Grupo {
     }
 
 
-    public Grupo(String uid, String imagen, String nombre, String estilo, String descripcion) {
+    public Grupo(String token,String uid, String imagen, String nombre, String estilo, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;

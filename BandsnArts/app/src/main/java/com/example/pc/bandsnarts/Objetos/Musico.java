@@ -42,7 +42,8 @@ public class Musico {
     }
 
 
-    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+    public Musico(String token,String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+
         this.imagen = imagen;
         this.sexo = sexo;
         this.estilo = estilo;
@@ -74,7 +75,8 @@ public class Musico {
 
 
 
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+    public Musico(String token,String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;

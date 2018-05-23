@@ -34,6 +34,8 @@ import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
 
+import com.example.pc.bandsnarts.Adaptadores.AdaptadorMensajes;
+import com.example.pc.bandsnarts.Adaptadores.HolderMensajes;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
@@ -41,6 +43,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
@@ -51,16 +54,20 @@ import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabIni
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Local;
+import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -199,24 +206,34 @@ public class BDBAA extends AppCompatActivity {
                                 encontrados = true;
                             }
                             if (!encontrados) {
-                                DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
-                                switch (tipo) {
-                                    case "musico":
-                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
-                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
-                                        bd.child(bd.push().getKey()).setValue(mus);
-                                        break;
-                                    case "grupo":
-                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
-                                        Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
-                                        bd.child(bd.push().getKey()).setValue(gru);
-                                        break;
-                                }
-                                FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                context.startActivity(new Intent(context, VentanaSliderParteDos.class));
-                                ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
-                                ((Activity) context).finish();
-                                Log.d("INSERTADO", "Insertado con exito");
+                                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    switch (tipo) {
+                                                        case "musico":
+                                                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
+                                                            Musico mus = new Musico(task.getResult().getToken(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
+                                                            bd.child(bd.push().getKey()).setValue(mus);
+                                                            break;
+                                                        case "grupo":
+                                                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
+                                                            Grupo gru = new Grupo(task.getResult().getToken(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
+                                                            bd.child(bd.push().getKey()).setValue(gru);
+                                                            break;
+                                                    }
+                                                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                                                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
+                                                    ((Activity) context).finish();
+                                                    Log.d("INSERTADO", "Insertado con exito");
+                                                } else {
+                                                    task.getException();
+                                                }
+                                            }
+                                        });
+
 
                             }
                         }
@@ -387,7 +404,7 @@ public class BDBAA extends AppCompatActivity {
                     encontrado = true;
                 }
                 if (!encontrado) {
-                    Log.d("Encontrado2", "onDataChange: " + encontrado);
+                    Log.d("Encontrado", "onDataChange: " + encontrado);
                 } else {
                     Log.d("Encontrado2", "onDataChange: " + encontrado);
                     FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -1323,8 +1340,76 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
+    //Creación nodos chat
+    public static void nuevaConversacion(int op) {
+
+    }
+
+    //Comprobar conversación existente
+    public static void comprobarConversacionExistente(int op, final String tipo, final Context ctx, String keyChat, String token, DataSnapshot data) {
+        String[] partitionalKey = keyChat.split("-");
+        String keyP1 = partitionalKey[0], keyP2 = partitionalKey[1];
+        DatabaseReference bd;
+        if (token.equals(keyP1) || token.equals(keyP2)) {
+            bd = FirebaseDatabase.getInstance().getReference(tipo);
+            Query q = bd.orderByChild("token").equalTo(keyP1);
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                String nombre;
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        ((Activity) ctx).finish();
+                        switch (tipo) {
+                            case "musico":
+                                nombre = data.getValue(Musico.class).getNombre();
+                                break;
+                            case "grupo":
+                                nombre = data.getValue(Grupo.class).getNombre();
+                                break;
+                        }
+                        //Despues de esto se cargarian el el FragmentMensaje lomensajes
+                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
+
+        }
+    }
+
+    //Recuperar conversación
+    public static void recuperarMensajes(final String keychat, RecyclerView recyclerView) {
+        final ArrayList<Mensajes2> lista = new ArrayList<>();
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(keychat);
+        Query q = bd.orderByChild(bd.getKey());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                      //Clase contenedora de Keychat
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        AdaptadorMensajes adapterM = new AdaptadorMensajes(VentanaInicialApp.a.getApplicationContext(), lista);
+        recyclerView.setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
+        recyclerView.setAdapter(adapterM);
+    }
+
     // Metodo para recuperar las redes sociales al inicio del Fragmento(opcion 0) ó
-// para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
+    // para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
     public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram, String uid) {
 
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
@@ -1378,7 +1463,6 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
-
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public static void comprobacionAudioUsuario(final String tipo, final Context ctx, String uid, final View view) {
