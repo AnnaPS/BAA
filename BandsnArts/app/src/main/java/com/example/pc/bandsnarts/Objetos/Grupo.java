@@ -14,7 +14,7 @@ public class Grupo {
     private String localidad="Sin especificar";
     private String buscando="no";
     private String token;
-    private String keyChat;
+    private ArrayList<String> keyChat=new ArrayList<>();
 
     public String getToken() {
         return token;
@@ -24,11 +24,12 @@ public class Grupo {
         this.token = token;
     }
 
-    public String getKeyChat() {
+
+    public ArrayList<String> getKeyChat() {
         return keyChat;
     }
 
-    public void setKeyChat(String keyChat) {
+    public void setKeyChat(ArrayList<String> keyChat) {
         this.keyChat = keyChat;
     }
 
@@ -86,7 +87,8 @@ public class Grupo {
     }
 
 
-    public Grupo(String uid, String imagen, String nombre, String estilo, String descripcion) {
+    public Grupo(String token,String uid, String imagen, String nombre, String estilo, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;

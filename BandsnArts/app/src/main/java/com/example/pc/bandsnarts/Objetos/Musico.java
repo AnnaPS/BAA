@@ -23,7 +23,7 @@ public class Musico {
     }};
 
     private String token;
-    private String keyChat;
+    private ArrayList <String> keyChat=new ArrayList<>();
 
     public String getToken() {
         return token;
@@ -32,17 +32,16 @@ public class Musico {
     public void setToken(String token) {
         this.token = token;
     }
-
-    public String getKeyChat() {
+    public ArrayList<String> getKeyChat() {
         return keyChat;
     }
 
-    public void setKeyChat(String keyChat) {
+    public void setKeyChat(ArrayList<String> keyChat) {
         this.keyChat = keyChat;
     }
 
+    public Musico(String token,String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
 
-    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
         this.imagen = imagen;
         this.sexo = sexo;
         this.estilo = estilo;
@@ -74,7 +73,8 @@ public class Musico {
 
 
 
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+    public Musico(String token,String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;

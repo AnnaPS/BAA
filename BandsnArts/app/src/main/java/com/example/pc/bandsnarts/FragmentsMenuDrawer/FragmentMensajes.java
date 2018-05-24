@@ -46,7 +46,7 @@ public class FragmentMensajes extends Fragment {
         edtMensajes = vista.findViewById(R.id.edtEscrbirMensajeVChat);
         btnEnviar = vista.findViewById(R.id.btnEnviarMensajeVChat);
 
-        adaptadorMensajes = new AdaptadorMensajes(getContext());
+        //adaptadorMensajes = new AdaptadorMensajes(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvMensajes.setLayoutManager(linearLayoutManager);
         rvMensajes.setAdapter(adaptadorMensajes);
