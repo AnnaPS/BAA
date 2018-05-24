@@ -1346,55 +1346,134 @@ public class BDBAA extends AppCompatActivity {
     }
 
     //Comprobar conversación existente
-    public static void comprobarConversacionExistente(int op, final String tipo, final Context ctx, String keyChat, String token, DataSnapshot data) {
-        String[] partitionalKey = keyChat.split("-");
-        String keyP1 = partitionalKey[0], keyP2 = partitionalKey[1];
-        DatabaseReference bd;
-        if (token.equals(keyP1) || token.equals(keyP2)) {
-            bd = FirebaseDatabase.getInstance().getReference(tipo);
-            Query q = bd.orderByChild("token").equalTo(keyP1);
-            q.addListenerForSingleValueEvent(new ValueEventListener() {
-                String nombre;
+    public static void comprobarConversacionExistente(final String tipo, final String uid, final int pos, final Context ctx) {
+        final DatabaseReference bd;
+        bd = FirebaseDatabase.getInstance().getReference(tipo);
+        Query q = bd.orderByChild("nombre");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            String nombre;
+            int i = 0;
+            String keyP1, keyP2;
 
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        ((Activity) ctx).finish();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (i == pos) {
                         switch (tipo) {
                             case "musico":
-                                nombre = data.getValue(Musico.class).getNombre();
+                                Musico musico = data.getValue(Musico.class);
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(musico.getUid())) {
+                                    if (musico.getKeyChat().isEmpty()) {
+                                        nombre = musico.getNombre();
+                                        keyP1 = musico.getUid();
+                                        musico.getKeyChat().add(keyP1 + "-" + uid);
+                                        bd.child(data.getKey()).setValue(musico);
+                                    } else {
+                                        for (String key : musico.getKeyChat()) {
+                                            keyP1 = key.split("-")[0];
+                                            keyP2 = key.split("-")[1];
+                                            if (!uid.equals(keyP1) && !uid.equals(keyP2)) {
+                                                nombre = musico.getNombre();
+                                                keyP1 = musico.getUid();
+                                                musico.getKeyChat().add(keyP1 + "-" + uid);
+                                                bd.child(data.getKey()).setValue(musico);
+                                            }else{
+                                                keyP1=null;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    i--;
+                                }
                                 break;
                             case "grupo":
-                                nombre = data.getValue(Grupo.class).getNombre();
+                                Grupo grupo = data.getValue(Grupo.class);
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(grupo.getUid())) {
+                                    if (grupo.getKeyChat().isEmpty()) {
+                                        nombre = grupo.getNombre();
+                                        keyP1 = grupo.getUid();
+                                        grupo.getKeyChat().add(keyP1 + "-" + uid);
+                                        bd.child(data.getKey()).setValue(grupo);
+                                    } else {
+                                        for (String key : grupo.getKeyChat()) {
+                                            keyP1 = key.split("-")[0];
+                                            keyP2 = key.split("-")[1];
+                                            if (!uid.equals(keyP1) && !uid.equals(keyP2)) {
+                                                nombre = grupo.getNombre();
+                                                keyP1 = grupo.getUid();
+                                                grupo.getKeyChat().add(keyP1 + "-" + uid);
+                                                bd.child(data.getKey()).setValue(grupo);
+                                            }else{
+                                                keyP1=null;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    i--;
+                                }
                                 break;
                         }
-                        //Despues de esto se cargarian el el FragmentMensaje lomensajes
-                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
-                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre);
+                    } else {
+                        break;
                     }
+                    i++;
                 }
+                if (keyP1 == null) {
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                } else {
+                    BandsnArts.KEYCHAT = keyP1 + "-" + uid;
+                    FirebaseDatabase.getInstance().getReference("keychat").child(keyP1 + "-" + uid).setValue(new ArrayList<Mensajes2>());
+                    Query q = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).orderByChild("uid").equalTo(uid);
+                    q.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                switch (tipo) {
+                                    case "musico":
+                                        Musico musico = data.getValue(Musico.class);
+                                        musico.getKeyChat().add(BandsnArts.KEYCHAT);
+                                        FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
+                                        break;
+                                    case "grupo":
+                                        Grupo grupo = data.getValue(Grupo.class);
+                                        grupo.getKeyChat().add(BandsnArts.KEYCHAT);
+                                        FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
+                                        break;
+                                }
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-            });
+              /*  ((Activity) ctx).finish();
+                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre);*/
+            }
 
-        } else {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        }
+            }
+        });
+
+
     }
 
     //Recuperar conversación
     public static void recuperarMensajes(final String keychat, RecyclerView recyclerView) {
         final ArrayList<Mensajes2> lista = new ArrayList<>();
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(keychat);
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild(bd.getKey());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                      //Clase contenedora de Keychat
+                    //Clase contenedora de Keychat
                 }
             }
 
