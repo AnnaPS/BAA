@@ -78,7 +78,8 @@
             android:name=".Activities.VentanaInicialApp"
             android:label="@string/title_activity_ventana_inicial_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" /><![CDATA[
+            android:theme="@style/AppTheme.NoActionBar" />
+        <![CDATA[
 
 
             />
@@ -89,7 +90,7 @@
         <activity
             android:name=".Activities.VisitarPerfilDeseado"
             android:label="@string/title_activity_actvity_visitar_perfil" />
-        <activity android:name=".Activities.Chat"></activity>
+        <activity android:name=".Activities.Chat" />
     </application>
 
 </manifest>

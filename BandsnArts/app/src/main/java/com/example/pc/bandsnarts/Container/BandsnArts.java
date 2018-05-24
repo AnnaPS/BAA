@@ -67,6 +67,7 @@ public class BandsnArts extends Application implements Runnable {
     public static TextView tiempoTranscurrido, tiempoRestante;
 
 
+
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

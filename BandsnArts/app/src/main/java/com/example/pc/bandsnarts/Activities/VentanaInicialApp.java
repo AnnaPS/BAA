@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
@@ -31,6 +32,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
@@ -156,7 +158,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-   /* @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -165,12 +167,14 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
+            FragmentDialogFiltrarBusqueda alerta = new FragmentDialogFiltrarBusqueda();
+            alerta.show(fm, "AlertaAnuncio");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-*/
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

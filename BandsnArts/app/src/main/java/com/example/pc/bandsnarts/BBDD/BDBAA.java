@@ -79,6 +79,7 @@ import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -1143,7 +1144,6 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-
                     switch (tipo) {
                         case "grupo":
                             Grupo grp = data.getValue(Grupo.class);
@@ -1594,6 +1594,90 @@ public class BDBAA extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("uids").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("locales").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("salas").keepSynced(true);
+    }
+
+
+    public static void busqueda(final int posEstilo, final int posInst, final int posSexo, final int posProvincia, final int posLocalidad) {
+
+        final int[] ind = {-1, -1, -1, -1, -1};
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = null;
+        if (posSexo != 0) {
+            query = reference.child("musico").orderByChild("sexo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo]);
+            ind[0] = 0;
+        }
+        if (posEstilo != 0) {
+            query = reference.child("musico").orderByChild("estilo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo]);
+            ind[1] = 0;
+        }
+        if (posInst != 0) {
+            query = reference.child("musico").orderByChild("instrumento/0").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
+            System.out.println("                      ------------>" + reference.child("musico").orderByChild("instrumento/0"));
+            ind[2] = 0;
+        }
+        if (posProvincia != 0) {
+            query = reference.child("musico").orderByChild("provincia").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia]);
+            ind[3] = 0;
+        }
+        if (posLocalidad != 0) {
+            query = reference.child("musico").orderByChild("localidad").equalTo(BandsnArts.localidades[posLocalidad].toString());
+            ind[4] = 0;
+        }
+
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<Musico> musicos = new ArrayList<>();
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                musicos.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Musico mus = data.getValue(Musico.class);
+                    musicos.add(mus);
+                    System.out.println("" + mus.getNombre());
+                }
+                try {
+                    for (Musico mus : musicos) {
+                        // Si ha seleccionado la localidad
+                        if (ind[4] == 0 && !BandsnArts.localidades[posLocalidad].toString().equals(mus.getLocalidad())) {
+                            musicos.remove(mus);
+                        } else if ((ind[3] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia].equals(mus.getProvincia())) {
+                            musicos.remove(mus);
+                            //  Si ha seleccionado un instrumento y NO coincide con el instrumento principal del musico por el que estamos pasando
+                        } else if ((ind[2] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst].equals(mus.getInstrumento().get(0))) {
+                            System.out.println("                  INSTRUMENTO     " + VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
+                            musicos.remove(mus);
+                            //  Si ha seleccionado un estilo y NO coincide con el estilo del musico por el que estamos pasando
+                        } else if (ind[1] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo].equals(mus.getEstilo())) {
+                            musicos.remove(mus);
+                            //  Si ha seleccionado un sexo y NO coincide con el sexo del musico por el que estamos pasando
+                        } else if (ind[0] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo].equals(mus.getSexo())) {
+                            musicos.remove(mus);
+                        }
+                    }
+                } catch (ConcurrentModificationException e) {
+
+                }
+
+
+                for (Musico m : musicos) {
+                    System.out.println("            ENCONTRADO ----------->" + m.getNombre());
+                }
+
+                RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(VentanaInicialApp.a.getApplicationContext(), musicos);
+                ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
+                ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setAdapter(adapterM);
+
+                //  musicos.clear();
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
