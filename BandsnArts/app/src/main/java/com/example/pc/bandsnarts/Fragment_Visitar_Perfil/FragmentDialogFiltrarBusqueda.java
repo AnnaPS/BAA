@@ -53,14 +53,19 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
     FloatingActionButton Fabguardar;
     int posEstilo, posInst, posSexo, posTipo, posControl, posEditar;
     View vista;
+    String tipo;
 
 
     public FragmentDialogFiltrarBusqueda() {
     }
 
+    public FragmentDialogFiltrarBusqueda(String tipo) {
+        this.tipo=tipo;
+    }
     public FragmentDialogFiltrarBusqueda(int posControl, int posEditar) {
         this.posControl = posControl;
         this.posEditar = posEditar;
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -97,48 +102,12 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
                     Toast.makeText(vista.getContext(), "Debe seleccionar al menos un dato", Toast.LENGTH_SHORT).show();
                 }else {
 
-                    BDBAA.busqueda(posEstilo,posInst,posSexo,BandsnArts.posProvincia,BandsnArts.posLocalidad);
+                    BDBAA.busqueda(posEstilo,posInst,posSexo,BandsnArts.posProvincia,BandsnArts.posLocalidad,tipo);
                     dismiss();
 
                 }
 
-                       /* if (posEstilo != 0) {
-                            if (posInst != 0) {
-                                if (BandsnArts.posProvincia != 0) {
-                                    String tipoBusqueda = null;
-                                    switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", "")) {
-                                        case "musico":
-                                            tipoBusqueda = getResources().getStringArray(R.array.tipobusquedamusico)[posTipo];
-                                            break;
-                                        case "grupo":
-                                            tipoBusqueda = getResources().getStringArray(R.array.tipobusquedagrupo)[posTipo];
-                                            break;
-                                    }
-                                    BDBAA.agregarEditarAnuncio(posEditar, FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                            PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
-                                            titulo.getText().toString(), descripcionAnuncio.getText().toString(),
-                                            tipoBusqueda,
-                                            new SimpleDateFormat("dd/MM/yyyy").format(new Date()),
-                                            getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
-                                            BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
-                                            getResources().getStringArray(R.array.estiloMusical)[posEstilo],
-                                            getResources().getStringArray(R.array.instrumentos)[posInst],
-                                            getResources().getStringArray(R.array.sexo)[posSexo]);
 
-                                    getDialog().dismiss();
-                                }else{
-                                    TextView errorText = (TextView) spProvincia.getSelectedView();
-                                    errorText.setError("ERROR");
-                                }
-                            }else{
-                                TextView errorText = (TextView) spInstrumento.getSelectedView();
-                                errorText.setError("ERROR");
-                            }
-                        } else {
-                            TextView errorText = (TextView) spEstilo.getSelectedView();
-                            errorText.setError("ERROR");
-
-                        }*/
 
             }
         });

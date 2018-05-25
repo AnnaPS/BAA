@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> listaFragment = new ArrayList<>();
-    private final String[] tabTitulos=new String[]{"MÚSICOS","GRUPOS","SALAS","LOCALES"};
-int tabs;
+    public final String[] tabTitulos=new String[]{"MÚSICOS","GRUPOS","SALAS","LOCALES"};
+    public static int tabs;
     public ViewPagerAdapter(FragmentManager fm,int numerotabs) {
         super(fm);
         tabs=numerotabs;
@@ -26,7 +26,6 @@ int tabs;
 
     @Override
     public Fragment getItem(int position) {
-
         //return listaFragment.get(position);
         switch (position){
             case 0:

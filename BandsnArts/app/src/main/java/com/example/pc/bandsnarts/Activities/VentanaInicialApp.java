@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
@@ -167,8 +168,18 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FragmentDialogFiltrarBusqueda alerta = null;
             android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
-            FragmentDialogFiltrarBusqueda alerta = new FragmentDialogFiltrarBusqueda();
+
+            ////////////////////////
+            /////////////////////////
+            ///////////////////////
+            if(ViewPagerAdapter.tabs == 1){
+              alerta = new FragmentDialogFiltrarBusqueda("musico");
+            }else if(ViewPagerAdapter.tabs == 0){
+                alerta = new FragmentDialogFiltrarBusqueda("grupo");
+            }
+
             alerta.show(fm, "AlertaAnuncio");
             return true;
         }
