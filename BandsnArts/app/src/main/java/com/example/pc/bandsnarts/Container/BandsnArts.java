@@ -66,8 +66,10 @@ public class BandsnArts extends Application implements Runnable {
     public static SeekBar positionBar;
     public static TextView tiempoTranscurrido, tiempoRestante;
 
-    //Key
+    //Keys para busquedas
     public static String KEYCHAT;
+    public static ArrayList <String> UID_MUSICO=new ArrayList<>();
+    public static ArrayList <String> UID_GRUPO=new ArrayList<>();
 
     public Handler handler = new Handler() {
         @Override
@@ -343,7 +345,6 @@ public class BandsnArts extends Application implements Runnable {
         }
 
     }
-
 
 
 }

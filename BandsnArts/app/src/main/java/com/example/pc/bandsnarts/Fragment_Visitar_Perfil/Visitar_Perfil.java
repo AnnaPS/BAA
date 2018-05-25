@@ -26,7 +26,7 @@ public class Visitar_Perfil extends Fragment {
     View vista;
     ImageView imagenPerfil;
     String tipo;
-    int pos;
+    String pos;
     public static String UIDvisited;
     CardView cvMultimedia;
     CardView cvRedesSociales;
@@ -37,7 +37,7 @@ public class Visitar_Perfil extends Fragment {
     ImageView imYoututbe,imFacebook,imInstagram;
 
     @SuppressLint("ValidFragment")
-    public Visitar_Perfil(int pos, String tipo) {
+    public Visitar_Perfil(String pos, String tipo) {
         this.pos = pos;
         this.tipo = tipo;
     }

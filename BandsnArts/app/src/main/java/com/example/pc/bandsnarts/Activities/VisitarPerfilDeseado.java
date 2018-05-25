@@ -1,10 +1,12 @@
 package com.example.pc.bandsnarts.Activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,19 +24,24 @@ import com.google.firebase.auth.FirebaseAuth;
 public class VisitarPerfilDeseado extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    int pos;
+    String pos;
+    public static FragmentManager fragment;
+    public static Activity a;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragment = getSupportFragmentManager();
+        a = this;
         setContentView(R.layout.activity_actvity_visitar_perfil);
-
-        pos=getIntent().getIntExtra("pos",-1);
-        FloatingActionButton fbChat= findViewById(R.id.fabEnviarMensaje);
+        final Activity activity = this;
+        pos = getIntent().getStringExtra("pos");
+        FloatingActionButton fbChat = findViewById(R.id.fabEnviarMensaje);
         fbChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("MCHAT");
-                BDBAA.comprobarConversacionExistente(getIntent().getStringExtra("tipo"), FirebaseAuth.getInstance().getCurrentUser().getUid(),getIntent().getIntExtra("pos",-1),getApplicationContext());
+                BDBAA.comprobarConversacionExistente(getIntent().getStringExtra("tipo"), FirebaseAuth.getInstance().getCurrentUser().getUid(), getIntent().getStringExtra("pos"), activity);
             }
         });
         BottomNavigationView navigation = findViewById(R.id.navVisitarPerfil);
@@ -42,11 +49,11 @@ public class VisitarPerfilDeseado extends AppCompatActivity
         //carga de inicio visitar perfil
         switch (getIntent().getExtras().getInt("op")) {
             case 0:
-                cargarFragment(new Visitar_Perfil(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo")));
+                cargarFragment(new Visitar_Perfil(getIntent().getStringExtra("pos"), getIntent().getStringExtra("tipo")));
                 getSupportActionBar().setTitle("Perfil");
                 break;
             case 1:
-                cargarFragment(new Visitar_Anuncios(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo")));
+                cargarFragment(new Visitar_Anuncios(getIntent().getStringExtra("pos"), getIntent().getStringExtra("tipo")));
                 getSupportActionBar().setTitle("Anuncio");
                 break;
             default:
@@ -71,16 +78,15 @@ public class VisitarPerfilDeseado extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Fragment fragment = null;
-
+        Fragment frg = null;
         //saber que opcion esta seleccionada
         switch (item.getItemId()) {
             case R.id.itemperfilvisitado:
-                fragment = new Visitar_Perfil(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo"));
+                frg = new Visitar_Perfil(getIntent().getStringExtra("pos"), getIntent().getStringExtra("tipo"));
                 getSupportActionBar().setTitle("Perfil");
                 break;
             case R.id.itemanunciosvisitado:
-                fragment = new Visitar_Anuncios(getIntent().getIntExtra("pos",-1),getIntent().getStringExtra("tipo"));
+                frg = new Visitar_Anuncios(getIntent().getStringExtra("pos"), getIntent().getStringExtra("tipo"));
                 getSupportActionBar().setTitle("Anuncio");
                 BandsnArts.paraHilo = true;
                 if (BandsnArts.mediaPlayer != null)
@@ -88,7 +94,7 @@ public class VisitarPerfilDeseado extends AppCompatActivity
                 break;
         }
 
-        return cargarFragment(fragment);
+        return cargarFragment(frg);
     }
 
     @Override
