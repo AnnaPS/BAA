@@ -66,6 +66,8 @@ public class BandsnArts extends Application implements Runnable {
     public static SeekBar positionBar;
     public static TextView tiempoTranscurrido, tiempoRestante;
 
+
+
     //Key
     public static String KEYCHAT;
 
