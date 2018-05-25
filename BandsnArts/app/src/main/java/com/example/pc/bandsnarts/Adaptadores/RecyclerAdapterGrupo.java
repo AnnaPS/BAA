@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -40,6 +41,8 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         View vista;
         vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grupos, parent, false);
         ViewHolder viewHolder = new ViewHolder(vista);
+
+
         return viewHolder;
     }
 
@@ -53,7 +56,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         TextView desc = holder.descripcion;
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
-
+        BandsnArts.UID_GRUPO.add(grupoItem.getUid());
 
         nom.setText(grupoItem.getNombre());
         est.setText(grupoItem.getEstilo());
@@ -74,16 +77,14 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
                                 //op 0 lanza perfil
-                                System.out.println(position);
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",position).putExtra("tipo","grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",  BandsnArts.UID_GRUPO.get(position)).putExtra("tipo", "grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar perfil");
                                 mContext.startActivity(i);
                                 break;
 
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
-                                System.out.println(position);
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",position).putExtra("tipo","grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",  BandsnArts.UID_GRUPO.get(position)).putExtra("tipo", "grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar anuncio");
                                 mContext.startActivity(i);
                                 break;
@@ -110,7 +111,7 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
         anun.setText(String.valueOf(grupoItem.getAnuncio().size()));
-         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaG.get(position));
+        BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaG.get(position));
 
     }
 
@@ -125,9 +126,9 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
         ImageView buscando;
         TextView nombre, estilo, descripcion, anuncios;
         ImageButton menuButton;
+
         public ViewHolder(View itemView) {
             super(itemView);
-
             //finds de los componentes de los items
             img = itemView.findViewById(R.id.imgItemGrupo);
             buscando = itemView.findViewById(R.id.imgBuscandoItemGrupo);

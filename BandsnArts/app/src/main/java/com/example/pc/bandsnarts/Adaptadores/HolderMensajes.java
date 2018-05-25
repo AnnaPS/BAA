@@ -15,15 +15,25 @@ public class HolderMensajes extends RecyclerView.ViewHolder {
 
     private TextView nombre, mensaje, hora;
     private CircleImageView fotoMensaje;
+    private String KEYCHAT;
 
 
     public HolderMensajes(View itemView) {
         super(itemView);
+        KEYCHAT = "";
         nombre = itemView.findViewById(R.id.txtUsuarioMensajes);
         mensaje = itemView.findViewById(R.id.txtMensajeMensajes);
         hora = itemView.findViewById(R.id.txtHoraMensajes);
         fotoMensaje = itemView.findViewById(R.id.imgUsuarioMensajes);
 
+    }
+
+    public String getKEYCHAT() {
+        return KEYCHAT;
+    }
+
+    public void setKEYCHAT(String KEYCHAT) {
+        this.KEYCHAT = KEYCHAT;
     }
 
     public TextView getNombre() {

@@ -26,10 +26,10 @@ public class Visitar_Anuncios extends Fragment {
     View vista;
     RecyclerView recyclerViewAnuncios;
 
-    int pos;
+    String pos;
     String tipo;
 
-    public Visitar_Anuncios(int pos,String tipo) {
+    public Visitar_Anuncios(String pos,String tipo) {
         this.pos = pos;
         this.tipo= tipo;
     }

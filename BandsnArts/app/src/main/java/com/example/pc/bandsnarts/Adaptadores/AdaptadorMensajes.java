@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.R;
 
@@ -15,35 +16,33 @@ import java.util.List;
 /**
  * Clase adaptadora para los mensajes
  */
-public class AdaptadorMensajes extends RecyclerView.Adapter <HolderMensajes>{
+public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
     List<Mensajes2> listaMensajes;
     private Context contexto;
 
-    public AdaptadorMensajes(Context contexto,List <Mensajes2> listaMensajes) {
+    public AdaptadorMensajes(Context contexto, List<Mensajes2> listaMensajes) {
         this.contexto = contexto;
-        this.listaMensajes=listaMensajes;
+        this.listaMensajes = listaMensajes;
     }
 
-    public void addMensaje(Mensajes2 m){
+    public void addMensaje(Mensajes2 m) {
         listaMensajes.add(m);
         //envia una notificacion cuando se inserta un nuevo elemento
         notifyItemInserted(listaMensajes.size());
 
     }
+
     @Override
     public HolderMensajes onCreateViewHolder(ViewGroup parent, int viewType) {
-        View vista= LayoutInflater.from(contexto).inflate(R.layout.card_view_mensajes,parent,false);
+        View vista = LayoutInflater.from(contexto).inflate(R.layout.card_view_mensajes, parent, false);
         return new HolderMensajes(vista);
     }
 
     @Override
     public void onBindViewHolder(HolderMensajes holder, int position) {
-
         holder.getNombre().setText(listaMensajes.get(position).getNombre());
         holder.getHora().setText(listaMensajes.get(position).getHora());
         holder.getMensaje().setText(listaMensajes.get(position).getMensaje());
-
-
     }
 
 

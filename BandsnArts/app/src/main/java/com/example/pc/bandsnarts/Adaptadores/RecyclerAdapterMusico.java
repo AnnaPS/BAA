@@ -24,6 +24,7 @@ import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 
@@ -72,7 +73,9 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
 
+        BandsnArts.UID_MUSICO.add(musicoItem.getUid());
 
+        System.out.println(BandsnArts.UID_MUSICO.size()+"------->"+BandsnArts.UID_MUSICO.get(position));
         nom.setText(musicoItem.getNombre());
         ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
@@ -102,14 +105,17 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
                                 //op 0 lanza perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",position).putExtra("tipo","musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                System.out.println(BandsnArts.UID_MUSICO.size()+"------->"+BandsnArts.UID_MUSICO.get(position));
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos", BandsnArts.UID_MUSICO.get(position)).putExtra("tipo", "musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar perfil");
+
                                 mContext.startActivity(i);
                                 break;
 
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",position).putExtra("tipo","musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",BandsnArts.UID_MUSICO.get(position)).putExtra("tipo", "musico").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 System.out.println("visitar anuncio");
                                 mContext.startActivity(i);
                                 break;
@@ -151,9 +157,11 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView nombre, instrumento, estilo, descripcion, anuncios;
         ImageButton menuButton;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             //finds de los componentes de los items
+
             img = itemView.findViewById(R.id.imgItemMusico);
             buscando = itemView.findViewById(R.id.imgBuscandoItemMusico);
             nombre = itemView.findViewById(R.id.txtNombreMusicoItemMusico);
