@@ -6,48 +6,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Objetos.Contactos;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Clase adaptadora para los mensajes
  */
-public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
-    List<Mensajes2> listaMensajes;
+public class AdaptadorContactos extends RecyclerView.Adapter<HolderContactos> {
+    List<Contactos> listaContactos;
     private Context contexto;
 
-    public AdaptadorMensajes(Context contexto, List<Mensajes2> listaMensajes) {
+    public AdaptadorContactos(Context contexto, List<Contactos> listaContactos) {
         this.contexto = contexto;
-        this.listaMensajes = listaMensajes;
+        this.listaContactos = listaContactos;
     }
 
-    public void addMensaje(Mensajes2 m) {
-        listaMensajes.add(m);
+    public void addContacto(Contactos contactos) {
+        listaContactos.add(contactos);
         //envia una notificacion cuando se inserta un nuevo elemento
-        notifyItemInserted(listaMensajes.size());
+        notifyItemInserted(listaContactos.size());
 
     }
 
     @Override
-    public HolderMensajes onCreateViewHolder(ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(contexto).inflate(R.layout.card_view_mensajes, parent, false);
-        return new HolderMensajes(vista);
+    public HolderContactos onCreateViewHolder(ViewGroup parent, int viewType) {
+        View vista = LayoutInflater.from(contexto).inflate(R.layout.item_contactos, parent, false);
+        return new HolderContactos(vista);
     }
 
     @Override
-    public void onBindViewHolder(HolderMensajes holder, int position) {
-        holder.getNombre().setText(listaMensajes.get(position).getNombre());
-        holder.getHora().setText(listaMensajes.get(position).getHora());
-        holder.getMensaje().setText(listaMensajes.get(position).getMensaje());
+    public void onBindViewHolder(HolderContactos holder, int position) {
+        holder.getNombre().setText(listaContactos.get(position).getNombre());
+       //HACER ON CLICK DEL CARDVIEW PARA LANZAR LA VENTANA DE CHAT DE ESA PERSONA
+
     }
 
 
     @Override
     public int getItemCount() {
-        return listaMensajes.size();
+        return listaContactos.size();
     }
 }
