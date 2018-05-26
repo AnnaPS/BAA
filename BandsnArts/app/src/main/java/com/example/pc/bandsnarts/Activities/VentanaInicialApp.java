@@ -168,7 +168,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_buscar) {
             FragmentDialogFiltrarBusqueda alerta = null;
             android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
 

@@ -74,12 +74,12 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
         /*atras = vista.findViewById(R.id.btnAtrasAnuncio);
         fecha = vista.findViewById(R.id.txtFechaAnuncio);*/
 
-        spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
-        spSexo = vista.findViewById(R.id.spSexoAnuncio);
-        spInstrumento = vista.findViewById(R.id.spInstrumentoAnuncio);
+        spEstilo = vista.findViewById(R.id.spEstiloFiltrar);
+        spSexo = vista.findViewById(R.id.spSexoFiltrar);
+        spInstrumento = vista.findViewById(R.id.spInstrumentoFiltrar);
 
-        spProvincia = vista.findViewById(R.id.spProvinciaAnuncio);
-        spLocalidad = vista.findViewById(R.id.spLocalidadAnuncio);
+        spProvincia = vista.findViewById(R.id.spProvinciaFiltrar);
+        spLocalidad = vista.findViewById(R.id.spLocalidadFiltrar);
 
 
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
@@ -91,7 +91,7 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
 
         BandsnArts.escuchas(vista.getContext(),spProvincia,spLocalidad);
 
-        Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
+        Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarFiltrar);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
