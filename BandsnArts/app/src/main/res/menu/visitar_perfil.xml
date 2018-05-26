@@ -5,11 +5,13 @@
     <item
         android:id="@+id/itemperfilvisitado"
         android:icon="@drawable/ic_account_circle_black_24dp"
+        android:iconTint="@color/md_white_1000"
         android:title="Perfil" />
 
     <item
         android:id="@+id/itemanunciosvisitado"
         android:icon="@drawable/ic_library_books_black_24dp"
+        android:iconTint="@color/md_white_1000"
         android:title="Anuncios" />
 
 

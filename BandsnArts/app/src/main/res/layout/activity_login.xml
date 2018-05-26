@@ -26,7 +26,6 @@
             android:layout_above="@+id/edtUsuarioVLogin"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="BANDS N' ARTS"
@@ -36,9 +35,9 @@
 
         <EditText
             android:id="@+id/edtUsuarioVLogin"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_gravity="center"
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_person_white_24dp"
             android:ems="10"
@@ -53,9 +52,10 @@
 
         <EditText
             android:id="@+id/edtPassVLogin"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:background="@drawable/borde"
             android:drawableLeft="@drawable/ic_lock_white_24dp"
             android:ems="10"
@@ -106,45 +106,49 @@
 
         <Button
             android:id="@+id/btnIngresarVLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:textColor="@color/md_white_1000"
             android:background="@drawable/bordefondoverde"
             android:fontFamily="sans-serif"
             android:onClick="onClickIngresarVLogin"
             android:text="INGRESAR"
-            android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/md_white_1000" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFacebookVLogin"
-                android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:paddingBottom="15dp"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="30dp"
                 android:paddingTop="10dp" />
 
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btnGoogleVLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="185dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="20dp"
+
+
                 android:onClick="onClickIngresoGoogle">
 
             </com.google.android.gms.common.SignInButton>
@@ -160,7 +164,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="510dp"
+        android:layout_marginTop="530dp"
         android:background="@color/md_white_1000" />
 
 
@@ -184,22 +188,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="520dp"
+            android:layout_marginTop="540dp"
             android:text="¿NECESITAS UNA CUENTA?"
             android:textColor="@color/md_white_1000"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnRegistrarVLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="520dp"
+            android:layout_marginTop="540dp"
             android:background="@drawable/bordefondoverde"
             android:onClick="onClickRegistrarVLogin"
             android:text="REGISTRÁTE"
-            android:textColor="#000000" />
+            android:textColor="@color/md_white_1000" />
     </LinearLayout>
 </RelativeLayout>
