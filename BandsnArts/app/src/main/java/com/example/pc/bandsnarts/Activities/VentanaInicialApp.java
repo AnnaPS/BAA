@@ -175,13 +175,22 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             ////////////////////////
             /////////////////////////
             ///////////////////////
-            if(ViewPagerAdapter.tabs == 0){
-              alerta = new FragmentDialogFiltrarBusqueda("musico");
-            }else if(ViewPagerAdapter.tabs == 1){
-                alerta = new FragmentDialogFiltrarBusqueda("grupo");
+            switch (FragmentInicio.viewPager.getCurrentItem()){
+                case(0):
+                    System.out.println("--------------->MUSICO");
+                    alerta = new FragmentDialogFiltrarBusqueda("musico");
+                    alerta.show(fm, "AlertaBusquedas");
+                    break;
+                case(1):                    System.out.println("--------------->GRUPO");
+                    alerta = new FragmentDialogFiltrarBusqueda("grupo");
+                    alerta.show(fm, "AlertaBusquedas");
+                    break;
+                case(2):                    System.out.println("--------------->SALAS");
+                    break;
+                case(3):                    System.out.println("--------------->LOCALES");
+                    break;
             }
 
-            alerta.show(fm, "AlertaAnuncio");
             return true;
         }
 
