@@ -65,5 +65,9 @@ public class FragmentMusicosTabInicio extends Fragment {
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("-------------------------->      ONDESTROY MUSICOS");
+    }
 }
