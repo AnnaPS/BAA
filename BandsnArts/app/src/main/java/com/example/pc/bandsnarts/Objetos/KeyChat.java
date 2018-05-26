@@ -4,9 +4,33 @@ import java.util.ArrayList;
 
 public class KeyChat {
     private String nombre;
-    private ArrayList <Mensajes2> historcoMensajes=new ArrayList<>();
+    private String img;
+    private String key;
+    private ArrayList<Mensajes2> historcoMensajes = new ArrayList<>();
 
     public KeyChat() {
+    }
+
+    public KeyChat(String img, String nombre, String key) {
+        this.nombre = nombre;
+        this.key = key;
+        this.img = img;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getNombre() {

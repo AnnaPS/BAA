@@ -68,6 +68,8 @@ public class BandsnArts extends Application implements Runnable {
 
     //Keys para busquedas
     public static String KEYCHAT;
+    public static String nomChat;
+    public static String imgChat;
     public static ArrayList <String> UID_MUSICO=new ArrayList<>();
     public static ArrayList <String> UID_GRUPO=new ArrayList<>();
 

@@ -1,8 +1,15 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
+import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -14,24 +21,23 @@ public class HolderContactos extends RecyclerView.ViewHolder {
 
     private TextView nombre;
     private CircleImageView fotoMensaje;
-    private String KEYCHAT;
-
+    String KEYCHAT;
 
     public HolderContactos(View itemView) {
         super(itemView);
-        KEYCHAT = "";
+
         nombre = itemView.findViewById(R.id.txtUsuarioContactos);
         fotoMensaje = itemView.findViewById(R.id.imgUsuarioContactos);
-
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BandsnArts.KEYCHAT= KEYCHAT;
+                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
+            }
+        });
     }
 
-    public String getKEYCHAT() {
-        return KEYCHAT;
-    }
-
-    public void setKEYCHAT(String KEYCHAT) {
-        this.KEYCHAT = KEYCHAT;
-    }
 
     public TextView getNombre() {
         return nombre;

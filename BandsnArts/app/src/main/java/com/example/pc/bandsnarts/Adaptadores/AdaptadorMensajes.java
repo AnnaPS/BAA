@@ -29,7 +29,6 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
         listaMensajes.add(m);
         //envia una notificacion cuando se inserta un nuevo elemento
         notifyItemInserted(listaMensajes.size());
-
     }
 
     @Override

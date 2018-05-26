@@ -127,7 +127,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
 
 
-
     }
 
     @SuppressLint("NewApi")
@@ -142,7 +141,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
 
-        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2) {
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2||id==R.id.mensajesMenuDrawer2) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
             navigationView.setCheckedItem(id);
@@ -175,9 +174,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             ////////////////////////
             /////////////////////////
             ///////////////////////
-            if(ViewPagerAdapter.tabs == 1){
-              alerta = new FragmentDialogFiltrarBusqueda("musico");
-            }else if(ViewPagerAdapter.tabs == 0){
+            if (ViewPagerAdapter.tabs == 1) {
+                alerta = new FragmentDialogFiltrarBusqueda("musico");
+            } else if (ViewPagerAdapter.tabs == 0) {
                 alerta = new FragmentDialogFiltrarBusqueda("grupo");
             }
 
@@ -187,6 +186,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
+
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -219,11 +219,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.mensajesMenuDrawer2) {
+        } else if (id == R.id.mensajesMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
+            id=R.id.mensajesMenuDrawer2;
         }
         BandsnArts.paraHilo = true;
         if (BandsnArts.mediaPlayer != null) {
@@ -289,6 +289,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }
-    
+
 
 }

@@ -2,17 +2,16 @@ package com.example.pc.bandsnarts.Objetos;
 
 public class Mensajes2 {
 
-    private String mensaje,nombre,fotoPerfil,tipoMensaje,hora;
+    private String mensaje,nombre,fotoPerfil,hora;
 
     public Mensajes2() {
 
     }
 
-    public Mensajes2(String mensaje, String nombre, String fotoPerfil, String tipoMensaje, String hora) {
+    public Mensajes2(String mensaje, String nombre, String fotoPerfil,  String hora) {
         this.mensaje = mensaje;
         this.nombre = nombre;
         this.fotoPerfil = fotoPerfil;
-        this.tipoMensaje = tipoMensaje;
         this.hora = hora;
     }
 
@@ -38,14 +37,6 @@ public class Mensajes2 {
 
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
-    }
-
-    public String getTipoMensaje() {
-        return tipoMensaje;
-    }
-
-    public void setTipoMensaje(String tipoMensaje) {
-        this.tipoMensaje = tipoMensaje;
     }
 
     public String getHora() {

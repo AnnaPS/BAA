@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.pc.bandsnarts.Adaptadores.AdaptadorMensajes;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.database.ChildEventListener;
@@ -36,16 +37,15 @@ public class FragmentMensajes extends Fragment {
     private RecyclerView rvMensajes;
     private EditText edtMensajes;
     private Button btnEnviar;
-    private AdaptadorMensajes adaptadorMensajes;
+    public static AdaptadorMensajes adaptadorMensajes;
 
     //objetos para firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista = inflater.inflate(R.layout.fragment_chat, container, false);
+        final View vista = inflater.inflate(R.layout.fragment_chat, container, false);
 
         //finds
         fotoPerfil = vista.findViewById(R.id.imgPerfilVChat);
@@ -61,47 +61,20 @@ public class FragmentMensajes extends Fragment {
         rvMensajes.setAdapter(adaptadorMensajes);
 
         //inicializacion de objetos de firebase
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chat");//nodo principal, sala de chat
+
+
+        //nodo principal, sala de chat
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                adaptadorMensajes.addMensaje(new Mensajes2(edtMensajes.getText().toString(), nombre.getText().toString(), "", "1", "11:00"));
-                databaseReference.push().setValue(new Mensajes2(edtMensajes.getText().toString(), nombre.getText().toString(), "", "1", new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+                BDBAA.nuevoMensaje(BandsnArts.KEYCHAT,edtMensajes.getText().toString());
+                setScrollBar();
                 edtMensajes.setText("");
             }
         });
         //para que a la vez que se van agregando items a la lista se vaya bajando la pantalla (parecido a un scroll automatico) se añade lo siguiente
 
-        //agregar hijo al nodo
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Mensajes2 mensajes2 = dataSnapshot.getValue(Mensajes2.class);
-                adaptadorMensajes.addMensaje(mensajes2);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         return vista;
     }
 
