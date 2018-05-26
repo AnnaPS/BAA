@@ -27,6 +27,7 @@
 
     <item android:title="¿Tiene alguna duda?">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/ayudaMenuDrawer2"
                 android:icon="@drawable/ic_help_outline_black_24dp"
@@ -35,6 +36,7 @@
                 android:id="@+id/cerrarMenuDrawer2"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Cerrar sesión" />
+            </group>
         </menu>
     </item>
 

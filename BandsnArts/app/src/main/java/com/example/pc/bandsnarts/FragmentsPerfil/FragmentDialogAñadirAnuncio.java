@@ -51,17 +51,18 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
     TextView fecha;
     EditText titulo, descripcionAnuncio;
     FloatingActionButton Fabguardar;
-    int posEstilo, posInst, posSexo, posTipo,posControl;
+    int posEstilo, posInst, posSexo, posTipo, posControl, posEditar;
     View vista;
 
 
-    public FragmentDialogAñadirAnuncio(int posControl) {
-        this.posControl=posControl;
+    public FragmentDialogAñadirAnuncio(int posControl, int posEditar) {
+        this.posControl = posControl;
+        this.posEditar = posEditar;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-         vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
+        vista = inflater.inflate(R.layout.alertdialoganadiranuncio, container, false);
         atras = vista.findViewById(R.id.btnAtrasAnuncio);
         fecha = vista.findViewById(R.id.txtFechaAnuncio);
         titulo = vista.findViewById(R.id.edtTituloAnuncio);
@@ -77,13 +78,14 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
         spInstrumento.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.instrumentos)));
-        spTipoBusqueda.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.tipobusqueda)));
         escuchadoresSpinner();
 
         BandsnArts.loadSpinnerProvincias(spProvincia);
-        BDBAA.cargarDatosAnuncio(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), spProvincia, spLocalidad);
+        BDBAA.cargarDatosAnuncio(vista, PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), spProvincia, spLocalidad, spTipoBusqueda);
         //OnClick floating
-
+        if (posControl != 0) {
+            BDBAA.cargarAnuncio(vista, posEditar, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), getContext(), spProvincia, spLocalidad, spTipoBusqueda, fecha, titulo, descripcionAnuncio, spEstilo, spSexo, spInstrumento);
+        }
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -91,14 +93,24 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
             public void onClick(View view) {
                 BandsnArts.banderaLocalidad = false;
                 if (!titulo.getText().toString().equals("")) {
+
                     if (!descripcionAnuncio.getText().toString().equals("")) {
                         if (posEstilo != 0) {
                             if (posInst != 0) {
                                 if (BandsnArts.posProvincia != 0) {
-                                    BDBAA.agregarEditarAnuncio(posControl,FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                    String tipoBusqueda = null;
+                                    switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", "")) {
+                                        case "musico":
+                                            tipoBusqueda = getResources().getStringArray(R.array.tipobusquedamusico)[posTipo];
+                                            break;
+                                        case "grupo":
+                                            tipoBusqueda = getResources().getStringArray(R.array.tipobusquedagrupo)[posTipo];
+                                            break;
+                                    }
+                                    BDBAA.agregarEditarAnuncio(posEditar, FirebaseAuth.getInstance().getCurrentUser().getUid(),
                                             PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
                                             titulo.getText().toString(), descripcionAnuncio.getText().toString(),
-                                            getResources().getStringArray(R.array.tipobusqueda)[posTipo],
+                                            tipoBusqueda,
                                             new SimpleDateFormat("dd/MM/yyyy").format(new Date()),
                                             getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],
                                             BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
@@ -107,10 +119,24 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                                             getResources().getStringArray(R.array.sexo)[posSexo]);
 
                                     getDialog().dismiss();
+                                }else{
+                                    TextView errorText = (TextView) spProvincia.getSelectedView();
+                                    errorText.setError("ERROR");
                                 }
+                            }else{
+                                TextView errorText = (TextView) spInstrumento.getSelectedView();
+                                errorText.setError("ERROR");
                             }
+                        } else {
+                            TextView errorText = (TextView) spEstilo.getSelectedView();
+                            errorText.setError("ERROR");
+
                         }
+                    } else {
+                        descripcionAnuncio.setError("DATO REQUERIDO");
                     }
+                }else{
+                    titulo.setError("DATO REQUERIDO");
                 }
             }
         });

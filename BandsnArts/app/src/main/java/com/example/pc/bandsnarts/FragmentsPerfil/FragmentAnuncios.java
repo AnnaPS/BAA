@@ -25,14 +25,13 @@ public class FragmentAnuncios extends Fragment {
     FloatingActionButton miFAB;
     RecyclerView recyclerViewAnuncios;
     ArrayList<Anuncio> lista;
-    public static Fragment fragAnu;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_anuncios_v_fragment_perfil, container, false);
-        fragAnu = FragmentAnuncios.this;
         recyclerViewAnuncios = vista.findViewById(R.id.recycleranuncios);
         recyclerViewAnuncios.setNestedScrollingEnabled(false);
         lista = new ArrayList<>();
@@ -49,7 +48,7 @@ public class FragmentAnuncios extends Fragment {
                 BDBAA.comprobarNumAnuncios(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo",""),FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
-        BDBAA.cargarAnuncios(lista, recyclerViewAnuncios, getActivity(), FirebaseAuth.getInstance().getCurrentUser().getUid(), PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""));
+        BDBAA.cargarAnuncios(lista, recyclerViewAnuncios, getActivity(), FirebaseAuth.getInstance().getCurrentUser().getUid(), PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""),0);
 
         return vista;
     }

@@ -12,15 +12,36 @@ public class Musico {
     private String estilo;
     private ArrayList<String> instrumento;
     private String descripcion;
-    private String provincia;
-    private String localidad;
+    private String provincia="Sin especificar";
+    private String localidad="Sin especificar";
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
-    private ArrayList<String> redsocial=new ArrayList<String>();
+    private ArrayList<String> redsocial=new ArrayList<String>(){{
+        add("youtube");
+        add("facebook");
+        add("instagram");
+    }};
 
+    private String token;
+    private ArrayList <String> keyChat=new ArrayList<>();
 
+    public String getToken() {
+        return token;
+    }
 
-    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public ArrayList<String> getKeyChat() {
+        return keyChat;
+    }
+
+    public void setKeyChat(ArrayList<String> keyChat) {
+        this.keyChat = keyChat;
+    }
+
+    public Musico(String token,String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+
         this.imagen = imagen;
         this.sexo = sexo;
         this.estilo = estilo;
@@ -52,7 +73,8 @@ public class Musico {
 
 
 
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+    public Musico(String token,String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;
@@ -152,9 +174,6 @@ public class Musico {
         this.redsocial = redsocial;
     }
 
-    public void setRedsociales(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
     public ArrayList<String> getRedsocial() {
         return redsocial;

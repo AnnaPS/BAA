@@ -1,5 +1,6 @@
 package com.example.pc.bandsnarts.FragmentsMenuDrawer;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
@@ -28,6 +30,7 @@ import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
 
 
+@SuppressLint("ValidFragment")
 public class FragmentMiPerfil extends Fragment {
 
     ///Objeto necesario para los botones de navegacion
@@ -35,9 +38,16 @@ public class FragmentMiPerfil extends Fragment {
     private TextView info;
     final Fragment verperfil = new FragmentVerMiPerfil(0);
     final Fragment anuncios = new FragmentAnuncios();
-    final Fragment multi = new FragmentMultimedia();
+    final Fragment multi = new FragmentMultimedia(0);
     View vista;
     public static View bottomTools;
+
+    private int num;
+
+    @SuppressLint("ValidFragment")
+    public FragmentMiPerfil(int num) {
+        this.num = num;
+    }
 
     ////////////////////////////////////////
     @Override
@@ -47,7 +57,11 @@ public class FragmentMiPerfil extends Fragment {
         //Se establece como principal el fragment de inicio
         bottomTools = vista.findViewById(R.id.bottomnav);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil(0)).commit();
+        if (num == 1) {
+            fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
+        } else {
+            fragmentManager.beginTransaction().replace(R.id.contenedormiperfil, new FragmentVerMiPerfil(0)).commit();
+        }
 
         return vista;
     }
@@ -69,18 +83,18 @@ public class FragmentMiPerfil extends Fragment {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, verperfil).commit();
                     Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
-                    FragmentMultimedia.paraHilo = true;
-                    if (FragmentMultimedia.mediaPlayer!=null) {
-                        FragmentMultimedia.mediaPlayer.stop();
+                    BandsnArts.paraHilo = true;
+                    if (BandsnArts.mediaPlayer != null) {
+                        BandsnArts.mediaPlayer.stop();
                     }
-                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB" + FragmentMultimedia.paraHilo);
+                    Log.d("PARAHILO", "onNavigationItemSelected: BBBBBBBBBBBBBBBBBBBBBBBBBBBB" + BandsnArts.paraHilo);
                 } else if (id == R.id.menuAnuncios) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, anuncios).commit();
                     Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
-                    FragmentMultimedia.paraHilo = true;
-                    if (FragmentMultimedia.mediaPlayer!=null)
-                        FragmentMultimedia.mediaPlayer.stop();
+                    BandsnArts.paraHilo = true;
+                    if (BandsnArts.mediaPlayer != null)
+                        BandsnArts.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, multi).commit();

@@ -23,7 +23,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
@@ -31,6 +33,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
@@ -52,23 +55,26 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
-    private TextView txtNombre, txtCorreo;
-    private int id = R.id.inicioMenuDrawer2;
+    private TextView txtNombre;
+    public int id;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
-   public static FragmentManager fragment;
+    public static FragmentManager fragment;
+    public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventana_inicial_app2);
 
+        id = R.id.inicioMenuDrawer2;
+
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         a = this;
-
+        getSupportActionBar().setTitle("Inicio");
         //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
@@ -81,15 +87,16 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(id);
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
         View vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
-        txtCorreo = vista.findViewById(R.id.txtCorreoNavH);
+
 
         // Inicializamos el FireBaseAuth y su escuchador
         firebaseAuth = FirebaseAuth.getInstance();
@@ -117,6 +124,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+
+
     }
 
     @SuppressLint("NewApi")
@@ -129,8 +139,15 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
-            LoginManager.getInstance().logOut();
             finish();
+
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2) {
+            // Estando en Perfil, volvemo a Inicio
+            id = R.id.inicioMenuDrawer2;
+            navigationView.setCheckedItem(id);
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+
         }
     }
 
@@ -142,7 +159,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-   /* @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -151,37 +168,49 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FragmentDialogFiltrarBusqueda alerta = null;
+            android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
+
+            ////////////////////////
+            /////////////////////////
+            ///////////////////////
+            if(ViewPagerAdapter.tabs == 1){
+              alerta = new FragmentDialogFiltrarBusqueda("musico");
+            }else if(ViewPagerAdapter.tabs == 0){
+                alerta = new FragmentDialogFiltrarBusqueda("grupo");
+            }
+
+            alerta.show(fm, "AlertaAnuncio");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-*/
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-         fragment = getSupportFragmentManager();
+        fragment = getSupportFragmentManager();
 
         id = item.getItemId();
 
         if (id == R.id.perfilMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil()).commit();
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show();
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.configuracionMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentConfiguracion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "conf", Toast.LENGTH_SHORT).show();
-
+            id = R.id.configuracionMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.ayudaMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentAyuda()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
+            id = R.id.ayudaMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.cerrarMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
+            //fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "salir", Toast.LENGTH_SHORT).show();
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
 
@@ -195,9 +224,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
-        FragmentMultimedia.paraHilo = true;
-        if(FragmentMultimedia.mediaPlayer!=null) {
-            FragmentMultimedia.mediaPlayer.stop();
+        BandsnArts.paraHilo = true;
+        if (BandsnArts.mediaPlayer != null) {
+            BandsnArts.mediaPlayer.stop();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -211,7 +240,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-         BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
+        BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
@@ -219,25 +248,25 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
     public void cerrarSesion() {
-        // deslogueo correo contraseña
         firebaseAuth.signOut();
         // deslogueo en Facebook
         LoginManager.getInstance().logOut();
-        // deslogueo google
         Auth.GoogleSignInApi.signOut(clienteGoogle).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
                 if (status.isSuccess()) {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
+                    clienteGoogle.disconnect();
+                    System.out.println("Sesion cerrada");
                     //El primer digito indica la ventana y el segundo la vez que
                     setResult(BandsnArts.CODIGO_DE_DESLOGUEO);
                     VentanaInicialApp.this.finish();
                     // volverActivityLogin();
                 } else {
-                    Toast.makeText(VentanaInicialApp.this, "Sesion no cerrada", Toast.LENGTH_SHORT).show();
+                    System.out.println("Sesion no cerrada");
                 }
             }
         });
+
     }
 
     @Override

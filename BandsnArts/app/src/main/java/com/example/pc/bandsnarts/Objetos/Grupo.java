@@ -10,12 +10,35 @@ public class Grupo {
     private String nombre;
     private String estilo;
     private String descripcion;
-    private String provincia;
-    private String localidad;
+    private String provincia="Sin especificar";
+    private String localidad="Sin especificar";
     private String buscando="no";
+    private String token;
+    private ArrayList<String> keyChat=new ArrayList<>();
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    public ArrayList<String> getKeyChat() {
+        return keyChat;
+    }
+
+    public void setKeyChat(ArrayList<String> keyChat) {
+        this.keyChat = keyChat;
+    }
 
     private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
-    private ArrayList<String> redsocial=new ArrayList<String>();
+    private ArrayList<String> redsocial=new ArrayList<String>(){{
+        add("youtube");
+        add("facebook");
+        add("instagram");
+    }};
 
     public Grupo(){
     }
@@ -40,9 +63,6 @@ public class Grupo {
         this.redsocial = redsocial;
     }
 
-    public void setRedsociales(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
     public ArrayList<String> getRedsocial() {
         return redsocial;
@@ -67,7 +87,8 @@ public class Grupo {
     }
 
 
-    public Grupo(String uid, String imagen, String nombre, String estilo, String descripcion) {
+    public Grupo(String token,String uid, String imagen, String nombre, String estilo, String descripcion) {
+        this.token=token;
         this.uid=uid;
         this.imagen = imagen;
         this.nombre = nombre;

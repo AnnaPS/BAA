@@ -39,10 +39,19 @@ public class FragmentMusicosTabInicio extends Fragment{
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        listaMusicos = new ArrayList<>();
+        BDBAA.cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(), "musico");
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_musicos_fragment, container, false);
+        listaMusicos.clear();
+
         recyclerViewMusicos = vista.findViewById(R.id.recyclerMusicos);
          BDBAA.cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(), "musico");
 

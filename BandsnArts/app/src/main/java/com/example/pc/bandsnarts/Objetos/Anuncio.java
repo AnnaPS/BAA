@@ -8,15 +8,9 @@ public class Anuncio {
     private String tipo;
     private String fecha;
     private String provincia, localidad, estilo, instrumento,sexo;
-    private ArrayList<Mensaje> mensaje = new ArrayList<Mensaje>();
 
-    public ArrayList getMensaje() {
-        return mensaje;
-    }
 
-    public void setMensaje(Mensaje mensaje) {
-        this.mensaje.add(mensaje);
-    }
+
 
     public Anuncio() {
     }
