@@ -14,8 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 @SuppressLint("ValidFragment")
 public class FragmentDialogDescartarCancion extends DialogFragment {
@@ -66,19 +70,17 @@ public class FragmentDialogDescartarCancion extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
-                if(a instanceof FragmentVerMiPerfil){
-                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
-                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
-                    FragmentVerMiPerfil a = (FragmentVerMiPerfil) FragmentDialogDescartarCancion.a;
-                    a.ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
-                    a.mostrarComponentes();
-                    a.botonCancelarEdicionPerfil();
-                    FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                if(a instanceof FragmentMultimedia){
+                    Toast.makeText(VentanaInicialApp.a, "BORRAR CANCION", Toast.LENGTH_SHORT).show();
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    StorageReference cancion = storageRef.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
+                            + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".mpeg");
+                    BDBAA.eliminarCancion(cancion);
                 }
-
                 getDialog().dismiss();
             }
         });
+
 
         return vista;
     }

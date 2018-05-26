@@ -174,9 +174,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             ////////////////////////
             /////////////////////////
             ///////////////////////
-            if(ViewPagerAdapter.tabs == 1){
+            if(ViewPagerAdapter.tabs == 0){
               alerta = new FragmentDialogFiltrarBusqueda("musico");
-            }else if(ViewPagerAdapter.tabs == 0){
+            }else if(ViewPagerAdapter.tabs == 1){
                 alerta = new FragmentDialogFiltrarBusqueda("grupo");
             }
 

@@ -71,6 +71,8 @@ public class BandsnArts extends Application implements Runnable {
     public static ArrayList <String> UID_MUSICO=new ArrayList<>();
     public static ArrayList <String> UID_GRUPO=new ArrayList<>();
 
+    // Variable control posicion Tab
+    public static int posicionTab;
 
     public Handler handler = new Handler() {
         @Override

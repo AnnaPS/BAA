@@ -47,21 +47,20 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 @SuppressLint("ValidFragment")
 public class FragmentDialogFiltrarBusqueda extends DialogFragment {
     private static final String TAG = "AlertaAnuncio";
-    Spinner spEstilo, spSexo, spInstrumento,  spProvincia, spLocalidad;
-    TextView fecha;
-    EditText titulo, descripcionAnuncio;
+    Spinner spEstilo, spSexo, spInstrumento, spProvincia, spLocalidad;
     FloatingActionButton Fabguardar;
     int posEstilo, posInst, posSexo, posTipo, posControl, posEditar;
     View vista;
     String tipo;
-
+    Button atras;
 
     public FragmentDialogFiltrarBusqueda() {
     }
 
     public FragmentDialogFiltrarBusqueda(String tipo) {
-        this.tipo=tipo;
+        this.tipo = tipo;
     }
+
     public FragmentDialogFiltrarBusqueda(int posControl, int posEditar) {
         this.posControl = posControl;
         this.posEditar = posEditar;
@@ -71,8 +70,8 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.alertdialog_filtrar_busqueda, container, false);
-        /*atras = vista.findViewById(R.id.btnAtrasAnuncio);
-        fecha = vista.findViewById(R.id.txtFechaAnuncio);*/
+        atras = vista.findViewById(R.id.btnAtrasBusqueda);
+        //   fecha = vista.findViewById(R.id.txtFechaAnuncio);
 
         spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
         spSexo = vista.findViewById(R.id.spSexoAnuncio);
@@ -89,7 +88,18 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
 
         BandsnArts.loadSpinnerProvincias(spProvincia);
 
-        BandsnArts.escuchas(vista.getContext(),spProvincia,spLocalidad);
+        BandsnArts.escuchas(vista.getContext(), spProvincia, spLocalidad);
+
+        /*switch (BandsnArts.posicionTab) {
+            case (0):
+                System.out.println("TAB MUSICO");
+                break;
+            case (1):
+                System.out.println("TAB GRUPO");
+                spInstrumento.setVisibility(View.GONE);
+                spSexo.setVisibility(View.GONE);
+                break;
+        }*/
 
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
@@ -98,17 +108,21 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
             public void onClick(View view) {
                 BandsnArts.banderaLocalidad = false;
 
-                if(posEstilo==0 && posInst==0 && posSexo ==0 && BandsnArts.posProvincia==0){
+                if (posEstilo == 0 && posInst == 0 && posSexo == 0 && BandsnArts.posProvincia == 0) {
                     Toast.makeText(vista.getContext(), "Debe seleccionar al menos un dato", Toast.LENGTH_SHORT).show();
-                }else {
-
-                    BDBAA.busqueda(posEstilo,posInst,posSexo,BandsnArts.posProvincia,BandsnArts.posLocalidad,tipo);
+                } else {
+                    BDBAA.busqueda(posEstilo, posInst, posSexo, BandsnArts.posProvincia, BandsnArts.posLocalidad, tipo);
                     dismiss();
                 }
             }
         });
 
-
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDialog().dismiss();
+            }
+        });
 
 
         return vista;

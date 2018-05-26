@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
@@ -42,6 +43,7 @@ public class FragmentSalasTabInicio extends Fragment {
              BDBAA.cargarDatos(listaSalas, recyclerViewSalas, getActivity(),"salas");
 
         }
+        BandsnArts.posicionTab = 2;
         return vista;
     }
 
