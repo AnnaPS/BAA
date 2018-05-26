@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.R;
 
@@ -42,7 +43,7 @@ public class AdaptadorContactos extends RecyclerView.Adapter<HolderContactos> {
         final KeyChat item = (KeyChat) listaContactos.get(position);
        //HACER ON CLICK DEL CARDVIEW PARA LANZAR LA VENTANA DE CHAT DE ESA PERSONA
         holder.KEYCHAT=item.getKey();
-        BDBAA.accesoFotoNombrePerfilMensajes(holder.getFotoMensaje(),holder.getNombre(),contexto,item.getKey());
+        BDBAA.accesoFotoNombrePerfilMensajes(0,position,holder.getFotoMensaje(),holder.getNombre(),contexto,item.getKey());
 
     }
 

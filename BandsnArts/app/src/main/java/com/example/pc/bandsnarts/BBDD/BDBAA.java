@@ -1297,7 +1297,7 @@ public class BDBAA extends AppCompatActivity {
                                         keyP2 = key.split("-")[1];
                                         if (uid.equals(keyP1) || uid.equals(keyP2)) {
                                             BandsnArts.KEYCHAT = key;
-                                            nombre=musico.getNombre();
+                                            nombre = musico.getNombre();
                                             encontrado = true;
                                             break;
                                         }
@@ -1327,7 +1327,7 @@ public class BDBAA extends AppCompatActivity {
                                         keyP2 = key.split("-")[1];
                                         if (uid.equals(keyP1) || uid.equals(keyP2)) {
                                             BandsnArts.KEYCHAT = key;
-                                            nombre=grupo.getNombre();
+                                            nombre = grupo.getNombre();
                                             encontrado = true;
                                             break;
                                         }
@@ -1401,7 +1401,7 @@ public class BDBAA extends AppCompatActivity {
     //escucha chat
     public static void escuchaChat() {
         //agregar hijo al nodo
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("keychat");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("keychat");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -1409,8 +1409,9 @@ public class BDBAA extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                 KeyChat chat = dataSnapshot.getValue(KeyChat.class);
-                FragmentMensajes.adaptadorMensajes.addMensaje(chat.getHistorcoMensajes().get(chat.getHistorcoMensajes().size()-1));
+                KeyChat chat = dataSnapshot.getValue(KeyChat.class);
+                FragmentMensajes.adaptadorMensajes.addMensaje(chat.getHistorcoMensajes().get(chat.getHistorcoMensajes().size() - 1));
+
             }
 
             @Override
@@ -1579,6 +1580,7 @@ public class BDBAA extends AppCompatActivity {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList listado = new ArrayList<>();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listado.clear();
@@ -1781,7 +1783,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public static void accesoFotoNombrePerfilMensajes(final ImageView vista, final TextView nombre, final Context context, String KEYCHAT) {
+    public static void accesoFotoNombrePerfilMensajes(final int op, final int pos, final ImageView vista, final TextView nombre, final Context context, String KEYCHAT) {
         // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
@@ -1789,16 +1791,35 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String img, nombreS = null;
+
                 StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     img = data.getValue(KeyChat.class).getImg();
-                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.getValue(KeyChat.class).getKey().split("-")[0])) {
-                        nombreS = data.getValue(KeyChat.class).getNombre().split("-")[1];
-                        img= data.getValue(KeyChat.class).getImg().split("-")[1];
-                    } else if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.getValue(KeyChat.class).getKey().split("-")[1])) {
-                        nombreS = data.getValue(KeyChat.class).getNombre().split("-")[0];
-                        img= data.getValue(KeyChat.class).getImg().split("-")[0];
+                    switch (op) {
+                        case 0:
+                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.getValue(KeyChat.class).getKey().split("-")[0])) {
+                                nombreS = data.getValue(KeyChat.class).getNombre().split("-")[1];
+                                img = data.getValue(KeyChat.class).getImg().split("-")[1];
+                            } else if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.getValue(KeyChat.class).getKey().split("-")[1])) {
+                                nombreS = data.getValue(KeyChat.class).getNombre().split("-")[0];
+                                img = data.getValue(KeyChat.class).getImg().split("-")[0];
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getNombre();
+                                img = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getFotoPerfil();
+                            } catch (IndexOutOfBoundsException ex) {
+                                nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos-1).getNombre();
+                                img = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos-1).getFotoPerfil();
+                            }
+
+
+                            break;
                     }
+
+
                     nombre.setText(nombreS);
                     ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
@@ -1936,7 +1957,7 @@ public class BDBAA extends AppCompatActivity {
                                     break;
                             }
                         }
-                        if(BandsnArts.mediaPlayer.isPlaying()){
+                        if (BandsnArts.mediaPlayer.isPlaying()) {
                             BandsnArts.mediaPlayer.stop();
                         }
 
@@ -1974,9 +1995,6 @@ public class BDBAA extends AppCompatActivity {
         } catch (com.google.firebase.database.DatabaseException ex) {
         }
     }
-
-
-
 
 
 }

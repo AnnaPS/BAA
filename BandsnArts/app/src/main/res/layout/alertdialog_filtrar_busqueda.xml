@@ -2,20 +2,19 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bordeverde"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
+    android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-   >
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bordeverde"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_marginBottom="70dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="70dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,7 +56,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spSexoAnuncio"
+                android:id="@+id/spSexoFiltrar"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
@@ -98,20 +97,21 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spEstiloAnuncio"
+                android:id="@+id/spEstiloFiltrar"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/bordeverde"/>
+                android:background="@drawable/bordeverde" />
 
             <Spinner
-                android:id="@+id/spInstrumentoAnuncio"
+                android:id="@+id/spInstrumentoFiltrar"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/bordeverde" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,14 +143,14 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spProvinciaAnuncio"
+                android:id="@+id/spProvinciaFiltrar"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/bordeverde" />
 
             <Spinner
-                android:id="@+id/spLocalidadAnuncio"
+                android:id="@+id/spLocalidadFiltrar"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
@@ -161,13 +161,13 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabGuardarAnuncio"
+        android:id="@+id/fabGuardarFiltrar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        app:backgroundTint="@color/md_teal_800"
+        android:layout_marginRight="10dp"
         android:src="@drawable/yes"
+        app:backgroundTint="@color/md_teal_800"
         app:fabSize="auto" />
 </android.support.design.widget.CoordinatorLayout>
