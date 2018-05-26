@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/md_light_green_600"
+        android:background="@color/md_grey_300"
         design:menu="@menu/menu_navigation" />
 
 

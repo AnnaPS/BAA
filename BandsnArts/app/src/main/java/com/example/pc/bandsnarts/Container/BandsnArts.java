@@ -71,6 +71,7 @@ public class BandsnArts extends Application implements Runnable {
     public static ArrayList <String> UID_MUSICO=new ArrayList<>();
     public static ArrayList <String> UID_GRUPO=new ArrayList<>();
 
+
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

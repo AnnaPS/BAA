@@ -15,10 +15,7 @@ import android.view.ViewGroup;
 
 
 import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentGruposTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentLocalesTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentSalasTabInicio;
+
 import com.example.pc.bandsnarts.R;
 
 public class FragmentInicio extends Fragment {

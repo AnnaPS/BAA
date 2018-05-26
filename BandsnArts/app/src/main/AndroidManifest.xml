@@ -78,7 +78,8 @@
             android:name=".Activities.VentanaInicialApp"
             android:label="@string/title_activity_ventana_inicial_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" /><![CDATA[
+            android:theme="@style/AppTheme.NoActionBar" />
+        <![CDATA[
 
 
             />
@@ -86,7 +87,7 @@
 
 
     ]]>
-        
+
     </application>
 
 </manifest>
