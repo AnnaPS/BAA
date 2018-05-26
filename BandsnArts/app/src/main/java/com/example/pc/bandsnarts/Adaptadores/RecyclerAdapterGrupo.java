@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
@@ -73,20 +75,18 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        Intent i;
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
                                 //op 0 lanza perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 0).putExtra("pos",  BandsnArts.UID_GRUPO.get(position)).putExtra("tipo", "grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                System.out.println("visitar perfil");
-                                mContext.startActivity(i);
+                                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_GRUPO.get(position), "grupo", 0)).commit();
+                                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                System.out.println("Visitar Perfil");
                                 break;
-
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
-                                i = new Intent(mContext, VisitarPerfilDeseado.class).putExtra("op", 1).putExtra("pos",  BandsnArts.UID_GRUPO.get(position)).putExtra("tipo", "grupo").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_GRUPO.get(position), "grupo", 1)).commit();
+                                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
                                 System.out.println("visitar anuncio");
-                                mContext.startActivity(i);
                                 break;
                             default:
                                 System.out.println("Por si acaso.");

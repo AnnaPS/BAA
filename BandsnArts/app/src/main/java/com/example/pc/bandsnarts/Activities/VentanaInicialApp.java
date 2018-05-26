@@ -66,7 +66,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_ventana_inicial_app2);
 
         id = R.id.inicioMenuDrawer2;
-
+        fragment = getSupportFragmentManager();
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -273,5 +273,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             firebaseAuth.removeAuthStateListener(escuchador);
         }
     }
+    
 
 }

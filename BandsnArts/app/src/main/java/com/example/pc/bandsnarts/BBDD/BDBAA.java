@@ -1417,8 +1417,8 @@ public class BDBAA extends AppCompatActivity {
                         });
                     }
 
-//                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
-//                   ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre);
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                   ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre);
 
                 } catch (ConcurrentModificationException ex) {
                     System.out.println("Concurrente");
@@ -1728,13 +1728,17 @@ public class BDBAA extends AppCompatActivity {
     ////    PERSISTENCIA        //////
     //////////////////////////////////
 
-    public static void persistirDatos() {
+    public static void persistirDatos(Context context) {
+
+        if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("persistir",false)){
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseDatabase.getInstance().getReference("grupo").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("musico").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("uids").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("locales").keepSynced(true);
         FirebaseDatabase.getInstance().getReference("salas").keepSynced(true);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("persistir",true).commit();
+        }
     }
 
 
