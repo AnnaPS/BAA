@@ -148,7 +148,7 @@
                     android:layout_marginTop="195dp"
                     android:background="@android:drawable/ic_menu_delete"
                     android:backgroundTint="@color/md_red_400"
-                    android:enabled="false" />
+                    android:enabled="true" />
 
                 <TextView
                     android:layout_width="wrap_content"

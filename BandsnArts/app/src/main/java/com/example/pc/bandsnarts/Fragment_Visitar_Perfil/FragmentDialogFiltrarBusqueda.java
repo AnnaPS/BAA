@@ -104,11 +104,7 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
 
                     BDBAA.busqueda(posEstilo,posInst,posSexo,BandsnArts.posProvincia,BandsnArts.posLocalidad,tipo);
                     dismiss();
-
                 }
-
-
-
             }
         });
 

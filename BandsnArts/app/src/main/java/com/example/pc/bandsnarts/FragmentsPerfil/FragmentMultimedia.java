@@ -218,6 +218,8 @@ public class FragmentMultimedia extends Fragment {
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMultimedia(1)).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                // SELECCIONAR EL ButtonNavigationView MULTIMEDIA
+                //////////////////////////////////////
+                //////////////////////////////////////
                 subirAudio();
             }
         });
@@ -297,6 +299,15 @@ public class FragmentMultimedia extends Fragment {
         eliminarCancion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // LLAMAR AL ALERTDIALOG PARA EL BORRADO DE LA CANCION
+                android.app.FragmentManager fm = getActivity().getFragmentManager();
+                FragmentDialogDescartarCancion alerta = new FragmentDialogDescartarCancion(FragmentMultimedia.this, "¿ESTÁS SEGURO DE ELIMINAR EL AUDIO?", "La canción se perderá");
+                alerta.setCancelable(false);
+                //miFABGuardarRechazar.close(true);
+                alerta.show(fm, "AlertaDescartar");
+                /////////////////////////////////////////////////////
+
                 Toast.makeText(getContext(), "PRUEBAS", Toast.LENGTH_SHORT).show();
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                 StorageReference cancion = storageRef.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
