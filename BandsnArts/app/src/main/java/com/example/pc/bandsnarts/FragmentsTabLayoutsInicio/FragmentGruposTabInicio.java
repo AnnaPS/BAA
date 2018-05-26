@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -32,20 +33,36 @@ public class FragmentGruposTabInicio extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println("----------------------------------->      ONSTARTTABGRUPO");
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         listaGrupos=new ArrayList<>();
         BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
+
+        System.out.println("----------------------------------->      ONRESUMETABGRUPO");
     }
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.tab_grupos_fragment, container, false);
         listaGrupos.clear();
-
         recyclerViewGrupos = vista.findViewById(R.id.recyclerGrupos);
             BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
         return vista;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("-------------------------->      ONDESTROY GRUPOS");
     }
 }

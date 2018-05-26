@@ -107,87 +107,6 @@ public class BDBAA extends AppCompatActivity {
     public BDBAA() {
     }
 
-    /*public static void agregarMusico(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList<String> instrumento, final String descripcion) {
-        // Nos posicionamos
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
-
-        Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean encontrado = false;
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("insert", "No pudo insertar");
-                    Toast.makeText(context, "Ya existe un usuario con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
-                    edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
-                    // limpiar campo !!!!!
-                    view.setVisibility(View.VISIBLE);
-                    encontrado = true;
-                }
-                if (!encontrado) {
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
-                    Log.d("insert", "Insertado con exito");
-                    DatabaseReference bd = FirebaseDatabase.getInstance().getReference("musico");
-                    Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
-                    bd.child(bd.push().getKey()).setValue(mus);
-                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
-                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
-                    ((Activity) context).finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    public static void agregarGrupo(final Context context, final View view, final EditText edtnombre, final String imagen, final String nombre, final String estilo, final String descripcion) {
-
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
-        Query q = bd.orderByChild("nombre").equalTo(nombre.toString());
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean encontrado = false;
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("INSERt", "No insertado ");
-                    Grupo gru = ds.getValue(Grupo.class);
-
-                    Toast.makeText(context, "Ya existe un grupo con con el nombre " + nombre, Toast.LENGTH_SHORT).show();
-                    edtnombre.setError("EL nombre Ya existe pruebe con otro", context.getDrawable(android.R.drawable.stat_notify_error));
-                    view.setVisibility(View.VISIBLE);
-
-                    encontrado = true;
-                }
-
-                if (!encontrado) {
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
-                    Log.d("INSERt", "Insertado ");
-                    DatabaseReference bd = FirebaseDatabase.getInstance().getReference("grupo");
-                    Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
-                    bd.child(bd.push().getKey()).setValue(gru);
-                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    Toast.makeText(context, "Añadido con exito", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
-                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
-                    ((Activity) context).finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("ERROR BD", "\n\nonCancelled: " + databaseError.getMessage() + "\n\n");
-                Toast.makeText(context, "No se pudo agregar con exito", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }*/
-
     public static void agregarFackingMaster(final String tipo, final Context context, final View view, final EditText correo, final EditText edtnombre, final String imagen, final String nombre, final String sexo, final String estilo, final ArrayList instrumento, final String descripcion) {
         Query q = FirebaseDatabase.getInstance().getReference("uids").orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1616,7 +1535,6 @@ public class BDBAA extends AppCompatActivity {
                             // Ir a la URL
                             BandsnArts.lanzarURLNavegador(urls.get(pos));
                             break;
-
                     }
                 }
             }
@@ -1627,6 +1545,130 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
+
+    public static void busqueda(final int posEstilo, final int posInst, final int posSexo, final int posProvincia, final int posLocalidad, final String tipo) {
+        final int[] ind = {-1, -1, -1, -1, -1};
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = null;
+        switch (tipo) {
+            case ("musico"):
+                if (posSexo != 0) {
+                    query = reference.child(tipo).orderByChild("sexo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo]);
+                    ind[0] = 0;
+                }
+                if (posInst != 0) {
+                    query = reference.child(tipo).orderByChild("instrumento/0").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
+                    ind[2] = 0;
+                }
+            case ("grupo"):
+                if (posEstilo != 0) {
+                    System.out.println("                -------------------->" + VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo]);
+                    query = reference.child(tipo).orderByChild("estilo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo]);
+                    ind[1] = 0;
+                }
+                if (posProvincia != 0) {
+                    query = reference.child(tipo).orderByChild("provincia").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia]);
+                    ind[3] = 0;
+                }
+                if (posLocalidad != 0) {
+                    query = reference.child(tipo).orderByChild("localidad").equalTo(BandsnArts.localidades[posLocalidad].toString());
+                    ind[4] = 0;
+                }
+                break;
+        }
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList listado = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listado.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (tipo.equals("musico")) {
+                        Musico mus = data.getValue(Musico.class);
+                        listado.add(mus);
+                    } else {
+                        Grupo gr = data.getValue(Grupo.class);
+                        listado.add(gr);
+                    }
+                }
+                try {
+                    for (Object item : listado) {
+                        if (item instanceof Musico) {
+                            Musico item1 = (Musico) item;
+                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(item1.getUid())) {
+                                listado.remove(item);
+                            } else {
+                                // Si ha seleccionado la localidad y NO coincide con la localidad del musico
+                                if (ind[4] == 0 && !BandsnArts.localidades[posLocalidad].toString().equals(item1.getLocalidad())) {
+                                    listado.remove(item);
+                                } else if ((ind[3] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia].equals(item1.getProvincia())) {
+                                    listado.remove(item);
+                                    //  Si ha seleccionado un instrumento y NO coincide con el instrumento principal del musico por el que estamos pasando
+                                } else if ((ind[2] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst].equals(item1.getInstrumento().get(0))) {
+                                    System.out.println("                  INSTRUMENTO     " + VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
+                                    listado.remove(item);
+                                    //  Si ha seleccionado un estilo y NO coincide con el estilo del musico por el que estamos pasando
+                                } else if (ind[1] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo].equals(item1.getEstilo())) {
+                                    listado.remove(item);
+                                    //  Si ha seleccionado un sexo y NO coincide con el sexo del musico por el que estamos pasando
+                                } else if (ind[0] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo].equals(item1.getSexo())) {
+                                    listado.remove(item);
+                                }
+                            }
+                        } else {
+                            Grupo item1 = (Grupo) item;
+                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(item1.getUid())) {
+                                listado.remove(item);
+                            } else {
+                                // Si ha seleccionado la localidad
+                                if (ind[4] == 0 && !BandsnArts.localidades[posLocalidad].toString().equals(item1.getLocalidad())) {
+                                    listado.remove(item);
+                                } else if ((ind[3] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia].equals(item1.getProvincia())) {
+                                    listado.remove(item);
+                                    //  Si ha seleccionado un instrumento y NO coincide con el instrumento principal del musico por el que estamos pasando
+                                } else if (ind[1] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo].equals(item1.getEstilo())) {
+                                    listado.remove(item);
+                                    //  Si ha seleccionado un sexo y NO coincide con el sexo del musico por el que estamos pasando
+                                }
+                            }
+                        }
+                    }
+                } catch (ConcurrentModificationException e) {
+
+                }
+
+                Collections.sort(listado, new Comparator<Musico>() {
+                    @Override
+                    public int compare(Musico o1, Musico o2) {
+                        if (o1.getNombre().compareTo(o2.getNombre()) > 0) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                });
+
+                switch (tipo) {
+                    case ("musico"):
+                        RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(VentanaInicialApp.a.getApplicationContext(), listado);
+                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
+                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setAdapter(adapterM);
+                        break;
+                    case ("grupo"):
+                        RecyclerAdapterGrupo adapterG = new RecyclerAdapterGrupo(VentanaInicialApp.a.getApplicationContext(), listado);
+                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
+                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setAdapter(adapterG);
+                        break;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     ///////////////////////////////////////////////////////////////STORAGE/////////////////////////////////////////////////////////////////////////////////
     public static void comprobacionAudioUsuario(final String tipo, final Context ctx, String uid, final View view) {
@@ -1681,7 +1723,6 @@ public class BDBAA extends AppCompatActivity {
                             }
 
                         });
-
 
                     } else {
                         // OCULTAR REPRODUCTOR
@@ -1738,8 +1779,6 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public static void accesoFotoNombrePerfilMensajes(final ImageView vista, final TextView nombre, final Context context, String KEYCHAT) {
@@ -1792,19 +1831,15 @@ public class BDBAA extends AppCompatActivity {
 
         if (o instanceof Musico) {
             img = ((Musico) o).getImagen();
-
         } else {
             img = ((Grupo) o).getImagen();
-
         }
         try {
             ref.child(img).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (!VentanaInicialApp.a.isFinishing()) {
-
                         Glide.with(context).load(task.getResult()).override(200, 200).into(vista);
-
                     }
                 }
             });
@@ -1873,8 +1908,59 @@ public class BDBAA extends AppCompatActivity {
         });
 
     }
+
+    public static void eliminarCancion(StorageReference cancion) {
+        // Delete the file
+        cancion.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                System.out.println("BORRADO CON EXITO!!!!!!!!!!!!");
+                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
+                Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            switch (PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", "")) {
+                                case "musico":
+                                    Musico mus = data.getValue(Musico.class);
+                                    mus.setAudio(null);
+                                    bd.child(data.getKey()).setValue(mus);
+                                    break;
+                                case "grupo":
+                                    Grupo gr = data.getValue(Grupo.class);
+                                    gr.setAudio(null);
+                                    bd.child(data.getKey()).setValue(gr);
+                                    break;
+                            }
+                        }
+                        if(BandsnArts.mediaPlayer.isPlaying()){
+                            BandsnArts.mediaPlayer.stop();
+                        }
+
+                        BandsnArts.mediaPlayer = null;
+                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
+                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+                        FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+            }
+        });
+    }
     //////////////////////////////////
-    ////    PERSISTENCIA        //////
+    ////       PERSISTENCIA      /////
     //////////////////////////////////
 
     public static void persistirDatos() {
@@ -1890,131 +1976,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
 
-    public static void busqueda(final int posEstilo, final int posInst, final int posSexo, final int posProvincia, final int posLocalidad, final String tipo) {
 
-        final int[] ind = {-1, -1, -1, -1, -1};
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query = null;
-        switch (tipo) {
-            case ("musico"):
-                if (posSexo != 0) {
-                    query = reference.child(tipo).orderByChild("sexo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo]);
-                    ind[0] = 0;
-                }
-                if (posInst != 0) {
-                    query = reference.child(tipo).orderByChild("instrumento/0").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
-                    ind[2] = 0;
-                }
-            case ("grupo"):
-                if (posEstilo != 0) {
-                    query = reference.child(tipo).orderByChild("estilo").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo]);
-                    ind[1] = 0;
-                }
-                if (posProvincia != 0) {
-                    query = reference.child(tipo).orderByChild("provincia").equalTo(VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia]);
-                    ind[3] = 0;
-                }
-                if (posLocalidad != 0) {
-                    query = reference.child(tipo).orderByChild("localidad").equalTo(BandsnArts.localidades[posLocalidad].toString());
-                    ind[4] = 0;
-                }
-                break;
-        }
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList listado = new ArrayList<>();
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listado.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    if (tipo.equals("musico")) {
-                        Musico mus = data.getValue(Musico.class);
-                        listado.add(mus);
-                    } else {
-                        Grupo gr = data.getValue(Grupo.class);
-                        listado.add(gr);
-                    }
-                }
-                try {
-                    for (Object item : listado) {
-                        if (item instanceof Musico) {
-                            Musico item1 = (Musico) item;
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(item1.getUid())) {
-                                listado.remove(item);
-                            } else {
-                                // Si ha seleccionado la localidad
-                                if (ind[4] == 0 && !BandsnArts.localidades[posLocalidad].toString().equals(item1.getLocalidad())) {
-                                    listado.remove(item);
-                                } else if ((ind[3] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia].equals(item1.getProvincia())) {
-                                    listado.remove(item);
-                                    //  Si ha seleccionado un instrumento y NO coincide con el instrumento principal del musico por el que estamos pasando
-                                } else if ((ind[2] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst].equals(item1.getInstrumento().get(0))) {
-                                    System.out.println("                  INSTRUMENTO     " + VentanaInicialApp.a.getResources().getStringArray(R.array.instrumentos)[posInst]);
-                                    listado.remove(item);
-                                    //  Si ha seleccionado un estilo y NO coincide con el estilo del musico por el que estamos pasando
-                                } else if (ind[1] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo].equals(item1.getEstilo())) {
-                                    listado.remove(item);
-                                    //  Si ha seleccionado un sexo y NO coincide con el sexo del musico por el que estamos pasando
-                                } else if (ind[0] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.sexo)[posSexo].equals(item1.getSexo())) {
-                                    listado.remove(item);
-                                }
-                            }
-                        } else {
-                            Grupo item1 = (Grupo) item;
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(item1.getUid())) {
-                                listado.remove(item);
-                            } else {
-                                // Si ha seleccionado la localidad
-                                if (ind[4] == 0 && !BandsnArts.localidades[posLocalidad].toString().equals(item1.getLocalidad())) {
-                                    listado.remove(item);
-                                } else if ((ind[3] == 0) && !VentanaInicialApp.a.getResources().getStringArray(R.array.provincias)[posProvincia].equals(item1.getProvincia())) {
-                                    listado.remove(item);
-                                    //  Si ha seleccionado un instrumento y NO coincide con el instrumento principal del musico por el que estamos pasando
-                                } else if (ind[1] == 0 && !VentanaInicialApp.a.getResources().getStringArray(R.array.estiloMusical)[posEstilo].equals(item1.getEstilo())) {
-                                    listado.remove(item);
-                                    //  Si ha seleccionado un sexo y NO coincide con el sexo del musico por el que estamos pasando
-                                }
-                            }
-                        }
-
-                    }
-                } catch (ConcurrentModificationException e) {
-
-                }
-
-                Collections.sort(listado, new Comparator<Musico>() {
-                    @Override
-                    public int compare(Musico o1, Musico o2) {
-                        if (o1.getNombre().compareTo(o2.getNombre()) > 0) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-                });
-
-                switch (tipo) {
-                    case ("musico"):
-                        RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(VentanaInicialApp.a.getApplicationContext(), listado);
-                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
-                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setAdapter(adapterM);
-                        break;
-                    case ("grupo"):
-                        RecyclerAdapterGrupo adapterG = new RecyclerAdapterGrupo(VentanaInicialApp.a.getApplicationContext(), listado);
-                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
-                        ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setAdapter(adapterG);
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }
