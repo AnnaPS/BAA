@@ -5,15 +5,15 @@
     android:id="@+id/anuncios"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/md_grey_500"
 
     >
 
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_marginTop="44dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="44dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
@@ -31,10 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="5dp"
-        app:backgroundTint="@color/md_teal_800"
         android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/md_teal_800"
         app:fabSize="normal" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>

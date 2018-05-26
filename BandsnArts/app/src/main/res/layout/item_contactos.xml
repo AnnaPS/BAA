@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     cardview:cardCornerRadius="10sp"
     android:layout_margin="5dp"
-  >
+    android:id="@+id/cardContactos"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="1dp"
-        android:background="@drawable/in"
+
         >
 
         <LinearLayout
@@ -22,7 +22,7 @@
             android:padding="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgUsuarioMensajes"
+                android:id="@+id/imgUsuarioContactos"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/user" />
@@ -31,37 +31,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-           >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+            android:orientation="vertical">
                 <TextView
-                    android:id="@+id/txtUsuarioMensajes"
+                    android:id="@+id/txtUsuarioContactos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="10dp"
                     android:text="Mackauli Kulkin"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtHoraMensajes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="12:00"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtMensajeMensajes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Solito en casa, me monto una fiesta no está la mama" />
         </LinearLayout>
     </LinearLayout>
 

@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 
 import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Contactos.FragmentContactos;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
@@ -167,7 +168,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_buscar) {
             FragmentDialogFiltrarBusqueda alerta = null;
             android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
 
@@ -220,7 +221,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.mensajesMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         }

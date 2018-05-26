@@ -43,6 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterMusico.ViewHolder> {
 
     private Context mContext;
+    private int mExpandedPosition=-1;
     private ArrayList<Musico> listaM;
 
 
@@ -83,13 +84,8 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
         ImageButton btnMenu = holder.menuButton;
 
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
-        ////////////////////////////////////////////
+
+
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override

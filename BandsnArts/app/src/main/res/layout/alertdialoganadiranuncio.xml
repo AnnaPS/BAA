@@ -232,6 +232,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
         app:backgroundTint="@color/md_teal_800"
         android:src="@android:drawable/ic_menu_save"
         app:fabSize="auto" />
