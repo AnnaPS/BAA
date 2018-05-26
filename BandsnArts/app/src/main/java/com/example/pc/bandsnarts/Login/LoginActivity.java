@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
 
         // Persistencia Datos
-        BDBAA.persistirDatos(getApplicationContext());
+        BDBAA.persistirDatos();
 
         //   Forzar CRASHEO
         //   Crashlytics.getInstance().crash(); // Force a crash
@@ -294,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     System.out.println("Codigo de inicio" + resultCode);
                 }
                 break;
-            //Este if es para saber que ha rellenado todo lo necesario en el logueo
+            //Este if es para saber que ha rellenado lo necesario en el logueo
             case (BandsnArts.CODIGO_DE_REGISTRO):
                 System.out.println("Codigo de registro");
                 FirebaseAuth.getInstance().signOut();
