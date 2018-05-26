@@ -21,7 +21,7 @@ import com.example.pc.bandsnarts.R;
 public class FragmentInicio extends Fragment {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
 
 
     @Override
@@ -39,6 +39,8 @@ public class FragmentInicio extends Fragment {
         mLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.getCurrentItem();
+
         tabLayout.setupWithViewPager(viewPager);
 
         return vista;

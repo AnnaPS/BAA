@@ -41,15 +41,15 @@
 
 
             <TextView
+                android:id="@+id/txtTextoSexoAlertBusquedas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
                 android:text="SEXO"
                 android:textColor="@color/md_teal_800"
                 android:textSize="16sp"
-                android:textStyle="bold"
 
-                />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -83,6 +83,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtTextoInstrumentoAlertBusquedas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="90dp"

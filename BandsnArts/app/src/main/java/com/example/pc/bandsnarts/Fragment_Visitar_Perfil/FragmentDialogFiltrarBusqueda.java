@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,10 +50,11 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
     private static final String TAG = "AlertaAnuncio";
     Spinner spEstilo, spSexo, spInstrumento, spProvincia, spLocalidad;
     FloatingActionButton Fabguardar;
-    int posEstilo, posInst, posSexo, posTipo, posControl, posEditar;
+    int posEstilo, posInst, posSexo, posControl, posEditar;
     View vista;
     String tipo;
     Button atras;
+    TextView sexo,instrumento;
 
     public FragmentDialogFiltrarBusqueda() {
     }
@@ -71,7 +73,6 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.alertdialog_filtrar_busqueda, container, false);
         atras = vista.findViewById(R.id.btnAtrasBusqueda);
-        //   fecha = vista.findViewById(R.id.txtFechaAnuncio);
 
         spEstilo = vista.findViewById(R.id.spEstiloAnuncio);
         spSexo = vista.findViewById(R.id.spSexoAnuncio);
@@ -87,10 +88,12 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
         escuchadoresSpinner();
 
         BandsnArts.loadSpinnerProvincias(spProvincia);
-
         BandsnArts.escuchas(vista.getContext(), spProvincia, spLocalidad);
 
-        /*switch (BandsnArts.posicionTab) {
+        sexo = vista.findViewById(R.id.txtTextoSexoAlertBusquedas);
+        instrumento = vista.findViewById(R.id.txtTextoInstrumentoAlertBusquedas);
+
+        switch (FragmentInicio.viewPager.getCurrentItem()) {
             case (0):
                 System.out.println("TAB MUSICO");
                 break;
@@ -98,8 +101,10 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
                 System.out.println("TAB GRUPO");
                 spInstrumento.setVisibility(View.GONE);
                 spSexo.setVisibility(View.GONE);
+                sexo.setVisibility(View.GONE);
+                instrumento.setVisibility(View.GONE);
                 break;
-        }*/
+        }
 
         Fabguardar = (FloatingActionButton) vista.findViewById(R.id.fabGuardarAnuncio);
         Fabguardar.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +116,19 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
                 if (posEstilo == 0 && posInst == 0 && posSexo == 0 && BandsnArts.posProvincia == 0) {
                     Toast.makeText(vista.getContext(), "Debe seleccionar al menos un dato", Toast.LENGTH_SHORT).show();
                 } else {
-                    BDBAA.busqueda(posEstilo, posInst, posSexo, BandsnArts.posProvincia, BandsnArts.posLocalidad, tipo);
+                    System.out.println("-------------------------->  FragmentInicio.viewPager.getCurrentItem()= "+FragmentInicio.viewPager.getCurrentItem());
+                    FragmentInicio.viewPager.getCurrentItem();
+                    switch (FragmentInicio.viewPager.getCurrentItem()) {
+                        case(0):
+                            BDBAA.busqueda(posEstilo, posInst, posSexo, BandsnArts.posProvincia, BandsnArts.posLocalidad, "musico");
+                            break;
+
+                        case(1):
+                            BDBAA.busqueda(posEstilo, posInst, posSexo, BandsnArts.posProvincia, BandsnArts.posLocalidad, "grupo");
+                            break;
+
+                    }
+
                     dismiss();
                 }
             }
