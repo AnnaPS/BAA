@@ -18,7 +18,7 @@
 
             <Button
                 android:id="@+id/btnAtrasAnuncio"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@mipmap/ic_keyboard_backspace_black_24dp"
                 android:backgroundTint="@color/md_light_green_600" />
@@ -50,6 +50,7 @@
                 android:fontFamily="sans-serif"
                 android:hint="INTRODUCE EL TITULO"
                 android:inputType="textPersonName"
+                android:textColorHint="@color/md_black_1000"
                 android:textSize="12sp"
                 android:textStyle="italic" />
 
