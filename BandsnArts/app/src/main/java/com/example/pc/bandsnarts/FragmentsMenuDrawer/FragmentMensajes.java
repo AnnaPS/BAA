@@ -61,7 +61,7 @@ public class FragmentMensajes extends Fragment {
         rvMensajes.setAdapter(adaptadorMensajes);
 
         //inicializacion de objetos de firebase
-
+        setScrollBar();
 
         //nodo principal, sala de chat
         btnEnviar.setOnClickListener(new View.OnClickListener() {

@@ -1254,7 +1254,7 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     KeyChat chat = data.getValue(KeyChat.class);
-                    chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("h:mm a").format(new Date())));
+                    chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("h:mm a").format(new Date()),FirebaseAuth.getInstance().getCurrentUser().getUid()));
                     //BDBAA.recuperarMensajes(view,KEYCHAT,recyclerView);
                     bd.child(data.getKey()).setValue(chat);
                 }
@@ -1811,8 +1811,8 @@ public class BDBAA extends AppCompatActivity {
                                 nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getNombre();
                                 img = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getFotoPerfil();
                             } catch (IndexOutOfBoundsException ex) {
-                                nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos-1).getNombre();
-                                img = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos-1).getFotoPerfil();
+                                nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getNombre();
+                                img = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getFotoPerfil();
                             }
 
 
