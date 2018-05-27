@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/md_grey_500">
 
 
 
@@ -41,6 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Escribe un mensaje"
+        android:textColorHint="@color/md_white_1000"
+        android:textColor="@color/md_white_1000"
         android:layout_weight="1"/>
 
     <Button

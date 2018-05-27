@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+<com.github.library.bubbleview.BubbleLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    cardview:cardCornerRadius="10sp"
-    android:layout_margin="5dp"
-  >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    android:layout_marginBottom="1dp"
+    android:orientation="horizontal"
+    app:bubbleColor="#0a9783"
+    app:arrowLocation="right"
+    app:angle="10dp"
+    >
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgUsuarioMensajes"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/user" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="1dp"
-        android:background="@drawable/in"
+        android:orientation="vertical"
+
         >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgUsuarioMensajes"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/user" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-           >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtUsuarioMensajes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Mackauli Kulkin"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtHoraMensajes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="12:00"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtMensajeMensajes"
+                android:id="@+id/txtUsuarioMensajes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Solito en casa, me monto una fiesta no está la mama" />
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="Mackauli Kulkin"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtHoraMensajes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:padding="5dp"
+                android:text="12:00"
+                android:textColor="@color/md_white_1000"
+                android:textStyle="italic" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtMensajeMensajes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Solito en casa, me monto una fiesta no está la mama"
+            android:textColor="@color/md_white_1000" />
     </LinearLayout>
 
 
-</android.support.v7.widget.CardView>
+</com.github.library.bubbleview.BubbleLinearLayout>
