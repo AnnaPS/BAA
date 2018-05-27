@@ -43,7 +43,7 @@ public class AdaptadorContactos extends RecyclerView.Adapter<HolderContactos> {
         final KeyChat item = (KeyChat) listaContactos.get(position);
        //HACER ON CLICK DEL CARDVIEW PARA LANZAR LA VENTANA DE CHAT DE ESA PERSONA
         holder.KEYCHAT=item.getKey();
-        BDBAA.accesoFotoNombrePerfilMensajes(0,position,holder.getFotoMensaje(),holder.getNombre(),contexto,item.getKey());
+        BDBAA.accesoFotoNombrePerfilMensajes(0,position,holder.getFotoMensaje(),holder.getNombre(),contexto,item.getKey(),null);
 
     }
 

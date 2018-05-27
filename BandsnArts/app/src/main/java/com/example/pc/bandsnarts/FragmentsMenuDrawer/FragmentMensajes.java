@@ -61,7 +61,7 @@ public class FragmentMensajes extends Fragment {
         rvMensajes.setAdapter(adaptadorMensajes);
 
         //inicializacion de objetos de firebase
-        setScrollBar();
+
 
         //nodo principal, sala de chat
         btnEnviar.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class FragmentMensajes extends Fragment {
             @Override
             public void onClick(View view) {
                 BDBAA.nuevoMensaje(BandsnArts.KEYCHAT,edtMensajes.getText().toString());
-                setScrollBar();
+                setScrollBar(rvMensajes);
                 edtMensajes.setText("");
             }
         });
@@ -79,8 +79,8 @@ public class FragmentMensajes extends Fragment {
     }
 
     //metodo que mueve la pantalla al utlimo item insertado
-    private void setScrollBar() {
-        rvMensajes.scrollToPosition(adaptadorMensajes.getItemCount() - 1);
+  public static void setScrollBar(RecyclerView rvMensajes) {
+        rvMensajes.scrollToPosition(FragmentMensajes.adaptadorMensajes.getItemCount() - 1);
     }
 
 

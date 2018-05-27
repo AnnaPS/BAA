@@ -35,6 +35,7 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.database.ChildEventListener;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,8 @@ public class BandsnArts extends Application implements Runnable {
 
     // Variable control posicion Tab
     public static int posicionTab;
-
+//escucha
+public static ChildEventListener bdbaa;
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

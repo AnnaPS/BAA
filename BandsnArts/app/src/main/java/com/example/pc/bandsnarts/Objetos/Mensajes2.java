@@ -20,6 +20,14 @@ public class Mensajes2 {
         this.UID=UID;
     }
 
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
     public String getMensaje() {
         return mensaje;
     }
