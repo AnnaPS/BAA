@@ -39,30 +39,20 @@ public class FragmentContactos extends Fragment {
     private AdaptadorContactos adaptadorContactos;
     private CardView cardContactos;
 
-    //objetos para firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_contactos, container, false);
-
         //finds
         fotoPerfil = vista.findViewById(R.id.imgPerfilVContactos);
         nombre = vista.findViewById(R.id.txtNombreVContactos);
         rvContactos = vista.findViewById(R.id.recyclerVContactos);
         cardContactos=vista.findViewById(R.id.cardContactos);
-
-
-
-       // BDBAA.recuperarMensajes(vista, BandsnArts.KEYCHAT, rvContactos);
-
+        BDBAA.recuperarConversaciones(vista,rvContactos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvContactos.setLayoutManager(linearLayoutManager);
         rvContactos.setAdapter(adaptadorContactos);
-
-
         return vista;
     }
 

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,9 +22,7 @@ import com.example.pc.bandsnarts.R;
 public class FragmentInicio extends Fragment {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-
+    public static ViewPager viewPager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +38,8 @@ public class FragmentInicio extends Fragment {
         mLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.getCurrentItem();
+
         tabLayout.setupWithViewPager(viewPager);
 
         return vista;

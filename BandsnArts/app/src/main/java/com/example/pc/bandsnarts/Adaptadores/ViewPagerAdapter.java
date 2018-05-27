@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> listaFragment = new ArrayList<>();
     public final String[] tabTitulos=new String[]{"MÚSICOS","GRUPOS","SALAS","LOCALES"};
     public static int tabs;
+
     public ViewPagerAdapter(FragmentManager fm,int numerotabs) {
         super(fm);
         tabs=numerotabs;
@@ -36,11 +38,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new FragmentSalasTabInicio();
             case 3:
                 return new FragmentLocalesTabInicio();
-
             default:
                 return null;
         }
     }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        System.out.println("---------------------------------"+getItemPosition(object));
+        return super.getItemPosition(object);
+
+    }
+
+
 
     @Override
     public int getCount() {

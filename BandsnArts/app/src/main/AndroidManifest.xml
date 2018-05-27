@@ -87,10 +87,7 @@
 
 
     ]]>
-        <activity
-            android:name=".Activities.VisitarPerfilDeseado"
-            android:label="@string/title_activity_actvity_visitar_perfil" />
-        <activity android:name=".Activities.Chat" />
+
     </application>
 
 </manifest>

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.R;
@@ -29,7 +31,6 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
         listaMensajes.add(m);
         //envia una notificacion cuando se inserta un nuevo elemento
         notifyItemInserted(listaMensajes.size());
-
     }
 
     @Override
@@ -40,9 +41,9 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
 
     @Override
     public void onBindViewHolder(HolderMensajes holder, int position) {
-        holder.getNombre().setText(listaMensajes.get(position).getNombre());
         holder.getHora().setText(listaMensajes.get(position).getHora());
         holder.getMensaje().setText(listaMensajes.get(position).getMensaje());
+        BDBAA.accesoFotoNombrePerfilMensajes(1,position,holder.getFotoMensaje(), holder.getNombre(), VentanaInicialApp.a,BandsnArts.KEYCHAT);
     }
 
 
