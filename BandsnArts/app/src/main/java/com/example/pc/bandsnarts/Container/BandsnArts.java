@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.github.library.bubbleview.BubbleDrawable;
 import com.google.firebase.database.ChildEventListener;
 
 import java.util.ArrayList;
@@ -352,6 +354,5 @@ public static ChildEventListener bdbaa;
         }
 
     }
-
 
 }

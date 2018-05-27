@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.icu.text.SimpleDateFormat;
@@ -1376,7 +1377,7 @@ public class BDBAA extends AppCompatActivity {
                                 }
                                 DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
                                 bd.child(bd.push().getKey()).setValue(new KeyChat(img, nombre, (keyP1 + "-" + uid)));
-                                BDBAA.escuchaChat(bd, (keyP1 + "-" + uid));
+
                             }
 
                             @Override
@@ -1410,6 +1411,7 @@ public class BDBAA extends AppCompatActivity {
             databaseReference.removeEventListener(BandsnArts.bdbaa);
         } catch (NullPointerException ex) {
         }
+
         BandsnArts.bdbaa = databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -1418,30 +1420,32 @@ public class BDBAA extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                HashMap hashMapm = (HashMap) dataSnapshot.getValue();
-                Collection lista = hashMapm.values();
-                for (Object keyChat : lista.toArray()) {
-                    System.out.println(keyChat.getClass());
-                    if (keyChat instanceof HashMap) {
-                        String chat = (String) ((HashMap) keyChat).get("key");
-                        System.out.println(key + "  <-->   " + chat);
-                        if (key.equals(chat)) {
-                            ArrayList listado = (ArrayList) ((HashMap) keyChat).get("historcoMensajes");
-                            HashMap mapa = null;
-                            for (Object o : listado) {
-                                if (o instanceof HashMap) {
-                                    mapa = (HashMap) o;
+                try {
+                    HashMap hashMapm = (HashMap) dataSnapshot.getValue();
+                    Collection lista = hashMapm.values();
+                    for (Object keyChat : lista.toArray()) {
+                        System.out.println(keyChat.getClass());
+                        if (keyChat instanceof HashMap) {
+                            String chat = (String) ((HashMap) keyChat).get("key");
+                            System.out.println(key + "  <-->   " + chat);
+                            if (key.equals(chat)) {
+                                ArrayList listado = (ArrayList) ((HashMap) keyChat).get("historcoMensajes");
+                                HashMap mapa = null;
+                                for (Object o : listado) {
+                                    if (o instanceof HashMap) {
+                                        mapa = (HashMap) o;
+                                    }
                                 }
+                                System.out.println(hashMapm);
+                                Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
+                                FragmentMensajes.adaptadorMensajes.addMensaje(mens);
+                                break;
                             }
-                            System.out.println(hashMapm);
-                            Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
-                            FragmentMensajes.adaptadorMensajes.addMensaje(mens);
-                            break;
                         }
                     }
-                }
 
-                //
+                } catch (NullPointerException ex) {
+                }
             }
 
             @Override
@@ -1459,6 +1463,7 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+
 
     }
 
@@ -1478,7 +1483,7 @@ public class BDBAA extends AppCompatActivity {
                     if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[0]) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[1])) {
                         lista.add(keyChat);
                         System.out.println("AK-47------------------------------------>" + bd.child(data.getKey()));
-                        BDBAA.escuchaChat(bd.getParent(), keyChat.getKey());
+                        //BDBAA.escuchaChat(bd.getParent(), keyChat.getKey());
                     }
                 }
 
@@ -1495,13 +1500,14 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void recuperarMensajes(final View view, final String KEYCHAT, final RecyclerView recyclerView) {
-        DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<Mensajes2> lista = new ArrayList<>();
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                BDBAA.escuchaChat(bd.getParent(), BandsnArts.KEYCHAT);
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     lista = data.getValue(KeyChat.class).getHistorcoMensajes();
                 }
@@ -1851,14 +1857,18 @@ public class BDBAA extends AppCompatActivity {
                                 nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getNombre();
                                 img = data.getValue(KeyChat.class).getHistorcoMensajes().get(pos).getFotoPerfil();
                             } catch (IndexOutOfBoundsException ex) {
-
-                                if (data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    BDBAA.cargarbubble(1, bubbleLinearLayout);
-                                } else {
-                                    BDBAA.cargarbubble(1, bubbleLinearLayout);
+                                try {
+                                    if (data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                        BDBAA.cargarbubble(1, bubbleLinearLayout);
+                                    } else {
+                                        BDBAA.cargarbubble(0, bubbleLinearLayout);
+                                    }
+                                    nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getNombre();
+                                    img = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getFotoPerfil();
+                                } catch (IndexOutOfBoundsException e) {
                                 }
-                                nombreS = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getNombre();
-                                img = data.getValue(KeyChat.class).getHistorcoMensajes().get(data.getValue(KeyChat.class).getHistorcoMensajes().size() - 1).getFotoPerfil();
+                            } catch (NullPointerException ex) {
+
                             }
 
 
@@ -1892,18 +1902,21 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void cargarbubble(int op, com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout) {
-        BubbleDrawable.Builder bubble = null;
+        //   BubbleDrawable.Builder bubble = null;
         switch (op) {
             case 0:
-                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200))
-                        .arrowPosition(0);
+//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200))
+//                        .arrowPosition(0);
+                bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200));
                 break;
             case 1:
-                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200))
-                        .arrowPosition(1);
+//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200))
+//                        .arrowPosition(-1);
+                bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200));
+
                 break;
         }
-        bubbleLinearLayout.setBackgroundDrawable(bubble.rect(new RectF(bubbleLinearLayout.getLeft(), bubbleLinearLayout.getTop(), bubbleLinearLayout.getRight(), bubbleLinearLayout.getBottom())).build());
+        // bubbleLinearLayout.setBackgroundDrawable(bubble.rect(new RectF(bubbleLinearLayout.getClipBounds().left, bubbleLinearLayout.getClipBounds().top, bubbleLinearLayout.getClipBounds().right, bubbleLinearLayout.getClipBounds().bottom)).build());
     }
 
     public static void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
