@@ -16,24 +16,24 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class Notificaciones extends FirebaseMessagingService {
 
-    public static final String TAG="NOTICIAS";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         String from=remoteMessage.getFrom();
-        Log.d(TAG,"Mensaje recibido de: "+from);
+        Log.d("NOT","Mensaje recibido de: "+from);
 
         if(remoteMessage.getNotification()!=null){
-            Log.d(TAG,"NOTIFICACION: "+remoteMessage.getNotification().getBody());
+            Log.d("NOT","NOTIFICACION: "+remoteMessage.getNotification().getBody());
 
         }
         //si hay datos en el mensaje los mostramos
         if(remoteMessage.getData().size()>0){
-            Log.d(TAG,"Data: "+remoteMessage.getData());
+            Log.d("NOT","Data: "+remoteMessage.getData());
         }
 
-        mostrarNotificacion("!Bienvenido¡","Pulse aqui para acceder");
+        mostrarNotificacion("Tienen mensajes si leer","Pulse aqui para acceder");
 
     }
 

@@ -3,6 +3,7 @@ package com.example.pc.bandsnarts.Adaptadores;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pc.bandsnarts.R;
@@ -18,7 +19,7 @@ public class HolderMensajes extends RecyclerView.ViewHolder {
     private TextView nombre, mensaje, hora;
     private CircleImageView fotoMensaje;
     private String KEYCHAT;
-    private com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout;
+    private LinearLayout bubbleLinearLayout;
 
     public HolderMensajes(View itemView) {
         super(itemView);
@@ -30,11 +31,11 @@ public class HolderMensajes extends RecyclerView.ViewHolder {
         bubbleLinearLayout = itemView.findViewById(R.id.bubbleMensaje);
     }
 
-    public BubbleLinearLayout getBubbleLinearLayout() {
+    public LinearLayout getBubbleLinearLayout() {
         return bubbleLinearLayout;
     }
 
-    public void setBubbleLinearLayout(BubbleLinearLayout bubbleLinearLayout) {
+    public void setBubbleLinearLayout(LinearLayout bubbleLinearLayout) {
         this.bubbleLinearLayout = bubbleLinearLayout;
     }
 

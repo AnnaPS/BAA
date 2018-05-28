@@ -143,27 +143,28 @@ public class BDBAA extends AppCompatActivity {
                             }
                             if (!encontrados) {
                                 final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                                switch (tipo) {
+                                    case "musico":
+                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
+                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
+                                        bd.child(bd.push().getKey()).setValue(mus);
+                                        break;
+                                    case "grupo":
+                                        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
+                                        Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
+                                        bd.child(bd.push().getKey()).setValue(gru);
+                                        break;
+                                }
+                                FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                context.startActivity(new Intent(context, VentanaSliderParteDos.class));
+                                ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
+                                ((Activity) context).finish();
+                                Log.d("INSERTADO", "Insertado con exito");
                                 FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                                             public void onComplete(@NonNull Task<GetTokenResult> task) {
                                                 if (task.isSuccessful()) {
-                                                    switch (tipo) {
-                                                        case "musico":
-                                                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
-                                                            Musico mus = new Musico(task.getResult().getToken(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
-                                                            bd.child(bd.push().getKey()).setValue(mus);
-                                                            break;
-                                                        case "grupo":
-                                                            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
-                                                            Grupo gru = new Grupo(task.getResult().getToken(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
-                                                            bd.child(bd.push().getKey()).setValue(gru);
-                                                            break;
-                                                    }
-                                                    FirebaseDatabase.getInstance().getReference("uids").child(bd.push().getKey()).child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                    context.startActivity(new Intent(context, VentanaSliderParteDos.class));
-                                                    ((Activity) context).setResult(BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL);
-                                                    ((Activity) context).finish();
-                                                    Log.d("INSERTADO", "Insertado con exito");
+
                                                 } else {
                                                     task.getException();
                                                 }
@@ -441,6 +442,7 @@ public class BDBAA extends AppCompatActivity {
                     // Es grupo, lo guardamos en preferencias
                     PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo", "grupo").commit();
                 }
+                BandsnArts.recuperarToken(PreferenceManager.getDefaultSharedPreferences(cont).getString("tipo", ""));
             }
 
             @Override
@@ -1247,6 +1249,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
+
     //Creación nodos chat
     public static void nuevoMensaje(final String KEYCHAT, final String mens) {
         final DatabaseReference bd;
@@ -1385,6 +1388,38 @@ public class BDBAA extends AppCompatActivity {
 
                             }
                         });
+                    } else {
+                        BandsnArts.KEYCHAT = keyP1 + "-" + uid;
+                        Query q = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).orderByChild("uid").equalTo(uid);
+                        q.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    switch (tipo) {
+                                        case "musico":
+                                            Musico musico = data.getValue(Musico.class);
+                                            musico.getKeyChat().add(BandsnArts.KEYCHAT);
+                                            nombre = nombre + "-" + musico.getNombre();
+                                            img = img + "-" + musico.getImagen();
+                                            FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
+                                            break;
+                                        case "grupo":
+                                            Grupo grupo = data.getValue(Grupo.class);
+                                            grupo.getKeyChat().add(BandsnArts.KEYCHAT);
+                                            nombre = nombre + "-" + grupo.getNombre();
+                                            img = img + "-" + grupo.getImagen();
+                                            FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
+
+                                            break;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                     VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
@@ -1404,8 +1439,13 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    //escucha chat
-    public static void escuchaChat(DatabaseReference databaseReference, final String key) {
+    /**
+     * AQUI ES LO DEL METODO DE LAS NOTIFICACIONES
+     *
+     * @param databaseReference
+     * @param key
+     */
+    public static void escuchaChat(final DatabaseReference databaseReference, final String key) {
         //agregar hijo al nodo
         try {
             databaseReference.removeEventListener(BandsnArts.bdbaa);
@@ -1413,6 +1453,10 @@ public class BDBAA extends AppCompatActivity {
         }
 
         BandsnArts.bdbaa = databaseReference.addChildEventListener(new ChildEventListener() {
+            DatabaseReference bd;
+            Query q;
+            String tipo;
+
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -1429,6 +1473,41 @@ public class BDBAA extends AppCompatActivity {
                             String chat = (String) ((HashMap) keyChat).get("key");
                             System.out.println(key + "  <-->   " + chat);
                             if (key.equals(chat)) {
+                                bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
+                                if (chat.split("-")[0].equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    q = bd.orderByChild("uid").equalTo(chat.split("-")[1]);
+                                    tipo = (String) ((HashMap) keyChat).get("tipo").toString().split("-")[1];
+                                } else {
+                                    q = bd.orderByChild("uid").equalTo(chat.split("-")[0]);
+                                    tipo = (String) ((HashMap) keyChat).get("tipo").toString().split("-")[0];
+                                }
+                                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            switch (tipo) {
+                                                case "musico":
+                                                    Musico mus = ds.getValue(Musico.class);
+                                                    for (String token : mus.getToken()) {
+                                                        //Añadir metodo de notificaciones.
+                                                    }
+                                                    break;
+                                                case "grupo":
+                                                    Grupo gru = ds.getValue(Grupo.class);
+                                                    for (String token : gru.getToken()) {
+                                                        //Añadir metodo de notificaciones.
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 ArrayList listado = (ArrayList) ((HashMap) keyChat).get("historcoMensajes");
                                 HashMap mapa = null;
                                 for (Object o : listado) {
@@ -1477,19 +1556,63 @@ public class BDBAA extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     KeyChat keyChat = data.getValue(KeyChat.class);
                     if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[0]) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[1])) {
                         lista.add(keyChat);
-                        System.out.println("AK-47------------------------------------>" + bd.child(data.getKey()));
+                        System.out.println("AK-47<ratatatatatatatatatatatatatatatatatata>" + bd.child(data.getKey()));
                         //BDBAA.escuchaChat(bd.getParent(), keyChat.getKey());
                     }
                 }
 
-                AdaptadorContactos adaptadorContactos = new AdaptadorContactos(view.getContext(), lista);
+                final AdaptadorContactos adaptadorContactos = new AdaptadorContactos(view.getContext(), lista);
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
                 recyclerView.setAdapter(adaptadorContactos);
+                recyclerView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        BDBAA.eliminarContacto(v, (KeyChat) lista.get(recyclerView.getChildLayoutPosition(v)));
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void eliminarContacto(final View view, final KeyChat keyChat) {
+
+        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
+        bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                        case "musico":
+                            Musico mus = ds.getValue(Musico.class);
+                            for (String key : mus.getKeyChat()) {
+                                if (mus.getKeyChat().equals(keyChat.getKey().split("-")[0])) {
+                                    mus.getKeyChat().remove(key);
+                                }
+                            }
+                            bd.child(ds.getKey()).setValue(mus);
+                            break;
+                        case "grupo":
+                            Grupo gru = ds.getValue(Grupo.class);
+                            for (String key : gru.getKeyChat()) {
+                                if (gru.getKeyChat().equals(keyChat.getKey().split("-")[0])) {
+                                    gru.getKeyChat().remove(key);
+                                }
+                            }
+                            bd.child(ds.getKey()).setValue(gru);
+                            break;
+                    }
+
+                }
             }
 
             @Override
@@ -1533,7 +1656,7 @@ public class BDBAA extends AppCompatActivity {
 
 
     // Metodo para recuperar las redes sociales al inicio del Fragmento(opcion 0) ó
-    // para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
+// para lanzar la URL de la red social en el navegador cuando se pulsa la Imagen de la red Social
     public static void recuperarURLredSocial(final String tipo, final int pos, final int opcion, final EditText facebook, final EditText youtube, final EditText instagram, String uid) {
 
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
@@ -1827,7 +1950,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public static void accesoFotoNombrePerfilMensajes(final int op, final int pos, final ImageView vista, final TextView nombre, final Context context, String KEYCHAT, final com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout) {
+    public static void accesoFotoNombrePerfilMensajes(final int op, final int pos, final ImageView vista, final TextView nombre, final Context context, String KEYCHAT, final LinearLayout bubbleLinearLayout) {
         // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
@@ -1905,17 +2028,13 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void cargarbubble(int op, com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout) {
-        //   BubbleDrawable.Builder bubble = null;
+    public static void cargarbubble(int op, LinearLayout bubbleLinearLayout) {
+
         switch (op) {
             case 0:
-//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200))
-//                        .arrowPosition(0);
                 bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200));
                 break;
             case 1:
-//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200))
-//                        .arrowPosition(-1);
                 bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200));
 
                 break;
@@ -2058,9 +2177,9 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
-    //////////////////////////////////
-    ////       PERSISTENCIA      /////
-    //////////////////////////////////
+//////////////////////////////////
+////       PERSISTENCIA      /////
+//////////////////////////////////
 
     public static void persistirDatos() {
         try {

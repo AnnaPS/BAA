@@ -16,22 +16,37 @@ public class Musico {
     private String localidad="Sin especificar";
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
+    private ArrayList <String> token=new ArrayList<String>();
     private ArrayList<String> redsocial=new ArrayList<String>(){{
         add("youtube");
         add("facebook");
         add("instagram");
     }};
+    public Musico() {
+    }
 
-    private String token;
-    private ArrayList <String> keyChat=new ArrayList<>();
 
-    public String getToken() {
+
+    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+        this.uid=uid;
+        this.imagen = imagen;
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.estilo = estilo;
+        this.instrumento = instrumento;
+        this.descripcion = descripcion;
+    }
+
+    public ArrayList<String> getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(ArrayList<String> token) {
         this.token = token;
     }
+
+    private ArrayList <String> keyChat=new ArrayList<>();
+
     public ArrayList<String> getKeyChat() {
         return keyChat;
     }
@@ -40,17 +55,7 @@ public class Musico {
         this.keyChat = keyChat;
     }
 
-    public Musico(String token,String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
 
-        this.imagen = imagen;
-        this.sexo = sexo;
-        this.estilo = estilo;
-        this.instrumento = instrumento;
-        this.descripcion = descripcion;
-        this.provincia = provincia;
-        this.localidad = localidad;
-        this.buscando = buscando;
-    }
 
     public String getBuscando() {
         return buscando;
@@ -68,21 +73,6 @@ public class Musico {
         this.buscando = buscando;
     }
 
-    public Musico() {
-    }
-
-
-
-    public Musico(String token,String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
-        this.token=token;
-        this.uid=uid;
-        this.imagen = imagen;
-        this.nombre = nombre;
-        this.sexo = sexo;
-        this.estilo = estilo;
-        this.instrumento = instrumento;
-        this.descripcion = descripcion;
-    }
 
 
     public String getImagen() {
