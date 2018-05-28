@@ -13,7 +13,7 @@ public class Grupo {
     private String provincia = "Sin especificar";
     private String localidad = "Sin especificar";
     private String buscando = "no";
-    private ArrayList<String> token;
+    private ArrayList<String> token=new ArrayList<String>();
     private ArrayList<String> keyChat = new ArrayList<>();
 
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();

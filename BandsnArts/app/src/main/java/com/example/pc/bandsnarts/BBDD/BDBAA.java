@@ -1946,7 +1946,7 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
-    public static void accesoFotoNombrePerfilMensajes(final int op, final int pos, final ImageView vista, final TextView nombre, final Context context, String KEYCHAT, final com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout) {
+    public static void accesoFotoNombrePerfilMensajes(final int op, final int pos, final ImageView vista, final TextView nombre, final Context context, String KEYCHAT, final LinearLayout bubbleLinearLayout) {
         // Nos posicionamos en el nodo segun el tipo
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
@@ -2024,17 +2024,13 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void cargarbubble(int op, com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout) {
-        //   BubbleDrawable.Builder bubble = null;
+    public static void cargarbubble(int op, LinearLayout bubbleLinearLayout) {
+
         switch (op) {
             case 0:
-//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200))
-//                        .arrowPosition(0);
                 bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200));
                 break;
             case 1:
-//                bubble = new BubbleDrawable.Builder().bubbleColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200))
-//                        .arrowPosition(-1);
                 bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200));
 
                 break;

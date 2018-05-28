@@ -16,7 +16,7 @@ public class Musico {
     private String localidad="Sin especificar";
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
-    private ArrayList <String> token;
+    private ArrayList <String> token=new ArrayList<String>();
     private ArrayList<String> redsocial=new ArrayList<String>(){{
         add("youtube");
         add("facebook");
