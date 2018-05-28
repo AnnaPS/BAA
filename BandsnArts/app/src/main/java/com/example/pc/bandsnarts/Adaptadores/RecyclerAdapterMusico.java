@@ -34,6 +34,7 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -77,6 +78,9 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
 
         BandsnArts.UID_MUSICO.add(musicoItem.getUid());
 
+
+        System.out.println("------------->NOMBRE" + musicoItem.getNombre());
+        System.out.println("*******************************************");
         System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(position));
         nom.setText(musicoItem.getNombre());
         ins.setText(musicoItem.getInstrumento().get(0));

@@ -805,7 +805,7 @@ public class BDBAA extends AppCompatActivity {
                                 ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
                             }
 
-                            //Instrumentos
+                            // Instrumentos
                             // Instumento Principal
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
                             ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil1)).setSelection(posicion);
@@ -1692,11 +1692,15 @@ public class BDBAA extends AppCompatActivity {
 
                 switch (tipo) {
                     case ("musico"):
+                        // Limpiamos el Arrreglo de UID para la carga del listado filtrado
+                        BandsnArts.UID_MUSICO.clear();
                         RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(VentanaInicialApp.a.getApplicationContext(), listado);
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setAdapter(adapterM);
                         break;
                     case ("grupo"):
+                        // Limpiamos el Arrreglo de UID para la carga del listado filtrado
+                        BandsnArts.UID_GRUPO.clear();
                         RecyclerAdapterGrupo adapterG = new RecyclerAdapterGrupo(VentanaInicialApp.a.getApplicationContext(), listado);
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setAdapter(adapterG);
