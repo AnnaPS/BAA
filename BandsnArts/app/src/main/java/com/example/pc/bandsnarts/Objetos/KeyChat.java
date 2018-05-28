@@ -7,6 +7,7 @@ public class KeyChat {
     private String img;
     private String key;
     private ArrayList<Mensajes2> historcoMensajes = new ArrayList<>();
+    private String tipo;
 
     public KeyChat() {
     }
@@ -15,6 +16,14 @@ public class KeyChat {
         this.nombre = nombre;
         this.key = key;
         this.img = img;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getImg() {
