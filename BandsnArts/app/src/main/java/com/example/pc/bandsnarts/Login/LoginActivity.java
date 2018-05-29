@@ -90,6 +90,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     AnimationDrawable animationDrawable;
 
+    View vista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         recordarLogin = findViewById(R.id.chkRecordarVLogin);
 
+        vista =  findViewById(R.id.MAIN);
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -207,10 +210,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             edtPass.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .getString("pass", ""));
             recordarLogin.setChecked(true);
-            Toast.makeText(ventanaPrincipal, "DATOS GUARDADOS DE EMAIL", Toast.LENGTH_SHORT).show();
         }
 
+        BDBAA.compruebaConexion(vista);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BDBAA.compruebaConexion(vista);
     }
 
     public void visualizarBotones(int vis) {
@@ -289,9 +298,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 edtUser.setText("");
                 edtPass.setText("");
             }
-
         }
-
     }
 
 
@@ -471,13 +478,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void onClickRecuperarLogin(View view) {
         // Sacar alertDialog para que el usuario meta el email
-        LayoutInflater inflador = estaVentana.getLayoutInflater();
+        LayoutInflater inflador = LoginActivity.this.getLayoutInflater();
         final View vistainflada = inflador.inflate(R.layout.alertdialogrecuperarpass, null);
         final EditText cajaemail = vistainflada.findViewById(R.id.edtCorreoAlertRecuperarPass);
 
-        final AlertDialog ad = new AlertDialog.Builder(estaVentana).create();
+        final AlertDialog ad = new AlertDialog.Builder(LoginActivity.this).create();
         ad.setView(vistainflada);
         ad.setCancelable(false);
+
+        ad.setView(vistainflada,50,50,50,50);
         ad.setTitle("Recuperación Contraseña");
         ad.setMessage("Introduce el correo registrado en Bands n`Arts");
         ad.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
@@ -492,15 +501,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 String emailAddress = cajaemail.getText().toString().trim();
-
                 auth.sendPasswordResetEmail(emailAddress)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("EMAIL", "Email sent.");
+                                    Toast.makeText(LoginActivity.this, "Correo de recuperación enviado", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(ventanaPrincipal, "email no valido", Toast.LENGTH_SHORT).show();
+                                    Log.d("EMAIL", "email no valido");
+                                    Toast.makeText(LoginActivity.this, "e-mail no valido", Toast.LENGTH_SHORT).show();
+                                    ad.show();
+                                    cajaemail.setError("Correo no válido.");
                                 }
                             }
                         });

@@ -2,7 +2,6 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -21,22 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
-
-import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Contactos.FragmentContactos;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
-import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
-import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -63,6 +54,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public static Activity a;
     public static FragmentManager fragment;
     public NavigationView navigationView;
+
+    public View vista;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +89,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
-        View vista = navigationView.getHeaderView(0);
+        vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
+
+
 
 
         // Inicializamos el FireBaseAuth y su escuchador
@@ -127,6 +124,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
 
 
+        BDBAA.compruebaConexion(vista);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BDBAA.compruebaConexion(vista);
     }
 
     @SuppressLint("NewApi")
@@ -140,14 +144,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
-
         } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2||id==R.id.mensajesMenuDrawer2) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
             navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
-
         }
     }
 

@@ -14,6 +14,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -808,7 +810,7 @@ public class BDBAA extends AppCompatActivity {
                                 ((Switch) vista.findViewById(R.id.swBuscando)).setChecked(false);
                             }
 
-                            //Instrumentos
+                            // Instrumentos
                             // Instumento Principal
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.instrumentos), musico.getInstrumento().get(0));
                             ((Spinner) vista.findViewById(R.id.spInstrumentoVVerMiPerfil1)).setSelection(posicion);
@@ -1516,8 +1518,6 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     //Recuperar conversación
@@ -1824,11 +1824,15 @@ public class BDBAA extends AppCompatActivity {
 
                 switch (tipo) {
                     case ("musico"):
+                        // Limpiamos el Arrreglo de UID para la carga del listado filtrado
+                        BandsnArts.UID_MUSICO.clear();
                         RecyclerAdapterMusico adapterM = new RecyclerAdapterMusico(VentanaInicialApp.a.getApplicationContext(), listado);
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerMusicos)).setAdapter(adapterM);
                         break;
                     case ("grupo"):
+                        // Limpiamos el Arrreglo de UID para la carga del listado filtrado
+                        BandsnArts.UID_GRUPO.clear();
                         RecyclerAdapterGrupo adapterG = new RecyclerAdapterGrupo(VentanaInicialApp.a.getApplicationContext(), listado);
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setLayoutManager(new LinearLayoutManager(VentanaInicialApp.a));
                         ((RecyclerView) VentanaInicialApp.a.findViewById(R.id.recyclerGrupos)).setAdapter(adapterG);
@@ -2198,5 +2202,43 @@ public class BDBAA extends AppCompatActivity {
         }
     }
 
+
+    public static void compruebaConexion(final View view) {
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    System.out.println("connected");
+                } else {
+                    System.out.println("not connected");
+                    // make snackbar
+                    try {
+                        Snackbar mSnackbar = Snackbar.make(view, "NO TIENES CONEXION", Snackbar.LENGTH_LONG);
+                        // get snackbar view
+                        View mView = mSnackbar.getView();
+                        // get textview inside snackbar view
+                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+                        // set text to center
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        else
+                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+                        // show the snackbar
+                        mSnackbar.show();
+                    }catch (IllegalArgumentException e){
+                        System.out.println("----------------------------------------- errorrrrrrrrrrrrr");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        });
+    }
 
 }

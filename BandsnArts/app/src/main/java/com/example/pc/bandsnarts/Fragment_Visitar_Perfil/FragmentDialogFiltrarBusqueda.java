@@ -128,7 +128,6 @@ public class FragmentDialogFiltrarBusqueda extends DialogFragment {
                             break;
 
                     }
-
                     dismiss();
                 }
             }
