@@ -2205,18 +2205,23 @@ public class BDBAA extends AppCompatActivity {
                 } else {
                     System.out.println("not connected");
                     // make snackbar
-                    Snackbar mSnackbar = Snackbar.make(view, "NO TIENES CONEXION", Snackbar.LENGTH_LONG);
-                    // get snackbar view
-                    View mView = mSnackbar.getView();
-                    // get textview inside snackbar view
-                    TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
-                    // set text to center
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                        mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    else
-                        mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-                    // show the snackbar
-                    mSnackbar.show();
+                    try {
+                        Snackbar mSnackbar = Snackbar.make(view, "NO TIENES CONEXION", Snackbar.LENGTH_LONG);
+                        // get snackbar view
+                        View mView = mSnackbar.getView();
+                        // get textview inside snackbar view
+                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+                        // set text to center
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        else
+                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+                        // show the snackbar
+                        mSnackbar.show();
+                    }catch (IllegalArgumentException e){
+                        System.out.println("----------------------------------------- errorrrrrrrrrrrrr");
+                    }
+
                 }
             }
 
