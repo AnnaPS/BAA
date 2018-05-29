@@ -10,7 +10,7 @@ public class Musico {
     private String nombre;
     private String sexo;
     private String estilo;
-    private ArrayList<String> instrumento;
+    private ArrayList<String> instrumento=new ArrayList<>();
     private String descripcion;
     private String provincia="Sin especificar";
     private String localidad="Sin especificar";

@@ -21,6 +21,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -1263,7 +1264,6 @@ public class BDBAA extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     KeyChat chat = data.getValue(KeyChat.class);
                     chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("h:mm a").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                    //BDBAA.recuperarMensajes(view,KEYCHAT,recyclerView);
                     bd.child(data.getKey()).setValue(chat);
                 }
             }
@@ -1297,7 +1297,8 @@ public class BDBAA extends AppCompatActivity {
                                     nombre = musico.getNombre();
                                     img = musico.getImagen();
                                     keyP1 = musico.getUid();
-                                    musico.getKeyChat().add(keyP1 + "-" + uid);
+                                    BandsnArts.KEYCHAT = keyP1 + "-" + uid;
+                                    musico.getKeyChat().add(BandsnArts.KEYCHAT);
                                     bd.child(data.getKey()).setValue(musico);
                                 } else {
                                     for (String key : musico.getKeyChat()) {
@@ -1327,7 +1328,8 @@ public class BDBAA extends AppCompatActivity {
                                     nombre = grupo.getNombre();
                                     img = grupo.getImagen();
                                     keyP1 = grupo.getUid();
-                                    grupo.getKeyChat().add(keyP1 + "-" + uid);
+                                    BandsnArts.KEYCHAT = keyP1 + "-" + uid;
+                                    grupo.getKeyChat().add(BandsnArts.KEYCHAT);
                                     bd.child(data.getKey()).setValue(grupo);
                                 } else {
                                     for (String key : grupo.getKeyChat()) {
@@ -1354,13 +1356,12 @@ public class BDBAA extends AppCompatActivity {
                     }
                     if (!encontrado) {
                         BandsnArts.KEYCHAT = keyP1 + "-" + uid;
-
                         Query q = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).orderByChild("uid").equalTo(uid);
                         q.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                    switch (tipo) {
+                                    switch (PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")) {
                                         case "musico":
                                             Musico musico = data.getValue(Musico.class);
                                             musico.getKeyChat().add(BandsnArts.KEYCHAT);
@@ -1374,7 +1375,6 @@ public class BDBAA extends AppCompatActivity {
                                             nombre = nombre + "-" + grupo.getNombre();
                                             img = img + "-" + grupo.getImagen();
                                             FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
-
                                             break;
                                     }
                                 }
@@ -1389,27 +1389,42 @@ public class BDBAA extends AppCompatActivity {
                             }
                         });
                     } else {
-                        BandsnArts.KEYCHAT = keyP1 + "-" + uid;
+                        System.out.println(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", ""));
                         Query q = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).orderByChild("uid").equalTo(uid);
                         q.addListenerForSingleValueEvent(new ValueEventListener() {
+                            boolean encontrado;
+
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                    switch (tipo) {
+                                    switch (PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")) {
                                         case "musico":
                                             Musico musico = data.getValue(Musico.class);
-                                            musico.getKeyChat().add(BandsnArts.KEYCHAT);
-                                            nombre = nombre + "-" + musico.getNombre();
-                                            img = img + "-" + musico.getImagen();
-                                            FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
+                                            for (String key : musico.getKeyChat()) {
+                                                if (BandsnArts.KEYCHAT.equals(key)) {
+                                                    encontrado = true;
+                                                }
+                                            }
+                                            if (!encontrado) {
+                                                musico.getKeyChat().add(BandsnArts.KEYCHAT);
+                                                nombre = nombre + "-" + musico.getNombre();
+                                                img = img + "-" + musico.getImagen();
+                                                FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
+                                            }
                                             break;
                                         case "grupo":
                                             Grupo grupo = data.getValue(Grupo.class);
-                                            grupo.getKeyChat().add(BandsnArts.KEYCHAT);
-                                            nombre = nombre + "-" + grupo.getNombre();
-                                            img = img + "-" + grupo.getImagen();
-                                            FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
-
+                                            for (String key : grupo.getKeyChat()) {
+                                                if (BandsnArts.KEYCHAT.equals(key)) {
+                                                    encontrado = true;
+                                                }
+                                            }
+                                            if (!encontrado) {
+                                                grupo.getKeyChat().add(BandsnArts.KEYCHAT);
+                                                nombre = nombre + "-" + grupo.getNombre();
+                                                img = img + "-" + grupo.getImagen();
+                                                FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
+                                            }
                                             break;
                                     }
                                 }
@@ -1440,8 +1455,6 @@ public class BDBAA extends AppCompatActivity {
     }
 
     /**
-     * AQUI ES LO DEL METODO DE LAS NOTIFICACIONES
-     *
      * @param databaseReference
      * @param key
      */
@@ -1453,10 +1466,6 @@ public class BDBAA extends AppCompatActivity {
         }
 
         BandsnArts.bdbaa = databaseReference.addChildEventListener(new ChildEventListener() {
-            DatabaseReference bd;
-            Query q;
-            String tipo;
-
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -1473,41 +1482,6 @@ public class BDBAA extends AppCompatActivity {
                             String chat = (String) ((HashMap) keyChat).get("key");
                             System.out.println(key + "  <-->   " + chat);
                             if (key.equals(chat)) {
-                                bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
-                                if (chat.split("-")[0].equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    q = bd.orderByChild("uid").equalTo(chat.split("-")[1]);
-                                    tipo = (String) ((HashMap) keyChat).get("tipo").toString().split("-")[1];
-                                } else {
-                                    q = bd.orderByChild("uid").equalTo(chat.split("-")[0]);
-                                    tipo = (String) ((HashMap) keyChat).get("tipo").toString().split("-")[0];
-                                }
-                                q.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            switch (tipo) {
-                                                case "musico":
-                                                    Musico mus = ds.getValue(Musico.class);
-                                                    for (String token : mus.getToken()) {
-                                                        //Añadir metodo de notificaciones.
-                                                    }
-                                                    break;
-                                                case "grupo":
-                                                    Grupo gru = ds.getValue(Grupo.class);
-                                                    for (String token : gru.getToken()) {
-                                                        //Añadir metodo de notificaciones.
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
                                 ArrayList listado = (ArrayList) ((HashMap) keyChat).get("historcoMensajes");
                                 HashMap mapa = null;
                                 for (Object o : listado) {
@@ -1547,34 +1521,63 @@ public class BDBAA extends AppCompatActivity {
     }
 
     //Recuperar conversación
-    public static void recuperarConversaciones(final View view, final RecyclerView recyclerView) {
+    public static void recuperarConversaciones(final View view) {
+        BandsnArts.alContactos.clear();
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key");
         q.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList lista = new ArrayList();
+
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    KeyChat keyChat = data.getValue(KeyChat.class);
+                    final KeyChat keyChat = data.getValue(KeyChat.class);
+
                     if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[0]) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[1])) {
-                        lista.add(keyChat);
+                        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
+                        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        q.addListenerForSingleValueEvent(new ValueEventListener() {
+                            ArrayList<String> listaS = new ArrayList<>();
+
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                                        case "musico":
+                                            Musico mus = ds.getValue(Musico.class);
+                                            listaS = mus.getKeyChat();
+                                            break;
+                                        case "grupo":
+                                            Grupo gru = ds.getValue(Grupo.class);
+                                            listaS = gru.getKeyChat();
+                                            break;
+                                    }
+                                    for (String key : listaS) {
+                                        if (keyChat.getKey().equals(key)) {
+                                            BandsnArts.alContactos.add(keyChat);
+                                            BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                         System.out.println("AK-47<ratatatatatatatatatatatatatatatatatata>" + bd.child(data.getKey()));
                         //BDBAA.escuchaChat(bd.getParent(), keyChat.getKey());
                     }
                 }
 
-                final AdaptadorContactos adaptadorContactos = new AdaptadorContactos(view.getContext(), lista);
-                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                recyclerView.setAdapter(adaptadorContactos);
-                recyclerView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        BDBAA.eliminarContacto(v, (KeyChat) lista.get(recyclerView.getChildLayoutPosition(v)));
-                        return true;
-                    }
-                });
+                BandsnArts.adaptadorContactos = new AdaptadorContactos(view.getContext(), BandsnArts.alContactos);
+                BandsnArts.rvContactos.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+
             }
 
             @Override
@@ -1590,28 +1593,33 @@ public class BDBAA extends AppCompatActivity {
         bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
-                        case "musico":
-                            Musico mus = ds.getValue(Musico.class);
-                            for (String key : mus.getKeyChat()) {
-                                if (mus.getKeyChat().equals(keyChat.getKey().split("-")[0])) {
-                                    mus.getKeyChat().remove(key);
+                try {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                            case "musico":
+                                Musico mus = ds.getValue(Musico.class);
+                                for (String key : mus.getKeyChat()) {
+                                    System.out.println(keyChat.getKey());
+                                    System.out.println(key);
+                                    if (key.equals(keyChat.getKey())) {
+                                        mus.getKeyChat().remove(key);
+                                    }
                                 }
-                            }
-                            bd.child(ds.getKey()).setValue(mus);
-                            break;
-                        case "grupo":
-                            Grupo gru = ds.getValue(Grupo.class);
-                            for (String key : gru.getKeyChat()) {
-                                if (gru.getKeyChat().equals(keyChat.getKey().split("-")[0])) {
-                                    gru.getKeyChat().remove(key);
+                                bd.child(ds.getKey()).setValue(mus);
+                                break;
+                            case "grupo":
+                                Grupo gru = ds.getValue(Grupo.class);
+                                for (String key : gru.getKeyChat()) {
+                                    if (key.equals(keyChat.getKey())) {
+                                        gru.getKeyChat().remove(key);
+                                    }
                                 }
-                            }
-                            bd.child(ds.getKey()).setValue(gru);
-                            break;
-                    }
+                                bd.child(ds.getKey()).setValue(gru);
+                                break;
+                        }
 
+                    }
+                } catch (ConcurrentModificationException ex) {
                 }
             }
 
@@ -1620,6 +1628,7 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+
     }
 
     public static void recuperarMensajes(final View view, final String KEYCHAT, final RecyclerView recyclerView) {

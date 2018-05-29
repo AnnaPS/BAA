@@ -35,7 +35,7 @@ public class FragmentContactos extends Fragment {
 
     private CircleImageView fotoPerfil;
     private TextView nombre;
-    private RecyclerView rvContactos;
+
     private AdaptadorContactos adaptadorContactos;
     private CardView cardContactos;
 
@@ -47,18 +47,18 @@ public class FragmentContactos extends Fragment {
         //finds
         fotoPerfil = vista.findViewById(R.id.imgPerfilVContactos);
         nombre = vista.findViewById(R.id.txtNombreVContactos);
-        rvContactos = vista.findViewById(R.id.recyclerVContactos);
+        BandsnArts.rvContactos = vista.findViewById(R.id.recyclerVContactos);
         cardContactos=vista.findViewById(R.id.cardContactos);
-        BDBAA.recuperarConversaciones(vista,rvContactos);
+        BDBAA.recuperarConversaciones(vista);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvContactos.setLayoutManager(linearLayoutManager);
-        rvContactos.setAdapter(adaptadorContactos);
+        BandsnArts.rvContactos.setLayoutManager(linearLayoutManager);
+        BandsnArts.rvContactos.setAdapter(adaptadorContactos);
         return vista;
     }
 
     //metodo que mueve la pantalla al utlimo item insertado
     private void setScrollBar() {
-        rvContactos.scrollToPosition(adaptadorContactos.getItemCount() - 1);
+        BandsnArts.rvContactos.scrollToPosition(adaptadorContactos.getItemCount() - 1);
     }
 
 

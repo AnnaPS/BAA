@@ -35,6 +35,7 @@ public class AdaptadorContactos extends RecyclerView.Adapter<HolderContactos> {
     @Override
     public HolderContactos onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista = LayoutInflater.from(contexto).inflate(R.layout.item_contactos, parent, false);
+
         return new HolderContactos(vista);
     }
 

@@ -31,9 +31,25 @@ public class HolderContactos extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BandsnArts.KEYCHAT= KEYCHAT;
+                BandsnArts.KEYCHAT = KEYCHAT;
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
+
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                try {
+                    BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
+                    BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
+                    BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
+                } catch (IndexOutOfBoundsException ex) {
+                    BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
+                    BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
+                    BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
+                }
+                return true;
             }
         });
     }

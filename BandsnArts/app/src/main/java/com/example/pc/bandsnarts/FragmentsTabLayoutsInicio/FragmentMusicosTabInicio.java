@@ -44,7 +44,7 @@ public class FragmentMusicosTabInicio extends Fragment {
     public void onResume() {
         super.onResume();
         listaMusicos = new ArrayList<>();
-        BDBAA.cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(), "musico");
+       // BDBAA.cargarDatos(listaMusicos, recyclerViewMusicos, getActivity(), "musico");
     }
 
     @Nullable

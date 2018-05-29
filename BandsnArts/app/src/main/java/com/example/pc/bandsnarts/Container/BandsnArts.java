@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
@@ -30,9 +31,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.AdaptadorContactos;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
+import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
@@ -86,7 +89,9 @@ public class BandsnArts extends Application implements Runnable {
     public static String imgChat;
     public static ArrayList<String> UID_MUSICO = new ArrayList<>();
     public static ArrayList<String> UID_GRUPO = new ArrayList<>();
-
+    public static ArrayList<KeyChat> alContactos = new ArrayList();
+    public static AdaptadorContactos adaptadorContactos;
+    public  static RecyclerView rvContactos;
     // Variable control posicion Tab
     public static int posicionTab;
     //escucha
