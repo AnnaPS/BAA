@@ -90,6 +90,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     AnimationDrawable animationDrawable;
 
+    View vista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         recordarLogin = findViewById(R.id.chkRecordarVLogin);
 
+        vista =  findViewById(R.id.MAIN);
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -209,7 +212,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             recordarLogin.setChecked(true);
         }
 
+        BDBAA.compruebaConexion(vista);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BDBAA.compruebaConexion(vista);
     }
 
     public void visualizarBotones(int vis) {
