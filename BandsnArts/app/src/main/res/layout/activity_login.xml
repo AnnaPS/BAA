@@ -151,11 +151,10 @@
             android:layout_width="190dp"
             android:layout_height="20dp"
             android:layout_gravity="right"
-
             android:background="#00000000"
             android:fontFamily="sans-serif"
+            android:text="¿Olvidáste la contraseña?"
             android:onClick="onClickRecuperarLogin"
-            android:text="¿Olvisaste la contraseña?"
             android:textColor="@color/md_white_1000"
             android:textSize="12dp"
             android:textStyle="bold|italic" />
