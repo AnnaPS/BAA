@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.R;
 
 public class FragmentInicio extends Fragment {
@@ -41,6 +42,8 @@ public class FragmentInicio extends Fragment {
         viewPager.getCurrentItem();
 
         tabLayout.setupWithViewPager(viewPager);
+
+        BDBAA.compruebaConexion(vista);
 
         return vista;
     }

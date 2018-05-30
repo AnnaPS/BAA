@@ -1,5 +1,7 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -39,16 +41,27 @@ public class HolderContactos extends RecyclerView.ViewHolder {
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                try {
-                    BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
-                    BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
-                    BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
-                } catch (IndexOutOfBoundsException ex) {
-                    BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
-                    BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
-                    BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
-                }
+            public boolean onLongClick(final View v) {
+
+                AlertDialog.Builder alerta = new AlertDialog.Builder(v.getContext());
+                alerta.setTitle("Borrar contacto");
+                alerta.setMessage("¿Está seguro de querer borrar el contacto?");
+                alerta.setNegativeButton("CANCELAR",null );
+                alerta.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
+                            BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v)));
+                            BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
+                        } catch (IndexOutOfBoundsException ex) {
+                            BDBAA.eliminarContacto(v, BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
+                            BandsnArts.alContactos.remove(BandsnArts.alContactos.get(BandsnArts.rvContactos.getChildLayoutPosition(v) - 1));
+                            BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
+                        }
+                    }
+                });
+               alerta.show();
                 return true;
             }
         });

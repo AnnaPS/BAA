@@ -90,6 +90,8 @@ public class BandsnArts extends Application implements Runnable {
     public static ArrayList<String> UID_MUSICO = new ArrayList<>();
     public static ArrayList<String> UID_GRUPO = new ArrayList<>();
     public static ArrayList<KeyChat> alContactos = new ArrayList();
+    public static ArrayList<String> alContactosAUX = new ArrayList();
+
     public static AdaptadorContactos adaptadorContactos;
     public  static RecyclerView rvContactos;
     // Variable control posicion Tab

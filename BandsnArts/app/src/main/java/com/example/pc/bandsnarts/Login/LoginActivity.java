@@ -464,11 +464,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    /* public void onclick(View view) {
-        startActivity(new Intent(this, VentanaInicialApp.class));
-    }*/
-
-
     @Override
     public void onBackPressed() {
         FirebaseAuth.getInstance().signOut();

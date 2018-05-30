@@ -1520,64 +1520,58 @@ public class BDBAA extends AppCompatActivity {
         });
     }
 
+
     //Recuperar conversación
     public static void recuperarConversaciones(final View view) {
         BandsnArts.alContactos.clear();
-        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
-        Query q = bd.orderByChild("key");
+
+
+        DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                        case "musico":
+                            Musico mus = ds.getValue(Musico.class);
+                            BandsnArts.alContactosAUX = mus.getKeyChat();
+                            break;
+                        case "grupo":
+                            Grupo gru = ds.getValue(Grupo.class);
+                            BandsnArts.alContactosAUX = gru.getKeyChat();
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        bd = FirebaseDatabase.getInstance().getReference("keychat");
+        q = bd.orderByChild("key");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     final KeyChat keyChat = data.getValue(KeyChat.class);
-
-                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[0]) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(keyChat.getKey().split("-")[1])) {
-                        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
-                        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        q.addListenerForSingleValueEvent(new ValueEventListener() {
-                            ArrayList<String> listaS = new ArrayList<>();
-
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
-                                        case "musico":
-                                            Musico mus = ds.getValue(Musico.class);
-                                            listaS = mus.getKeyChat();
-                                            break;
-                                        case "grupo":
-                                            Grupo gru = ds.getValue(Grupo.class);
-                                            listaS = gru.getKeyChat();
-                                            break;
-                                    }
-                                    for (String key : listaS) {
-                                        if (keyChat.getKey().equals(key)) {
-                                            BandsnArts.alContactos.add(keyChat);
-                                            BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
-                                        }
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-                        System.out.println("AK-47<ratatatatatatatatatatatatatatatatatata>" + bd.child(data.getKey()));
-                        //BDBAA.escuchaChat(bd.getParent(), keyChat.getKey());
+                    for (String key : BandsnArts.alContactosAUX) {
+                        if (key.equals(keyChat.getKey())) {
+                            BandsnArts.alContactos.add(keyChat);
+                            break;
+                        }
                     }
                 }
 
                 BandsnArts.adaptadorContactos = new AdaptadorContactos(view.getContext(), BandsnArts.alContactos);
                 BandsnArts.rvContactos.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-
+                BandsnArts.rvContactos.setAdapter(BandsnArts.adaptadorContactos);
             }
 
             @Override
@@ -1590,27 +1584,36 @@ public class BDBAA extends AppCompatActivity {
     public static void eliminarContacto(final View view, final KeyChat keyChat) {
 
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
-        bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            boolean putamierda;
+            Musico mus;
+            Grupo gru;
+            String clave;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
                             case "musico":
-                                Musico mus = ds.getValue(Musico.class);
+                                mus = ds.getValue(Musico.class);
                                 for (String key : mus.getKeyChat()) {
                                     System.out.println(keyChat.getKey());
                                     System.out.println(key);
-                                    if (key.equals(keyChat.getKey())) {
+                                    putamierda = keyChat.getKey().equals(key);
+                                    if (putamierda) {
+                                        clave = ds.getKey();
                                         mus.getKeyChat().remove(key);
                                     }
                                 }
                                 bd.child(ds.getKey()).setValue(mus);
                                 break;
                             case "grupo":
-                                Grupo gru = ds.getValue(Grupo.class);
+                                gru = ds.getValue(Grupo.class);
                                 for (String key : gru.getKeyChat()) {
                                     if (key.equals(keyChat.getKey())) {
+                                        clave = ds.getKey();
                                         gru.getKeyChat().remove(key);
                                     }
                                 }
@@ -1620,6 +1623,14 @@ public class BDBAA extends AppCompatActivity {
 
                     }
                 } catch (ConcurrentModificationException ex) {
+                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                        case ("musico"):
+                            bd.child(clave).setValue(mus);
+                            break;
+                        case ("grupo"):
+                            bd.child(clave).setValue(gru);
+                            break;
+                    }
                 }
             }
 
@@ -2227,7 +2238,7 @@ public class BDBAA extends AppCompatActivity {
                             mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
                         // show the snackbar
                         mSnackbar.show();
-                    }catch (IllegalArgumentException e){
+                    } catch (IllegalArgumentException e) {
                         System.out.println("----------------------------------------- errorrrrrrrrrrrrr");
                     }
 
