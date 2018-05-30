@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     android:orientation="vertical"
+    android:id="@+id/mensajesChat"
     android:background="@color/md_grey_500">
 
 

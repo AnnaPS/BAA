@@ -26,6 +26,7 @@ import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBu
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
@@ -48,7 +49,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
     private TextView txtNombre;
-    public int id;
+    public static int id;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
@@ -56,7 +57,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public NavigationView navigationView;
 
     public View vista;
-
 
 
     @Override
@@ -92,8 +92,6 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
-
-
 
 
         // Inicializamos el FireBaseAuth y su escuchador
@@ -144,7 +142,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
-        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2||id==R.id.mensajesMenuDrawer2) {
+        } else if (id == R.id.mensajesChat) {
+            // Estando en Perfil, volvemo a Inicio
+            id = R.id.mensajesMenuDrawer2;
+            navigationView.setCheckedItem(id);
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Contactos");
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
             navigationView.setCheckedItem(id);
@@ -176,19 +180,22 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             ////////////////////////
             /////////////////////////
             ///////////////////////
-            switch (FragmentInicio.viewPager.getCurrentItem()){
-                case(0):
+            switch (FragmentInicio.viewPager.getCurrentItem()) {
+                case (0):
                     System.out.println("--------------->MUSICO");
                     alerta = new FragmentDialogFiltrarBusqueda("musico");
                     alerta.show(fm, "AlertaBusquedas");
                     break;
-                case(1):                    System.out.println("--------------->GRUPO");
+                case (1):
+                    System.out.println("--------------->GRUPO");
                     alerta = new FragmentDialogFiltrarBusqueda("grupo");
                     alerta.show(fm, "AlertaBusquedas");
                     break;
-                case(2):                    System.out.println("--------------->SALAS");
+                case (2):
+                    System.out.println("--------------->SALAS");
                     break;
-                case(3):                    System.out.println("--------------->LOCALES");
+                case (3):
+                    System.out.println("--------------->LOCALES");
                     break;
             }
 
@@ -234,7 +241,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             getSupportActionBar().setTitle(item.getTitle());
             Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
-            id=R.id.mensajesMenuDrawer2;
+            id = R.id.mensajesMenuDrawer2;
         }
         BandsnArts.paraHilo = true;
         if (BandsnArts.mediaPlayer != null) {
