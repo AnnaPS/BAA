@@ -2,17 +2,30 @@ package com.example.pc.bandsnarts.Objetos;
 
 public class Mensajes2 {
 
-    private String mensaje,nombre,fotoPerfil,hora;
+    private String mensaje;
+    private String nombre;
+    private String fotoPerfil;
+    private String hora;
+    private String UID;
 
     public Mensajes2() {
 
     }
 
-    public Mensajes2(String mensaje, String nombre, String fotoPerfil,  String hora) {
+    public Mensajes2(String mensaje, String nombre, String fotoPerfil,  String hora,String UID) {
         this.mensaje = mensaje;
         this.nombre = nombre;
         this.fotoPerfil = fotoPerfil;
         this.hora = hora;
+        this.UID=UID;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public String getMensaje() {

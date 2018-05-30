@@ -43,7 +43,7 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
     public void onBindViewHolder(HolderMensajes holder, int position) {
         holder.getHora().setText(listaMensajes.get(position).getHora());
         holder.getMensaje().setText(listaMensajes.get(position).getMensaje());
-        BDBAA.accesoFotoNombrePerfilMensajes(1,position,holder.getFotoMensaje(), holder.getNombre(), VentanaInicialApp.a,BandsnArts.KEYCHAT);
+        BDBAA.accesoFotoNombrePerfilMensajes(1,position,holder.getFotoMensaje(), holder.getNombre(), VentanaInicialApp.a,BandsnArts.KEYCHAT,holder.getBubbleLinearLayout());
     }
 
 

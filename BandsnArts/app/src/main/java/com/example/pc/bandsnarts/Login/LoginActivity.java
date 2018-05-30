@@ -1,7 +1,9 @@
 package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
@@ -65,11 +67,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Activity ventanaPrincipal;
     private EditText edtUser, edtPass;
     private Button btnCancelarAlerta, btnAceptarAlerta;//, btnReg;
-    private CheckBox grupo, musico;
+    private CheckBox grupo, musico, recordarLogin;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
-    //Objeto para conectar con la api de facebook
 
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
@@ -94,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        BDBAA.escuchaChat();
+
         // Persistencia Datos
         BDBAA.persistirDatos();
 
@@ -111,6 +112,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         edtUser = findViewById(R.id.edtUsuarioVLogin);
         edtPass = findViewById(R.id.edtPassVLogin);
         progressBar = findViewById(R.id.progressBarVLogin);
+
+        recordarLogin = findViewById(R.id.chkRecordarVLogin);
 
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
@@ -173,14 +176,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
                 System.out.println("ACCESO CON FACEBOOK CORRECTO");
-
             }
 
             @Override
@@ -192,11 +193,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onError(FacebookException error) {
                 // Algun error como conexion u otros.
-
                 Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         });
         visualizarBotones(View.INVISIBLE);
+
+
+        // Comprobar si recuerda datos de acceso
+        if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getString("email", "").equalsIgnoreCase("")) {
+            edtUser.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString("email", ""));
+            edtPass.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString("pass", ""));
+            recordarLogin.setChecked(true);
+            Toast.makeText(ventanaPrincipal, "DATOS GUARDADOS DE EMAIL", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     public void visualizarBotones(int vis) {
@@ -260,7 +274,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         } else {
-            auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+            if (recordarLogin.isChecked()) {
+                // Guardar en preferencias el correo y la contraseña
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", edtUser.getText().toString()).commit();
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("pass", edtPass.getText().toString()).commit();
+                auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+            } else {
+                // Borramos las preferencias
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", "").commit();
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("pass", "").commit();
+                auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+
+                // Limpiamos los campos
+                edtUser.setText("");
+                edtPass.setText("");
+            }
+
         }
 
     }
@@ -342,7 +371,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
-
         if (result.isSuccess()) {
             autenticarEnFirebase(result.getSignInAccount(), this);
         } else {
@@ -441,4 +469,43 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+    public void onClickRecuperarLogin(View view) {
+        // Sacar alertDialog para que el usuario meta el email
+        LayoutInflater inflador = estaVentana.getLayoutInflater();
+        final View vistainflada = inflador.inflate(R.layout.alertdialogrecuperarpass, null);
+        final EditText cajaemail = vistainflada.findViewById(R.id.edtCorreoAlertRecuperarPass);
+
+        final AlertDialog ad = new AlertDialog.Builder(estaVentana).create();
+        ad.setView(vistainflada);
+        ad.setCancelable(false);
+        ad.setTitle("Recuperación Contraseña");
+        ad.setMessage("Introduce el correo registrado en Bands n`Arts");
+        ad.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ad.setButton(Dialog.BUTTON_POSITIVE, "ACEPTAR", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String emailAddress = cajaemail.getText().toString().trim();
+
+                auth.sendPasswordResetEmail(emailAddress)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("EMAIL", "Email sent.");
+                                } else {
+                                    Toast.makeText(ventanaPrincipal, "email no valido", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        ad.show();
+    }
 }

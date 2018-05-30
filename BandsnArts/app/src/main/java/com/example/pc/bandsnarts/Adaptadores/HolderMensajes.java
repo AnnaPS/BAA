@@ -1,10 +1,12 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.pc.bandsnarts.R;
+import com.github.library.bubbleview.BubbleLinearLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -16,7 +18,7 @@ public class HolderMensajes extends RecyclerView.ViewHolder {
     private TextView nombre, mensaje, hora;
     private CircleImageView fotoMensaje;
     private String KEYCHAT;
-
+    private com.github.library.bubbleview.BubbleLinearLayout bubbleLinearLayout;
 
     public HolderMensajes(View itemView) {
         super(itemView);
@@ -25,7 +27,15 @@ public class HolderMensajes extends RecyclerView.ViewHolder {
         mensaje = itemView.findViewById(R.id.txtMensajeMensajes);
         hora = itemView.findViewById(R.id.txtHoraMensajes);
         fotoMensaje = itemView.findViewById(R.id.imgUsuarioMensajes);
+        bubbleLinearLayout = itemView.findViewById(R.id.bubbleMensaje);
+    }
 
+    public BubbleLinearLayout getBubbleLinearLayout() {
+        return bubbleLinearLayout;
+    }
+
+    public void setBubbleLinearLayout(BubbleLinearLayout bubbleLinearLayout) {
+        this.bubbleLinearLayout = bubbleLinearLayout;
     }
 
     public String getKEYCHAT() {

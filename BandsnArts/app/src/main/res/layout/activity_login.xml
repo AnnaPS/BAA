@@ -154,6 +154,7 @@
             android:background="#00000000"
             android:fontFamily="sans-serif"
             android:text="¿Olvidáste la contraseña?"
+            android:onClick="onClickRecuperarLogin"
             android:textColor="@color/md_white_1000"
             android:textSize="12dp"
             android:textStyle="bold|italic" />

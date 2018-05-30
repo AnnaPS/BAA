@@ -9,6 +9,7 @@
     app:bubbleColor="#0a9783"
     app:arrowLocation="right"
     app:angle="10dp"
+    android:id="@+id/bubbleMensaje"
     >
 
 
