@@ -57,8 +57,8 @@ public class FragmentContactos extends Fragment {
     }
 
     //metodo que mueve la pantalla al utlimo item insertado
-    private void setScrollBar() {
-        BandsnArts.rvContactos.scrollToPosition(adaptadorContactos.getItemCount() - 1);
+    public static void setScrollBar() {
+        BandsnArts.rvContactos.scrollToPosition(BandsnArts.adaptadorContactos.getItemCount() - 1);
     }
 
 

@@ -34,6 +34,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 BandsnArts.KEYCHAT = KEYCHAT;
+                VentanaInicialApp.id = R.id.mensajesChat;
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
 

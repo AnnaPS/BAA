@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Solito en casa, me monto una fiesta no está la mama"
-            android:textColor="@color/md_white_1000" />
+            android:textColor="@color/md_black_1000" />
     </LinearLayout>
 
 

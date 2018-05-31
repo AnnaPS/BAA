@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,10 +82,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         navigationView.setCheckedItem(id);
         //////////////////////////////////////////
 
@@ -232,30 +235,22 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             getSupportActionBar().setTitle(item.getTitle());
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
-
         } else if (id == R.id.inicioMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.mensajesMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
             id = R.id.mensajesMenuDrawer2;
         }
         BandsnArts.paraHilo = true;
         if (BandsnArts.mediaPlayer != null) {
             BandsnArts.mediaPlayer.stop();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-    ///////////////////////////////////////////////////////
-
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario

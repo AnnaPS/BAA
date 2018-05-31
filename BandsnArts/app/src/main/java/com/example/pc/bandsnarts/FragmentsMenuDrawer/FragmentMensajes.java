@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Adaptadores.AdaptadorMensajes;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
@@ -34,7 +35,7 @@ public class FragmentMensajes extends Fragment {
 
     private CircleImageView fotoPerfil;
     private TextView nombre;
-    private RecyclerView rvMensajes;
+
     private EditText edtMensajes;
     private Button btnEnviar;
     public static AdaptadorMensajes adaptadorMensajes;
@@ -46,19 +47,19 @@ public class FragmentMensajes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View vista = inflater.inflate(R.layout.fragment_chat, container, false);
-
+        VentanaInicialApp.id = R.id.mensajesChat;
         //finds
         fotoPerfil = vista.findViewById(R.id.imgPerfilVChat);
         nombre = vista.findViewById(R.id.txtNombreVChat);
-        rvMensajes = vista.findViewById(R.id.recyclerVChat);
+        BandsnArts.rvMensajes = vista.findViewById(R.id.recyclerVChat);
         edtMensajes = vista.findViewById(R.id.edtEscrbirMensajeVChat);
         btnEnviar = vista.findViewById(R.id.btnEnviarMensajeVChat);
 
-        BDBAA.recuperarMensajes(vista, BandsnArts.KEYCHAT, rvMensajes);
+        BDBAA.recuperarMensajes(vista, BandsnArts.KEYCHAT);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvMensajes.setLayoutManager(linearLayoutManager);
-        rvMensajes.setAdapter(adaptadorMensajes);
+        BandsnArts.rvMensajes.setLayoutManager(linearLayoutManager);
+        BandsnArts.rvMensajes.setAdapter(adaptadorMensajes);
 
         //inicializacion de objetos de firebase
 
@@ -69,7 +70,7 @@ public class FragmentMensajes extends Fragment {
             @Override
             public void onClick(View view) {
                 BDBAA.nuevoMensaje(BandsnArts.KEYCHAT,edtMensajes.getText().toString());
-                setScrollBar(rvMensajes);
+                setScrollBar();
                 edtMensajes.setText("");
             }
         });
@@ -79,8 +80,8 @@ public class FragmentMensajes extends Fragment {
     }
 
     //metodo que mueve la pantalla al utlimo item insertado
-  public static void setScrollBar(RecyclerView rvMensajes) {
-        rvMensajes.scrollToPosition(FragmentMensajes.adaptadorMensajes.getItemCount() - 1);
+  public static void setScrollBar() {
+      BandsnArts.rvMensajes.scrollToPosition(FragmentMensajes.adaptadorMensajes.getItemCount() - 1);
     }
 
 

@@ -94,6 +94,7 @@ public class BandsnArts extends Application implements Runnable {
 
     public static AdaptadorContactos adaptadorContactos;
     public  static RecyclerView rvContactos;
+    public  static  RecyclerView rvMensajes;
     // Variable control posicion Tab
     public static int posicionTab;
     //escucha

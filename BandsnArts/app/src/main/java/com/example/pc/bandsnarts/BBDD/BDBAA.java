@@ -50,6 +50,7 @@ import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
+import com.example.pc.bandsnarts.Contactos.FragmentContactos;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
@@ -1265,7 +1266,7 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     KeyChat chat = data.getValue(KeyChat.class);
-                    chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("h:mm a").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("HH:mm").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
                     bd.child(data.getKey()).setValue(chat);
                 }
             }
@@ -1380,8 +1381,27 @@ public class BDBAA extends AppCompatActivity {
                                             break;
                                     }
                                 }
-                                DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
-                                bd.child(bd.push().getKey()).setValue(new KeyChat(img, nombre, (keyP1 + "-" + uid)));
+
+                                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
+                                bd.orderByChild("key").equalTo(BandsnArts.KEYCHAT).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    boolean encontrado = false;
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            encontrado = true;
+                                        }
+                                        if (!encontrado) {
+                                            bd.child(bd.push().getKey()).setValue(new KeyChat(img, nombre, (keyP1 + "-" + uid)));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
 
                             }
 
@@ -1494,6 +1514,7 @@ public class BDBAA extends AppCompatActivity {
                                 System.out.println(hashMapm);
                                 Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
                                 FragmentMensajes.adaptadorMensajes.addMensaje(mens);
+                                FragmentMensajes.setScrollBar();
                                 break;
                             }
                         }
@@ -1642,7 +1663,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void recuperarMensajes(final View view, final String KEYCHAT, final RecyclerView recyclerView) {
+    public static void recuperarMensajes(final View view, final String KEYCHAT) {
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1655,8 +1676,8 @@ public class BDBAA extends AppCompatActivity {
                     lista = data.getValue(KeyChat.class).getHistorcoMensajes();
                 }
                 FragmentMensajes.adaptadorMensajes = new AdaptadorMensajes(view.getContext(), lista);
-                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                recyclerView.setAdapter(FragmentMensajes.adaptadorMensajes);
+                BandsnArts.rvMensajes.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                BandsnArts.rvMensajes.setAdapter(FragmentMensajes.adaptadorMensajes);
                 FragmentMensajes.adaptadorMensajes.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -1664,7 +1685,7 @@ public class BDBAA extends AppCompatActivity {
                         view.setVerticalScrollBarEnabled(true);
                     }
                 });
-                FragmentMensajes.setScrollBar(recyclerView);
+                FragmentMensajes.setScrollBar();
             }
 
             @Override
@@ -2052,14 +2073,12 @@ public class BDBAA extends AppCompatActivity {
 
         switch (op) {
             case 0:
-                bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_200));
+                bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_white_1000));
                 break;
             case 1:
                 bubbleLinearLayout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_teal_200));
-
                 break;
         }
-        // bubbleLinearLayout.setBackgroundDrawable(bubble.rect(new RectF(bubbleLinearLayout.getClipBounds().left, bubbleLinearLayout.getClipBounds().top, bubbleLinearLayout.getClipBounds().right, bubbleLinearLayout.getClipBounds().bottom)).build());
     }
 
     public static void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
