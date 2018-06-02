@@ -10,20 +10,38 @@ public class Grupo {
     private String nombre;
     private String estilo;
     private String descripcion;
-    private String provincia="Sin especificar";
-    private String localidad="Sin especificar";
-    private String buscando="no";
-    private String token;
-    private ArrayList<String> keyChat=new ArrayList<>();
+    private String provincia = "Sin especificar";
+    private String localidad = "Sin especificar";
+    private String buscando = "no";
+    private ArrayList<String> token=new ArrayList<String>();
+    private ArrayList<String> keyChat = new ArrayList<>();
 
-    public String getToken() {
+    private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
+    private ArrayList<String> redsocial = new ArrayList<String>() {{
+        add("youtube");
+        add("facebook");
+        add("instagram");
+    }};
+
+    public Grupo() {
+    }
+
+    public Grupo(String uid, String imagen, String nombre, String estilo, String descripcion) {
+
+        this.uid = uid;
+        this.imagen = imagen;
+        this.nombre = nombre;
+        this.estilo = estilo;
+        this.descripcion = descripcion;
+    }
+
+    public ArrayList<String> getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(ArrayList<String> token) {
         this.token = token;
     }
-
 
     public ArrayList<String> getKeyChat() {
         return keyChat;
@@ -32,17 +50,6 @@ public class Grupo {
     public void setKeyChat(ArrayList<String> keyChat) {
         this.keyChat = keyChat;
     }
-
-    private ArrayList<Anuncio>anuncio=new ArrayList<Anuncio>();
-    private ArrayList<String> redsocial=new ArrayList<String>(){{
-        add("youtube");
-        add("facebook");
-        add("instagram");
-    }};
-
-    public Grupo(){
-    }
-
 
     public void setAnuncios(Anuncio anuncio) {
         this.anuncio.add(anuncio);
@@ -55,6 +62,7 @@ public class Grupo {
     public void setAudio(String audio) {
         this.audio = audio;
     }
+
     public void setAnuncio(ArrayList<Anuncio> anuncio) {
         this.anuncio = anuncio;
     }
@@ -77,7 +85,6 @@ public class Grupo {
     }
 
 
-
     public String getUid() {
         return uid;
     }
@@ -86,15 +93,6 @@ public class Grupo {
         this.uid = uid;
     }
 
-
-    public Grupo(String token,String uid, String imagen, String nombre, String estilo, String descripcion) {
-        this.token=token;
-        this.uid=uid;
-        this.imagen = imagen;
-        this.nombre = nombre;
-        this.estilo = estilo;
-        this.descripcion = descripcion;
-    }
 
     public String getImagen() {
         return imagen;
@@ -147,7 +145,6 @@ public class Grupo {
     public ArrayList<Anuncio> getAnuncio() {
         return anuncio;
     }
-
 
 
 }

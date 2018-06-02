@@ -98,6 +98,8 @@ public class FragmentMultimedia extends Fragment {
     // Variable de control para la carga del Fragmento
     int num;
 
+
+
     @SuppressLint("ValidFragment")
     public FragmentMultimedia(int num) {
         this.num = num;

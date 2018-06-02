@@ -15,7 +15,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
@@ -29,15 +31,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.AdaptadorContactos;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
+import com.example.pc.bandsnarts.Objetos.KeyChat;
+import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.github.library.bubbleview.BubbleDrawable;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -73,13 +87,15 @@ public class BandsnArts extends Application implements Runnable {
     public static String KEYCHAT;
     public static String nomChat;
     public static String imgChat;
-    public static ArrayList <String> UID_MUSICO=new ArrayList<>();
-    public static ArrayList <String> UID_GRUPO=new ArrayList<>();
-
+    public static ArrayList<String> UID_MUSICO = new ArrayList<>();
+    public static ArrayList<String> UID_GRUPO = new ArrayList<>();
+    public static ArrayList<KeyChat> alContactos = new ArrayList();
+    public static AdaptadorContactos adaptadorContactos;
+    public  static RecyclerView rvContactos;
     // Variable control posicion Tab
     public static int posicionTab;
-//escucha
-public static ChildEventListener bdbaa;
+    //escucha
+    public static ChildEventListener bdbaa;
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -355,4 +371,45 @@ public static ChildEventListener bdbaa;
 
     }
 
+    public static void recuperarToken(final String tipo) {
+        FirebaseAuth.getInstance().getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull final Task<GetTokenResult> task) {
+                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            switch (tipo) {
+                                case "musico":
+                                    Musico mus = dataSnapshot.getValue(Musico.class);
+                                    for (String token : mus.getToken()) {
+                                        if (!task.getResult().getToken().equals(token)) {
+                                            mus.getToken().add(token);
+                                            bd.child(ds.getKey()).setValue(mus);
+                                        }
+                                    }
+                                    break;
+                                case "grupo":
+                                    Grupo gru = dataSnapshot.getValue(Grupo.class);
+                                    for (String token : gru.getToken()) {
+                                        if (!task.getResult().getToken().equals(token)) {
+                                            gru.getToken().add(token);
+                                            bd.child(ds.getKey()).setValue(gru);
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+    }
 }

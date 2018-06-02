@@ -174,11 +174,11 @@ public class RegistarMusico extends AppCompatActivity {
                             BDBAA.agregarFackingMaster("musico", RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
                                     edtMailMusico, edtNombreMusico,
                                     "default_musico.jpg",
-                                    edtNombreMusico.getText().toString(),
+                                    BandsnArts.quitarSaltos(edtNombreMusico.getText().toString().trim()),
                                     getResources().getStringArray(R.array.sexo)[posSexo],
                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                     intrumentos,
-                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
+                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString().trim()));
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

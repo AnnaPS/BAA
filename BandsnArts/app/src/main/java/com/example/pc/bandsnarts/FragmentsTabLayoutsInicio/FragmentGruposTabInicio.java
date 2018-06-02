@@ -43,7 +43,7 @@ public class FragmentGruposTabInicio extends Fragment {
     public void onResume() {
         super.onResume();
         listaGrupos=new ArrayList<>();
-        BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
+     //   BDBAA.cargarDatos(listaGrupos, recyclerViewGrupos, getActivity(),"grupo");
 
         System.out.println("----------------------------------->      ONRESUMETABGRUPO");
     }
