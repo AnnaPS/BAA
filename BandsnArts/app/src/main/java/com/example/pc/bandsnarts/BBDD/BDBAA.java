@@ -152,12 +152,12 @@ public class BDBAA extends AppCompatActivity {
                                 switch (tipo) {
                                     case "musico":
                                         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
-                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, sexo, estilo, instrumento, descripcion);
+                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen,BandsnArts.quitarSaltos(nombre).trim(), sexo, estilo, instrumento, descripcion.trim());
                                         bd.child(bd.push().getKey()).setValue(mus);
                                         break;
                                     case "grupo":
                                         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "grupo").commit();
-                                        Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, nombre, estilo, descripcion);
+                                        Grupo gru = new Grupo(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, BandsnArts.quitarSaltos(nombre).trim(), estilo, BandsnArts.quitarSaltos(descripcion).trim());
                                         bd.child(bd.push().getKey()).setValue(gru);
                                         break;
                                 }
@@ -262,9 +262,7 @@ public class BDBAA extends AppCompatActivity {
                     Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "GUARDADO CON EXITO", Toast.LENGTH_SHORT).show();
 
                     RecyclerAdapterAnuncioPropio.adapterAnuncioPropio.notifyDataSetChanged();
-
                 }
-
             }
 
             @Override
