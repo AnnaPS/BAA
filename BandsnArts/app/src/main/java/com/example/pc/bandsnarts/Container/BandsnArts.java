@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -93,8 +95,8 @@ public class BandsnArts extends Application implements Runnable {
     public static ArrayList<String> alContactosAUX = new ArrayList();
 
     public static AdaptadorContactos adaptadorContactos;
-    public  static RecyclerView rvContactos;
-    public  static  RecyclerView rvMensajes;
+    public static RecyclerView rvContactos;
+    public static RecyclerView rvMensajes;
     // Variable control posicion Tab
     public static int posicionTab;
     //escucha
@@ -300,12 +302,17 @@ public class BandsnArts extends Application implements Runnable {
     }
 
     public static void ocultaTeclado(Activity act) {
-        View view = act.getCurrentFocus();
-        view.clearFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            View view = act.getCurrentFocus();
+            view.clearFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (NullPointerException e) {
+
         }
+
     }
 
     public static String quitarSaltos(String cadena) {
@@ -414,5 +421,19 @@ public class BandsnArts extends Application implements Runnable {
 
             }
         });
+    }
+
+    // Para comprobar si hay acceso a internet:
+
+    public static Boolean isOnlineNet() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

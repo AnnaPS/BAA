@@ -14,16 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 
 public class FragmentInicio extends Fragment {
 
     private TabLayout tabLayout;
     public static ViewPager viewPager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

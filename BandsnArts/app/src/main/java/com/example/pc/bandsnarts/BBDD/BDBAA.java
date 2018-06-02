@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -1059,12 +1061,9 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public static void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {
-
 
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("nombre");
@@ -1126,7 +1125,6 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-
     }
 
     public static void actualizarFotoPerfil(final String refFoto, final String tipo) {
@@ -1152,7 +1150,6 @@ public class BDBAA extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -1161,7 +1158,7 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void actualizarCancionPerfil(final String refCancion, final String tipo, final View view) {
-// Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
+        // Nos posicionamos en el nodo tipo que nos venga por paraetro (musico o grupo)
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         // Ordenamos por uid dentro del nodo tipo en le que estabamos
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -1239,10 +1236,7 @@ public class BDBAA extends AppCompatActivity {
                             bd.child(data.getKey()).setValue(grup);
                             break;
                     }
-
                 }
-
-
             }
 
             @Override
@@ -1250,7 +1244,6 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-
     }
 
 
@@ -1560,6 +1553,7 @@ public class BDBAA extends AppCompatActivity {
                             Musico mus = ds.getValue(Musico.class);
                             BandsnArts.alContactosAUX = mus.getKeyChat();
                             break;
+
                         case "grupo":
                             Grupo gru = ds.getValue(Grupo.class);
                             BandsnArts.alContactosAUX = gru.getKeyChat();
@@ -2242,6 +2236,8 @@ public class BDBAA extends AppCompatActivity {
                 if (connected) {
                     System.out.println("connected");
                 } else {
+                    // Además, controlamos que tenga conexion a Internet
+                    if(!BandsnArts.isOnlineNet()){
                     System.out.println("not connected");
                     // make snackbar
                     try {
@@ -2261,7 +2257,7 @@ public class BDBAA extends AppCompatActivity {
                         System.out.println("----------------------------------------- errorrrrrrrrrrrrr");
                     }
 
-                }
+                }}
             }
 
             @Override
@@ -2270,5 +2266,6 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
+
 
 }
