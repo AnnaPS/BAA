@@ -441,7 +441,6 @@ public class BDBAA extends AppCompatActivity {
                 boolean encontrado = false;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     encontrado = true;
-                    Log.d("", "onDataChange: PEPE");
                 }
                 if (encontrado) {
                     // Es musico, lo guardamos en preferencias
@@ -450,7 +449,7 @@ public class BDBAA extends AppCompatActivity {
                     // Es grupo, lo guardamos en preferencias
                     PreferenceManager.getDefaultSharedPreferences(cont).edit().putString("tipo", "grupo").commit();
                 }
-                BandsnArts.recuperarToken(PreferenceManager.getDefaultSharedPreferences(cont).getString("tipo", ""));
+                //BandsnArts.recuperarToken(PreferenceManager.getDefaultSharedPreferences(cont).getString("tipo", ""));
             }
 
             @Override
@@ -1663,7 +1662,7 @@ public class BDBAA extends AppCompatActivity {
         final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
         Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
-            boolean putamierda;
+            boolean bandera;
             Musico mus;
             Grupo gru;
             String clave;
@@ -1678,8 +1677,8 @@ public class BDBAA extends AppCompatActivity {
                                 for (String key : mus.getKeyChat()) {
                                     System.out.println(keyChat.getKey());
                                     System.out.println(key);
-                                    putamierda = keyChat.getKey().equals(key);
-                                    if (putamierda) {
+                                    bandera = keyChat.getKey().equals(key);
+                                    if (bandera) {
                                         clave = ds.getKey();
                                         mus.getKeyChat().remove(key);
                                     }
