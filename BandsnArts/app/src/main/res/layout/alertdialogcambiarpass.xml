@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bordeverde"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAtrasCambiarPass"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/ic_keyboard_backspace_black_24dp"
+                android:backgroundTint="@color/md_light_green_600" />
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAMBIAR CONTRASEÑA"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/md_teal_500"
+            android:textSize="20dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/impContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/edtCambiarPass"
+                android:layout_width="320dp"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:hint="CONTRASEÑA ACTUAL"
+                android:inputType="textPassword"
+                android:textColorHint="@color/md_black_1000"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/impContraseñaNueva"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/edtContraseñaNuevaCambiarPass"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif"
+                    android:hint="CONTRASEÑA NUEVA"
+                    android:inputType="textPassword"
+                    android:textColorHint="@color/md_black_1000"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/impContraseñaNuevaRepetir"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/edtRepetirContraseñaCambiarPass"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif"
+                    android:hint="REPETIR CONTRASEÑA"
+                    android:inputType="textPassword"
+                    android:textColorHint="@color/md_black_1000"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGuardarCambiarContraseña"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:src="@android:drawable/ic_menu_save"
+            app:backgroundTint="@color/md_teal_800"
+            app:fabSize="auto" />
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
