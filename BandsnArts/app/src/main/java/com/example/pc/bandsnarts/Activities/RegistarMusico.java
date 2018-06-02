@@ -174,7 +174,7 @@ public class RegistarMusico extends AppCompatActivity {
                             BDBAA.agregarFackingMaster("musico", RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
                                     edtMailMusico, edtNombreMusico,
                                     "default_musico.jpg",
-                                    BandsnArts.quitarSaltos(edtNombreMusico.getText().toString().trim()),
+                                    edtNombreMusico.getText().toString(),
                                     getResources().getStringArray(R.array.sexo)[posSexo],
                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                     intrumentos,
