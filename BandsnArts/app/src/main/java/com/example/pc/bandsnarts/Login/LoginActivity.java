@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
@@ -117,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         recordarLogin = findViewById(R.id.chkRecordarVLogin);
 
-        vista =  findViewById(R.id.MAIN);
+        vista = findViewById(R.id.MAIN);
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -201,7 +203,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         visualizarBotones(View.INVISIBLE);
 
-
         // Comprobar si recuerda datos de acceso
         if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .getString("email", "").equalsIgnoreCase("")) {
@@ -258,7 +259,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         });
-
     }
 
 
@@ -481,7 +481,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ad.setView(vistainflada);
         ad.setCancelable(false);
 
-        ad.setView(vistainflada,50,50,50,50);
+        ad.setView(vistainflada, 50, 50, 50, 50);
         ad.setTitle("Recuperación Contraseña");
         ad.setMessage("Introduce el correo registrado en Bands n`Arts");
         ad.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {

@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,6 +32,7 @@ import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -125,13 +128,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
 
 
-        BDBAA.compruebaConexion(vista);
+            BDBAA.compruebaConexion(vista);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        BDBAA.compruebaConexion(vista);
+            BDBAA.compruebaConexion(vista);
     }
 
     @SuppressLint("NewApi")
@@ -180,31 +183,31 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             FragmentDialogFiltrarBusqueda alerta = null;
             android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
 
-            ////////////////////////
-            /////////////////////////
-            ///////////////////////
-            switch (FragmentInicio.viewPager.getCurrentItem()) {
-                case (0):
-                    System.out.println("--------------->MUSICO");
-                    alerta = new FragmentDialogFiltrarBusqueda("musico");
-                    alerta.show(fm, "AlertaBusquedas");
-                    break;
-                case (1):
-                    System.out.println("--------------->GRUPO");
-                    alerta = new FragmentDialogFiltrarBusqueda("grupo");
-                    alerta.show(fm, "AlertaBusquedas");
-                    break;
-                case (2):
-                    System.out.println("--------------->SALAS");
-                    break;
-                case (3):
-                    System.out.println("--------------->LOCALES");
-                    break;
+            if (VentanaInicialApp.id == R.id.inicioMenuDrawer2) {
+                switch (FragmentInicio.viewPager.getCurrentItem()) {
+                    case (0):
+                        System.out.println("--------------->MUSICO");
+                        alerta = new FragmentDialogFiltrarBusqueda("musico");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (1):
+                        System.out.println("--------------->GRUPO");
+                        alerta = new FragmentDialogFiltrarBusqueda("grupo");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (2):
+                        System.out.println("--------------->SALAS");
+                        break;
+                    case (3):
+                        System.out.println("--------------->LOCALES");
+                        break;
+                }
+
+                return true;
             }
 
-            return true;
-        }
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -247,7 +250,9 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         if (BandsnArts.mediaPlayer != null) {
             BandsnArts.mediaPlayer.stop();
         }
+        BDBAA.compruebaConexion(vista);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        BandsnArts.ocultaTeclado(VentanaInicialApp.a);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -304,4 +309,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
 
+    public void onclickPrueba(View view) {
+        Toast.makeText(a, "Pruebas", Toast.LENGTH_SHORT).show();
+    }
 }
