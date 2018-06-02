@@ -87,8 +87,13 @@ public class BandsnArts extends Application implements Runnable {
 
     //Keys para busquedas
     public static String KEYCHAT;
+    public static String keyP1;
+    public static String keyP2;
     public static String nomChat;
+    public static String nombre;
     public static String imgChat;
+    public static String img;
+    public static boolean encontrado;
     public static ArrayList<String> UID_MUSICO = new ArrayList<>();
     public static ArrayList<String> UID_GRUPO = new ArrayList<>();
     public static ArrayList<KeyChat> alContactos = new ArrayList();
@@ -101,6 +106,9 @@ public class BandsnArts extends Application implements Runnable {
     public static int posicionTab;
     //escucha
     public static ChildEventListener bdbaa;
+
+
+
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
