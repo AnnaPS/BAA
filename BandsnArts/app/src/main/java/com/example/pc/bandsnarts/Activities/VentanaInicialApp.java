@@ -15,9 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +64,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     public View vista;
 
+    public static Menu menu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +89,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-
         toggle.syncState();
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         navigationView.setCheckedItem(id);
+
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
@@ -128,13 +132,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .build();
 
 
-            BDBAA.compruebaConexion(vista);
+        BDBAA.compruebaConexion(vista);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-            BDBAA.compruebaConexion(vista);
+        BDBAA.compruebaConexion(vista);
     }
 
     @SuppressLint("NewApi")
@@ -154,12 +158,13 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Contactos");
-        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2) {
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2 || id == R.id.visitaperfil) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
             navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+            menu.getItem(0).setVisible(true);
         }
     }
 
@@ -167,6 +172,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.ventana_inicial_app, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -211,14 +217,15 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         return super.onOptionsItemSelected(item);
     }
 
+
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         fragment = getSupportFragmentManager();
-
         id = item.getItemId();
 
+        menu.getItem(0).setVisible(false);
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
@@ -239,6 +246,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
         } else if (id == R.id.inicioMenuDrawer2) {
+            menu.getItem(0).setVisible(true);
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
         } else if (id == R.id.mensajesMenuDrawer2) {
@@ -253,9 +261,11 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         BDBAA.compruebaConexion(vista);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario

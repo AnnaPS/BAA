@@ -154,7 +154,7 @@ public class BDBAA extends AppCompatActivity {
                                 switch (tipo) {
                                     case "musico":
                                         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("tipo", "musico").commit();
-                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen,BandsnArts.quitarSaltos(nombre).trim(), sexo, estilo, instrumento, descripcion.trim());
+                                        Musico mus = new Musico(FirebaseAuth.getInstance().getCurrentUser().getUid(), imagen, BandsnArts.quitarSaltos(nombre).trim(), sexo, estilo, instrumento, descripcion.trim());
                                         bd.child(bd.push().getKey()).setValue(mus);
                                         break;
                                     case "grupo":
@@ -1149,6 +1149,7 @@ public class BDBAA extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -1435,10 +1436,10 @@ public class BDBAA extends AppCompatActivity {
                                         BandsnArts.encontrado = false;
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                             KeyChat keyChat = ds.getValue(KeyChat.class);
-                                               if (BandsnArts.KEYCHAT.equals(keyChat.getKey())) {
-                                                   BandsnArts.encontrado = true;
-                                                   break;
-                                           }
+                                            if (BandsnArts.KEYCHAT.equals(keyChat.getKey())) {
+                                                BandsnArts.encontrado = true;
+                                                break;
+                                            }
                                         }
                                         if (!BandsnArts.encontrado) {
                                             bd.child(bd.push().getKey()).setValue(new KeyChat(BandsnArts.img, BandsnArts.nombre, (BandsnArts.keyP1 + "-" + uid)));
@@ -1778,13 +1779,13 @@ public class BDBAA extends AppCompatActivity {
                             for (String uri : urls) {
                                 switch (uri) {
                                     case ("youtube"):
-                                        youtube.setText(" AÑADE TU YOUTUBE");
+                                        youtube.setText(" AÑADE TU YOUTUBE  --->");
                                         break;
                                     case ("instagram"):
-                                        instagram.setText(" AÑADE TU INSTAGRAM");
+                                        instagram.setText(" AÑADE TU INSTAGRAM  --->");
                                         break;
                                     case ("facebook"):
-                                        facebook.setText(" AÑADE TU FACEBOOK");
+                                        facebook.setText(" AÑADE TU FACEBOOK  --->");
                                         break;
                                 }
                             }
@@ -1982,9 +1983,7 @@ public class BDBAA extends AppCompatActivity {
 
                                     }
                                 });
-
                             }
-
                         });
 
                     } else {
@@ -2135,7 +2134,6 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void accesoFotoPerfilRecycler(final ImageView vista, final Context context, Object o) {
-
         String img;
         StorageReference ref = FirebaseStorage.getInstance().getReference("imagenes");
 
@@ -2156,7 +2154,6 @@ public class BDBAA extends AppCompatActivity {
         } catch (IllegalArgumentException | RuntimeExecutionException ex) {
             System.out.println("Cerro antes de tiempo de carga");
         }
-
     }
 
 
@@ -2287,6 +2284,7 @@ public class BDBAA extends AppCompatActivity {
 
 
     public static void compruebaConexion(final View view) {
+        // Comprobamos la conexion con FireBase
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -2294,9 +2292,8 @@ public class BDBAA extends AppCompatActivity {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
                     System.out.println("connected");
-                } else {
+                } else if (!BandsnArts.isOnlineNet()) {
                     // Además, controlamos que tenga conexion a Internet
-                    if(!BandsnArts.isOnlineNet()){
                     System.out.println("not connected");
                     // make snackbar
                     try {
@@ -2315,8 +2312,7 @@ public class BDBAA extends AppCompatActivity {
                     } catch (IllegalArgumentException e) {
                         System.out.println("----------------------------------------- errorrrrrrrrrrrrr");
                     }
-
-                }}
+                }
             }
 
             @Override
@@ -2325,6 +2321,4 @@ public class BDBAA extends AppCompatActivity {
             }
         });
     }
-
-
 }

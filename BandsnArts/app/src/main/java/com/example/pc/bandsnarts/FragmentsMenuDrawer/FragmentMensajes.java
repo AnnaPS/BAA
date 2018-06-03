@@ -69,9 +69,11 @@ public class FragmentMensajes extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                BDBAA.nuevoMensaje(BandsnArts.KEYCHAT,edtMensajes.getText().toString());
-                setScrollBar();
-                edtMensajes.setText("");
+                if(!edtMensajes.getText().toString().equals("")){
+                    BDBAA.nuevoMensaje(BandsnArts.KEYCHAT,BandsnArts.quitarSaltos(edtMensajes.getText().toString()).trim()) ;
+                    setScrollBar();
+                    edtMensajes.setText("");
+                }
             }
         });
         //para que a la vez que se van agregando items a la lista se vaya bajando la pantalla (parecido a un scroll automatico) se añade lo siguiente
@@ -79,7 +81,7 @@ public class FragmentMensajes extends Fragment {
         return vista;
     }
 
-    //metodo que mueve la pantalla al utlimo item insertado
+    //metodo que mueve la pantalla al ultimo item insertado
   public static void setScrollBar() {
       BandsnArts.rvMensajes.scrollToPosition(FragmentMensajes.adaptadorMensajes.getItemCount() - 1);
     }

@@ -80,12 +80,14 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
                                 //op 0 lanza perfil
                                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_GRUPO.get(position), "grupo", 0)).commit();
                                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
                                 System.out.println("Visitar Perfil");
                                 break;
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
                                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_GRUPO.get(position), "grupo", 1)).commit();
                                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
                                 System.out.println("visitar anuncio");
                                 break;
                             default:
