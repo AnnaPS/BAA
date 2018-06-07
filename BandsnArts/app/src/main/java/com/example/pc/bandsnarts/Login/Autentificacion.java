@@ -116,15 +116,6 @@ public class Autentificacion extends AppCompatActivity {
         // Toast.makeText(this, ""+mAuth.getCurrentUser().getProviderId(), Toast.LENGTH_SHORT).show();
     }
 
-    public boolean compruebaLogueado() {
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth != null) {
-            deslogueo();
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
     public boolean validarEmail(String email) {

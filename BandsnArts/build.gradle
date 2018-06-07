@@ -5,9 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-       /* maven {
+        maven {
             url 'https://maven.fabric.io/public'
-        }*/
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -18,8 +18,8 @@ buildscript {
         classpath 'com.google.gms:google-services:3.2.1'
 
 
-       /* // Implementacion CrsshLylics
-        classpath 'io.fabric.tools:gradle:1.25.1'*/
+        // Implementacion CrsshLylics
+        classpath 'io.fabric.tools:gradle:1.25.1'
     }
 }
 
@@ -29,10 +29,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-/*// Implementacion CrsshLylics
+        // Implementacion CrsshLylics
         maven {
             url 'https://maven.google.com/'
-        }*/
+        }
     }
 }
 
