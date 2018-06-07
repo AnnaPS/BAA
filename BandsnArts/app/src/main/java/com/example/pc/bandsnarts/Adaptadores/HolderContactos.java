@@ -13,6 +13,12 @@ import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -23,6 +29,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
 
     private TextView nombre;
     private CircleImageView fotoMensaje;
+    private CircleImageView imgNot;
     String KEYCHAT;
 
     public HolderContactos(View itemView) {
@@ -30,10 +37,33 @@ public class HolderContactos extends RecyclerView.ViewHolder {
 
         nombre = itemView.findViewById(R.id.txtUsuarioContactos);
         fotoMensaje = itemView.findViewById(R.id.imgUsuarioContactos);
+        imgNot = itemView.findViewById(R.id.imgNot);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BandsnArts.KEYCHAT = KEYCHAT;
+                System.out.println(KEYCHAT);
+                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
+                bd.orderByChild("key").equalTo(KEYCHAT).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            KeyChat chatKey = data.getValue(KeyChat.class);
+                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
+                                chatKey.setNotificaciones("false-" + chatKey.getNotificaciones().split("-")[1]);
+                                bd.child(data.getKey()).setValue(chatKey);
+                            } else {
+                                chatKey.setNotificaciones(chatKey.getNotificaciones().split("-")[0] + "-false");
+                                bd.child(data.getKey()).setValue(chatKey);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 VentanaInicialApp.id = R.id.mensajesChat;
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
@@ -47,7 +77,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
                 AlertDialog.Builder alerta = new AlertDialog.Builder(v.getContext());
                 alerta.setTitle("Borrar contacto");
                 alerta.setMessage("¿Está seguro de querer borrar el contacto?");
-                alerta.setNegativeButton("CANCELAR",null );
+                alerta.setNegativeButton("CANCELAR", null);
                 alerta.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -62,12 +92,19 @@ public class HolderContactos extends RecyclerView.ViewHolder {
                         }
                     }
                 });
-               alerta.show();
+                alerta.show();
                 return true;
             }
         });
     }
 
+    public CircleImageView getImgNot() {
+        return imgNot;
+    }
+
+    public void setImgNot(CircleImageView imgNot) {
+        this.imgNot = imgNot;
+    }
 
     public TextView getNombre() {
         return nombre;

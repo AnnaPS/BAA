@@ -1259,6 +1259,11 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     KeyChat chat = data.getValue(KeyChat.class);
+                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
+                        chat.setNotificaciones(chat.getNotificaciones().split("-")[0] + "-true");
+                    } else {
+                        chat.setNotificaciones("true-" + chat.getNotificaciones().split("-")[1]);
+                    }
                     chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("HH:mm").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
                     bd.child(data.getKey()).setValue(chat);
                 }
@@ -1381,7 +1386,7 @@ public class BDBAA extends AppCompatActivity {
                                         }
                                     }
                                     if (!BandsnArts.encontrado) {
-                                        BDBAA.comprobarChatexistente(uid, pos, "musico", null, grupo, bd, data);
+                                        BDBAA.comprobarChatexistente(uid, pos, "grupo", null, grupo, bd, data);
                                     }
                                 }
                                 break;
@@ -1557,6 +1562,7 @@ public class BDBAA extends AppCompatActivity {
                             String chat = (String) ((HashMap) keyChat).get("key");
                             System.out.println(key + "  <-->   " + chat);
                             if (key.equals(chat)) {
+
                                 ArrayList listado = (ArrayList) ((HashMap) keyChat).get("historcoMensajes");
                                 HashMap mapa = null;
                                 for (Object o : listado) {
@@ -1567,6 +1573,7 @@ public class BDBAA extends AppCompatActivity {
                                 System.out.println(hashMapm);
                                 Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
                                 FragmentMensajes.adaptadorMensajes.addMensaje(mens);
+
                                 FragmentMensajes.setScrollBar();
                                 break;
                             }
@@ -1633,7 +1640,6 @@ public class BDBAA extends AppCompatActivity {
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     final KeyChat keyChat = data.getValue(KeyChat.class);
                     for (String key : BandsnArts.alContactosAUX) {
