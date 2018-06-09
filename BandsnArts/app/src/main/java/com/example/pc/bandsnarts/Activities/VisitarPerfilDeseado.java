@@ -57,7 +57,8 @@ public class VisitarPerfilDeseado extends Fragment
         fbChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("MCHAT");
+                System.out.println("MCHAT==poop");
+                VentanaInicialApp.id = R.id.mensajesChat;
                 BDBAA.comprobarConversacionExistente(tipo, FirebaseAuth.getInstance().getCurrentUser().getUid(), pos, activity);
             }
         });

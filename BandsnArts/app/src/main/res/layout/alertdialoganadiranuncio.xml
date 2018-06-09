@@ -50,6 +50,7 @@
                 android:fontFamily="sans-serif"
                 android:hint="INTRODUCE EL TITULO"
                 android:inputType="textPersonName"
+                android:maxLength="35"
                 android:textColorHint="@color/md_black_1000"
                 android:textSize="12sp"
                 android:textStyle="italic" />
@@ -218,6 +219,7 @@
                 android:hint="DESCRIPCIÓN ANUNCIO"
                 android:inputType="textMultiLine"
                 android:lines="8"
+                android:maxLength="250"
                 android:maxLines="10"
                 android:minLines="6"
                 android:scrollbars="vertical"

@@ -21,8 +21,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgUsuarioMensajes"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/user" />
+            android:layout_height="60dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,7 +52,7 @@
                 android:layout_marginRight="20dp"
                 android:padding="5dp"
                 android:text="12:00"
-                android:textColor="@color/md_white_1000"
+                android:textColor="@color/md_black_1000"
                 android:textStyle="italic" />
 
         </LinearLayout>
@@ -64,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Solito en casa, me monto una fiesta no está la mama"
-            android:textColor="@color/md_white_1000" />
+            android:textColor="@color/md_black_1000" />
     </LinearLayout>
 
 

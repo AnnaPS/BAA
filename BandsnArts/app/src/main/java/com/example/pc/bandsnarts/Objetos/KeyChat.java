@@ -8,6 +8,7 @@ public class KeyChat {
     private String key;
     private ArrayList<Mensajes2> historcoMensajes = new ArrayList<>();
     private String tipo;
+    private String notificaciones="false-false";
 
     public KeyChat() {
     }
@@ -20,6 +21,14 @@ public class KeyChat {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(String notificaciones) {
+        this.notificaciones = notificaciones;
     }
 
     public void setTipo(String tipo) {

@@ -2,6 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +31,10 @@ import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBu
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
+import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -48,7 +55,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
     private TextView txtNombre;
-    public int id;
+    public static int id;
     // Objeto para el usuario de Google
     private GoogleApiClient clienteGoogle;
     public static Activity a;
@@ -57,6 +64,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
 
     public View vista;
 
+    public static Menu menu;
 
 
     @Override
@@ -83,17 +91,17 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(id);
+
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
         vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
-
-
 
 
         // Inicializamos el FireBaseAuth y su escuchador
@@ -144,12 +152,19 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
-        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2||id==R.id.mensajesMenuDrawer2) {
+        } else if (id == R.id.mensajesChat) {
+            // Estando en Perfil, volvemo a Inicio
+            id = R.id.mensajesMenuDrawer2;
+            navigationView.setCheckedItem(id);
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Contactos");
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2 || id == R.id.visitaperfil) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
             navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+            menu.getItem(0).setVisible(true);
         }
     }
 
@@ -157,6 +172,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.ventana_inicial_app, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -173,39 +189,43 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             FragmentDialogFiltrarBusqueda alerta = null;
             android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
 
-            ////////////////////////
-            /////////////////////////
-            ///////////////////////
-            switch (FragmentInicio.viewPager.getCurrentItem()){
-                case(0):
-                    System.out.println("--------------->MUSICO");
-                    alerta = new FragmentDialogFiltrarBusqueda("musico");
-                    alerta.show(fm, "AlertaBusquedas");
-                    break;
-                case(1):                    System.out.println("--------------->GRUPO");
-                    alerta = new FragmentDialogFiltrarBusqueda("grupo");
-                    alerta.show(fm, "AlertaBusquedas");
-                    break;
-                case(2):                    System.out.println("--------------->SALAS");
-                    break;
-                case(3):                    System.out.println("--------------->LOCALES");
-                    break;
+            if (VentanaInicialApp.id == R.id.inicioMenuDrawer2) {
+                switch (FragmentInicio.viewPager.getCurrentItem()) {
+                    case (0):
+                        System.out.println("--------------->MUSICO");
+                        alerta = new FragmentDialogFiltrarBusqueda("musico");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (1):
+                        System.out.println("--------------->GRUPO");
+                        alerta = new FragmentDialogFiltrarBusqueda("grupo");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (2):
+                        System.out.println("--------------->SALAS");
+                        break;
+                    case (3):
+                        System.out.println("--------------->LOCALES");
+                        break;
+                }
+
+                return true;
             }
 
-            return true;
-        }
 
+        }
         return super.onOptionsItemSelected(item);
     }
+
 
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         fragment = getSupportFragmentManager();
-
         id = item.getItemId();
 
+        menu.getItem(0).setVisible(false);
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
@@ -225,29 +245,26 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             getSupportActionBar().setTitle(item.getTitle());
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
-
         } else if (id == R.id.inicioMenuDrawer2) {
+            menu.getItem(0).setVisible(true);
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.mensajesMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
-            id=R.id.mensajesMenuDrawer2;
+            id = R.id.mensajesMenuDrawer2;
         }
         BandsnArts.paraHilo = true;
         if (BandsnArts.mediaPlayer != null) {
             BandsnArts.mediaPlayer.stop();
         }
-
+        BDBAA.compruebaConexion(vista);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-    ///////////////////////////////////////////////////////
 
 
     private void datosUsuario(FirebaseUser usuario) {
@@ -302,4 +319,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
 
+    public void onclickPrueba(View view) {
+        Toast.makeText(a, "Pruebas", Toast.LENGTH_SHORT).show();
+    }
 }

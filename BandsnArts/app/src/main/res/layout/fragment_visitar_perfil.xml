@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/visitaperfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_grey_500">
@@ -127,11 +128,11 @@
                         android:layout_height="90dp"
                         android:layout_margin="10dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/bordedescripcion"
                         android:padding="8dp"
+                        android:textColor="@color/md_white_1000"
+                        android:background="@drawable/bordedescripcion"
                         android:text="RockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRock"
                         android:textAlignment="textStart"
-                        android:textColor="@color/md_white_1000"
                         android:textSize="16dp"
                         android:textStyle="italic" />
                 </LinearLayout>

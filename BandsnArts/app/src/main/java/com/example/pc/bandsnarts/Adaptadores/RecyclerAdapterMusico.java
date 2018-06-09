@@ -109,12 +109,14 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                                 System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(position));
                                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(position), "musico", 0)).commit();
                                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
                                 System.out.println("visitar perfil");
                                 break;
                             case R.id.itemanunciosvisitado:
                                 //op 1 lanza anuncio del perfil
                                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(position), "musico", 1)).commit();
                                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
                                 System.out.println("visitar anuncio");
                                 break;
                             default:

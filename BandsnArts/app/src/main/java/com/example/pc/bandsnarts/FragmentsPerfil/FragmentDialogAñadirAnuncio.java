@@ -109,7 +109,7 @@ public class FragmentDialogAñadirAnuncio extends DialogFragment {
                                     }
                                     BDBAA.agregarEditarAnuncio(posEditar, FirebaseAuth.getInstance().getCurrentUser().getUid(),
                                             PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""),
-                                            titulo.getText().toString(), descripcionAnuncio.getText().toString(),
+                                            titulo.getText().toString(), BandsnArts.quitarSaltos(descripcionAnuncio.getText().toString()).trim() ,
                                             tipoBusqueda,
                                             new SimpleDateFormat("dd/MM/yyyy").format(new Date()),
                                             getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia],

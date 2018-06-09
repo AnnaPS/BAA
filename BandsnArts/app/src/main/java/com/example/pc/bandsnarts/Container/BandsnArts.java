@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -85,17 +87,28 @@ public class BandsnArts extends Application implements Runnable {
 
     //Keys para busquedas
     public static String KEYCHAT;
+    public static String keyP1;
+    public static String keyP2;
     public static String nomChat;
+    public static String nombre;
     public static String imgChat;
+    public static String img;
+    public static boolean encontrado;
     public static ArrayList<String> UID_MUSICO = new ArrayList<>();
     public static ArrayList<String> UID_GRUPO = new ArrayList<>();
     public static ArrayList<KeyChat> alContactos = new ArrayList();
+    public static ArrayList<String> alContactosAUX = new ArrayList();
+
     public static AdaptadorContactos adaptadorContactos;
-    public  static RecyclerView rvContactos;
+    public static RecyclerView rvContactos;
+    public static RecyclerView rvMensajes;
     // Variable control posicion Tab
     public static int posicionTab;
     //escucha
     public static ChildEventListener bdbaa;
+
+
+
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -297,12 +310,17 @@ public class BandsnArts extends Application implements Runnable {
     }
 
     public static void ocultaTeclado(Activity act) {
-        View view = act.getCurrentFocus();
-        view.clearFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            View view = act.getCurrentFocus();
+            view.clearFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (NullPointerException e) {
+
         }
+
     }
 
     public static String quitarSaltos(String cadena) {
@@ -411,5 +429,19 @@ public class BandsnArts extends Application implements Runnable {
 
             }
         });
+    }
+
+    // Para comprobar si hay acceso a internet:
+
+    public static Boolean isOnlineNet() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
