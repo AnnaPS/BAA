@@ -27,28 +27,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
-    <Button
-        android:id="@+id/btnCambiarPassConfiguracion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:text="Cambiar contraseña"
-        android:background="@null"
-        android:textColor="@color/md_white_1000"
-        android:layout_marginTop="110dp"
-        android:layout_marginLeft="10dp"
-        />
-    <Button
-        android:id="@+id/btnDejarDeRecordarPassConfiguracion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:text="DEJAR DE RECORDAR CONTRASEÑA"
-        android:background="@null"
-        android:textColor="@color/md_white_1000"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="10dp"
-        />
+
     <Button
         android:id="@+id/btnEliminarCuentaConfiguracion"
         android:layout_width="wrap_content"
@@ -56,8 +35,8 @@
         android:textSize="14dp"
         android:text="Eliminar cuenta"
         android:background="@null"
-        android:textColor="@color/md_red_600"
-        android:layout_marginTop="200dp"
+        android:textColor="@color/md_red_800"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="10dp"
         />
 </FrameLayout>

@@ -8,8 +8,8 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,8 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/md_black_1000">
+                app:cardBackgroundColor="@color/md_black_1000"
+                app:cardCornerRadius="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/imgPerfilVVisitarPerfil"
@@ -57,9 +57,12 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/md_grey_300">
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="@color/md_grey_300"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -124,11 +127,11 @@
                         android:layout_height="90dp"
                         android:layout_margin="10dp"
                         android:layout_marginLeft="10dp"
-                        android:padding="8dp"
-                        android:textColor="@color/md_white_1000"
                         android:background="@drawable/bordedescripcion"
+                        android:padding="8dp"
                         android:text="RockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRock"
                         android:textAlignment="textStart"
+                        android:textColor="@color/md_white_1000"
                         android:textSize="16dp"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -388,9 +391,12 @@
                 android:id="@+id/cvMultimediaVVisitarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/md_grey_300">
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="@color/md_grey_300"
+                app:cardCornerRadius="8dp">
 
 
                 <TextView
@@ -409,8 +415,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="40dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/md_teal_500">
+                    app:cardBackgroundColor="@color/md_teal_500"
+                    app:cardCornerRadius="8dp">
 
 
                     <SeekBar
@@ -500,18 +506,18 @@
                 android:id="@+id/cvRedesSocialesVVisitarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/md_grey_300">
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="@color/md_grey_300"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="30dp">
+                    android:layout_marginBottom="30dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -530,10 +536,9 @@
                     android:id="@+id/ll_youtubeVVisitarPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp"
                     android:layout_marginTop="30dp"
-                    >
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:id="@+id/im_youtube_VVisitarMiPerfil"
@@ -562,9 +567,9 @@
                     android:id="@+id/ll_facebookVVisitarPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:layout_marginTop="30dp">
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:id="@+id/im_facebook_VVisitarMiPerfil"
@@ -595,8 +600,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/im_instagram_VVisitarMiPerfil"
@@ -621,8 +626,6 @@
                         android:textStyle="italic" />
 
                 </LinearLayout>
-
-
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
