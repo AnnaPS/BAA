@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class Visitar_Anuncios extends Fragment {
     View vista;
     RecyclerView recyclerViewAnuncios;
+    View layout;
 
     String pos;
     String tipo;
@@ -39,6 +40,7 @@ public class Visitar_Anuncios extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_visitar_anuncios, null);
 
+        layout = vista.findViewById(R.id.visitar_anuncios);
         recyclerViewAnuncios = vista.findViewById(R.id.recyclervisitaranuncios);
         recyclerViewAnuncios.setNestedScrollingEnabled(false);
 
@@ -46,7 +48,7 @@ public class Visitar_Anuncios extends Fragment {
         RecyclerView.LayoutManager rcLayoutManager = layoutManager;
         recyclerViewAnuncios.setLayoutManager(rcLayoutManager);
         //Carga de datos en ArrayList BDBAA
-        BDBAA.cargarVisitarAnuncios(tipo, recyclerViewAnuncios, getActivity(),1,pos);
+        BDBAA.cargarVisitarAnuncios(tipo, recyclerViewAnuncios, getActivity(),1,pos,layout);
 
         return vista;
     }
