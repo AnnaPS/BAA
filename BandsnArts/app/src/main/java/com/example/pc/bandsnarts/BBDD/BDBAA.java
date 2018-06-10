@@ -110,8 +110,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.pc.bandsnarts.Container.BandsnArts.encontrado;
 import static com.example.pc.bandsnarts.Container.BandsnArts.keyP1;
 import static com.example.pc.bandsnarts.Container.BandsnArts.keyP2;
+import static com.example.pc.bandsnarts.Container.BandsnArts.nombre;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BDBAA extends AppCompatActivity {
@@ -275,32 +277,44 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void borrarPerfil(final String uid) {
-        final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
-        Query q = bd.orderByChild("uid").equalTo(uid);
-        Log.d("UID", "onDataChange: " + uid);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean encontrado = false;
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    bd.child(data.getKey()).removeValue();
-                    encontrado = true;
-                }
-                if (!encontrado) {
-                    Log.d("Encontrado", "onDataChange: " + encontrado);
+    public static void borrarPerfil(Context context, final String uid, int op) {
+        switch (op) {
+            case 0:
+                final DatabaseReference bda = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(context).getString("tipo", ""));
+                Query qa = bda.orderByChild("uid").equalTo(uid);
+                Log.d("UID", "onDataChange: " + uid);
+                qa.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            bda.child(data.getKey()).removeValue();
+                        }
+                    }
 
-                } else {
-                    Log.d("Encontrado", "onDataChange: " + encontrado);
-                }
-            }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+            case 1:
+                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
+                Query q = bd.orderByChild("uid").equalTo(uid);
+                Log.d("UID", "onDataChange: " + uid);
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            bd.child(data.getKey()).removeValue();
+                        }
+                    }
 
-            }
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
+                    }
+                });
+                break;
+        }
     }
 
     public static void eliminarAnuncio(final String type, String uid, final ArrayList lista) {
@@ -1728,24 +1742,102 @@ public class BDBAA extends AppCompatActivity {
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<Mensajes2> lista = new ArrayList<>();
+            KeyChat keyChat;
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                BDBAA.escuchaChat(bd.getParent(), BandsnArts.KEYCHAT);
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    lista = data.getValue(KeyChat.class).getHistorcoMensajes();
+
+                for (final DataSnapshot datas : dataSnapshot.getChildren()) {
+                    keyChat = datas.getValue(KeyChat.class);
+                    lista = keyChat.getHistorcoMensajes();
+
+                    DatabaseReference bda = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", ""));
+                    Query qa = bda.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    qa.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                                    case "musico":
+                                        Musico mus = data.getValue(Musico.class);
+                                        for (final Mensajes2 men : lista) {
+                                            if (men.getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                if (!men.getNombre().equals(mus.getNombre())) {
+                                                    men.setNombre(mus.getNombre());
+
+                                                }
+                                                if (!men.getFotoPerfil().equals(mus.getImagen())) {
+                                                    men.setFotoPerfil(mus.getImagen());
+
+                                                }
+
+                                                if (keyChat.getKey().split("-")[0].equals(men.getUID())) {
+                                                    keyChat.setNombre(mus.getNombre() + "-" + keyChat.getNombre().split("-")[1]);
+                                                    keyChat.setImg(mus.getImagen() + "-" + keyChat.getImg().split("-")[1]);
+                                                } else {
+                                                    keyChat.setNombre(keyChat.getNombre().split("-")[0] + "-" + mus.getNombre());
+                                                    keyChat.setImg(keyChat.getImg().split("-")[0] + "-" + mus.getImagen());
+                                                }
+                                                keyChat.setHistorcoMensajes(lista);
+                                                bd.child(datas.getKey()).setValue(keyChat);
+
+
+                                            }
+
+                                        }
+                                        break;
+                                    case "grupo":
+
+                                        Grupo gru = data.getValue(Grupo.class);
+                                        for (final Mensajes2 men : lista) {
+                                            if (men.getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                if (!men.getNombre().equals(gru.getNombre())) {
+                                                    men.setNombre(gru.getNombre());
+
+                                                }
+                                                if (!men.getFotoPerfil().equals(gru.getImagen())) {
+                                                    men.setFotoPerfil(gru.getImagen());
+
+                                                }
+
+                                                if (keyChat.getKey().split("-")[0].equals(men.getUID())) {
+                                                    keyChat.setNombre(gru.getNombre() + "-" + keyChat.getNombre().split("-")[1]);
+                                                    keyChat.setImg(gru.getImagen() + "-" + keyChat.getImg().split("-")[1]);
+                                                } else {
+                                                    keyChat.setNombre(keyChat.getNombre().split("-")[0] + "-" + gru.getNombre());
+                                                    keyChat.setImg(keyChat.getImg().split("-")[0] + "-" + gru.getImagen());
+                                                }
+                                                keyChat.setHistorcoMensajes(lista);
+                                                bd.child(datas.getKey()).setValue(keyChat);
+
+                                            }
+
+
+                                        }
+                                        break;
+                                }
+                            }
+
+                            BDBAA.escuchaChat(bd.getParent(), BandsnArts.KEYCHAT);
+                            FragmentMensajes.adaptadorMensajes = new AdaptadorMensajes(view.getContext(), lista);
+                            BandsnArts.rvMensajes.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                            BandsnArts.rvMensajes.setAdapter(FragmentMensajes.adaptadorMensajes);
+                            FragmentMensajes.adaptadorMensajes.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                                @Override
+                                public void onItemRangeInserted(int positionStart, int itemCount) {
+                                    super.onItemRangeInserted(positionStart, itemCount);
+                                    view.setVerticalScrollBarEnabled(true);
+                                }
+                            });
+                            FragmentMensajes.setScrollBar();
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
                 }
-                FragmentMensajes.adaptadorMensajes = new AdaptadorMensajes(view.getContext(), lista);
-                BandsnArts.rvMensajes.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                BandsnArts.rvMensajes.setAdapter(FragmentMensajes.adaptadorMensajes);
-                FragmentMensajes.adaptadorMensajes.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                    @Override
-                    public void onItemRangeInserted(int positionStart, int itemCount) {
-                        super.onItemRangeInserted(positionStart, itemCount);
-                        view.setVerticalScrollBarEnabled(true);
-                    }
-                });
-                FragmentMensajes.setScrollBar();
             }
 
             @Override

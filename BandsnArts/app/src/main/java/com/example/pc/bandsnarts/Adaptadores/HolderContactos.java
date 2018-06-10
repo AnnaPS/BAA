@@ -45,18 +45,25 @@ public class HolderContactos extends RecyclerView.ViewHolder {
                 System.out.println(KEYCHAT);
                 final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
                 bd.orderByChild("key").equalTo(KEYCHAT).addListenerForSingleValueEvent(new ValueEventListener() {
+                    KeyChat chatKey;
+                    String key;
+
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            KeyChat chatKey = data.getValue(KeyChat.class);
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
-                                chatKey.setNotificaciones("false-" + chatKey.getNotificaciones().split("-")[1]);
-                                bd.child(data.getKey()).setValue(chatKey);
-                            } else {
-                                chatKey.setNotificaciones(chatKey.getNotificaciones().split("-")[0] + "-false");
-                                bd.child(data.getKey()).setValue(chatKey);
-                            }
+                            chatKey = data.getValue(KeyChat.class);
+                            key = data.getKey();
                         }
+                        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
+                            chatKey.setNotificaciones("false-" + chatKey.getNotificaciones().split("-")[1]);
+                            bd.child(key).setValue(chatKey);
+                        } else {
+                            chatKey.setNotificaciones(chatKey.getNotificaciones().split("-")[0] + "-false");
+                            bd.child(key).setValue(chatKey);
+                        }
+                        VentanaInicialApp.id = R.id.mensajesChat;
+                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
                     }
 
                     @Override
@@ -64,9 +71,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
 
                     }
                 });
-                VentanaInicialApp.id = R.id.mensajesChat;
-                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
-                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(nombre.getText().toString());
+
 
             }
         });
