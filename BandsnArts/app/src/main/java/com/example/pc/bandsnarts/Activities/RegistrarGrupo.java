@@ -56,7 +56,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                 BandsnArts.ocultaTeclado(RegistrarGrupo.this);
                 return false;
             }
-        }) ;
+        });
 
         spinnerEstilos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -91,8 +91,15 @@ public class RegistrarGrupo extends AppCompatActivity {
                 edtMailGrupo.setError("email no válido");
             } else if (!auth.comprobarPass(edtPassGrupo.getText().toString())) {
                 edtPassGrupo.setError("Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número");
+                edtPassGrupo.setText("");
+                edtRepitePassGrupo.setText("");
+                edtPassGrupo.requestFocus();
             } else if (!edtPassGrupo.getText().toString().equals(edtRepitePassGrupo.getText().toString())) {
-                edtRepitePassGrupo.setError("Las contraseñas no coinciden");
+                edtPassGrupo.setError("Las contraseñas no coinciden");
+                edtPassGrupo.setText("");
+                edtRepitePassGrupo.setText("");
+                edtPassGrupo.requestFocus();
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
             } else {
                 // Correo y password correctas
                 view.setVisibility(View.INVISIBLE);
@@ -119,7 +126,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                                     null,
                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                     null,
-                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()) );
+                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistrarGrupo.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();
@@ -134,7 +141,6 @@ public class RegistrarGrupo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
 
 
         FirebaseAuth.getInstance().signOut();

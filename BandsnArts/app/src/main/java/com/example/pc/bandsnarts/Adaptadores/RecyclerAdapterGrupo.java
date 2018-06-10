@@ -139,6 +139,16 @@ public class RecyclerAdapterGrupo extends RecyclerView.Adapter<RecyclerAdapterGr
             descripcion = itemView.findViewById(R.id.txtDescripcionItemGrupo);
             anuncios = itemView.findViewById(R.id.txtCantidadAnunciosItemGrupo);
             menuButton = itemView.findViewById(R.id.btnMenuGrupos);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_GRUPO.get(getAdapterPosition()), "grupo", 0)).commit();
+                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                    VentanaInicialApp.id = R.id.visitaperfil;
+                    System.out.println("Visitar Perfil");
+                }
+            });
         }
     }
 
