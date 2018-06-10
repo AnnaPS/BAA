@@ -9,8 +9,8 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -58,7 +58,10 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 app:cardBackgroundColor="@color/md_grey_300"
                 app:cardCornerRadius="8dp">
 
@@ -125,11 +128,11 @@
                         android:layout_height="90dp"
                         android:layout_margin="10dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/bordedescripcion"
                         android:padding="8dp"
+                        android:textColor="@color/md_white_1000"
+                        android:background="@drawable/bordedescripcion"
                         android:text="RockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRockRock"
                         android:textAlignment="textStart"
-                        android:textColor="@color/md_white_1000"
                         android:textSize="16dp"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -389,7 +392,10 @@
                 android:id="@+id/cvMultimediaVVisitarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 app:cardBackgroundColor="@color/md_grey_300"
                 app:cardCornerRadius="8dp">
 
@@ -501,10 +507,10 @@
                 android:id="@+id/cvRedesSocialesVVisitarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 app:cardBackgroundColor="@color/md_grey_300"
                 app:cardCornerRadius="8dp">
 
@@ -621,8 +627,6 @@
                         android:textStyle="italic" />
 
                 </LinearLayout>
-
-
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>

@@ -21,21 +21,12 @@ public class FragmentConfiguracion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista =inflater.inflate(R.layout.fragment_fragment_configuracion, container, false);
-        cambiarPass=vista.findViewById(R.id.btnCambiarPassConfiguracion);
-        dejarRecordarPass=vista.findViewById(R.id.btnDejarDeRecordarPassConfiguracion);
+
         eliminarCuenta=vista.findViewById(R.id.btnEliminarCuentaConfiguracion);
 
 
 
-        cambiarPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentDialogCambiarContraseña cambiarPass= new FragmentDialogCambiarContraseña();
-                android.app.FragmentManager fm = getActivity().getFragmentManager();
-                cambiarPass.setCancelable(false);
-                cambiarPass.show(fm, "AlertaDescartar");
-            }
-        });
+
         return vista;
     }
 
