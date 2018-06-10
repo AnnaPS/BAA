@@ -21,4 +21,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_actvity_visitar_perfil">actvity_visitar_perfil</string>
+    <string name="modificar_datos_perfil">Modificar datos perfil</string>
 </resources>

@@ -24,10 +24,14 @@
         android:id="@+id/navVisitarPerfil"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:background="@color/md_grey_300"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/visitar_perfil" />
 
     <android.support.design.widget.FloatingActionButton
@@ -40,7 +44,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_comment_text_multiple_outline_black_18dp"
         android:iconTint="@color/md_white_1000"
-        app:backgroundTint="@color/md_teal_400"
+        app:backgroundTint="@color/md_light_green_600"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/navVisitarPerfil"
         app:layout_constraintEnd_toEndOf="parent"

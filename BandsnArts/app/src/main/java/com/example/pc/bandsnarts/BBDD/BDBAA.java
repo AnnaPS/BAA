@@ -697,6 +697,7 @@ public class BDBAA extends AppCompatActivity {
                             // Recuperamos y cargamos los datos del Musico
                             if (musico.getAudio() == null) {
                                 multimedia.setVisibility(View.GONE);
+
                             }
                             break;
                         case "grupo":
