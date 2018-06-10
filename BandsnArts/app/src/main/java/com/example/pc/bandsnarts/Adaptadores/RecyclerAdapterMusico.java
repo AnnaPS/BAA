@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,8 +46,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterMusico.ViewHolder> {
 
     private Context mContext;
-    private int mExpandedPosition=-1;
+    private int mExpandedPosition = -1;
     private ArrayList<Musico> listaM;
+
 
 
     public RecyclerAdapterMusico(Context context, ArrayList<Musico> listaMusicos) {
@@ -88,8 +90,6 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         desc.setText(musicoItem.getDescripcion());
         anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
         ImageButton btnMenu = holder.menuButton;
-
-
 
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +142,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
+
     }
 
 
@@ -168,6 +169,17 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
             descripcion = itemView.findViewById(R.id.txtDescripcionItemMusico);
             anuncios = itemView.findViewById(R.id.txtCantidadAnunciosItemMusico);
             menuButton = itemView.findViewById(R.id.btnMenuMusicos);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(getAdapterPosition()));
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(getAdapterPosition()), "musico", 0)).commit();
+                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                    VentanaInicialApp.id = R.id.visitaperfil;
+                    System.out.println("visitar perfil");
+                }
+            });
         }
     }
 
