@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -991,7 +992,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo, final int op) {
+    public static void cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo, final int op, View view) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(uid);
         lista.clear();
@@ -1020,6 +1021,8 @@ public class BDBAA extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                 recyclerView.setAdapter(adapter);
                 recyclerView.setNestedScrollingEnabled(false);
+
+
             }
 
             @Override
@@ -1027,9 +1030,13 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+        if(lista.isEmpty()){
+            // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
+            view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon));
+        }
     }
 
-    public static void cargarVisitarAnuncios(final String tipo, final RecyclerView recyclerView, final Activity activity, final int op, final String position) {
+    public static void cargarVisitarAnuncios(final String tipo, final RecyclerView recyclerView, final Activity activity, final int op, final String position, final View view) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(position);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1053,6 +1060,11 @@ public class BDBAA extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                 recyclerView.setAdapter(adapter);
                 recyclerView.setNestedScrollingEnabled(false);
+
+                if(lista.isEmpty()){
+                    // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
+                    view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon));
+                }
             }
 
             @Override
@@ -1060,6 +1072,7 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
+
     }
 
     public static void cargarDatos(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, final String tipo) {
