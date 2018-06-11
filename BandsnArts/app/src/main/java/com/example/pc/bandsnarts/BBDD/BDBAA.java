@@ -318,6 +318,7 @@ public class BDBAA extends AppCompatActivity {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             bd.child(data.getKey()).removeValue();
                         }
+                        Auth.GoogleSignInApi.signOut(VentanaInicialApp.clienteGoogle);
                         VentanaInicialApp.a.setResult(BandsnArts.CODIGO_DE_BORRAR_PERFIL);
                         VentanaInicialApp.a.finish();
                     }
@@ -2106,8 +2107,7 @@ public class BDBAA extends AppCompatActivity {
                                     @Override
                                     public void onCompletion(MediaPlayer mp) {
                                         BandsnArts.mediaPlayer.pause();
-                                        view.setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
-
+                                        FragmentMultimedia.playButton.setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
                                     }
                                 });
                             }
@@ -2372,12 +2372,12 @@ public class BDBAA extends AppCompatActivity {
                                     break;
                             }
                         }
-                        if (BandsnArts.mediaPlayer!=null && BandsnArts.mediaPlayer.isPlaying()) {
+                        if (BandsnArts.mediaPlayer != null && BandsnArts.mediaPlayer.isPlaying()) {
                             BandsnArts.mediaPlayer.stop();
                         }
 
                         BandsnArts.mediaPlayer = null;
-                        if(!VentanaInicialApp.a.isFinishing()){
+                        if (!VentanaInicialApp.a.isFinishing()) {
                             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
                             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                             FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);

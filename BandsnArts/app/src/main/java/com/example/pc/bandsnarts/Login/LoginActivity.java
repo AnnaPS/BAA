@@ -356,7 +356,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         LoginManager.getInstance().logOut();
                         FirebaseAuth.getInstance().getCurrentUser().delete();
                         FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(ventanaPrincipal, "Codigo REDSOCIAL", Toast.LENGTH_LONG).show();
                         break;
                     case BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL:
                         System.out.println("Codigo de reg red social");
@@ -370,7 +369,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     case BandsnArts.CODIGO_DE_BORRAR_PERFIL:
                         FirebaseAuth.getInstance().signOut();
                         LoginManager.getInstance().logOut();
-                        Auth.GoogleSignInApi.signOut(clienteGoogle);
                         break;
                 }
 

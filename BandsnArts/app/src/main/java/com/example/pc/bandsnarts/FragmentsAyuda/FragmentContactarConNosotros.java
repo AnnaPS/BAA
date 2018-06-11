@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.R;
 
 public class FragmentContactarConNosotros extends Fragment {
@@ -25,6 +26,7 @@ public class FragmentContactarConNosotros extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        VentanaInicialApp.id = R.id.FragmentContactarConNosotros;
         vista = inflater.inflate(R.layout.fragment_fragment_contactar_con_nosotros, container, false);
 
         enviarMail = vista.findViewById(R.id.btnEnviarMail);

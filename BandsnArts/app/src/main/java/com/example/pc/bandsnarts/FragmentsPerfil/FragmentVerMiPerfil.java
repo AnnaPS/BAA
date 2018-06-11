@@ -164,12 +164,6 @@ public class FragmentVerMiPerfil extends Fragment {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        if (mayRequestStoragePermission()) {
-            fabFoto.setEnabled(true);
-        } else {
-            fabFoto.setEnabled(false);
-        }
-
 
         spEstilo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.estiloMusical)));
         spSexo.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, getResources().getStringArray(R.array.sexo)));
@@ -213,51 +207,62 @@ public class FragmentVerMiPerfil extends Fragment {
             @Override
             public void onClick(View view) {
                 if (posEstilo != 0) {
-                    switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
-                        case ("musico"):
-                            //Actualizamos los datos del musico
-                            ArrayList<String> instrumentos = new ArrayList<>();
-                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
-                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
-                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
-                            instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
-                            BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
-                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
-                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
-                                    buscando);
-                            break;
-                        case ("grupo"):
-                            //Actualizamos los datos del grupo
-                            BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
-                                    , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
-                                    , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
-                                    buscando);
-                            break;
-                    }
-
-                    miFABGuardarRechazar.close(true);
-                    if (rutaFotoPerfil != null) {
-                        BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                    if (spinnerInstrumentos1.isShown() && posInst1 == 0) {
+                        Toast.makeText(vista.getContext(), "Por favor seleccione almenos un instrumento principal.", Toast.LENGTH_SHORT).show();
                     } else {
-                        BandsnArts.banderaLocalidad = false;
-                        BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, vista.getContext(),FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        if (!BandsnArts.quitarSaltos(txtDescripcion.getText().toString()).isEmpty()) {
+                            switch (PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("tipo", "")) {
+                                case ("musico"):
+                                    //Actualizamos los datos del musico
+                                    ArrayList<String> instrumentos = new ArrayList<>();
+                                    instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst1]);
+                                    instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst2]);
+                                    instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst3]);
+                                    instrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInst4]);
+                                    BDBAA.modificarDatosUsuario("musico", view.getContext(), getResources().getStringArray(R.array.sexo)[posSexo]
+                                            , getResources().getStringArray(R.array.estiloMusical)[posEstilo], instrumentos, BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
+                                            , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                            buscando);
+                                    break;
+                                case ("grupo"):
+                                    //Actualizamos los datos del grupo
+                                    BDBAA.modificarDatosUsuario("grupo", view.getContext(), null
+                                            , getResources().getStringArray(R.array.estiloMusical)[posEstilo], new ArrayList<String>(), BandsnArts.quitarSaltos(txtDescripcion.getText().toString())
+                                            , getResources().getStringArray(R.array.provincias)[BandsnArts.posProvincia], BandsnArts.localidades[BandsnArts.posLocalidad].toString(),
+                                            buscando);
+                                    break;
+                            }
+
+                            miFABGuardarRechazar.close(true);
+                            if (rutaFotoPerfil != null) {
+                                BDBAA.almacenarFotoPerfil(vista, rutaFotoPerfil, progressEditarPerfil);
+                            } else {
+                                BandsnArts.banderaLocalidad = false;
+                                BDBAA.accesoFotoPerfil(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), VentanaInicialApp.fotoPerfil, vista.getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
-                        android.app.FragmentManager fm = getActivity().getFragmentManager();
+                                android.app.FragmentManager fm = getActivity().getFragmentManager();
 
-                        FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this, "Se han guardado los cambios con exito", "");
-                        alerta.setCancelable(false);
-                        miFABGuardarRechazar.close(true);
-                        alerta.show(fm, "AlertaDescartar");
+                                FragmentDialogDescartarCambios alerta = new FragmentDialogDescartarCambios(FragmentVerMiPerfil.this, "Se han guardado los cambios con exito", "");
+                                alerta.setCancelable(false);
+                                miFABGuardarRechazar.close(true);
+                                alerta.show(fm, "AlertaDescartar");
 
+                            }
+                        }else {
+                            Toast.makeText(vista.getContext(), "Por favor, inserte una descripción.", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } else
 
-                } else {
+                {
                     Toast.makeText(vista.getContext(), "Por favor seleccione un estilo.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        descartar.setOnClickListener(new View.OnClickListener() {
+        descartar.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
@@ -282,7 +287,9 @@ public class FragmentVerMiPerfil extends Fragment {
         BandsnArts.loadSpinnerProvincias(spProvincia);
 
         escuchadoresSpinner();
-        if (op == 1) {
+        if (op == 1)
+
+        {
             // En funcion de si el usuario es músico o grupo
             ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
             ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
@@ -535,13 +542,7 @@ public class FragmentVerMiPerfil extends Fragment {
                         }
                     }
                 });
-                ///boton para cambiar foto de perfil
-                fabFoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showOptions();
-                    }
-                });
+
 
                 break;
 
@@ -570,23 +571,24 @@ public class FragmentVerMiPerfil extends Fragment {
                         }
                     }
                 });
-                fabFoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        showOptions();
-
-
-                    }
-                });
 
                 break;
 
         }
+        ///boton para cambiar foto de perfil
+        fabFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mayRequestStoragePermission()) {
+                    showOptions();
+                } else {
+                    showExplanation();
+                }
+            }
+        });
         // FragmentMiPerfil.bottomTools.setVisibility(View.INVISIBLE);
 
         BDBAA.cargarDatosPerfilEditar(vista, tipo, getApplicationContext());
-
 
 
     }
@@ -761,15 +763,13 @@ public class FragmentVerMiPerfil extends Fragment {
                 Toast.makeText(getActivity(), "PERMISOS ACEPTADOS", Toast.LENGTH_SHORT).show();
                 fabFoto.setEnabled(true);
 
-            } else {
-                showExplanation();
             }
         }
     }
 
     //muestra la explicacion de porque se necesitan los permisos
     private void showExplanation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(VentanaInicialApp.a);
         builder.setTitle("Permisos denegados");
         builder.setMessage("Para cambiar la foto necesita aceptar los permisos");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -787,7 +787,7 @@ public class FragmentVerMiPerfil extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                getActivity().finish();
+//                getActivity().finish();
             }
         });
         builder.show();

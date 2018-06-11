@@ -57,7 +57,7 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private TextView txtNombre;
     public static int id;
     // Objeto para el usuario de Google
-    private GoogleApiClient clienteGoogle;
+    public static GoogleApiClient clienteGoogle;
     public static Activity a;
     public static FragmentManager fragment;
     public NavigationView navigationView;
@@ -158,6 +158,10 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
             navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
             ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Contactos");
+        } else if (id == R.id.FragmentCambiarFoto|id == R.id.FragmentCancion|id == R.id.FragmentContactarAyuda|id == R.id.FragmentContactarConNosotros|id == R.id.FragmentFiltrar|id == R.id.FragmentModificarPerfil|id == R.id.FragmentPublicarAnuncio) {
+            id = R.id.ayudaMenuDrawer2;
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentAyuda()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Ayuda");
         } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2 || id == R.id.visitaperfil) {
             // Estando en Perfil, volvemo a Inicio
             id = R.id.inicioMenuDrawer2;
