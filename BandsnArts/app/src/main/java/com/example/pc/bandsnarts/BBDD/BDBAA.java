@@ -281,6 +281,15 @@ public class BDBAA extends AppCompatActivity {
     public static void borrarPerfil(Context context, final String uid, int op) {
         switch (op) {
             case 0:
+
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                StorageReference cancion = storageRef.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
+                        + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".mpeg");
+                BDBAA.eliminarCancion(cancion);
+
+                StorageReference foto = storageRef.child("imagenes/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
+                        + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+                BDBAA.eliminarCancion(foto);
                 final DatabaseReference bda = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(context).getString("tipo", ""));
                 Query qa = bda.orderByChild("uid").equalTo(uid);
                 Log.d("UID", "onDataChange: " + uid);
