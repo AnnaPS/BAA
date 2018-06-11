@@ -36,6 +36,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtContactarConNosotros"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -282,6 +283,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/privacidad"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -314,6 +316,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/valorarExperiencia"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"

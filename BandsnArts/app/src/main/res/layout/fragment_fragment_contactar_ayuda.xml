@@ -159,7 +159,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:inputType="textMultiLine"
-            android:text="6.Pulsa en Contactos." />
+            android:text="6.Pulsa en Mis mensajes." />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -173,13 +173,11 @@
                 android:inputType="textMultiLine"
                 android:text="7.Si la conversación tiene este icono " />
 
-            <ImageView
-                android:layout_width="25dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgNot"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_teal_500"
-                android:src="" />
+                android:src="@color/md_amber_A700" />
 
             <TextView
                 android:layout_width="wrap_content"
