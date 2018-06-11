@@ -40,6 +40,7 @@ public class FragmentConfiguracion extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                        BDBAA.borrarPerfil(v.getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(),0);
+
                     }
                 });
                 alerta.show();

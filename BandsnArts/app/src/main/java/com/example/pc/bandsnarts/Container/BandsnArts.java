@@ -70,6 +70,7 @@ public class BandsnArts extends Application implements Runnable {
     public static final int CODIGO_DE_REGISTRO_RED_SOCIAL = 333;
     public static final int CODIGO_DE_REDSOCIAL = 111;
     public static final int CODIGO_DE_CIERRE = 22;
+    public static final int CODIGO_DE_BORRAR_PERFIL = 666;
 
 
     public static CharSequence[] localidades;

@@ -114,6 +114,7 @@ import java.util.Map;
 import static com.example.pc.bandsnarts.Container.BandsnArts.encontrado;
 import static com.example.pc.bandsnarts.Container.BandsnArts.keyP1;
 import static com.example.pc.bandsnarts.Container.BandsnArts.keyP2;
+import static com.example.pc.bandsnarts.Container.BandsnArts.mediaPlayer;
 import static com.example.pc.bandsnarts.Container.BandsnArts.nombre;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -279,9 +280,9 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void borrarPerfil(Context context, final String uid, int op) {
+
         switch (op) {
             case 0:
-
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                 StorageReference cancion = storageRef.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
                         + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".mpeg");
@@ -305,6 +306,7 @@ public class BDBAA extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
+
                 });
             case 1:
                 final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("uids");
@@ -316,6 +318,8 @@ public class BDBAA extends AppCompatActivity {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             bd.child(data.getKey()).removeValue();
                         }
+                        VentanaInicialApp.a.setResult(BandsnArts.CODIGO_DE_BORRAR_PERFIL);
+                        VentanaInicialApp.a.finish();
                     }
 
                     @Override
@@ -323,7 +327,9 @@ public class BDBAA extends AppCompatActivity {
 
                     }
                 });
+
                 break;
+
         }
     }
 
@@ -1054,7 +1060,7 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-        if(lista.isEmpty()){
+        if (lista.isEmpty()) {
             // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
             view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon));
         }
@@ -1085,7 +1091,7 @@ public class BDBAA extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setNestedScrollingEnabled(false);
 
-                if(lista.isEmpty()){
+                if (lista.isEmpty()) {
                     // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
                     view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon));
                 }
@@ -2338,14 +2344,16 @@ public class BDBAA extends AppCompatActivity {
     }
 
     public static void eliminarCancion(StorageReference cancion) {
-        // Delete the file
+
+        final String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         cancion.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 // File deleted successfully
                 System.out.println("BORRADO CON EXITO!!!!!!!!!!!!");
+
                 final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a).getString("tipo", ""));
-                Query q = bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Query q = bd.orderByChild("uid").equalTo(UID);
 
                 q.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -2364,20 +2372,25 @@ public class BDBAA extends AppCompatActivity {
                                     break;
                             }
                         }
-                        if (BandsnArts.mediaPlayer.isPlaying()) {
+                        if (BandsnArts.mediaPlayer!=null && BandsnArts.mediaPlayer.isPlaying()) {
                             BandsnArts.mediaPlayer.stop();
                         }
 
                         BandsnArts.mediaPlayer = null;
-                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
-                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
-                        FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                        if(!VentanaInicialApp.a.isFinishing()){
+                            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedormiperfil, new FragmentMultimedia(0)).commit();
+                            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+                            FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
+                        }
+
+
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
+
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {

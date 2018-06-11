@@ -367,6 +367,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             gooogle = false;
                         }
                         break;
+                    case BandsnArts.CODIGO_DE_BORRAR_PERFIL:
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        Auth.GoogleSignInApi.signOut(clienteGoogle);
+                        break;
                 }
 
         }
