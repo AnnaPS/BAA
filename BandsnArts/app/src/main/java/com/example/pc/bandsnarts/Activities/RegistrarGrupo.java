@@ -77,7 +77,10 @@ public class RegistrarGrupo extends AppCompatActivity {
         if (edtNombreGrupo.getText().toString().isEmpty()) {
             edtNombreGrupo.setError("Debe Insertar su nombre");
             edtNombreGrupo.requestFocus();
-        } else if (posEstilo == 0) {
+        }else if(edtDescripcion.getText().toString().isEmpty()){
+            edtDescripcion.setError("Debe Insertar una descripción");
+            edtDescripcion.requestFocus();
+        }else if (posEstilo == 0) {
             TextView errorText = (TextView) spinnerEstilos.getSelectedView();
             // errorText.setError("anything here, just to add the icon");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error

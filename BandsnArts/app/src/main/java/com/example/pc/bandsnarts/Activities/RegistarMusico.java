@@ -132,6 +132,9 @@ public class RegistarMusico extends AppCompatActivity {
             edtNombreMusico.setError("Debe Insertar su nombre");
             edtNombreMusico.requestFocus();
 
+        }else if(edtDescripcion.getText().toString().isEmpty()){
+            edtDescripcion.setError("Debe Insertar una descripción");
+            edtDescripcion.requestFocus();
         } else if (posEstilo == 0) {
             TextView errorText = (TextView) spinnerEstilos.getSelectedView();
             errorText.setTextColor(Color.RED);

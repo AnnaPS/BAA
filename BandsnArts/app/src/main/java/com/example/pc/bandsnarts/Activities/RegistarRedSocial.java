@@ -212,6 +212,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
             edtNombre.requestFocus();
 
+        }else if(edtDescripcion.getText().toString().isEmpty()){
+            edtDescripcion.setError("Debe Insertar una descripción");
+            edtDescripcion.requestFocus();
         } else if (posEstilo == 0) {
             // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
             TextView errorText = (TextView) spinnerEstilos.getSelectedView();
