@@ -1616,8 +1616,9 @@ public class BDBAA extends AppCompatActivity {
                                 }
                                 System.out.println(hashMapm);
                                 Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
-                                FragmentMensajes.adaptadorMensajes.addMensaje(mens);
-
+                                if(!FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens.getMensaje())||!FragmentMensajes.adaptadorMensajes.getLastItem().getNombre().equals(mens.getNombre())) {
+                                    FragmentMensajes.adaptadorMensajes.addMensaje(mens);
+                                }
                                 FragmentMensajes.setScrollBar();
                                 break;
                             }

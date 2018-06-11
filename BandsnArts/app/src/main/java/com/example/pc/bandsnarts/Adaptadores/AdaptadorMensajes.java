@@ -32,6 +32,9 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
         //envia una notificacion cuando se inserta un nuevo elemento
         notifyItemInserted(listaMensajes.size());
     }
+    public Mensajes2 getLastItem(){
+        return listaMensajes.get(listaMensajes.size()-1);
+    }
 
     @Override
     public HolderMensajes onCreateViewHolder(ViewGroup parent, int viewType) {
