@@ -36,6 +36,10 @@ public class AdaptadorMensajes extends RecyclerView.Adapter<HolderMensajes> {
         return listaMensajes.get(listaMensajes.size()-1);
     }
 
+    public List<Mensajes2> getListaMensajes() {
+        return listaMensajes;
+    }
+
     @Override
     public HolderMensajes onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista = LayoutInflater.from(contexto).inflate(R.layout.card_view_mensajes, parent, false);

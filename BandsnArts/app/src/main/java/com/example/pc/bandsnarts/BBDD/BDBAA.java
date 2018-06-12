@@ -1294,6 +1294,13 @@ public class BDBAA extends AppCompatActivity {
     //Creación nodos chat
     public static void nuevoMensaje(final String KEYCHAT, final String mens) {
         final DatabaseReference bd;
+        boolean encontrado=false;
+        if (!FragmentMensajes.adaptadorMensajes.getListaMensajes().isEmpty()) {
+            if (FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens)&&FragmentMensajes.adaptadorMensajes.getLastItem().getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                encontrado=true;
+            }
+        }
+        if(!encontrado){
         System.out.println(KEYCHAT);
         bd = FirebaseDatabase.getInstance().getReference("keychat");
         Query q = bd.orderByChild("key").equalTo(KEYCHAT);
@@ -1317,7 +1324,7 @@ public class BDBAA extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });}
     }
 
     //ComprobarChatexistente
@@ -1616,7 +1623,11 @@ public class BDBAA extends AppCompatActivity {
                                 }
                                 System.out.println(hashMapm);
                                 Mensajes2 mens = new Mensajes2(mapa.get("mensaje").toString(), mapa.get("nombre").toString(), mapa.get("fotoPerfil").toString(), mapa.get("hora").toString(), mapa.get("uid").toString());
-                                if(!FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens.getMensaje())||!FragmentMensajes.adaptadorMensajes.getLastItem().getNombre().equals(mens.getNombre())) {
+                                if (!FragmentMensajes.adaptadorMensajes.getListaMensajes().isEmpty()) {
+                                    if (!FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens.getMensaje()) || !FragmentMensajes.adaptadorMensajes.getLastItem().getNombre().equals(mens.getNombre())) {
+                                        FragmentMensajes.adaptadorMensajes.addMensaje(mens);
+                                    }
+                                } else {
                                     FragmentMensajes.adaptadorMensajes.addMensaje(mens);
                                 }
                                 FragmentMensajes.setScrollBar();
