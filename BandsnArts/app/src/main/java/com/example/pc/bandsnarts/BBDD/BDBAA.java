@@ -1063,7 +1063,7 @@ public class BDBAA extends AppCompatActivity {
         });
         if (lista.isEmpty()) {
             // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
-            view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon));
+            view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon2));
         }
     }
 
