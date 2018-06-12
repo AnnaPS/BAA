@@ -1,10 +1,14 @@
 package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.annotation.NonNull;
@@ -54,6 +58,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -64,11 +69,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Activity ventanaPrincipal;
     private EditText edtUser, edtPass;
     private Button btnCancelarAlerta, btnAceptarAlerta;//, btnReg;
-    private CheckBox grupo, musico;
+    private CheckBox grupo, musico, recordarLogin;
     private AlertDialog.Builder alertaBuilder;
     private AlertDialog alerta;
     private LayoutInflater inflador;
-    //Objeto para conectar con la api de facebook
 
     // Objeto para conectar con la API del Cliente Google
     private GoogleApiClient clienteGoogle;
@@ -88,11 +92,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     AnimationDrawable animationDrawable;
 
+    View vista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Persistencia Datos
+        BDBAA.persistirDatos();
 
         //   Forzar CRASHEO
         //   Crashlytics.getInstance().crash(); // Force a crash
@@ -108,6 +117,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         edtPass = findViewById(R.id.edtPassVLogin);
         progressBar = findViewById(R.id.progressBarVLogin);
 
+        recordarLogin = findViewById(R.id.chkRecordarVLogin);
+
+        vista = findViewById(R.id.MAIN);
 
         //Guardamos el objeto para no tener que hacer nuevas instancias.
         auth = new Autentificacion(this);
@@ -143,11 +155,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Este metodo se ejecuta cuando cambia el estado de la autenticacion
                 // Verificamos si estamos autenticados en Firebase
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
-                if (usuario != null ) {
+                if (usuario != null) {
                     visualizarBotones(View.INVISIBLE);
                     System.out.println("Usuario Verificado");
                     if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified() || clienteGoogle.isConnecting()) {
-                         BDBAA.comprobarUID(estaVentana, usuario.getUid());
+                        BDBAA.comprobarUID(estaVentana, usuario.getUid());
                     } else {
                         visualizarBotones(View.VISIBLE);
                     }
@@ -157,7 +169,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         };
-
 
 
         // Inicializamos CallbackManager
@@ -170,14 +181,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 // Cuando el login con Facebook sea exitoso, podemos acceder a los datos del usuario
                 // Le pasamos al metodo el Token del usuario a traves del loginResult
                 manejadorTokenFacebook(loginResult.getAccessToken());
                 //Apartamos este metodo de aqui ya que sino autentica directamente sin pasar por la actividad de registrar los datos
                 // manejadorTokenFacebook(loginResult.getAccessToken());
                 System.out.println("ACCESO CON FACEBOOK CORRECTO");
-
             }
 
             @Override
@@ -189,11 +198,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onError(FacebookException error) {
                 // Algun error como conexion u otros.
-
                 Toast.makeText(estaVentana, "Ocurrió algun error al iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         });
         visualizarBotones(View.INVISIBLE);
+
+        // Comprobar si recuerda datos de acceso
+        if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getString("email", "").equalsIgnoreCase("")) {
+            edtUser.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString("email", ""));
+            edtPass.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString("pass", ""));
+            recordarLogin.setChecked(true);
+        }
+
+        BDBAA.compruebaConexion(vista);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BDBAA.compruebaConexion(vista);
     }
 
     public void visualizarBotones(int vis) {
@@ -226,13 +253,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     visualizarBotones(View.INVISIBLE);
                     System.out.println("Login en Firebase con FaceBook");
-                     BDBAA.comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    BDBAA.comprobarUID(estaVentana, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Log.d("AUTENTICADO", "onComplete: Autenticado con facebook");
 
                 }
             }
         });
-
     }
 
 
@@ -257,9 +283,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
             Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
         } else {
-            auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
-        }
+            if (recordarLogin.isChecked()) {
+                // Guardar en preferencias el correo y la contraseña
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", edtUser.getText().toString()).commit();
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("pass", edtPass.getText().toString()).commit();
+                auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
+            } else {
+                // Borramos las preferencias
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", "").commit();
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("pass", "").commit();
+                auth.loginMailPass(this, edtUser.getText().toString(), edtPass.getText().toString());
 
+                // Limpiamos los campos
+                edtUser.setText("");
+                edtPass.setText("");
+            }
+        }
     }
 
 
@@ -285,13 +324,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (BandsnArts.CODIGO_DE_INICIO):
-                if(gooogle) {
+                if (gooogle) {
                     GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                     compruebaResultado(result);
                     System.out.println("Codigo de inicio" + resultCode);
                 }
                 break;
-            //Este if es para saber que ha rellenado todo lo necesario en el logueo
+            //Este if es para saber que ha rellenado lo necesario en el logueo
             case (BandsnArts.CODIGO_DE_REGISTRO):
                 System.out.println("Codigo de registro");
                 FirebaseAuth.getInstance().signOut();
@@ -305,8 +344,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     case (BandsnArts.CODIGO_DE_DESLOGUEO):
                         System.out.println("Codigo de deslogueo");
                         visualizarBotones(View.VISIBLE);
-                        BandsnArts.posProvincia=0;
-                        BandsnArts.posLocalidad=0;
+                        BandsnArts.posProvincia = 0;
+                        BandsnArts.posLocalidad = 0;
                         // deslogueo correo contraseña
                         // deslogueo google
                         System.out.println("Ha sido deslogueado");
@@ -317,16 +356,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         LoginManager.getInstance().logOut();
                         FirebaseAuth.getInstance().getCurrentUser().delete();
                         FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(ventanaPrincipal, "Codigo REDSOCIAL", Toast.LENGTH_LONG).show();
                         break;
                     case BandsnArts.CODIGO_DE_REGISTRO_RED_SOCIAL:
                         System.out.println("Codigo de reg red social");
                         if (gooogle) {
-                            System.out.println("Codigo de reg red social"+requestCode);
+                            System.out.println("Codigo de reg red social" + requestCode);
                             Intent g = Auth.GoogleSignInApi.getSignInIntent(clienteGoogle);
                             startActivityForResult(g, BandsnArts.CODIGO_DE_INICIO);
                             gooogle = false;
                         }
+                        break;
+                    case BandsnArts.CODIGO_DE_BORRAR_PERFIL:
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
                         break;
                 }
 
@@ -334,12 +376,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         try {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } catch (NullPointerException e) {
-            // Facebbook
+            // Facebook
         }
     }
 
     private void compruebaResultado(GoogleSignInResult result) {
-
         if (result.isSuccess()) {
             autenticarEnFirebase(result.getSignInAccount(), this);
         } else {
@@ -360,7 +401,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(getApplicationContext(), "No se pudo autenticar con Firebase", Toast.LENGTH_SHORT).show();
                 } else {
                     visualizarBotones(View.INVISIBLE);
-                     BDBAA.comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    BDBAA.comprobarUID(context, FirebaseAuth.getInstance().getCurrentUser().getUid());
                 }
             }
         });
@@ -426,21 +467,55 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    /* public void onclick(View view) {
-        startActivity(new Intent(this, VentanaInicialApp.class));
-    }*/
-
-
     @Override
     public void onBackPressed() {
         FirebaseAuth.getInstance().signOut();
         finish();
     }
 
-   /* @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FirebaseAuth.getInstance().signOut();
 
-    }*/
+    public void onClickRecuperarLogin(View view) {
+        // Sacar alertDialog para que el usuario meta el email
+        LayoutInflater inflador = LoginActivity.this.getLayoutInflater();
+        final View vistainflada = inflador.inflate(R.layout.alertdialogrecuperarpass, null);
+        final EditText cajaemail = vistainflada.findViewById(R.id.edtCorreoAlertRecuperarPass);
+
+        final AlertDialog ad = new AlertDialog.Builder(LoginActivity.this).create();
+        ad.setView(vistainflada);
+        ad.setCancelable(false);
+
+        ad.setView(vistainflada, 50, 50, 50, 50);
+        ad.setTitle("Recuperación Contraseña");
+        ad.setMessage("Introduce el correo registrado en Bands n`Arts");
+        ad.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ad.setButton(Dialog.BUTTON_POSITIVE, "ACEPTAR", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String emailAddress = cajaemail.getText().toString().trim();
+                auth.sendPasswordResetEmail(emailAddress)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("EMAIL", "Email sent.");
+                                    Toast.makeText(LoginActivity.this, "Correo de recuperación enviado", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Log.d("EMAIL", "email no valido");
+                                    Toast.makeText(LoginActivity.this, "e-mail no valido", Toast.LENGTH_SHORT).show();
+                                    ad.show();
+                                    cajaemail.setError("Correo no válido.");
+                                }
+                            }
+                        });
+            }
+        });
+        ad.show();
+    }
 }

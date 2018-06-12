@@ -5,7 +5,8 @@
     android:id="@+id/multimedia"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/md_grey_500">
 
     <ImageView
         android:id="@+id/progressBarVMedia"
@@ -34,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="50dp"
+                android:textColor="@color/md_white_1000"
                 android:text="Muestra tu talento con tu mejor canción"
                 android:textAlignment="center"
                 android:textSize="16sp"
@@ -44,7 +46,11 @@
                 android:id="@+id/cvReproductorFragmentMulti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="6dp"
+                app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="@color/md_grey_300">
 
                 <android.support.v7.widget.CardView
@@ -52,8 +58,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                         android:layout_margin="10dp"
-                    android:layout_marginTop="30dp"
-                    app:cardBackgroundColor="@color/md_green_200">
+                        android:layout_marginTop="30dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="@color/md_teal_500">
 
                     <SeekBar
                         android:id="@+id/progresoMusicaVMultimedia"
@@ -148,7 +155,7 @@
                     android:layout_marginTop="195dp"
                     android:background="@android:drawable/ic_menu_delete"
                     android:backgroundTint="@color/md_red_400"
-                    android:enabled="false" />
+                    android:enabled="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -161,11 +168,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="245dp"
-                    android:background="@color/md_teal_800" />
+                    android:background="@color/md_teal_800"
+                    android:layout_marginBottom="10dp"/>
             </android.support.v7.widget.CardView>
 
             <TextView
@@ -173,6 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:textColor="@color/md_white_1000"
                 android:text="¡Comparte tus redes sociales!"
                 android:textSize="16sp"
                 android:textStyle="italic" />
@@ -182,23 +190,27 @@
                 android:id="@+id/cvRedesSocFragmentMulti"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="6dp"
+                app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="@color/md_grey_300">
 
                 <LinearLayout
+                    android:id="@+id/ll_youtube"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/ivYoutubeVMultimedia"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/youtube" />
+
 
                     <EditText
                         android:id="@+id/edtYoutubeVMultimedia"
@@ -206,19 +218,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:enabled="false"
-                        android:text="  PERFIL YOUTUBE"
+                        android:text=" VISITA TU YOUTUBE"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />
 
-                    <Button
-                        android:id="@+id/btnEditarYoutubeVMultimedia"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/ic_border_color_black_24dp"
-                        android:backgroundTint="@color/md_teal_800" />
+                        <Button
+                            android:id="@+id/btnEditarYoutubeVMultimedia"
+                            android:layout_width="33dp"
+                            android:layout_height="33dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/ic_border_color_black_24dp"
+                            android:backgroundTint="@color/md_teal_800" />
 
                 </LinearLayout>
 
@@ -228,12 +241,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/ivFacebookVMultimedia"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="60dp"
                         android:src="@drawable/com_facebook_button_icon_blue" />
-
 
                     <EditText
                         android:id="@+id/edtFacebookVMultimedia"
@@ -241,7 +254,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="60dp"
                         android:enabled="false"
-                        android:text="  PERFIL FACEBOOK"
+                        android:text=" VISITA TU FACEBOOK"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -263,6 +277,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/ivInstagramVMultimedia"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="15dp"
@@ -275,7 +290,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="110dp"
                         android:enabled="false"
-                        android:text="  PERFIL INSTAGRAM"
+                        android:text=" VISITA TU INSTAGRAM"
+                        android:textAlignment="center"
                         android:textColor="@color/md_teal_800"
                         android:textSize="14sp"
                         android:textStyle="italic" />

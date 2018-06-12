@@ -18,10 +18,16 @@
             android:id="@+id/configuracionMenuDrawer2"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuración" />
+
+        <item
+            android:id="@+id/mensajesMenuDrawer2"
+            android:icon="@drawable/ic_comment_text_multiple_outline_black_18dp"
+            android:title="Mis mensajes" />
     </group>
 
     <item android:title="¿Tiene alguna duda?">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/ayudaMenuDrawer2"
                 android:icon="@drawable/ic_help_outline_black_24dp"
@@ -30,6 +36,7 @@
                 android:id="@+id/cerrarMenuDrawer2"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Cerrar sesión" />
+            </group>
         </menu>
     </item>
 

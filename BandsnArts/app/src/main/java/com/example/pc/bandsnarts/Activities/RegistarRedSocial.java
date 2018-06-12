@@ -212,6 +212,9 @@ public class RegistarRedSocial extends AppCompatActivity {
             Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
             edtNombre.requestFocus();
 
+        }else if(edtDescripcion.getText().toString().isEmpty()){
+            edtDescripcion.setError("Debe Insertar una descripción");
+            edtDescripcion.requestFocus();
         } else if (posEstilo == 0) {
             // MODULARIZAR !!!!!!!!!!!!!!!!!!!!!!!!
             TextView errorText = (TextView) spinnerEstilos.getSelectedView();
@@ -268,7 +271,7 @@ public class RegistarRedSocial extends AppCompatActivity {
         switch (tipo) {
             //Es un grupo
             case 1:
-                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo",""),cont
+                BDBAA.agregarFackingMaster("grupo",cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         ,null
                         ,edtNombre
@@ -281,8 +284,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                 break;
             //Es un musico
             case 0:
-
-                BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", "")
+                BDBAA.agregarFackingMaster("musico"
                         , cont
                         , findViewById(R.id.btnRegistrarVRegSocial)
                         , null

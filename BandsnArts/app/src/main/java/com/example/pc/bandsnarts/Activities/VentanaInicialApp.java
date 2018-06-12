@@ -2,7 +2,7 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.content.ClipData;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -13,25 +13,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
-
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Contactos.FragmentContactos;
+import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.FragmentDialogFiltrarBusqueda;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentAyuda;
-import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentCerrarSesion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentInicio;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
+import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -52,31 +55,30 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     private FirebaseAuth.AuthStateListener escuchador;
     public static ImageView fotoPerfil;
     private TextView txtNombre;
-    private int id = R.id.inicioMenuDrawer2;
+    public static int id;
     // Objeto para el usuario de Google
-    private GoogleApiClient clienteGoogle;
+    public static GoogleApiClient clienteGoogle;
     public static Activity a;
-   public static FragmentManager fragment;
+    public static FragmentManager fragment;
+    public NavigationView navigationView;
+
+    public View vista;
+
+    public static Menu menu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventana_inicial_app2);
 
+        id = R.id.inicioMenuDrawer2;
+        fragment = getSupportFragmentManager();
         //LO CREA POR DEFECTO CON EL LAYOUT DE NAVIGATION DRAWER//////
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         a = this;
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-
+        getSupportActionBar().setTitle("Inicio");
         //Se establece como principal el fragment de inicio
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
@@ -89,12 +91,15 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(id);
+
         //////////////////////////////////////////
 
         // Nos traemos la vista del NavigationHeder para poder pintar los datos del usuario.
-        View vista = navigationView.getHeaderView(0);
+        vista = navigationView.getHeaderView(0);
         fotoPerfil = vista.findViewById(R.id.ivFotoPerfilNav);
         txtNombre = vista.findViewById(R.id.txtNombreNavH);
 
@@ -125,6 +130,15 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+
+        BDBAA.compruebaConexion(vista);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BDBAA.compruebaConexion(vista);
     }
 
     @SuppressLint("NewApi")
@@ -138,11 +152,23 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.inicioMenuDrawer2) {
             setResult(BandsnArts.CODIGO_DE_CIERRE);
             finish();
-
-        } else if(id == R.id.perfilMenuDrawer2){
+        } else if (id == R.id.mensajesChat) {
             // Estando en Perfil, volvemo a Inicio
+            id = R.id.mensajesMenuDrawer2;
+            navigationView.setCheckedItem(id);
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Contactos");
+        } else if (id == R.id.FragmentCambiarFoto|id == R.id.FragmentCancion|id == R.id.FragmentContactarAyuda|id == R.id.FragmentContactarConNosotros|id == R.id.FragmentFiltrar|id == R.id.FragmentModificarPerfil|id == R.id.FragmentPublicarAnuncio) {
+            id = R.id.ayudaMenuDrawer2;
+            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentAyuda()).commit();
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Ayuda");
+        } else if (id == R.id.perfilMenuDrawer2 || id == R.id.configuracionMenuDrawer2 || id == R.id.ayudaMenuDrawer2 || id == R.id.mensajesMenuDrawer2 || id == R.id.visitaperfil) {
+            // Estando en Perfil, volvemo a Inicio
+            id = R.id.inicioMenuDrawer2;
+            navigationView.setCheckedItem(id);
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
-            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Inicio");
+            menu.getItem(0).setVisible(true);
         }
     }
 
@@ -150,11 +176,12 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.ventana_inicial_app, menu);
+        this.menu = menu;
         return true;
     }
 
     //METODO PARA EL MENU DEFAULT DE LA DERECHA
-   /* @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -162,63 +189,91 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.action_buscar) {
+            FragmentDialogFiltrarBusqueda alerta = null;
+            android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
 
+            if (VentanaInicialApp.id == R.id.inicioMenuDrawer2) {
+                switch (FragmentInicio.viewPager.getCurrentItem()) {
+                    case (0):
+                        System.out.println("--------------->MUSICO");
+                        alerta = new FragmentDialogFiltrarBusqueda("musico");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (1):
+                        System.out.println("--------------->GRUPO");
+                        alerta = new FragmentDialogFiltrarBusqueda("grupo");
+                        alerta.show(fm, "AlertaBusquedas");
+                        break;
+                    case (2):
+                        System.out.println("--------------->SALAS");
+                        break;
+                    case (3):
+                        System.out.println("--------------->LOCALES");
+                        break;
+                }
+
+                return true;
+            }
+
+
+        }
         return super.onOptionsItemSelected(item);
     }
-*/
+
+
     //METODO PARA CONTROLAR CADA OPCION DEL NAVIGATION DRAWER
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-         fragment = getSupportFragmentManager();
-
+        fragment = getSupportFragmentManager();
         id = item.getItemId();
 
+        menu.getItem(0).setVisible(false);
         if (id == R.id.perfilMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(0)).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show();
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.configuracionMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentConfiguracion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "conf", Toast.LENGTH_SHORT).show();
-
+            id = R.id.configuracionMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.ayudaMenuDrawer2) {
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentAyuda()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
+            id = R.id.ayudaMenuDrawer2;
+            navigationView.setCheckedItem(id);
         } else if (id == R.id.cerrarMenuDrawer2) {
-            fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
+            //fragment.beginTransaction().replace(R.id.contenedor, new FragmentCerrarSesion()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "salir", Toast.LENGTH_SHORT).show();
             // Llamada al metodo de cerrar sesion.
             cerrarSesion();
-
         } else if (id == R.id.inicioMenuDrawer2) {
+            menu.getItem(0).setVisible(true);
             fragment.beginTransaction().replace(R.id.contenedor, new FragmentInicio()).commit();
             getSupportActionBar().setTitle(item.getTitle());
-            Toast.makeText(this, "inicio", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.mensajesMenuDrawer2) {
+            fragment.beginTransaction().replace(R.id.contenedor, new FragmentContactos()).commit();
+            getSupportActionBar().setTitle(item.getTitle());
+            id = R.id.mensajesMenuDrawer2;
         }
-        FragmentMultimedia.paraHilo = true;
-        if(FragmentMultimedia.mediaPlayer!=null) {
-            FragmentMultimedia.mediaPlayer.stop();
+        BandsnArts.paraHilo = true;
+        if (BandsnArts.mediaPlayer != null) {
+            BandsnArts.mediaPlayer.stop();
         }
-
+        BDBAA.compruebaConexion(vista);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        BandsnArts.ocultaTeclado(VentanaInicialApp.a);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
-    ///////////////////////////////////////////////////////
-
-
     private void datosUsuario(FirebaseUser usuario) {
         // Pintamos los datos del usuario
-         BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
+        BDBAA.cargarDrawerPerfil(this, PreferenceManager.getDefaultSharedPreferences(this).getString("tipo", ""), fotoPerfil, txtNombre);
 
         // identUsuGoogle.setText(usuario.getUid());
         // Mostramos por consola la URL de la imagen
@@ -267,4 +322,8 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
         }
     }
 
+
+    public void onclickPrueba(View view) {
+        Toast.makeText(a, "Pruebas", Toast.LENGTH_SHORT).show();
+    }
 }

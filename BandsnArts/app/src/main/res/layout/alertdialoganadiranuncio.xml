@@ -18,7 +18,7 @@
 
             <Button
                 android:id="@+id/btnAtrasAnuncio"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@mipmap/ic_keyboard_backspace_black_24dp"
                 android:backgroundTint="@color/md_light_green_600" />
@@ -50,6 +50,8 @@
                 android:fontFamily="sans-serif"
                 android:hint="INTRODUCE EL TITULO"
                 android:inputType="textPersonName"
+                android:maxLength="35"
+                android:textColorHint="@color/md_black_1000"
                 android:textSize="12sp"
                 android:textStyle="italic" />
 
@@ -143,7 +145,7 @@
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/bordeverde" />
+                android:background="@drawable/bordeverde"/>
 
             <Spinner
                 android:id="@+id/spInstrumentoAnuncio"
@@ -217,6 +219,7 @@
                 android:hint="DESCRIPCIÓN ANUNCIO"
                 android:inputType="textMultiLine"
                 android:lines="8"
+                android:maxLength="250"
                 android:maxLines="10"
                 android:minLines="6"
                 android:scrollbars="vertical"
@@ -232,6 +235,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
         app:backgroundTint="@color/md_teal_800"
         android:src="@android:drawable/ic_menu_save"
         app:fabSize="auto" />

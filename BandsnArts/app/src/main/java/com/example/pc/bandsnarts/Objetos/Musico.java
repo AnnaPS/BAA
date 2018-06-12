@@ -10,30 +10,52 @@ public class Musico {
     private String nombre;
     private String sexo;
     private String estilo;
-    private ArrayList<String> instrumento;
+    private ArrayList<String> instrumento=new ArrayList<>();
     private String descripcion;
-    private String provincia;
-    private String localidad;
+    private String provincia="Sin especificar";
+    private String localidad="Sin especificar";
     private ArrayList<Anuncio> anuncio = new ArrayList<Anuncio>();
     private String buscando="no";
+    private ArrayList <String> token=new ArrayList<String>();
     private ArrayList<String> redsocial=new ArrayList<String>(){{
-        add(null);
-        add(null);
-        add(null);
+        add("youtube");
+        add("facebook");
+        add("instagram");
     }};
+    public Musico() {
+    }
 
 
 
-    public Musico(String imagen, String sexo, String estilo, ArrayList<String> instrumento, String descripcion, String provincia, String localidad, String buscando) {
+    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
+        this.uid=uid;
         this.imagen = imagen;
+        this.nombre = nombre;
         this.sexo = sexo;
         this.estilo = estilo;
         this.instrumento = instrumento;
         this.descripcion = descripcion;
-        this.provincia = provincia;
-        this.localidad = localidad;
-        this.buscando = buscando;
     }
+
+    public ArrayList<String> getToken() {
+        return token;
+    }
+
+    public void setToken(ArrayList<String> token) {
+        this.token = token;
+    }
+
+    private ArrayList <String> keyChat=new ArrayList<>();
+
+    public ArrayList<String> getKeyChat() {
+        return keyChat;
+    }
+
+    public void setKeyChat(ArrayList<String> keyChat) {
+        this.keyChat = keyChat;
+    }
+
+
 
     public String getBuscando() {
         return buscando;
@@ -51,20 +73,6 @@ public class Musico {
         this.buscando = buscando;
     }
 
-    public Musico() {
-    }
-
-
-
-    public Musico(String uid, String imagen, String nombre, String sexo, String estilo, ArrayList<String> instrumento, String descripcion) {
-        this.uid=uid;
-        this.imagen = imagen;
-        this.nombre = nombre;
-        this.sexo = sexo;
-        this.estilo = estilo;
-        this.instrumento = instrumento;
-        this.descripcion = descripcion;
-    }
 
 
     public String getImagen() {
@@ -156,9 +164,6 @@ public class Musico {
         this.redsocial = redsocial;
     }
 
-    public void setRedsociales(String redsocial) {
-        this.redsocial.add(redsocial);
-    }
 
     public ArrayList<String> getRedsocial() {
         return redsocial;

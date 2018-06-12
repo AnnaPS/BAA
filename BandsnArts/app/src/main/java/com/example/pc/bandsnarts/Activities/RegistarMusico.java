@@ -132,19 +132,18 @@ public class RegistarMusico extends AppCompatActivity {
             edtNombreMusico.setError("Debe Insertar su nombre");
             edtNombreMusico.requestFocus();
 
+        }else if(edtDescripcion.getText().toString().isEmpty()){
+            edtDescripcion.setError("Debe Insertar una descripción");
+            edtDescripcion.requestFocus();
         } else if (posEstilo == 0) {
-
-            // MIRAR COMO LLEVAR WEL FOCUS A LOS SPINNERS
             TextView errorText = (TextView) spinnerEstilos.getSelectedView();
-            // errorText.setError("anything here, just to add the icon");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText("Seleccine un estilo");//changes the selected item text to this
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Seleccine un estilo");
             edtNombreMusico.requestFocus();
         } else if (posInstrumento == 0) {
             TextView errorText = (TextView) spinnerInstrumentos.getSelectedView();
-            // errorText.setError("anything here, just to add the icon");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText("Seleccione un instrumento");//changes the selected item text to this
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Seleccione un instrumento");
             edtNombreMusico.requestFocus();
         } else {
             // Comprobamos que el patron de correo y de contraseña son correctos
@@ -152,9 +151,15 @@ public class RegistarMusico extends AppCompatActivity {
                 edtMailMusico.setError("e-mail no válido");
             } else if (!auth.comprobarPass(edtPassMusico.getText().toString())) {
                 edtPassMusico.setError("Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número");
-                // Toast.makeText(this, "Minimo 6 carácteres\nUna Mayuscula\nUna Minuscula\nUn número", Toast.LENGTH_LONG).show();
+                edtRepitePassMusico.setText("");
+                edtPassMusico.setText("");
+                edtPassMusico.requestFocus();
             } else if (!edtPassMusico.getText().toString().equals(edtRepitePassMusico.getText().toString())) {
-                edtRepitePassMusico.setError("Las contraseñas no coinciden");
+                edtPassMusico.setError("Las contraseñas no coinciden");
+                edtRepitePassMusico.setText("");
+                edtPassMusico.setText("");
+                edtPassMusico.requestFocus();
+                BandsnArts.ocultaTeclado(VentanaInicialApp.a);
             } else {
                 // Correo y password correctas
                 view.setVisibility(View.INVISIBLE);
@@ -171,14 +176,14 @@ public class RegistarMusico extends AppCompatActivity {
                             ArrayList<String> intrumentos = new ArrayList<>();
                             intrumentos.add(getResources().getStringArray(R.array.instrumentos)[posInstrumento]);
 
-                            BDBAA.agregarFackingMaster(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("tipo", ""), RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
+                            BDBAA.agregarFackingMaster("musico", RegistarMusico.this, RegistarMusico.this.findViewById(R.id.btnRegistrarVRegMusico),
                                     edtMailMusico, edtNombreMusico,
                                     "default_musico.jpg",
                                     edtNombreMusico.getText().toString(),
                                     getResources().getStringArray(R.array.sexo)[posSexo],
                                     getResources().getStringArray(R.array.estiloMusical)[posEstilo],
                                     intrumentos,
-                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString()));
+                                    BandsnArts.quitarSaltos(edtDescripcion.getText().toString().trim()));
                             // ENVIO CORREO VERIFICACION
                             Toast.makeText(RegistarMusico.this, "Correo electronico no verificado, por favor, verifique su correo.", Toast.LENGTH_SHORT).show();
                             firebaseAuth.getCurrentUser().sendEmailVerification();

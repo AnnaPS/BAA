@@ -4,27 +4,58 @@ package com.example.pc.bandsnarts.Container;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.RectF;
+import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
+import com.example.pc.bandsnarts.Adaptadores.AdaptadorContactos;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
+import com.example.pc.bandsnarts.Objetos.KeyChat;
+import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.github.library.bubbleview.BubbleDrawable;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -32,18 +63,103 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 // Reutilizar esta clase para Datos comunes y metodos staticos en toda la App
 
 
-public class BandsnArts extends Application {
+public class BandsnArts extends Application implements Runnable {
     public static final int CODIGO_DE_INICIO = 777;
     public static final int CODIGO_DE_DESLOGUEO = 21;
     public static final int CODIGO_DE_REGISTRO = 000;
     public static final int CODIGO_DE_REGISTRO_RED_SOCIAL = 333;
     public static final int CODIGO_DE_REDSOCIAL = 111;
     public static final int CODIGO_DE_CIERRE = 22;
+    public static final int CODIGO_DE_BORRAR_PERFIL = 666;
 
 
     public static CharSequence[] localidades;
     public static boolean banderaLocalidad = true;
     public static int posProvincia, posLocalidad;
+
+
+    //MULTIMEDIA
+    public static MediaPlayer mediaPlayer;
+    public static int totalTime;
+    public static Thread hiloMusica;
+    public static boolean paraHilo;
+    public static SeekBar positionBar;
+    public static TextView tiempoTranscurrido, tiempoRestante;
+
+    //Keys para busquedas
+    public static String KEYCHAT;
+    public static String keyP1;
+    public static String keyP2;
+    public static String nomChat;
+    public static String nombre;
+    public static String imgChat;
+    public static String img;
+    public static boolean encontrado;
+    public static ArrayList<String> UID_MUSICO = new ArrayList<>();
+    public static ArrayList<String> UID_GRUPO = new ArrayList<>();
+    public static ArrayList<KeyChat> alContactos = new ArrayList();
+    public static ArrayList<String> alContactosAUX = new ArrayList();
+
+    public static AdaptadorContactos adaptadorContactos;
+    public static RecyclerView rvContactos;
+    public static RecyclerView rvMensajes;
+    // Variable control posicion Tab
+    public static int posicionTab;
+    //escucha
+    public static ChildEventListener bdbaa;
+
+
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int currentPosition = msg.what;
+            positionBar.setProgress(currentPosition);
+
+            String tiempoTranscurridoMusica = createTimeLable(currentPosition);
+            tiempoTranscurrido.setText(tiempoTranscurridoMusica);
+            String tiempoRestanteMusica = createTimeLable(BandsnArts.totalTime - currentPosition);
+            tiempoRestante.setText("- " + tiempoRestanteMusica);
+        }
+    };
+
+
+    public String createTimeLable(int time) {
+        String timeLable = "";
+        int min = time / 1000 / 60;
+        int sec = time / 1000 % 60;
+
+        timeLable = min + ":";
+
+        if (sec < 10)
+            timeLable += 0;
+        timeLable += sec;
+
+
+        return timeLable;
+    }
+
+
+    @Override
+    public void run() {
+        while (BandsnArts.mediaPlayer != null && !BandsnArts.paraHilo) {
+            try {
+                Message message = new Message();
+                message.what = BandsnArts.mediaPlayer.getCurrentPosition();
+                handler.sendMessage(message);
+
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("RUN", "run: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + BandsnArts.mediaPlayer);
+    }
+    /////////////////
+    // MULTIMEDIA //
+    ////////////////
+
 
     @Override
     public void onCreate() {
@@ -90,11 +206,11 @@ public class BandsnArts extends Application {
             Grupo grupo = (Grupo) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), grupo.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, grupo.getLocalidad());
-        } else if(o instanceof Musico){
+        } else if (o instanceof Musico) {
             Musico musico = (Musico) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), musico.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, musico.getLocalidad());
-        }else if(o instanceof Anuncio){
+        } else if (o instanceof Anuncio) {
             Anuncio anuncio = (Anuncio) o;
             BandsnArts.posProvincia = posicionSpinner(vista.getResources().getStringArray(R.array.provincias), anuncio.getProvincia());
             BandsnArts.posLocalidad = posicionSpinner(BandsnArts.localidades, anuncio.getLocalidad());
@@ -195,12 +311,17 @@ public class BandsnArts extends Application {
     }
 
     public static void ocultaTeclado(Activity act) {
-        View view = act.getCurrentFocus();
-        view.clearFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            View view = act.getCurrentFocus();
+            view.clearFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (NullPointerException e) {
+
         }
+
     }
 
     public static String quitarSaltos(String cadena) {
@@ -241,7 +362,7 @@ public class BandsnArts extends Application {
         String pattern = null;
         switch (tipo) {
             case ("YouTube"):
-              pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+                pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
                 break;
             case ("InstaGram"):
                 pattern = "((http|https)://)?(www[.])?instagram.com/.+";
@@ -258,4 +379,70 @@ public class BandsnArts extends Application {
 
     }
 
+    public static void lanzarURLNavegador(String URL) {
+        try {
+            Uri uri = Uri.parse(URL);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            VentanaInicialApp.a.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "INSERTE UNA URL", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public static void recuperarToken(final String tipo) {
+        FirebaseAuth.getInstance().getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull final Task<GetTokenResult> task) {
+                final DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
+                bd.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            switch (tipo) {
+                                case "musico":
+                                    Musico mus = dataSnapshot.getValue(Musico.class);
+                                    for (String token : mus.getToken()) {
+                                        if (!task.getResult().getToken().equals(token)) {
+                                            mus.getToken().add(token);
+                                            bd.child(ds.getKey()).setValue(mus);
+                                        }
+                                    }
+                                    break;
+                                case "grupo":
+                                    Grupo gru = dataSnapshot.getValue(Grupo.class);
+                                    for (String token : gru.getToken()) {
+                                        if (!task.getResult().getToken().equals(token)) {
+                                            gru.getToken().add(token);
+                                            bd.child(ds.getKey()).setValue(gru);
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+    }
+
+    // Para comprobar si hay acceso a internet:
+
+    public static Boolean isOnlineNet() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

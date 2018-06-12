@@ -226,6 +226,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
+                android:hint="CONTRASEÑA"
                 app:layout_constraintTop_toBottomOf="@+id/impEmailVRegMusico"
                 tools:ignore="MissingConstraints">
 
@@ -240,7 +241,7 @@
                     android:ems="10"
                     android:maxLength="25"
                     android:fontFamily="sans-serif"
-                    android:hint="CONTRASEÑA"
+
                     android:textStyle="bold"
                     android:inputType="textPassword"
                     android:textSize="14sp"
@@ -258,6 +259,7 @@
                 android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                android:hint="REPITE LA CONTRASEÑA"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impPassVRegMusico"
                 tools:ignore="MissingConstraints">
@@ -272,7 +274,7 @@
                     android:layout_marginTop="20dp"
                     android:ems="10"
                     android:maxLength="25"
-                    android:hint="REPITE LA CONTRASEÑA"
+
                     android:inputType="textPassword"
                     android:textStyle="bold"
                     android:textSize="14sp"

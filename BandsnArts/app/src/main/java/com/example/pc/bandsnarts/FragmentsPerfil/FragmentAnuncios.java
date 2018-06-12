@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +26,17 @@ public class FragmentAnuncios extends Fragment {
     FloatingActionButton miFAB;
     RecyclerView recyclerViewAnuncios;
     ArrayList<Anuncio> lista;
-    public static Fragment fragAnu;
+    View layout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         vista = inflater.inflate(R.layout.fragment_anuncios_v_fragment_perfil, container, false);
-        fragAnu = FragmentAnuncios.this;
+        layout = vista.findViewById(R.id.anuncios);
+
         recyclerViewAnuncios = vista.findViewById(R.id.recycleranuncios);
         recyclerViewAnuncios.setNestedScrollingEnabled(false);
         lista = new ArrayList<>();
@@ -49,7 +53,8 @@ public class FragmentAnuncios extends Fragment {
                 BDBAA.comprobarNumAnuncios(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo",""),FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
-        BDBAA.cargarAnuncios(lista, recyclerViewAnuncios, getActivity(), FirebaseAuth.getInstance().getCurrentUser().getUid(), PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""));
+
+        BDBAA.cargarAnuncios(lista, recyclerViewAnuncios, getActivity(), FirebaseAuth.getInstance().getCurrentUser().getUid(), PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""),0,layout);
 
         return vista;
     }

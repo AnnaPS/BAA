@@ -1,6 +1,7 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VisitarPerfilDeseado;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 
@@ -32,6 +35,7 @@ import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,8 +46,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterMusico.ViewHolder> {
 
     private Context mContext;
+    private int mExpandedPosition = -1;
     private ArrayList<Musico> listaM;
-    FragmentMusicosTabInicio a;
+
+
 
     public RecyclerAdapterMusico(Context context, ArrayList<Musico> listaMusicos) {
         mContext = context;
@@ -61,7 +67,7 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerAdapterMusico.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerAdapterMusico.ViewHolder holder, final int position) {
 
         final Musico musicoItem = (Musico) listaM.get(position);
         CircleImageView imagenMusico = holder.img;
@@ -72,13 +78,19 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView anun = holder.anuncios;
         ImageView busc = holder.buscando;
 
+        BandsnArts.UID_MUSICO.add(musicoItem.getUid());
 
+
+        System.out.println("------------->NOMBRE" + musicoItem.getNombre());
+        System.out.println("*******************************************");
+        System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(position));
         nom.setText(musicoItem.getNombre());
         ins.setText(musicoItem.getInstrumento().get(0));
         est.setText(musicoItem.getEstilo());
         desc.setText(musicoItem.getDescripcion());
         anun.setText(String.valueOf(musicoItem.getAnuncio().size()));
         ImageButton btnMenu = holder.menuButton;
+
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,26 +102,27 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-
                         Intent i;
                         switch (menuItem.getItemId()) {
                             case R.id.itemperfilvisitado:
-                               i = new Intent(mContext,VisitarPerfilDeseado.class);
-                                Toast.makeText(mContext, "visitar perfil", Toast.LENGTH_SHORT).show();
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(i);
+                                //op 0 lanza perfil
+                                System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(position));
+                                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(position), "musico", 0)).commit();
+                                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
+                                System.out.println("visitar perfil");
                                 break;
-
                             case R.id.itemanunciosvisitado:
-                                i = new Intent(mContext,VisitarPerfilDeseado.class);
-                                Toast.makeText(mContext, "visitar anuncio", Toast.LENGTH_SHORT).show();
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(i);
+                                //op 1 lanza anuncio del perfil
+                                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(position), "musico", 1)).commit();
+                                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                                VentanaInicialApp.id = R.id.visitaperfil;
+                                System.out.println("visitar anuncio");
                                 break;
                             default:
+                                System.out.println("Por si acaso.");
                                 break;
                         }
-
                         return false;
                     }
                 });
@@ -128,7 +141,8 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         } catch (NullPointerException ex) {
             System.out.println("Sale por aqui en caso de que venga del primer registro");
         }
-         BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
+        BDBAA.accesoFotoPerfilRecycler(imagenMusico, mContext, listaM.get(position));
+
     }
 
 
@@ -143,9 +157,9 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
         TextView nombre, instrumento, estilo, descripcion, anuncios;
         ImageButton menuButton;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
-
             //finds de los componentes de los items
             img = itemView.findViewById(R.id.imgItemMusico);
             buscando = itemView.findViewById(R.id.imgBuscandoItemMusico);
@@ -156,6 +170,16 @@ public class RecyclerAdapterMusico extends RecyclerView.Adapter<RecyclerAdapterM
             anuncios = itemView.findViewById(R.id.txtCantidadAnunciosItemMusico);
             menuButton = itemView.findViewById(R.id.btnMenuMusicos);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(BandsnArts.UID_MUSICO.size() + "------->" + BandsnArts.UID_MUSICO.get(getAdapterPosition()));
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new VisitarPerfilDeseado(BandsnArts.UID_MUSICO.get(getAdapterPosition()), "musico", 0)).commit();
+                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Visitar Perfil");
+                    VentanaInicialApp.id = R.id.visitaperfil;
+                    System.out.println("visitar perfil");
+                }
+            });
         }
     }
 

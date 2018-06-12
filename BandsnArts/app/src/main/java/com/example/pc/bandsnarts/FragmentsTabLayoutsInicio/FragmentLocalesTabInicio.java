@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Local;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
@@ -42,7 +43,7 @@ public class FragmentLocalesTabInicio extends Fragment {
              BDBAA.cargarDatos(listaLocal, recyclerViewLocal, getActivity(),"locales");
         }
 
-
+        BandsnArts.posicionTab = 3;
         return vista;
     }
 

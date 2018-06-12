@@ -3,6 +3,7 @@
     package="com.example.pc.bandsnarts">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -50,11 +51,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Container.Notificaciones">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <service android:name=".Container.MiFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -78,17 +74,9 @@
             android:name=".Activities.VentanaInicialApp"
             android:label="@string/title_activity_ventana_inicial_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" /><![CDATA[
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
-            />
-
-
-
-    ]]>
-        <activity
-            android:name=".Activities.VisitarPerfilDeseado"
-            android:label="@string/title_activity_actvity_visitar_perfil"></activity>
     </application>
 
 </manifest>

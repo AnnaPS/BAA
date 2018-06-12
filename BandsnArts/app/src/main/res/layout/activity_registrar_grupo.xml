@@ -165,6 +165,7 @@
                 android:layout_height="77dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                android:hint="CONTRASEÑA"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impEmailVRegGrupo">
 
@@ -177,7 +178,7 @@
                     android:layout_marginTop="18dp"
                     android:ems="10"
                     android:fontFamily="sans-serif"
-                    android:hint="CONTRASEÑA"
+
                     android:inputType="textPassword"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -193,6 +194,7 @@
                 android:layout_height="73dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                android:hint="REPETIR CONTRASEÑA"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/impPassVRegGrupo">
 
@@ -205,7 +207,7 @@
                     android:layout_marginTop="8dp"
                     android:ems="10"
                     android:fontFamily="sans-serif"
-                    android:hint="REPETIR CONTRASEÑA"
+
                     android:inputType="textPassword"
                     android:textSize="14sp"
                     android:textStyle="bold"

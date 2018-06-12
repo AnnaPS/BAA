@@ -5,16 +5,20 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -23,11 +27,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +43,20 @@ import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
+import com.example.pc.bandsnarts.Objetos.Grupo;
+import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
@@ -50,36 +65,47 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Permission;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.DialogFragment.STYLE_NO_TITLE;
+import static android.text.InputType.TYPE_NULL;
 
 
 @SuppressLint("ValidFragment")
-public class FragmentMultimedia extends Fragment implements Runnable {
+public class FragmentMultimedia extends Fragment {
 
     View vista;
-    private Button playButton;
+    public static Button playButton;
     private SeekBar volumenBar;
-    public static SeekBar positionBar;
-    private TextView tiempoTranscurrido, tiempoRestante;
-    public static MediaPlayer mediaPlayer;
-    public static int totalTime;
-    public static Thread hiloMusica;
-    public static boolean paraHilo;
+
+
     public static Fragment fragment;
 
-    private Button btnYoutube,btnFacebook,btnInstagram;
+    private Button btnYoutube, btnFacebook, btnInstagram;
     // Boton añadir audio
     private Button subirAudio;
     // Referencia al storage para la subida del audio
     private StorageReference storageReference;
-
+    private final int MY_PERMISSIONS = 100;
     public static ImageView progressBar;
     public static AnimationDrawable animationDrawable;
     private View scrollMedia;
     private View layout;
+    private ImageView ivFacebook;
+    private ImageView ivInstagram;
+    private ImageView ivYoutube;
+    private EditText edFacebook;
+    private EditText edInstagram;
+    private EditText edYoutube;
+
+    private Button eliminarCancion;
+
     // Variable de control para la carga del Fragmento
     int num;
+
 
     @SuppressLint("ValidFragment")
     public FragmentMultimedia(int num) {
@@ -93,10 +119,10 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         vista = inflater.inflate(R.layout.fragment_multimedia_v_fragment_perfil, container, false);
 
         playButton = vista.findViewById(R.id.btnPlayVMultimedia);
-        positionBar = vista.findViewById(R.id.progresoMusicaVMultimedia);
+        BandsnArts.positionBar = vista.findViewById(R.id.progresoMusicaVMultimedia);
         volumenBar = vista.findViewById(R.id.volumenVMultimedia);
-        tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
-        tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
+        BandsnArts.tiempoRestante = vista.findViewById(R.id.tiempoRestanteVMultimedia);
+        BandsnArts.tiempoTranscurrido = vista.findViewById(R.id.tiempoTranscurridoVMultimedia);
         scrollMedia = vista.findViewById(R.id.svMedia);
         layout = vista.findViewById(R.id.multimedia);
         fragment = this;
@@ -106,11 +132,21 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         btnInstagram = vista.findViewById(R.id.btnEditarInstagramVMultimedia);
         btnYoutube = vista.findViewById(R.id.btnEditarYoutubeVMultimedia);
 
+        ivYoutube = vista.findViewById(R.id.ivYoutubeVMultimedia);
+        ivFacebook = vista.findViewById(R.id.ivFacebookVMultimedia);
+        ivInstagram = vista.findViewById(R.id.ivInstagramVMultimedia);
+
+        edFacebook = vista.findViewById(R.id.edtFacebookVMultimedia);
+        edInstagram = vista.findViewById(R.id.edtInstagramVMultimedia);
+        edYoutube = vista.findViewById(R.id.edtYoutubeVMultimedia);
+
+        eliminarCancion = vista.findViewById(R.id.btnEliminarVMultimedia);
+
 
         // COMPROBAR SI EL USUARIO TIENE AUDIO
-        if(num!=1) {
-            BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext());
-        }else{
+        if (num != 1) {
+            BDBAA.comprobacionAudioUsuario(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""), vista.getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(), subirAudio);
+        } else {
             progressBar.setBackgroundResource(R.drawable.gif);
             animationDrawable = (AnimationDrawable) progressBar.getBackground();
             animationDrawable.start();
@@ -119,16 +155,13 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         subirAudio = vista.findViewById(R.id.btnAnadirVMultimedia);
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        //Toast.makeText(getActivity(), "Valor de media player: "+mediaPlayer, Toast.LENGTH_SHORT).show();
 
-
-
-        positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        BandsnArts.positionBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mediaPlayer.seekTo(progress);
-                    positionBar.setProgress(progress);
+                    BandsnArts.mediaPlayer.seekTo(progress);
+                    BandsnArts.positionBar.setProgress(progress);
                 }
             }
 
@@ -147,8 +180,8 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float volumeNumber = progress / 100f;
-                if (mediaPlayer!=null){
-                    mediaPlayer.setVolume(volumeNumber, volumeNumber);
+                if (BandsnArts.mediaPlayer != null) {
+                    BandsnArts.mediaPlayer.setVolume(volumeNumber, volumeNumber);
                 }
 
             }
@@ -168,15 +201,15 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mediaPlayer != null){
-                    if (!mediaPlayer.isPlaying()) {
-                        mediaPlayer.start();
+                if (BandsnArts.mediaPlayer != null) {
+                    if (!BandsnArts.mediaPlayer.isPlaying()) {
+                        BandsnArts.mediaPlayer.start();
                         playButton.setBackgroundResource(R.drawable.stop);
                     } else {
-                        mediaPlayer.pause();
+                        BandsnArts.mediaPlayer.pause();
                         playButton.setBackgroundResource(R.drawable.play);
                     }
-                }else{
+                } else {
                     // PENDIENTE DEFINICION QUE HACER CUANDO EL USUARIO NO TIENE CANCION
                     Toast.makeText(vista.getContext(), "SUBE TU CANCION!!!", Toast.LENGTH_SHORT).show();
                 }
@@ -189,43 +222,146 @@ public class FragmentMultimedia extends Fragment implements Runnable {
             @Override
             public void onClick(View v) {
                 // Ocultamos los tabs inferiores pasandole un 1 a la carga del fragmento
-                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMultimedia(1)).commit();
-                ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
-                subirAudio();
+                if (mayRequestStoragePermission()) {
+                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMultimedia(1)).commit();
+                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+                    // SELECCIONAR EL ButtonNavigationView MULTIMEDIA
+                    //////////////////////////////////////
+                    //////////////////////////////////////
+                    subirAudio();
+                }else{
+                    showExplanation();
+                }
             }
         });
+
 
         // Redes Sociales
         btnYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("YouTube","Agrega tu link de YouTube");
+                agregaURLSocial("YouTube", "Agrega tu link de YouTube", edYoutube, " VISITA TU YOUTUBE");
+            }
+        });
+
+        btnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregaURLSocial("FaceBook", "Agrega tu link de FaceBook", edFacebook, " VISITA TU FACEBOOK");
+
             }
         });
         btnInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("InstaGram","Agrega tu link de Instagram");
+                agregaURLSocial("InstaGram", "Agrega tu link de Instagram", edInstagram, " VISITA TU INSTAGRAM");
 
             }
         });
-        btnFacebook.setOnClickListener(new View.OnClickListener() {
+
+        // Iconos de redes Sociales
+
+        ivYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregaURLSocial("FaceBook","Agrega tu link de FaceBook");
+                // Traerse el tipo
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+            }
+        });
+        edYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Traerse el tipo
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            }
+        });
+        edYoutube.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                return false;
+            }
+        });
+        ivFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 1, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
+        });
+        ivInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 2, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
+        });
+        edFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), 0, 1, null, null, null, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            }
+        });
+
+        BDBAA.recuperarURLredSocial(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("tipo", ""), -1, 0, edFacebook, edYoutube, edInstagram, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
+        eliminarCancion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (BandsnArts.mediaPlayer != null) {
+                    // LLAMAR AL ALERTDIALOG PARA EL BORRADO DE LA CANCION
+                    android.app.FragmentManager fm = getActivity().getFragmentManager();
+                    FragmentDialogDescartarCancion alerta = new FragmentDialogDescartarCancion(FragmentMultimedia.this, "¿ESTÁS SEGURO DE ELIMINAR EL AUDIO?", "La canción se perderá");
+                    alerta.setCancelable(false);
+                    //miFABGuardarRechazar.close(true);
+                    alerta.show(fm, "AlertaDescartar");
+                    /////////////////////////////////////////////////////
+                } else {
+                    Toast.makeText(getContext(), "No hay audio para eliminar", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return vista;
     }
 
-    public static void agregaURLSocial(final String tipo,String mensaje){
+    //muestra la explicacion de porque se necesitan los permisos
+    private void showExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(VentanaInicialApp.a);
+        builder.setTitle("Permisos denegados");
+        builder.setMessage("Para cambiar la foto necesita aceptar los permisos");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //abrir la configuracion para que le de permisos justo en el detalle de nuestra app
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+//                getActivity().finish();
+            }
+        });
+        builder.show();
+
+    }
+    public static void agregaURLSocial(final String tipo, String mensaje, final EditText editText, final String mens) {
         LayoutInflater inflador = VentanaInicialApp.a.getLayoutInflater();
         final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
         final EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
         Toast.makeText(VentanaInicialApp.a, tipo, Toast.LENGTH_SHORT).show();
-       final AlertDialog ad = new AlertDialog.Builder(VentanaInicialApp.a).create();
+        final AlertDialog ad = new AlertDialog.Builder(VentanaInicialApp.a).create();
         ad.setView(vistainflada);
         ad.setCancelable(false);
         ad.setTitle(tipo);
@@ -236,19 +372,21 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                 dialog.dismiss();
             }
         });
-        ad.setButton(Dialog.BUTTON_POSITIVE,"ACEPTAR",new DialogInterface.OnClickListener(){
+        ad.setButton(Dialog.BUTTON_POSITIVE, "ACEPTAR", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if(BandsnArts.compruebaURL(tipo,cajaredes.getText().toString()))  {
-                  // guardar la URL en BD
-                  BDBAA.guardarURL(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a.getApplicationContext()).getString("tipo",""),tipo,cajaredes.getText().toString());
-                  dialog.dismiss();
-              }else{
-                  Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "NO VALIDA", Toast.LENGTH_SHORT).show();
-                  cajaredes.setError("URL no válida");
-                  ad.show();
-              }
+                if (BandsnArts.compruebaURL(tipo, cajaredes.getText().toString())) {
+                    // guardar la URL en BD
+                    BDBAA.guardarURL(PreferenceManager.getDefaultSharedPreferences(VentanaInicialApp.a.getApplicationContext()).getString("tipo", ""), tipo, cajaredes.getText().toString());
+                    editText.setText(mens);
+                    dialog.dismiss();
+
+                } else {
+                    Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "NO VALIDA", Toast.LENGTH_SHORT).show();
+                    cajaredes.setError("URL no válida");
+                    ad.show();
+                }
             }
         });
 
@@ -256,66 +394,51 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         ad.show();
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            int currentPosition = msg.what;
-            positionBar.setProgress(currentPosition);
-
-            String tiempoTranscurridoMusica = createTimeLable(currentPosition);
-            tiempoTranscurrido.setText(tiempoTranscurridoMusica);
-            String tiempoRestanteMusica = createTimeLable(totalTime - currentPosition);
-            tiempoRestante.setText("- " + tiempoRestanteMusica);
-        }
-    };
-
-
-    private String createTimeLable(int time) {
-        String timeLable = "";
-        int min = time / 1000 / 60;
-        int sec = time / 1000 % 60;
-
-        timeLable = min + ":";
-
-        if (sec < 10)
-            timeLable += 0;
-        timeLable += sec;
-
-
-        return timeLable;
-    }
-
-
-    @Override
-    public void run() {
-        while (mediaPlayer != null && !paraHilo) {
-            try {
-                Message message = new Message();
-                message.what = mediaPlayer.getCurrentPosition();
-                handler.sendMessage(message);
-
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Log.d("RUN", "run: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + mediaPlayer);
-    }
-
 
     private void subirAudio() {
+
         Intent intent = new Intent();
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         // intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         startActivityForResult(Intent.createChooser(intent, "Choose Sound File"), 1);
+
+    }
+
+    //saber si tiene permisos para cambiar foto y abrir camara
+    private boolean mayRequestStoragePermission() {
+        //si el so es menor a la version 6 de android no se ven los permisos
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        //comprueba si los permisos estan aceptados
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && getContext().checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))) {
+            Snackbar.make(vista, "Los permisos son necesarios para poder editar el audio de perfil",
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //si le da al ok se aceptan los permisos
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                }
+            }).show();
+        } else {
+            //si es la primera vez que se les pide los permisos pasa por aqui
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
+        }
+        return false;
+
+
     }
 
     @Override
@@ -325,11 +448,11 @@ public class FragmentMultimedia extends Fragment implements Runnable {
         if (data != null) {
             if (requestCode == 1) {
                 Uri path1 = data.getData();
-                File file = new File(path1.getLastPathSegment());
-                if (mediaPlayer!=null && mediaPlayer.isPlaying()) {
-                    FragmentMultimedia.mediaPlayer.stop();
+
+                if (BandsnArts.mediaPlayer != null && BandsnArts.mediaPlayer.isPlaying()) {
+                    BandsnArts.mediaPlayer.stop();
                 }
-                mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
+                BandsnArts.mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), path1);
 
                 // Guardar audio
                 // Nos posicionamos en el nodo de imagenes del storage
@@ -345,14 +468,13 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         System.out.println("" + taskSnapshot.getMetadata().getSizeBytes());
                         System.out.println("" + taskSnapshot.getMetadata().getName());
 
-                        paraHilo = true;
+                        BandsnArts.paraHilo = true;
 
                         // Guardamos la referencia del audio asociada al usuario en la BD
-                        BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"));
+                        BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), playButton);
                         Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
 
                         animationDrawable.stop();
-
 
 
                         android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
@@ -360,7 +482,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         alerta.setCancelable(false);
                         VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
 
-                        ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
 
                         alerta.show(fm, "AlertaDescartar");
 
@@ -372,7 +494,7 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                         if (taskSnapshot.getTotalByteCount() > 5000000) {
                             uploadTask.cancel();
                             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
-                            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+                            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
                         }
 
                     }
@@ -388,18 +510,17 @@ public class FragmentMultimedia extends Fragment implements Runnable {
                     }
                 });
 
-                for (int i = 0; i < mediaPlayer.getTrackInfo().length; i++) {
-                    System.out.println("" + mediaPlayer.getTrackInfo()[i]);
+                for (int i = 0; i < BandsnArts.mediaPlayer.getTrackInfo().length; i++) {
+                    System.out.println("" + BandsnArts.mediaPlayer.getTrackInfo()[i]);
                 }
             }
-        }else{
+        } else {
             VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMiPerfil(1)).commit();
-
-            ((AppCompatActivity)VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
+            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Mi Perfil");
         }
     }
 
-    private void esconderVistas(){
+    private void esconderVistas() {
         progressBar.setVisibility(View.VISIBLE);
         scrollMedia.setVisibility(View.GONE);
         layout.setBackground(VentanaInicialApp.a.getDrawable(R.drawable.fondonegro));

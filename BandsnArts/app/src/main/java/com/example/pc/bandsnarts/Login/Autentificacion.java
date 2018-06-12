@@ -83,7 +83,7 @@ public class Autentificacion extends AppCompatActivity {
                                         FirebaseAuth.getInstance().signOut();
                                     } else {
                                         PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", 1);
-                                         BDBAA.borrarPerfil(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                         BDBAA.borrarPerfil(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),1);
                                          BDBAA.eliminarNodo("musico",FirebaseAuth.getInstance().getCurrentUser().getUid());
                                          BDBAA.eliminarNodo("grupo",FirebaseAuth.getInstance().getCurrentUser().getUid());
                                         Toast.makeText(cont, "Eliminado", Toast.LENGTH_SHORT).show();
@@ -116,15 +116,6 @@ public class Autentificacion extends AppCompatActivity {
         // Toast.makeText(this, ""+mAuth.getCurrentUser().getProviderId(), Toast.LENGTH_SHORT).show();
     }
 
-    public boolean compruebaLogueado() {
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth != null) {
-            deslogueo();
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
     public boolean validarEmail(String email) {

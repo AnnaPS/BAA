@@ -9,23 +9,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-
+import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Adaptadores.ViewPagerAdapter;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentGruposTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentLocalesTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentSalasTabInicio;
+
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
 
 public class FragmentInicio extends Fragment {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
-
+    public static ViewPager viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +41,11 @@ public class FragmentInicio extends Fragment {
         mLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.getCurrentItem();
+
         tabLayout.setupWithViewPager(viewPager);
+
+        BDBAA.compruebaConexion(vista);
 
         return vista;
     }
