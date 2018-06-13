@@ -1316,19 +1316,38 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     KeyChat keyChat = ds.getValue(KeyChat.class);
-                    if ((uid + "-" + pos).equals(keyChat.getKey())) {
-                        BandsnArts.encontrado = true;
-                        BandsnArts.keyP1 = uid;
-                        BandsnArts.keyP2 = musico.getUid();
-                        BandsnArts.KEYCHAT = uid + "-" + pos;
-                        break;
-                    } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
-                        BandsnArts.encontrado = true;
-                        BandsnArts.keyP1 = grupo.getUid();
-                        BandsnArts.keyP2 = uid;
-                        BandsnArts.KEYCHAT = pos + "-" + uid;
-                        break;
-                    }
+                   switch (tipo){
+                       case "musico":
+                           if ((uid + "-" + pos).equals(keyChat.getKey())) {
+                               BandsnArts.encontrado = true;
+                               BandsnArts.keyP1 = uid;
+                               BandsnArts.keyP2 = musico.getUid();
+                               BandsnArts.KEYCHAT = uid + "-" + pos;
+                               break;
+                           } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
+                               BandsnArts.encontrado = true;
+                               BandsnArts.keyP1 = musico.getUid();
+                               BandsnArts.keyP2 = uid;
+                               BandsnArts.KEYCHAT = pos + "-" + uid;
+                               break;
+                           }
+                           break;
+                       case "grupo":
+                           if ((uid + "-" + pos).equals(keyChat.getKey())) {
+                               BandsnArts.encontrado = true;
+                               BandsnArts.keyP1 = uid;
+                               BandsnArts.keyP2 = grupo.getUid();
+                               BandsnArts.KEYCHAT = uid + "-" + pos;
+                               break;
+                           } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
+                               BandsnArts.encontrado = true;
+                               BandsnArts.keyP1 = grupo.getUid();
+                               BandsnArts.keyP2 = uid;
+                               BandsnArts.KEYCHAT = pos + "-" + uid;
+                               break;
+                           }
+                           break;
+                   }
                 }
 
                 switch (tipo) {
@@ -1532,6 +1551,7 @@ public class BDBAA extends AppCompatActivity {
                                                 musico.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + musico.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + musico.getImagen();
+                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "musico";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
                                             }
                                             break;
@@ -1547,6 +1567,7 @@ public class BDBAA extends AppCompatActivity {
                                                 grupo.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + grupo.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + grupo.getImagen();
+                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "grupo";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
                                             }
                                             break;
