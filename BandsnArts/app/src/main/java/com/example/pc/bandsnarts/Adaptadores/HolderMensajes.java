@@ -1,13 +1,11 @@
 package com.example.pc.bandsnarts.Adaptadores;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pc.bandsnarts.R;
-import com.github.library.bubbleview.BubbleLinearLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

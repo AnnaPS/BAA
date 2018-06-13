@@ -2,7 +2,6 @@ package com.example.pc.bandsnarts.Login;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -11,8 +10,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
-import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -69,25 +66,12 @@ public class Autentificacion extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "loginUserWithEmail:success ");
-                        //    Toast.makeText(vLog, "Todo bien.", Toast.LENGTH_SHORT).show();
-                            //  FirebaseUser user = mAuth.getCurrentUser();
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                                    if (PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) != 3) {
-                                        Toast.makeText(cont, "Debe verificar su correo antes de usar la app " + PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 0), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(cont, "Debe verificar su correo antes de usar Bands n'Arts" + PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 0), Toast.LENGTH_SHORT).show();
                                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                                        int pos = PreferenceManager.getDefaultSharedPreferences(cont).getInt("intentos", 1) + 1;
-                                        PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", pos).commit();
                                         FirebaseAuth.getInstance().signOut();
-                                    } else {
-                                        PreferenceManager.getDefaultSharedPreferences(cont).edit().putInt("intentos", 1);
-                                         BDBAA.borrarPerfil(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),1);
-                                         BDBAA.eliminarNodo("musico",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                         BDBAA.eliminarNodo("grupo",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        Toast.makeText(cont, "Eliminado", Toast.LENGTH_SHORT).show();
-                                    }
                                 }
                             } else {
                                 Toast.makeText(cont, "Debe crear antes una cuenta", Toast.LENGTH_SHORT).show();
@@ -113,7 +97,6 @@ public class Autentificacion extends AppCompatActivity {
             Log.w("TAG", "USUARIO YA DESLOGUEADO");
         }
         mAuth.signOut();
-        // Toast.makeText(this, ""+mAuth.getCurrentUser().getProviderId(), Toast.LENGTH_SHORT).show();
     }
 
 

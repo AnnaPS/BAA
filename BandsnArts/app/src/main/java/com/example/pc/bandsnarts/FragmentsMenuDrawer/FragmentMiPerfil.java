@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -15,15 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
-import com.example.pc.bandsnarts.R;
-
-
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
@@ -82,7 +74,6 @@ public class FragmentMiPerfil extends Fragment {
                 if (id == R.id.menuPerfil) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, verperfil).commit();
-                    Toast.makeText(getActivity(), "ver perfil", Toast.LENGTH_SHORT).show();
                     BandsnArts.paraHilo = true;
                     if (BandsnArts.mediaPlayer != null) {
                         BandsnArts.mediaPlayer.stop();
@@ -91,14 +82,12 @@ public class FragmentMiPerfil extends Fragment {
                 } else if (id == R.id.menuAnuncios) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, anuncios).commit();
-                    Toast.makeText(getActivity(), "anuncios", Toast.LENGTH_SHORT).show();
                     BandsnArts.paraHilo = true;
                     if (BandsnArts.mediaPlayer != null)
                         BandsnArts.mediaPlayer.stop();
                 } else if (id == R.id.menuMultimedia) {
                     FragmentTransaction fragmentTransaction = fragment.beginTransaction();
                     fragmentTransaction.replace(R.id.contenedormiperfil, multi).commit();
-                    Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }

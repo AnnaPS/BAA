@@ -31,6 +31,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
     private CircleImageView fotoMensaje;
     private CircleImageView imgNot;
     String KEYCHAT;
+    String tipo;
 
     public HolderContactos(View itemView) {
         super(itemView);
@@ -42,6 +43,7 @@ public class HolderContactos extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 BandsnArts.KEYCHAT = KEYCHAT;
+                BandsnArts.tipo = tipo;
                 System.out.println(KEYCHAT);
                 final DatabaseReference bd = FirebaseDatabase.getInstance().getReference("keychat");
                 bd.orderByChild("key").equalTo(KEYCHAT).addListenerForSingleValueEvent(new ValueEventListener() {

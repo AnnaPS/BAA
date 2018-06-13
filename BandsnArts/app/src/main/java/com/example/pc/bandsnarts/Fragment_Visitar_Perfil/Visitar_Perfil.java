@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
@@ -138,7 +137,7 @@ public class Visitar_Perfil extends Fragment {
             public void onClick(View v) {
 
                 if (!descargaCancion) {
-                    Toast.makeText(getContext(), "HHHHHHHHHHHHHHHHHH", Toast.LENGTH_SHORT).show();
+
                     System.out.println("UID:                                                                       " + UIDvisited);
                     BDBAA.comprobacionAudioUsuario(tipo, getContext(), UIDvisited,descargar);
                     descargaCancion = true;

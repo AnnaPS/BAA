@@ -7,16 +7,19 @@ public class KeyChat {
     private String img;
     private String key;
     private ArrayList<Mensajes2> historcoMensajes = new ArrayList<>();
-    private String tipo;
-    private String notificaciones="false-false";
+    private String tipo = "null-null";
+    private String notificaciones = "false-false";
+
+
 
     public KeyChat() {
     }
 
-    public KeyChat(String img, String nombre, String key) {
+    public KeyChat(String tipo, String img, String nombre, String key) {
         this.nombre = nombre;
         this.key = key;
         this.img = img;
+        this.tipo = tipo;
     }
 
     public String getTipo() {

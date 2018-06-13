@@ -7,13 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +20,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*import com.crashlytics.android.Crashlytics;*/
 import com.example.pc.bandsnarts.Activities.RegistarMusico;
 import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
-import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
@@ -42,14 +37,10 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -58,9 +49,10 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+
+/*import com.crashlytics.android.Crashlytics;*/
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -281,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void onClickIngresarVLogin(View view) {
         if (edtPass.getText().toString().isEmpty() || edtUser.getText().toString().isEmpty()) {
-            Toast.makeText(this, "DEBE INSERTAR AMBOS DATOS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Debe insertar ambos datos.", Toast.LENGTH_SHORT).show();
         } else {
             if (recordarLogin.isChecked()) {
                 // Guardar en preferencias el correo y la contraseña
@@ -306,6 +298,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // SI ALGO SALE MAL EN LA CONEXION...INFORMAR AL USUARIO
         Toast.makeText(ventanaPrincipal, "Por favor compruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
+        System.out.println("Sin conexion a Internet");
     }
 
     public void onClickIngresoGoogle(View view) {
@@ -440,7 +433,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnAceptarAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PreferenceManager.getDefaultSharedPreferences(estaVentana).edit().putInt("intentos", 0).commit();
+
                 if (grupo.isChecked()) {
                     startActivityForResult(new Intent(ventanaPrincipal, RegistrarGrupo.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
@@ -448,7 +441,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     startActivityForResult(new Intent(ventanaPrincipal, RegistarMusico.class), BandsnArts.CODIGO_DE_REGISTRO);
                     alerta.cancel();
                 } else {
-                    Toast.makeText(LoginActivity.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Debe seleccionar alguna opción.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -508,7 +501,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Toast.makeText(LoginActivity.this, "Correo de recuperación enviado", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Log.d("EMAIL", "email no valido");
-                                    Toast.makeText(LoginActivity.this, "e-mail no valido", Toast.LENGTH_SHORT).show();
                                     ad.show();
                                     cajaemail.setError("Correo no válido.");
                                 }

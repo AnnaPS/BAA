@@ -3,25 +3,19 @@ package com.example.pc.bandsnarts.Container;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -34,16 +28,13 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Adaptadores.AdaptadorContactos;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.KeyChat;
-import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.github.library.bubbleview.BubbleDrawable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,8 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 // Clase necesaria para conocer los logueos con FaceBook
 // Reutilizar esta clase para Datos comunes y metodos staticos en toda la App
@@ -94,6 +83,7 @@ public class BandsnArts extends Application implements Runnable {
     public static String nombre;
     public static String imgChat;
     public static String img;
+    public static String tipo;
     public static boolean encontrado;
     public static ArrayList<String> UID_MUSICO = new ArrayList<>();
     public static ArrayList<String> UID_GRUPO = new ArrayList<>();
@@ -385,7 +375,7 @@ public class BandsnArts extends Application implements Runnable {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             VentanaInicialApp.a.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "INSERTE UNA URL", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "Inserte una URL", Toast.LENGTH_SHORT).show();
         }
 
     }

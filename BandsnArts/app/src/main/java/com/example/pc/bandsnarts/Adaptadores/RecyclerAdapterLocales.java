@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pc.bandsnarts.Objetos.Local;
-import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
 
 import java.util.ArrayList;

@@ -2,7 +2,6 @@ package com.example.pc.bandsnarts.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -20,7 +19,6 @@ import com.example.pc.bandsnarts.Login.Autentificacion;
 import com.example.pc.bandsnarts.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrarGrupo extends AppCompatActivity {
     Spinner spinnerEstilos;
@@ -114,7 +112,7 @@ public class RegistrarGrupo extends AppCompatActivity {
                         RegistrarGrupo.this.findViewById(R.id.btnRegistrarVRegGrupo).setVisibility(View.VISIBLE);
                     }
                 });
-                /*Toast.makeText(this, "REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();*/
+
                 //se lanza la info inicial
                 FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
                     @Override

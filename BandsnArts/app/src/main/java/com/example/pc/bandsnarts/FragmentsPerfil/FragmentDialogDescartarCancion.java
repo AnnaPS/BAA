@@ -3,17 +3,13 @@ package com.example.pc.bandsnarts.FragmentsPerfil;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
@@ -59,7 +55,6 @@ public class FragmentDialogDescartarCancion extends DialogFragment {
             btnCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getActivity(), "CANCELAR", Toast.LENGTH_SHORT).show();
                     FragmentMiPerfil.bottomTools.setVisibility(View.VISIBLE);
                     getDialog().dismiss();
                 }
@@ -69,9 +64,7 @@ public class FragmentDialogDescartarCancion extends DialogFragment {
         btnAcepar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "ACEPTAR", Toast.LENGTH_SHORT).show();
                 if(a instanceof FragmentMultimedia){
-                    Toast.makeText(VentanaInicialApp.a, "BORRAR CANCION", Toast.LENGTH_SHORT).show();
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                     StorageReference cancion = storageRef.child("audios/" + FirebaseAuth.getInstance().getCurrentUser().getUid()
                             + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".mpeg");

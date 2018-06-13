@@ -3,33 +3,23 @@ package com.example.pc.bandsnarts.BBDD;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,32 +28,24 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.bumptech.glide.Glide;
 import com.example.pc.bandsnarts.Activities.RegistarRedSocial;
-import com.example.pc.bandsnarts.Activities.RegistrarGrupo;
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.Activities.VentanaSliderParteDos;
-
 import com.example.pc.bandsnarts.Adaptadores.AdaptadorContactos;
 import com.example.pc.bandsnarts.Adaptadores.AdaptadorMensajes;
-import com.example.pc.bandsnarts.Adaptadores.HolderMensajes;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterGrupo;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterLocales;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterMusico;
 import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterSalas;
-import com.example.pc.bandsnarts.Contactos.FragmentContactos;
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogDescartarCambios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
-import com.example.pc.bandsnarts.FragmentsTabLayoutsInicio.FragmentMusicosTabInicio;
 import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.Objetos.Grupo;
 import com.example.pc.bandsnarts.Objetos.KeyChat;
@@ -72,16 +54,12 @@ import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.Objetos.Musico;
 import com.example.pc.bandsnarts.Objetos.Sala;
 import com.example.pc.bandsnarts.R;
-import com.github.library.bubbleview.BubbleDrawable;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.RuntimeExecutionException;
-import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.ChildEventListener;
@@ -94,14 +72,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Array;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -109,14 +82,6 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-
-import static com.example.pc.bandsnarts.Container.BandsnArts.encontrado;
-import static com.example.pc.bandsnarts.Container.BandsnArts.keyP1;
-import static com.example.pc.bandsnarts.Container.BandsnArts.keyP2;
-import static com.example.pc.bandsnarts.Container.BandsnArts.mediaPlayer;
-import static com.example.pc.bandsnarts.Container.BandsnArts.nombre;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BDBAA extends AppCompatActivity {
 
@@ -445,7 +410,7 @@ public class BDBAA extends AppCompatActivity {
                         FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(0, -1);
                         alerta.show(fm, "AlertaAnuncio");
                     } else {
-                        Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "Solo puede añadir hasta 4 anuncios.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "Máximo 4 anuncios.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -827,7 +792,7 @@ public class BDBAA extends AppCompatActivity {
                             // Estilo
                             posicion = BandsnArts.posicionSpinner(vista.getResources().getStringArray(R.array.estiloMusical), musico.getEstilo());
                             ((Spinner) vista.findViewById(R.id.spEstiloVVerMiPerfil)).setSelection(posicion);
-                            Toast.makeText(context, "" + posicion, Toast.LENGTH_SHORT).show();
+
                             //localidaProvincia
                             BandsnArts.cargarLocalidadProvincia(vista, musico, (Spinner) vista.findViewById(R.id.spProvinVVerMiPerfil), ((Spinner) vista.findViewById(R.id.spLocaliVVerMiPerfil)));
 
@@ -1294,37 +1259,51 @@ public class BDBAA extends AppCompatActivity {
     //Creación nodos chat
     public static void nuevoMensaje(final String KEYCHAT, final String mens) {
         final DatabaseReference bd;
-        boolean encontrado=false;
+        boolean encontrado = false;
+        String UID_del_otro;
+        String tipo_del_otro;
+
+        if(KEYCHAT.split("-")[0].equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            UID_del_otro = KEYCHAT.split("-")[1];
+            tipo_del_otro = BandsnArts.tipo.split("-")[1];
+        }else{
+            UID_del_otro = KEYCHAT.split("-")[0];
+            tipo_del_otro = BandsnArts.tipo.split("-")[0];
+        }
+
+        comprobarConversacionExistente(tipo_del_otro, FirebaseAuth.getInstance().getCurrentUser().getUid(), UID_del_otro, VentanaInicialApp.a, 1);
+
         if (!FragmentMensajes.adaptadorMensajes.getListaMensajes().isEmpty()) {
-            if (FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens)&&FragmentMensajes.adaptadorMensajes.getLastItem().getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                encontrado=true;
+            if (FragmentMensajes.adaptadorMensajes.getLastItem().getMensaje().equals(mens) && FragmentMensajes.adaptadorMensajes.getLastItem().getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                encontrado = true;
             }
         }
-        if(!encontrado){
-        System.out.println(KEYCHAT);
-        bd = FirebaseDatabase.getInstance().getReference("keychat");
-        Query q = bd.orderByChild("key").equalTo(KEYCHAT);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    KeyChat chat = data.getValue(KeyChat.class);
-                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
-                        chat.setNotificaciones(chat.getNotificaciones().split("-")[0] + "-true");
-                    } else {
-                        chat.setNotificaciones("true-" + chat.getNotificaciones().split("-")[1]);
+        if (!encontrado) {
+            System.out.println(KEYCHAT);
+            bd = FirebaseDatabase.getInstance().getReference("keychat");
+            Query q = bd.orderByChild("key").equalTo(KEYCHAT);
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        KeyChat chat = data.getValue(KeyChat.class);
+                        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(KEYCHAT.split("-")[0])) {
+                            chat.setNotificaciones(chat.getNotificaciones().split("-")[0] + "-true");
+                        } else {
+                            chat.setNotificaciones("true-" + chat.getNotificaciones().split("-")[1]);
+                        }
+                        chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("HH:mm").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                        bd.child(data.getKey()).setValue(chat);
                     }
-                    chat.getHistorcoMensajes().add(new Mensajes2(mens, BandsnArts.nomChat, BandsnArts.imgChat, new SimpleDateFormat("HH:mm").format(new Date()), FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                    bd.child(data.getKey()).setValue(chat);
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });}
+                }
+            });
+        }
     }
 
     //ComprobarChatexistente
@@ -1387,10 +1366,11 @@ public class BDBAA extends AppCompatActivity {
     }
 
     //Comprobar conversación existente
-    public static void comprobarConversacionExistente(final String tipo, final String uid, final String pos, final Activity ctx) {
+    public static void comprobarConversacionExistente(final String tipo, final String uid, final String pos, final Activity ctx, final int op) {
         final DatabaseReference bd;
         BandsnArts.nombre = "";
         BandsnArts.img = "";
+        BandsnArts.tipo ="";
         BandsnArts.encontrado = false;
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(pos);
@@ -1412,6 +1392,7 @@ public class BDBAA extends AppCompatActivity {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = musico.getNombre();
                                             BandsnArts.encontrado = true;
+                                            BandsnArts.tipo = "musico";
                                             break;
                                         }
                                     }
@@ -1433,6 +1414,7 @@ public class BDBAA extends AppCompatActivity {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = grupo.getNombre();
                                             BandsnArts.encontrado = true;
+                                            BandsnArts.tipo = "grupo";
                                             break;
                                         }
                                     }
@@ -1464,6 +1446,7 @@ public class BDBAA extends AppCompatActivity {
                                                 musico.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + musico.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + musico.getImagen();
+                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "musico";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
                                             }
                                             break;
@@ -1479,6 +1462,7 @@ public class BDBAA extends AppCompatActivity {
                                                 grupo.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + grupo.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + grupo.getImagen();
+                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "grupo";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
                                             }
                                             break;
@@ -1497,11 +1481,20 @@ public class BDBAA extends AppCompatActivity {
                                                 break;
                                             }
                                         }
+
                                         if (!BandsnArts.encontrado) {
-                                            bd.child(bd.push().getKey()).setValue(new KeyChat(BandsnArts.img, BandsnArts.nombre, (BandsnArts.keyP1 + "-" + uid)));
+                                            bd.child(bd.push().getKey()).setValue(new KeyChat(BandsnArts.tipo, BandsnArts.img, BandsnArts.nombre, (BandsnArts.keyP1 + "-" + uid)));
                                         }
-                                        VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
-                                        ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(BandsnArts.nombre.split("-")[0]);
+                                        switch (op) {
+                                            case (0):
+                                                VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                                                ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(BandsnArts.nombre.split("-")[0]);
+                                                break;
+                                            default:
+
+                                                break;
+                                        }
+
                                     }
 
                                     @Override
@@ -1558,8 +1551,14 @@ public class BDBAA extends AppCompatActivity {
                                             }
                                             break;
                                     }
-                                    VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
-                                    ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(BandsnArts.nombre.split("-")[0]);
+                                    switch (op) {
+                                        case (0):
+                                            VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentMensajes()).commit();
+                                            ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(BandsnArts.nombre.split("-")[0]);
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
 
@@ -2315,7 +2314,7 @@ public class BDBAA extends AppCompatActivity {
                 ((Activity) ctx.getContext()).findViewById(R.id.sv_fragment_v_perfil).setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.floatingBPerfil).setVisibility(View.VISIBLE);
                 ((Activity) ctx.getContext()).findViewById(R.id.vermiperfil).setBackgroundColor(ctx.getContext().getResources().getColor(R.color.md_white_1000));
-                Toast.makeText(ctx.getContext(), "No pudo subirse la foto con exito pruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx.getContext(), "No pudo subirse la foto, compruebe su conexión a la red.", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

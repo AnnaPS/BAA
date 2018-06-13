@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
-import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.KeyChat;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 /**
@@ -45,8 +43,8 @@ public class AdaptadorContactos extends RecyclerView.Adapter<HolderContactos> {
     @Override
     public void onBindViewHolder(HolderContactos holder, int position) {
         final KeyChat item = (KeyChat) listaContactos.get(position);
-        //HACER ON CLICK DEL CARDVIEW PARA LANZAR LA VENTANA DE CHAT DE ESA PERSONA
         holder.KEYCHAT = item.getKey();
+        holder.tipo = item.getTipo();
         System.out.println(Boolean.parseBoolean(item.getNotificaciones()) + "NOTIFICATION");
         if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals( holder.KEYCHAT.split("-")[0])) {
             if (Boolean.parseBoolean(item.getNotificaciones().split("-")[0])) {

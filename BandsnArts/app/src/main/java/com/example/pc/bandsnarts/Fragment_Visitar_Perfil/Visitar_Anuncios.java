@@ -2,10 +2,8 @@ package com.example.pc.bandsnarts.Fragment_Visitar_Perfil;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
-import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
-import com.example.pc.bandsnarts.Objetos.Anuncio;
 import com.example.pc.bandsnarts.R;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
 public class Visitar_Anuncios extends Fragment {

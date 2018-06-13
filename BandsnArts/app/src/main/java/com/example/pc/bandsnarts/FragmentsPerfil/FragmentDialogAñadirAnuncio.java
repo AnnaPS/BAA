@@ -1,9 +1,7 @@
 package com.example.pc.bandsnarts.FragmentsPerfil;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,10 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,10 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
-import com.example.pc.bandsnarts.Adaptadores.RecyclerAdapterAnuncioPropio;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
 import com.example.pc.bandsnarts.Container.BandsnArts;
-import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
 import com.google.firebase.auth.FirebaseAuth;
 

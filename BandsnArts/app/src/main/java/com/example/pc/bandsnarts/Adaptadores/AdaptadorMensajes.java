@@ -12,7 +12,6 @@ import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Objetos.Mensajes2;
 import com.example.pc.bandsnarts.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

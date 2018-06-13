@@ -1,7 +1,5 @@
 package com.example.pc.bandsnarts.Objetos;
 
-import java.util.ArrayList;
-
 public class Anuncio {
     private String titulo;
     private String descripcion;

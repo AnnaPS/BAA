@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,13 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.bandsnarts.BBDD.BDBAA;
-
 import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.R;
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class RegistarRedSocial extends AppCompatActivity {
@@ -111,7 +105,7 @@ public class RegistarRedSocial extends AppCompatActivity {
                     tipo = 0;
                     alerta.cancel();
                 } else {
-                    Toast.makeText(RegistarRedSocial.this, "POR FAVOR, ELIJA ALGUNA OPCIÓN PARA CONTINUAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistarRedSocial.this, "Debe seleccionar alguna opción.", Toast.LENGTH_SHORT).show();
                 }
                 switch (tipo) {
                     case 1:
@@ -209,7 +203,6 @@ public class RegistarRedSocial extends AppCompatActivity {
     public void onClickLogueo(View view) {
         if (edtNombre.getText().toString().isEmpty()) {
             edtNombre.setError("Debe Insertar su nombre");
-            Toast.makeText(a, "Debe Insertar su nombre", Toast.LENGTH_SHORT).show();
             edtNombre.requestFocus();
 
         }else if(edtDescripcion.getText().toString().isEmpty()){

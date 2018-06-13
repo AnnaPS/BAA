@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pc.bandsnarts.Activities.VentanaInicialApp;
 import com.example.pc.bandsnarts.BBDD.BDBAA;
@@ -88,14 +86,11 @@ public class RecyclerAdapterAnuncioPropio extends RecyclerView.Adapter<RecyclerA
                                         android.app.FragmentManager fm = VentanaInicialApp.a.getFragmentManager();
                                         FragmentDialogAñadirAnuncio alerta = new FragmentDialogAñadirAnuncio(1, position);
                                         alerta.show(fm, "AlertaAnuncio");
-                                        Toast.makeText(mContext, "Opcion editar", Toast.LENGTH_SHORT).show();
                                         break;
-
                                     case R.id.menu_anuncio_eliminar:
                                         listaA.remove(position);
                                         BDBAA.eliminarAnuncio(PreferenceManager.getDefaultSharedPreferences(mContext).getString("tipo", ""), FirebaseAuth.getInstance().getCurrentUser().getUid(), listaA);
                                         notifyDataSetChanged();
-                                        Toast.makeText(mContext, "Eliminado con exito", Toast.LENGTH_SHORT).show();
                                         break;
                                     default:
                                         break;
