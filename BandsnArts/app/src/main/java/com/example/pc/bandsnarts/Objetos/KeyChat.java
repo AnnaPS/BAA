@@ -7,7 +7,7 @@ public class KeyChat {
     private String img;
     private String key;
     private ArrayList<Mensajes2> historcoMensajes = new ArrayList<>();
-    private String tipo = "null-null";
+    private String tipo = "tipo-tipo";
     private String notificaciones = "false-false";
 
 

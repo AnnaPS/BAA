@@ -1263,10 +1263,10 @@ public class BDBAA extends AppCompatActivity {
         String UID_del_otro;
         String tipo_del_otro;
 
-        if(KEYCHAT.split("-")[0].equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        if (KEYCHAT.split("-")[0].equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             UID_del_otro = KEYCHAT.split("-")[1];
             tipo_del_otro = BandsnArts.tipo.split("-")[1];
-        }else{
+        } else {
             UID_del_otro = KEYCHAT.split("-")[0];
             tipo_del_otro = BandsnArts.tipo.split("-")[0];
         }
@@ -1316,38 +1316,38 @@ public class BDBAA extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     KeyChat keyChat = ds.getValue(KeyChat.class);
-                   switch (tipo){
-                       case "musico":
-                           if ((uid + "-" + pos).equals(keyChat.getKey())) {
-                               BandsnArts.encontrado = true;
-                               BandsnArts.keyP1 = uid;
-                               BandsnArts.keyP2 = musico.getUid();
-                               BandsnArts.KEYCHAT = uid + "-" + pos;
-                               break;
-                           } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
-                               BandsnArts.encontrado = true;
-                               BandsnArts.keyP1 = musico.getUid();
-                               BandsnArts.keyP2 = uid;
-                               BandsnArts.KEYCHAT = pos + "-" + uid;
-                               break;
-                           }
-                           break;
-                       case "grupo":
-                           if ((uid + "-" + pos).equals(keyChat.getKey())) {
-                               BandsnArts.encontrado = true;
-                               BandsnArts.keyP1 = uid;
-                               BandsnArts.keyP2 = grupo.getUid();
-                               BandsnArts.KEYCHAT = uid + "-" + pos;
-                               break;
-                           } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
-                               BandsnArts.encontrado = true;
-                               BandsnArts.keyP1 = grupo.getUid();
-                               BandsnArts.keyP2 = uid;
-                               BandsnArts.KEYCHAT = pos + "-" + uid;
-                               break;
-                           }
-                           break;
-                   }
+                    switch (tipo) {
+                        case "musico":
+                            if ((uid + "-" + pos).equals(keyChat.getKey())) {
+                                BandsnArts.encontrado = true;
+                                BandsnArts.keyP1 = uid;
+                                BandsnArts.keyP2 = musico.getUid();
+                                BandsnArts.KEYCHAT = uid + "-" + pos;
+                                break;
+                            } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
+                                BandsnArts.encontrado = true;
+                                BandsnArts.keyP1 = musico.getUid();
+                                BandsnArts.keyP2 = uid;
+                                BandsnArts.KEYCHAT = pos + "-" + uid;
+                                break;
+                            }
+                            break;
+                        case "grupo":
+                            if ((uid + "-" + pos).equals(keyChat.getKey())) {
+                                BandsnArts.encontrado = true;
+                                BandsnArts.keyP1 = uid;
+                                BandsnArts.keyP2 = grupo.getUid();
+                                BandsnArts.KEYCHAT = uid + "-" + pos;
+                                break;
+                            } else if ((pos + "-" + uid).equals(keyChat.getKey())) {
+                                BandsnArts.encontrado = true;
+                                BandsnArts.keyP1 = grupo.getUid();
+                                BandsnArts.keyP2 = uid;
+                                BandsnArts.KEYCHAT = pos + "-" + uid;
+                                break;
+                            }
+                            break;
+                    }
                 }
 
                 switch (tipo) {
@@ -1389,7 +1389,7 @@ public class BDBAA extends AppCompatActivity {
         final DatabaseReference bd;
         BandsnArts.nombre = "";
         BandsnArts.img = "";
-        BandsnArts.tipo ="";
+        BandsnArts.tipo = "";
         BandsnArts.encontrado = false;
         bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(pos);
@@ -1407,17 +1407,22 @@ public class BDBAA extends AppCompatActivity {
                                     for (String key : musico.getKeyChat()) {
                                         BandsnArts.keyP1 = key.split("-")[0];
                                         BandsnArts.keyP2 = key.split("-")[1];
+                                        BandsnArts.tipo = "musico";
                                         if (uid.equals(BandsnArts.keyP1) || uid.equals(BandsnArts.keyP2)) {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = musico.getNombre();
                                             BandsnArts.encontrado = true;
-                                            BandsnArts.tipo = "musico";
                                             break;
                                         }
                                     }
                                     if (!BandsnArts.encontrado) {
                                         BDBAA.comprobarChatexistente(uid, pos, "musico", musico, null, bd, data);
                                     }
+                                }
+                                if (uid.equals(BandsnArts.keyP1)) {
+                                    BandsnArts.tipo = PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "") + "-" + "musico";
+                                } else {
+                                    BandsnArts.tipo = "musico" + "-" + PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "");
                                 }
 
                                 break;
@@ -1429,17 +1434,22 @@ public class BDBAA extends AppCompatActivity {
                                     for (String key : grupo.getKeyChat()) {
                                         BandsnArts.keyP1 = key.split("-")[0];
                                         BandsnArts.keyP2 = key.split("-")[1];
+                                        BandsnArts.tipo = "grupo";
                                         if (uid.equals(BandsnArts.keyP1) || uid.equals(BandsnArts.keyP2)) {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = grupo.getNombre();
                                             BandsnArts.encontrado = true;
-                                            BandsnArts.tipo = "grupo";
                                             break;
                                         }
                                     }
                                     if (!BandsnArts.encontrado) {
                                         BDBAA.comprobarChatexistente(uid, pos, "grupo", null, grupo, bd, data);
                                     }
+                                }
+                                if (uid.equals(BandsnArts.keyP1)) {
+                                    BandsnArts.tipo = PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "") + "-" + "grupo";
+                                } else {
+                                    BandsnArts.tipo = "grupo" + "-" + PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "");
                                 }
                                 break;
                         }
@@ -1461,11 +1471,11 @@ public class BDBAA extends AppCompatActivity {
                                                     break;
                                                 }
                                             }
+
                                             if (!BandsnArts.encontrado) {
                                                 musico.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + musico.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + musico.getImagen();
-                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "musico";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
                                             }
                                             break;
@@ -1477,11 +1487,11 @@ public class BDBAA extends AppCompatActivity {
                                                     break;
                                                 }
                                             }
+
                                             if (!BandsnArts.encontrado) {
                                                 grupo.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + grupo.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + grupo.getImagen();
-                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "grupo";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
                                             }
                                             break;
@@ -1510,7 +1520,6 @@ public class BDBAA extends AppCompatActivity {
                                                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle(BandsnArts.nombre.split("-")[0]);
                                                 break;
                                             default:
-
                                                 break;
                                         }
 
@@ -1551,7 +1560,6 @@ public class BDBAA extends AppCompatActivity {
                                                 musico.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + musico.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + musico.getImagen();
-                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "musico";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(musico);
                                             }
                                             break;
@@ -1567,7 +1575,6 @@ public class BDBAA extends AppCompatActivity {
                                                 grupo.getKeyChat().add(BandsnArts.KEYCHAT);
                                                 BandsnArts.nombre = BandsnArts.nombre + "-" + grupo.getNombre();
                                                 BandsnArts.img = BandsnArts.img + "-" + grupo.getImagen();
-                                                BandsnArts.tipo = BandsnArts.tipo +"-"+ "grupo";
                                                 FirebaseDatabase.getInstance().getReference(PreferenceManager.getDefaultSharedPreferences(ctx).getString("tipo", "")).child(data.getKey()).setValue(grupo);
                                             }
                                             break;
