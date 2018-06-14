@@ -1407,7 +1407,6 @@ public class BDBAA extends AppCompatActivity {
                                     for (String key : musico.getKeyChat()) {
                                         BandsnArts.keyP1 = key.split("-")[0];
                                         BandsnArts.keyP2 = key.split("-")[1];
-                                        BandsnArts.tipo = "musico";
                                         if (uid.equals(BandsnArts.keyP1) || uid.equals(BandsnArts.keyP2)) {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = musico.getNombre();
@@ -1434,7 +1433,6 @@ public class BDBAA extends AppCompatActivity {
                                     for (String key : grupo.getKeyChat()) {
                                         BandsnArts.keyP1 = key.split("-")[0];
                                         BandsnArts.keyP2 = key.split("-")[1];
-                                        BandsnArts.tipo = "grupo";
                                         if (uid.equals(BandsnArts.keyP1) || uid.equals(BandsnArts.keyP2)) {
                                             BandsnArts.KEYCHAT = key;
                                             BandsnArts.nombre = grupo.getNombre();
