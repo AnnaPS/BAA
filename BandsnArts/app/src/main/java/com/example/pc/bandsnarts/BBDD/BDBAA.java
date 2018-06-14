@@ -2144,14 +2144,17 @@ public class BDBAA extends AppCompatActivity {
                                     @Override
                                     public void onCompletion(MediaPlayer mp) {
                                         BandsnArts.mediaPlayer.pause();
-                                        FragmentMultimedia.playButton.setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
+                                        try {
+                                            FragmentMultimedia.playButton.setBackgroundDrawable(VentanaInicialApp.a.getApplicationContext().getDrawable(R.drawable.play));
+                                        }catch (NullPointerException e){
+                                        }
                                     }
                                 });
                             }
                         });
 
                     } else {
-                        // OCULTAR REPRODUCTOR
+                       
                     }
                 }
             }
