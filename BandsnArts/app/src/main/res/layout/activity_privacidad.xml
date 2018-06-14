@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="Acepta la nueva política de privacidad para poderder disfrutar de \nBands n' Arts"
+        android:text="Acepta la nueva política de privacidad para poder disfrutar de \nBands n' Arts"
         android:textAlignment="center"
         android:textColor="@color/md_black_1000"
         android:textSize="18dp"
