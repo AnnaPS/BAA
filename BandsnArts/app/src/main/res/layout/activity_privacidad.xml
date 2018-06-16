@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/teal"
+    android:orientation="vertical"
+    tools:context=".Privacidad.Privacidad">
+
+    <Button
+        android:id="@+id/btnSalirPrivacidad"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#14FFFFFF"
+        android:text="X"
+        android:textColor="@color/md_black_1000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Acepta la nueva política de privacidad para poder disfrutar de \nBands n' Arts"
+        android:textAlignment="center"
+        android:textColor="@color/md_black_1000"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/privacidad"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bordefondoblanco"
+        android:padding="10dp"
+        android:scrollHorizontally="true"
+        android:scrollbars="vertical"
+        android:text="@string/privacidad" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="* Podrá consultar las políticas de privacidad desde la opción de ayuda"
+        android:textColor="@color/md_white_1000"
+        android:textSize="11dp"
+        android:textStyle="italic" />
+
+    <CheckBox
+        android:id="@+id/chkAceptarPolitica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:text="Acepto las políticas de privacidad"
+        android:textColor="@color/md_white_1000" />
+
+    <Button
+        android:id="@+id/btnAceptarPolitica"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bordenegro"
+        android:text="Aceptar"
+        android:textColor="@color/md_white_1000"
+        android:textSize="20dp" />
+
+</LinearLayout>
