@@ -12,12 +12,12 @@
         android:id="@+id/progressBarVMedia"
         android:layout_width="140dp"
         android:layout_height="154dp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center|center_horizontal"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="250dp"
         android:adjustViewBounds="false"
         android:baselineAlignBottom="false"
         android:cropToPadding="false"
-        android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <ScrollView

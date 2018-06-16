@@ -44,11 +44,7 @@
             android:name=".Login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".Container.MiFirebaseInstanceIdService">
@@ -75,9 +71,14 @@
             android:label="@string/title_activity_ventana_inicial_app"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Privacidad.Privacidad"
-            android:screenOrientation="portrait"
-            ></activity>
+        <activity
+            android:name=".Privacidad.Privacidad"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

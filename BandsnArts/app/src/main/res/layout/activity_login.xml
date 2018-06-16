@@ -87,7 +87,6 @@
             android:fontFamily="sans-serif"
             android:hint="e-mail"
             android:inputType="textPersonName"
-            android:maxLength="35"
             android:paddingLeft="10dp"
             android:textColor="@color/md_white_1000"
             android:textColorHint="@color/md_white_1000" />

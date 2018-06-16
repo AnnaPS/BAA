@@ -13,6 +13,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="#14FFFFFF"
+        android:onClick="clickSalirPrivacidad"
         android:text="X"
         android:textColor="@color/md_black_1000"
         android:textSize="20dp"
@@ -52,8 +53,8 @@
         android:id="@+id/chkAceptarPolitica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
         android:text="Acepto las políticas de privacidad"
         android:textColor="@color/md_white_1000" />
 
@@ -64,6 +65,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bordenegro"
+        android:onClick="clickAceptarPoli"
         android:text="Aceptar"
         android:textColor="@color/md_white_1000"
         android:textSize="20dp" />
