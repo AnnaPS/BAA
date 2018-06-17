@@ -228,7 +228,7 @@ public class FragmentVerMiPerfil extends Fragment {
                                 alerta.show(fm, "AlertaDescartar");
 
                             }
-                        }else {
+                        } else {
                             Toast.makeText(vista.getContext(), "Por favor, inserte una descripción.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -266,9 +266,7 @@ public class FragmentVerMiPerfil extends Fragment {
         BandsnArts.loadSpinnerProvincias(spProvincia);
 
         escuchadoresSpinner();
-        if (op == 1)
-
-        {
+        if (op == 1)        {
             // En funcion de si el usuario es músico o grupo
             ///////// REVISAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!
             ocultarSpinners(PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", ""));
@@ -557,7 +555,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 if (mayRequestStoragePermission()) {
                     showOptions();
                 } else {
-                  // showExplanation();
+                    // showExplanation();
                 }
             }
         });
