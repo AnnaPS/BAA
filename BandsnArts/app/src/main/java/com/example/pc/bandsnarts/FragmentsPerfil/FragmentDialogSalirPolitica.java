@@ -10,13 +10,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.pc.bandsnarts.BBDD.BDBAA;
+import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
 import com.example.pc.bandsnarts.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 @SuppressLint("ValidFragment")
-public class FragmentDialogAceptaPolitica extends DialogFragment {
+public class FragmentDialogSalirPolitica extends DialogFragment {
     Button btnAcepar, btnCancelar;
     TextView tv_titulo, tv_subtitulo;
-    private static final String TAG = "AlertaAceptaPolitica";
+    private static final String TAG = "AlertaSalirPolitica";
     private String titulo, subtilo;
     public static Object a = null;
 
@@ -27,7 +32,7 @@ public class FragmentDialogAceptaPolitica extends DialogFragment {
     public OnInputListener onInputListener;
 
     @SuppressLint("ValidFragment")
-    public FragmentDialogAceptaPolitica(Object a, String titulo, String subTitulo) {
+    public FragmentDialogSalirPolitica(Object a, String titulo, String subTitulo) {
         this.a = a;
         this.titulo = titulo;
         this.subtilo = subTitulo;
@@ -46,13 +51,19 @@ public class FragmentDialogAceptaPolitica extends DialogFragment {
         tv_subtitulo.setText(subtilo);
         if(subtilo.equals("")){
             btnCancelar.setVisibility(View.GONE);
-        }else {
-            btnCancelar.setOnClickListener(null);
+        }else{
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getDialog().dismiss();
+                }
+            });
         }
+
         btnAcepar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+               getActivity().finish();
                 getDialog().dismiss();
             }
         });

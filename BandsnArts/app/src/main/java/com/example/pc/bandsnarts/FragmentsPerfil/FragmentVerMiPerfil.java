@@ -512,11 +512,9 @@ public class FragmentVerMiPerfil extends Fragment {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                         if (check) {
                             //si esta chequeado, es si
-                            Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
                             buscando = "si";
                         } else {
                             //es no
-                            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
                             buscando = "no";
                         }
                     }
@@ -541,11 +539,9 @@ public class FragmentVerMiPerfil extends Fragment {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                         if (check) {
                             //si esta chequeado, es si
-                            Toast.makeText(getApplicationContext(), "Si", Toast.LENGTH_SHORT).show();
                             buscando = "si";
                         } else {
                             //es no
-                            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
                             buscando = "no";
                         }
                     }
@@ -561,7 +557,7 @@ public class FragmentVerMiPerfil extends Fragment {
                 if (mayRequestStoragePermission()) {
                     showOptions();
                 } else {
-                    showExplanation();
+                  // showExplanation();
                 }
             }
         });
@@ -603,7 +599,7 @@ public class FragmentVerMiPerfil extends Fragment {
 
     //mostrar opciones
     private void showOptions() {
-        Toast.makeText(vista.getContext(), "HOLIHA", Toast.LENGTH_SHORT).show();
+
         //contiene todas las opciones que contiene el alert dialog
         final CharSequence[] option = {"Hacer foto", "Elegir de galeria", "Cancelar"};
         //alert dialog

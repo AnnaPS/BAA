@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAceptaPolitica;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogDescartarCancion;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogSalirPolitica;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.Login.LoginActivity;
 import com.example.pc.bandsnarts.R;
@@ -38,8 +39,12 @@ public class Privacidad extends AppCompatActivity {
     }
 
     public void clickSalirPrivacidad(View view) {
-        // Alert Esta Seguro?
-        finish();
+        //Alertdialog de advertencia
+        android.app.FragmentManager fm = this.getFragmentManager();
+        FragmentDialogSalirPolitica alerta = new FragmentDialogSalirPolitica(Privacidad.this, "¿ESTÁ SEGURO DE SALIR DE BANDS N'ARTS??", "Pulse Aceptar para salir.");
+        alerta.setCancelable(false);
+        alerta.show(fm, "AlertaPolitica");
+
     }
 
     public void clickAceptarPoli(View view) {
@@ -47,10 +52,9 @@ public class Privacidad extends AppCompatActivity {
         if(!chkAceptarPolitica.isChecked()){
             //Alertdialog de advertencia
             android.app.FragmentManager fm = this.getFragmentManager();
-            FragmentDialogAceptaPolitica alerta = new FragmentDialogAceptaPolitica(Privacidad.this, "DEBE ACEPTAR LA POLÍTICA DE PRIVACIDAD", "Si cancela, saldrá de la aplicación.");
+            FragmentDialogAceptaPolitica alerta = new FragmentDialogAceptaPolitica(Privacidad.this, "DEBE ACEPTAR LA POLÍTICA DE PRIVACIDAD", "");
             alerta.setCancelable(false);
             alerta.show(fm, "AlertaPolitica");
-          //  Toast.makeText(this, "Debe aceptar las políticas de privacidad para usar Bands n`Arts", Toast.LENGTH_SHORT).show();
         }else{
             // Guardamos en preferencias
             PreferenceManager.getDefaultSharedPreferences(this).edit().putString("privacidad", "ACEPTO").commit();

@@ -203,7 +203,7 @@ public class FragmentMultimedia extends Fragment {
                     //////////////////////////////////////
                     subirAudio();
                 }else{
-                    showExplanation();
+                   // showExplanation();
                 }
             }
         });
@@ -307,7 +307,7 @@ public class FragmentMultimedia extends Fragment {
     private void showExplanation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(VentanaInicialApp.a);
         builder.setTitle("Permisos denegados");
-        builder.setMessage("Para cambiar la foto necesita aceptar los permisos");
+        builder.setMessage("Para subir un audio necesita aceptar los permisos");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -395,16 +395,20 @@ public class FragmentMultimedia extends Fragment {
         if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
                 && getContext().checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true;
+        }else{
+            showExplanation();
         }
         if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))) {
-            Snackbar.make(vista, "Los permisos son necesarios para poder editar el audio de perfil",
+            /*Snackbar.make(vista, "Los permisos son necesarios para poder editar el audio de perfil",
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //si le da al ok se aceptan los permisos
                     requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
                 }
-            }).show();
+            }).show();*/
+
+          //  showExplanation();
         } else {
             //si es la primera vez que se les pide los permisos pasa por aqui
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
