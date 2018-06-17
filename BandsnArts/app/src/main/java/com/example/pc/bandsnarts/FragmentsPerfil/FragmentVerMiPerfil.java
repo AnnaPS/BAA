@@ -575,23 +575,12 @@ public class FragmentVerMiPerfil extends Fragment {
             return true;
         }
         //comprueba si los permisos estan aceptados
-        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
             return true;
-        }
-        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(mrView, "Los permisos son necesarios para poder editar la foto de perfil",
-                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //si le da al ok se aceptan los permisos
-                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-                }
-            }).show();
-        } else {
-            //si es la primera vez que se les pide los permisos pasa por aqui
+        }else{
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
         }
+
         return false;
 
 

@@ -43,6 +43,7 @@ import com.example.pc.bandsnarts.Container.BandsnArts;
 import com.example.pc.bandsnarts.Fragment_Visitar_Perfil.Visitar_Perfil;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMensajes;
 import com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentMiPerfil;
+import com.example.pc.bandsnarts.FragmentsPerfil.FragmentAnuncios;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentDialogAñadirAnuncio;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentMultimedia;
 import com.example.pc.bandsnarts.FragmentsPerfil.FragmentVerMiPerfil;
@@ -231,7 +232,7 @@ public class BDBAA extends AppCompatActivity {
 
                     }
                     Toast.makeText(VentanaInicialApp.a.getApplicationContext(), "GUARDADO CON EXITO", Toast.LENGTH_SHORT).show();
-
+                    FragmentAnuncios.layout.setBackgroundColor(VentanaInicialApp.a.getResources().getColor(R.color.md_blue_grey_500));
                     RecyclerAdapterAnuncioPropio.adapterAnuncioPropio.notifyDataSetChanged();
                 }
             }
@@ -988,7 +989,7 @@ public class BDBAA extends AppCompatActivity {
 
     }
 
-    public static void cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo, final int op, View view) {
+    public static void  cargarAnuncios(final ArrayList lista, final RecyclerView recyclerView, final Activity activity, String uid, final String tipo, final int op, final View view) {
         DatabaseReference bd = FirebaseDatabase.getInstance().getReference(tipo);
         Query q = bd.orderByChild("uid").equalTo(uid);
         lista.clear();
@@ -1017,7 +1018,10 @@ public class BDBAA extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                 recyclerView.setAdapter(adapter);
                 recyclerView.setNestedScrollingEnabled(false);
-
+                if (lista.isEmpty()) {
+                    // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
+                    view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon2));
+                }
 
             }
 
@@ -1026,10 +1030,7 @@ public class BDBAA extends AppCompatActivity {
 
             }
         });
-        if (lista.isEmpty()) {
-            // IMAGEN DE FONDO PARA CUANDO EL USUARIO NO TIENE ANUNCIOS
-            view.setBackground(VentanaInicialApp.a.getResources().getDrawable(R.drawable.lennon2));
-        }
+
     }
 
     public static void cargarVisitarAnuncios(final String tipo, final RecyclerView recyclerView, final Activity activity, final int op, final String position, final View view) {

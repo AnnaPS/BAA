@@ -392,27 +392,12 @@ public class FragmentMultimedia extends Fragment {
             return true;
         }
         //comprueba si los permisos estan aceptados
-        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && getContext().checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if ((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && getContext().checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }else{
-            showExplanation();
-        }
-        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))) {
-            /*Snackbar.make(vista, "Los permisos son necesarios para poder editar el audio de perfil",
-                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //si le da al ok se aceptan los permisos
-                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-                }
-            }).show();*/
-
-          //  showExplanation();
-        } else {
-            //si es la primera vez que se les pide los permisos pasa por aqui
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
         }
+
         return false;
 
 
