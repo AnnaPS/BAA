@@ -23,7 +23,7 @@ public class FragmentAnuncios extends Fragment {
     FloatingActionButton miFAB;
     RecyclerView recyclerViewAnuncios;
     ArrayList<Anuncio> lista;
-    View layout;
+    public static View layout;
 
 
     @Override
