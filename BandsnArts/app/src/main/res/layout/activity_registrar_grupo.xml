@@ -150,6 +150,7 @@
                     android:ems="10"
                     android:fontFamily="sans-serif"
                     android:hint="EMAIL"
+                    android:maxLength="60"
                     android:inputType="textEmailAddress"
                     android:textSize="14sp"
                     android:textStyle="bold"

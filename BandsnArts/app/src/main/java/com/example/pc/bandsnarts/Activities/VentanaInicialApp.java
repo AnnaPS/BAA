@@ -315,7 +315,5 @@ public class VentanaInicialApp extends AppCompatActivity implements NavigationVi
     }
 
 
-    public void onclickPrueba(View view) {
-        Toast.makeText(a, "Pruebas", Toast.LENGTH_SHORT).show();
-    }
+
 }

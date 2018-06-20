@@ -203,7 +203,7 @@
                     android:layout_marginStart="73dp"
                     android:layout_marginTop="20dp"
                     android:ems="10"
-                    android:maxLength="25"
+                    android:maxLength="60"
                     android:fontFamily="sans-serif"
                     android:hint="EMAIL"
                     android:textStyle="bold"

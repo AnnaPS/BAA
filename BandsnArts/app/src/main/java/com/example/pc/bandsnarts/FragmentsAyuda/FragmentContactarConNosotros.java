@@ -40,13 +40,12 @@ public class FragmentContactarConNosotros extends Fragment {
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("text/plain");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PROBLEMA EN BANDS N' ARTS");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PROBLEMA/DUDA EN BANDS N' ARTS");
 
 
                 try {
                     startActivity(Intent.createChooser(emailIntent, "Enviar email."));
                     Log.i("EMAIL", "Enviando email...");
-                    //Toast.makeText(getContext(),"Email enviado con exito. Gracias por tu colaboración",Toast.LENGTH_LONG).show();
 
 
                 }

@@ -163,7 +163,6 @@ public class FragmentVerMiPerfil extends Fragment {
             @Override
             public void onClick(View view) {
                 //IMPLEMENTAR LA FUNCIONALIDAD DEL BOTON
-                Toast.makeText(getActivity(), "HAS PULSADO", Toast.LENGTH_SHORT).show();
                 VentanaInicialApp.fragment.beginTransaction().replace(R.id.contenedor, new FragmentVerMiPerfil(1)).commit();
                 ((AppCompatActivity) VentanaInicialApp.a).getSupportActionBar().setTitle("Perfil");
 
@@ -244,8 +243,6 @@ public class FragmentVerMiPerfil extends Fragment {
         {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Descartar", Toast.LENGTH_SHORT).show();
-
                 BandsnArts.banderaLocalidad = false;
                 ////LLAMADA AL ALERT DIALOG///////
                 android.app.FragmentManager fm = getActivity().getFragmentManager();
@@ -621,7 +618,6 @@ public class FragmentVerMiPerfil extends Fragment {
 
     //Metodo para abrir la camara
     private void openCamera() {
-        Toast.makeText(getActivity(), "camaaaara", Toast.LENGTH_SHORT).show();
         //esta variable guarda la ruta del alamacenamiento externo del dispositivo
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         //indica si el directorio media_directory esta creado o no

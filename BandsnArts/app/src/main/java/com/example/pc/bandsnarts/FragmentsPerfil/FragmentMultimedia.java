@@ -333,7 +333,6 @@ public class FragmentMultimedia extends Fragment {
         LayoutInflater inflador = VentanaInicialApp.a.getLayoutInflater();
         final View vistainflada = inflador.inflate(R.layout.alertdialogredes, null);
         final EditText cajaredes = vistainflada.findViewById(R.id.edtRedesAlertRedes);
-        Toast.makeText(VentanaInicialApp.a, tipo, Toast.LENGTH_SHORT).show();
         final AlertDialog ad = new AlertDialog.Builder(VentanaInicialApp.a).create();
         ad.setView(vistainflada);
         ad.setCancelable(false);
@@ -434,7 +433,6 @@ public class FragmentMultimedia extends Fragment {
 
                         // Guardamos la referencia del audio asociada al usuario en la BD
                         BDBAA.actualizarCancionPerfil(taskSnapshot.getMetadata().getName(), PreferenceManager.getDefaultSharedPreferences(vista.getContext()).getString("tipo", "musico"), playButton);
-                        Toast.makeText(vista.getContext(), "Referencia audio guardada en la BD", Toast.LENGTH_SHORT).show();
 
                         animationDrawable.stop();
 
