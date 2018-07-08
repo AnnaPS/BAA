@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentsMenuDrawer.FragmentInicio"
+    android:id="@+id/fragmentInicio"
+    android:orientation="vertical"
+
+
+  >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayoutInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:layout_marginTop="55dp"
+        app:tabTextColor="@color/md_white_1000"
+        app:tabIndicatorColor="@color/md_light_green_600"
+        android:background="@color/md_teal_400"/>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewPagerInicio"
+
+        />
+
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.pc.bandsnarts.FragmentsMenuDrawer.FragmentConfiguracion"
+    android:background="@color/md_grey_400">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="10dp"
+            android:text="Cuenta"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="@color/md_white_1000"
+            />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/md_teal_500"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+
+    <Button
+        android:id="@+id/btnEliminarCuentaConfiguracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="Eliminar cuenta"
+        android:background="@null"
+        android:textColor="@color/md_red_800"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="10dp"
+        />
+</FrameLayout>

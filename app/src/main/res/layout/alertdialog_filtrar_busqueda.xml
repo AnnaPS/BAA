@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bordeverde"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAtrasBusqueda"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/ic_keyboard_backspace_black_24dp"
+                android:backgroundTint="@color/md_light_green_600" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/txtTextoSexoAlertBusquedas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="SEXO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spSexoFiltrar"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="ESTILO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTextoInstrumentoAlertBusquedas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:text="INSTRUMENTO"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spEstiloFiltrar"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            <Spinner
+                android:id="@+id/spInstrumentoFiltrar"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="PROVINCIA"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:text="LOCALIDAD"
+                android:textColor="@color/md_teal_800"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spProvinciaFiltrar"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+            <Spinner
+                android:id="@+id/spLocalidadFiltrar"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bordeverde" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGuardarFiltrar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/yes"
+        app:backgroundTint="@color/md_teal_800"
+        app:fabSize="auto" />
+</android.support.design.widget.CoordinatorLayout>

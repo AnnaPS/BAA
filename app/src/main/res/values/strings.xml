@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">Bands n\' Arts</string>
+
+    <string name="facebook_app_id">232570263958018</string>
+    <string name="fb_login_protocol_scheme">fb232570263958018</string>
+
+    <string name="title_activity_ventana_inicial_app">VentanaInicialApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ayuda">ayuda</string>
+    <string name="title_activity_fragment_visitar_perfil__perfil">FragmentVisitarPerfil_Perfil
+    </string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_actvity_visitar_perfil">actvity_visitar_perfil</string>
+    <string name="modificar_datos_perfil">Modificar datos perfil</string>
+
+    <string name="privacidad">
+
+       \t\t\t\t\t\t<b><u>Política de Privacidad Bands n’ Arts.\n\n</u></b>
+
+<b>Recogida y tratamiento de datos de carácter personal.\n </b>
+
+Los datos de carácter personal son los que pueden ser utilizados para  identificar a una persona o ponerse en contacto con ella.
+Bands n’Arts puede solicitar datos personales de usuarios al acceder a la aplicación. Si no se facilitan esos datos personales, en muchos casos no podremos ofrecer los productos o servicios solicitados.
+Estos son algunos ejemplos de las categorías de datos de carácter personal que Bands n’Arts puede recoger y la finalidad para los que puede llevar a cabo el tratamiento de estos datos.\n\n
+
+<b>¿Qué datos de carácter personal se pueden recopilar?</b>\n
+
+        \t\t● Al crear un UID(registrarse) o descargar una actualización de software, se recopilan diferentes datos, como nombre, dirección de correo electrónico o los datos referentes a la localización del usuario. \n
+       \t\t ● Cuando se comparten contenidos, pueden recogerse los datos que facilitamos sobre esas personas, como su nombre, provincia o localidad. Se utilizarán dichos datos para facilitar las búsquedas a otros usuarios.\n\n
+
+<b>¿Qué datos de carácter personal se pueden recopilar? </b>\n\n
+    Bands n’Arts podrá utilizar los datos personales recabados para:\n
+       \t\t ● Los datos de carácter personal recopilados permiten mantenerle informado acerca de los últimos productos, las actualizaciones de software disponibles y los próximos eventos.\n
+        \t\t● También se utilizan los datos de carácter personal como ayuda para elaborar, perfeccionar, gestionar, proporcionar y mejorar los productos, servicios, contenidos y publicidad,  y  con  el  propósito  de  evitar  pérdidas  y  fraudes.\n
+       \t\t ● Pueden utilizarse los datos de carácter personal para comprobar la identidad, colaborar en la identificación de usuarios  y  decidir los  servicios  apropiados.\n
+        \t\t● También se utilizan esos datos de carácter personal con propósitos internos, incluyendo auditorías, análisis de datos y sondeos, para mejorar los productos, servicios y comunicaciones  a  clientes.\n
+       \t\t ● Si participa en un sorteo, un concurso o una promoción, pueden usarse los datos proporcionados para administrar estos programas.\n\n
+
+<b>Recopilación y tratamiento de datos de carácter no personal  </b>\n
+
+Bands n’Arts también recopilará datos de un modo que, por sí mismos, no pueden ser asociados directamente a una persona determinada. Estos datos de carácter no personal se pueden recopilar, tratar, transferir y publicar con cualquier intención.
+Estos son algunos ejemplos de las clases de datos de carácter no personal que Bands n’Arts puede recopilar y los fines para los que se realiza su tratamiento:\n
+
+        \t\t● Datos tales como categoría, idioma, identificador único de dispositivo, etc. para comprender mejor la conducta de nuestros clientes y mejorar nuestros productos y servicios.\n
+       \t\t ● Datos sobre cómo se usan determinados servicios, incluidas las consultas de búsqueda. Esta información se puede utilizar para incrementar la importancia de los resultados que aportan los servicios ofrecidos.\n
+        \t\t● Datos sobre cómo usa su dispositivo y las aplicaciones para facilitar a los desarrolladores la mejora de esas aplicaciones.    Si juntamos datos de carácter no personal con datos personales, los datos mezclados serán tratados como datos personales mientras sigan estando  combinados.\n\n
+<b>Divulgación a terceros</b>\n
+            \t\t●No se compartirán los datos con ningún tercero para sus propios fines de marketing.\n
+
+<b>Otros terceros</b>\n
+
+Es posible que Bands n’Arts en el marco de divulgue datos un proceso judicial de carácter o por petición de personal por mandato legal, una autoridad pública, tanto dentro como fuera de su país de residencia. Igualmente se puede publicar información personal si es necesaria o conveniente por motivos de seguridad nacional, para acatar la legislación vigente o por otras razones relevantes de orden público.
+Protección de datos de carácter personal\n
+
+Bands n’Arts garantizará la protección de los datos personales mediante cifrado durante el tránsito y, los alojados en instalaciones, con medidas  de  seguridad  físicas.
+Al usar ciertos productos, servicios o aplicaciones o al publicar opiniones en foros, salas de chat o redes sociales, el contenido y los datos de carácter personal que se comparta serán visible para otros usuarios, que tendrán la posibilidad de leerlos, compilarlos o usarlos. Usted será responsable de los datos de carácter personal que distribuya o  proporcione en estos casos.     Integridad y conservación de datos de carácter
+personal\n
+
+Bands n’Arts garantizará la exactitud y la calidad de los datos personales, se conservarán durante el tiempo necesario para cumplir los fines para los que fueron recabados, salvo que la ley exija conservarlos durante más tiempo.
+<b>Acceso a los datos de carácter personal</b>\n
+Respecto a los datos de carácter personal que conservamos, Bands n’Arts les ofrece acceso a ellos para cualquier fin, incluyendo las solicitudes de rectificación en caso de que sean incorrectos o de eliminación en caso de no estar obligados a conservarlos por imperativo legal o por razones legítimas de negocio. Nos reservamos el derecho a no tramitar aquellas solicitudes que sean improcedentes
+o vejatorias, que pongan en riesgo la privacidad de terceros, que resulten inviables o para las que la legislación local no exija derecho de acceso. Las solicitudes de acceso, rectificación o eliminación podrán enviarse a nuestra dirección de correo electrónico <b>bandsnarts@gmail.com</b>\n\n
+ <b>Niños  y  educación</b>\n
+Bands n’Arts es consciente de la necesidad de establecer precauciones adicionales para preservar la privacidad y la seguridad de los menores que utilizan las aplicaciones y exigir consentimiento de sus progenitores en caso de que no tengan la edad mínima exigida por la legislación (en España,  14  años).
+Si se han recopilado datos personales de un menor de 14 años, sin el consentimiento necesario, se debe eliminar esa información lo antes posible.\n\n
+<b>Servicios  de  localización</b>\n
+Para prestar servicios de localización Bands n’Arts podrá reunir, utilizar y compartir datos exactos sobre ubicaciones, incluyendo la situación geográfica en tiempo real de su ordenador o de su dispositivo.\n
+Salvo que nos den su consentimiento, estos datos de localización se recogen de manera anónima de forma que no pueden utilizarse para identificarlo personalmente, y son usados para suministrar y mejorar sus productos y servicios de localización.\n\n
+<b>Páginas  web  y  servicios   de   terceros</b>\n
+Las aplicaciones pueden contener enlaces a páginas web, productos y servicios de terceros.\n
+También pueden utilizar u ofrecer productos o servicios de terceros. La recogida de datos por parte de terceros, introduciendo de datos sobre ubicaciones geográficas o datos de contacto, se guiará por sus respectivas políticas de privacidad. Le recomendamos  consultar  las políticas  de  privacidad  de  esos terceros.
+
+    </string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuPerfil"
+        android:title="Perfil"
+        android:iconTint="@color/md_white_1000"
+        android:icon="@drawable/ic_account_circle_black_24dp"/>
+    <item
+        android:id="@+id/menuAnuncios"
+        android:title="Anuncios"
+        android:iconTint="@color/md_white_1000"
+        android:icon="@drawable/ic_library_books_black_24dp"/>
+    <item
+        android:id="@+id/menuMultimedia"
+        android:title="Multimedia"
+        android:iconTint="@color/md_white_1000"
+        android:icon="@drawable/ic_play_circle_filled_black_24dp"/>
+</menu>

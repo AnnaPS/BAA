@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_grey_200"
+    android:orientation="vertical"
+    android:id="@+id/FragmentContactarConNosotros"
+    tools:context=".FragmentsAyuda.FragmentContactarConNosotros">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="70dp"
+                android:text="Contactar con Bands n' Arts"
+                android:textColor="@color/md_black_1000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="textMultiLine"
+                android:text="Estaremos encantados de atender cualquier duda o problema que estes experimentando. Esto nos ayuda a mejorar día a día.\nRecordarte que actualmente somos un grupo pequeño de personas y que intentaremos tardar lo menos posible.
+\nMuchas gracias por tu compresión.
+\nEquipo de Bands N' Arts." />
+          <!--  <android.support.design.widget.TextInputLayout
+                android:id="@+id/impEmailVAyudaContactarConNosotros"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtEmailVAyudaContactarConNosotros"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:hint="CORREO ELECTRÓNICO"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="200"
+                    android:textColorHint="@color/md_teal_500"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/impNombreVregSocial"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtProblemaVAyudaContactarConNosotrosl"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:hint="DESCRIBE TU DUDA / PROBLEMA"
+                    android:inputType="textPersonName"
+                    android:maxLength="200"
+                    android:textColorHint="@color/md_teal_500"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </android.support.design.widget.TextInputLayout>
+-->
+            <Button
+                android:id="@+id/btnEnviarMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bordefondoverde"
+                android:text="CONTACTAR POR EMAIL"
+                android:padding="10dp"
+                android:textColor="@color/md_white_1000" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
